@@ -1,0 +1,39 @@
+:root {
+    --accent: black;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.navbar {
+    position: fixed;
+    width: auto;
+    padding: 12px;
+    color: var(--accent);
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0.5rem);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    z-index: 10;
+    margin: 10px;
+    margin-left: 50%;
+    border: 2px solid var(--accent);;
+    border-radius: 20px;
+}
+
+#topnav {
+    top: 0;
+}
+
+#bottomnav {
+      bottom: 0;
+}
