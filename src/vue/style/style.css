@@ -85,6 +85,10 @@ input:focus, textarea:focus, select:focus {
     border: none;
 }
 
+.carImg {
+    src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png"
+}
+
 /* --- TOP & BOTTOM NAVS --- */
 #topnav {
     width: 50%;
