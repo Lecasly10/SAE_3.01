@@ -6,30 +6,22 @@ async function initMap() {
 
   const defaultPosition = { lat: 49.1193, lng: 6.1757 }; // Mairie de Metz
 
-  const map = new Map(document.getElementById("map"), {
+  //Initialisation de la MAP
+  let map = new Map(document.getElementById("map"), {
     center: defaultPosition,
-    zoom: 15,
+    zoom: 20,
     mapId: "map",
     mapTypeId: "roadmap",
     disableDefaultUI: true,
-    colorScheme: ColorScheme.LIGHT,
   });
 
-  // Ajouter le marqueur initial
+  // Marqueur de Base
   let marker = await addMarker(
     map,
     defaultPosition,
     "Votre position",
     AdvancedMarkerElement
   );
-
-  // Créer et ajouter le bouton
-  const centerControlDiv = document.createElement("div");
-  const navBar = document.getElementById("bottomnav")
-  navBar.appendChild(centerControlDiv);
-  const button = createPathButton();
-  centerControlDiv.appendChild(button);
-  //map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
   // Géolocalisation
   if (navigator.geolocation) {
@@ -53,36 +45,21 @@ async function initMap() {
     );
   } else alert("La géolocalisation n'est pas supportée par votre navigateur.");
 
-  const newpos = { lat : 49.119178, lng: 6.168469 };
+  const goCenterButton = createButton();
 
-  // Bouton pour afficher l'itinéraire
-  button.addEventListener("click", async () => {
-    const origin = marker.position; // AdvancedMarkerElement.position
-    const destination = newpos;
+  goCenterButton.addEventListener("click", async () => {
+    const origin = marker.position; 
 
-    const request = {
-      origin: origin,
-      destination: destination,
-      travelMode: 'DRIVING',
-      routingPreference: 'TRAFFIC_AWARE',
-      fields: ['path']
-    };
+      map.setOptions({
+           center: origin,
+      });
 
-    const {routes} = await Route.computeRoutes(request);
-
-    if (!routes || routes.length === 0) {
-      alert("Aucun itinéraire trouvé.");
-      return;
-    }
-
-      const mapPolylines = routes[0].createPolylines();
-      mapPolylines.forEach((polyline) => polyline.setMap(map));
-      map.setCenter(origin);
   });
+
 }
 
 // Fonction pour créer le bouton
-function createPathButton() {
+function createButton() {
   const controlButton = document.getElementById("button");
   controlButton.style.cursor = "pointer";
   controlButton.style.textAlign = "center";
@@ -95,8 +72,8 @@ function createPathButton() {
 async function addMarker(map, pos, message, AdvancedMarkerElement) {
   const icon = document.createElement("img");
   icon.src = "https://cdn-icons-png.flaticon.com/512/8308/8308414.png";
-  icon.style.width = "40px";
-  icon.style.height = "40px";
+  icon.style.width = "60px";
+  icon.style.height = "60px";
 
   return await new AdvancedMarkerElement({
     map,

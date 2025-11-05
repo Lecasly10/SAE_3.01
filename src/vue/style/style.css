@@ -1,7 +1,8 @@
 :root {
-    --accent: white;
+    --main: white;
+    --accent: #6ecaf5;
     --back: rgba(2, 21, 38, 0.4);
-    color: var(--accent);
+    color: var(--main);
 }
 
 html, body {
@@ -28,7 +29,7 @@ html, body {
     margin: 10px;
     z-index: 10;
     
-    color: var(--accent);
+    color: var(--main);
     background-color: var(--back);
     backdrop-filter: blur(0.5rem);
     box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
@@ -43,16 +44,25 @@ html, body {
     gap: 15px;
 }
 
+.button a:link,
+.button a:visited,
+.button a:focus {
+  color: var(--main);
+}
+
 /* --- BUTTONS --- */
 .button {
     cursor: pointer;
     font-size: 30px;
     transition: transform 0.2s ease, color 0.2s ease;
+    outline: none;
+    text-decoration: none;
 }
 
-.button:hover {
+.button:hover,
+.button a:hover {
     transform: scale(1.2);
-    color: #00bfff;
+    color: var(--accent);
 }
 
 /* --- SEARCH BOX --- */
@@ -61,11 +71,12 @@ html, body {
     background-color: transparent;
     border: none;
     resize: none;
-    color: var(--accent);
+    color: var(--main);
+    font-weight: bolder;
 }
 
 #searchbox::placeholder {
-    color: var(--accent);
+    color: var(--main);
     opacity: 0.7;
 }
 
@@ -85,37 +96,11 @@ input:focus, textarea:focus, select:focus {
     bottom: 0;
 }
 
-
-@media screen and (max-width: 900px) {
-    .navbar {
-        width: 80%;
-        font-size: 18px;
-    }
-
-    #searchbox {
-        width: 100%;
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .button {
-        font-size: 35px;
-    }
-}
-
 @media screen and (max-width: 500px) {
-    .navbar {
-        width: 90%;
-        padding: 15px;
-        border-radius: 15px;
+    #topnav {
+        width: 80%;
     }
-
-    .button {
-        font-size: 50px;
-    }
-
-    #searchbox {
-        font-size: 14px;
-        width: 100%;
-    }
+   #bottomnav {
+    width: 60%;
+   }
 }
