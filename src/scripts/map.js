@@ -22,7 +22,7 @@ async function initMap() {
   );
 
   if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(
+    navigator.geolocation.getCurrentPosition(
       async (position) => {
         const pos = {
           lat: position.coords.latitude,
