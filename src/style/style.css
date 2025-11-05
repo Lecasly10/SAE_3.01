@@ -1,11 +1,15 @@
 :root {
-    --accent: black;
+    --accent: white;
+    --back: rgba(2, 21, 38, 0.4);
+    color: var(--accent);
 }
 
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    font-weight: bolder;
 }
 
 #map {
@@ -13,27 +17,105 @@ html, body {
     width: 100%;
 }
 
+/* --- NAVBAR --- */
 .navbar {
-    position: fixed;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    
     width: auto;
-    padding: 12px;
-    color: var(--accent);
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(0.5rem);
-    text-align: center;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    z-index: 10;
+    padding: 12px 20px;
     margin: 10px;
-    margin-left: 50%;
-    border: 2px solid var(--accent);;
+    z-index: 10;
+    
+    color: var(--accent);
+    background-color: var(--back);
+    backdrop-filter: blur(0.5rem);
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+    text-align: center;
+    font-weight: bolder;
     border-radius: 20px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-around;
+    gap: 15px;
 }
 
+/* --- BUTTONS --- */
+.button {
+    cursor: pointer;
+    font-size: 30px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+    transform: scale(1.2);
+    color: #00bfff;
+}
+
+/* --- SEARCH BOX --- */
+#searchbox {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    color: var(--accent);
+}
+
+#searchbox::placeholder {
+    color: var(--accent);
+    opacity: 0.7;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border: none;
+}
+
+/* --- TOP & BOTTOM NAVS --- */
 #topnav {
+    width: 50%;
     top: 0;
 }
 
 #bottomnav {
-      bottom: 0;
+    width: 20%;
+    bottom: 0;
+}
+
+
+@media screen and (max-width: 900px) {
+    .navbar {
+        width: 80%;
+        font-size: 18px;
+    }
+
+    #searchbox {
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .button {
+        font-size: 35px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .navbar {
+        width: 90%;
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .button {
+        font-size: 50px;
+    }
+
+    #searchbox {
+        font-size: 14px;
+        width: 100%;
+    }
 }
