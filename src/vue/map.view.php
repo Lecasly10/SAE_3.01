@@ -3,22 +3,31 @@
 <head>
   <title>Carte qui suit l'utilisateur</title>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <link rel="stylesheet" href="./style/style.css">
-  <script type="module" src="../controller/main.js"></script>
+  <link rel="stylesheet" href="../../vue/style/style.css">
+  <script type="module" src="../js/main.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
   <div id="topnav" class="navbar">
-    <i class="fa fa-search" aria-hidden="true"></i>
-    <textarea placeholder="Rechercher..." id="searchbox" rows="1" ></textarea>
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <form method="get" action='map.php'>
+          <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?> 
+        </form>
+      </div>
+      <div id="results"></div>
+    </div>
   </div>
+  
   <div id="map"></div>
   <div id="bottomnav" class="navbar">
     <div id="button" class="button">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
     <div id="Homebutton" class="button">
-      <a href="./index.php" ><i class="fa fa-home" aria-hidden="true"></i></a>
+      <a href="./map.php" ><i class="fa fa-home" aria-hidden="true"></i></a>
     </div>
     <div id="Settingsbutton" class="button">
       <a><i class="fa fa-cog" aria-hidden="true"></i></a>

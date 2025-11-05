@@ -1,47 +1,47 @@
 :root {
-    --main: white;
-    --accent: #6ecaf5;
-    --back: rgba(2, 21, 38, 0.4);
-    color: var(--main);
+  --main: white;
+  --accent: #6ecaf5;
+  --back: rgba(2, 21, 38, 0.4);
+  color: var(--main);
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    font-weight: bolder;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  font-weight: bolder;
 }
 
 #map {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
-/* --- NAVBAR --- */
 .navbar {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    
-    width: auto;
-    padding: 12px 20px;
-    margin: 10px;
-    z-index: 10;
-    
-    color: var(--main);
-    background-color: var(--back);
-    backdrop-filter: blur(0.5rem);
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
-    text-align: center;
-    font-weight: bolder;
-    border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content:space-around;
-    gap: 15px;
+  width: auto;
+  padding: 12px 20px;
+  margin: 10px;
+  z-index: 10;
+
+  color: var(--main);
+  background-color: var(--back);
+  backdrop-filter: blur(0.5rem);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  font-weight: bolder;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 15px;
 }
 
 .button a:link,
@@ -52,59 +52,116 @@ html, body {
 
 /* --- BUTTONS --- */
 .button {
-    cursor: pointer;
-    font-size: 30px;
-    transition: transform 0.2s ease, color 0.2s ease;
-    outline: none;
-    text-decoration: none;
+  cursor: pointer;
+  font-size: 30px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  outline: none;
+  text-decoration: none;
 }
 
 .button:hover,
 .button a:hover {
-    transform: scale(1.2);
-    color: var(--accent);
+  transform: scale(1.2);
+  color: var(--accent);
 }
 
 /* --- SEARCH BOX --- */
 #searchbox {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    resize: none;
-    color: var(--main);
-    font-weight: bolder;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  resize: none;
+  color: var(--main);
+  font-weight: bolder;
 }
 
 #searchbox::placeholder {
-    color: var(--main);
-    opacity: 0.7;
+  color: var(--main);
+  opacity: 0.7;
 }
 
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    border: none;
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border: none;
 }
 
 .carImg {
-    src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png"
+  src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png";
 }
 
 /* --- TOP & BOTTOM NAVS --- */
 #topnav {
-    width: 50%;
-    top: 0;
+  width: 50%;
+  top: 0;
+  flex-direction: column;
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#searchbox {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  color: var(--main);
+  font-weight: bolder;
+}
+
+#results {
+  position: absolute;
+  top: 100%;
+  margin-top: 40px;
+  left: 0;
+  width: 100%;
+  background-color: var(--back);
+  backdrop-filter: blur(0.5rem);
+  color: var(--main);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#results p {
+  margin: 10px;
 }
 
 #bottomnav {
-    width: 20%;
-    bottom: 0;
+  width: 20%;
+  bottom: 0;
 }
 
 @media screen and (max-width: 500px) {
-    #topnav {
-        width: 80%;
-    }
-   #bottomnav {
+  #topnav {
+    width: 80%;
+  }
+  #bottomnav {
     width: 60%;
-   }
+  }
+}
+
+/*Cacher la ligne de lien de google maps */
+.gm-style-cc {
+  display: none !important;
+}
+
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+  display: none !important;
+}
+.gmnoprint div {
+  background: none !important;
 }

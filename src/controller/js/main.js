@@ -57,7 +57,25 @@ async function initMap() {
   goCenterButton.addEventListener("click", () => {
     map.setCenter(marker.position);
   });
+
+  const searchBox = document.getElementById("searchbox");
+  const resultsDiv = document.getElementById("results");
+
+  searchBox.addEventListener("input", () => {
+    const query = searchBox.value.trim();
+    if (query.length === 0) {
+      resultsDiv.innerHTML = "";
+      return;
+    }
+  });
+
+  const params = new URLSearchParams(window.location.search);
+
+  const search = params.get("search");
+
+  resultsDiv.innerHTML = search;
 }
+
 //button
 function createButton() {
   const controlButton = document.getElementById("button");
