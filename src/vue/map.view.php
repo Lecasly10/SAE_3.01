@@ -17,7 +17,9 @@
           <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?> 
         </form>
       </div>
-      <div id="results"></div>
+      <div id="results">
+        <?php ?>
+      </div>
     </div>
   </div>
   

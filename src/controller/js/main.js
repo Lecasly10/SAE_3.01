@@ -69,11 +69,11 @@ async function initMap() {
     }
   });
 
-  const params = new URLSearchParams(window.location.search);
+  //const params = new URLSearchParams(window.location.search);
 
-  const search = params.get("search");
+  //const search = params.get("search");
 
-  resultsDiv.innerHTML = search;
+  //resultsDiv.innerHTML = search;
 }
 
 //button
