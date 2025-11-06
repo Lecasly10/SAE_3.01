@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Carte qui suit l'utilisateur</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
   <link rel="stylesheet" href="../../vue/style/style.css">
   <script type="module" src="../js/main.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
 
   <div id="topnav" class="navbar">
@@ -14,30 +17,59 @@
       <div class="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
         <form method="get" action='map.php'>
-          <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?> 
-        </form>
+          <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?>
+            </form>
       </div>
       <div id="results">
         <?php ?>
       </div>
     </div>
   </div>
-  
+
   <div id="map"></div>
   <div id="bottomnav" class="navbar">
     <div id="button" class="button">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
     <div id="Homebutton" class="button">
-      <a href="./map.php" ><i class="fa fa-home" aria-hidden="true"></i></a>
+      <a href="./map.php"><i class="fa fa-home" aria-hidden="true"></i></a>
     </div>
     <div id="Settingsbutton" class="button">
       <a><i class="fa fa-cog" aria-hidden="true"></i></a>
     </div>
   </div>
 
-  <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-        ({key: "AIzaSyChCXJQtsRQb2vHdPMbbFMWN3pPX_Q2pzw", v: "weekly"});</script>
+  <script>
+    (g => {
+      var h, a, k, p = "The Google Maps JavaScript API",
+        c = "google",
+        l = "importLibrary",
+        q = "__ib__",
+        m = document,
+        b = window;
+      b = b[c] || (b[c] = {});
+      var d = b.maps || (b.maps = {}),
+        r = new Set,
+        e = new URLSearchParams,
+        u = () => h || (h = new Promise(async (f, n) => {
+          await (a = m.createElement("script"));
+          e.set("libraries", [...r] + "");
+          for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+          e.set("callback", c + ".maps." + q);
+          a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+          d[q] = f;
+          a.onerror = () => h = n(Error(p + " could not load."));
+          a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+          m.head.append(a)
+        }));
+      d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+    })
+    ({
+      key: "AIzaSyChCXJQtsRQb2vHdPMbbFMWN3pPX_Q2pzw",
+      v: "weekly"
+    });
+  </script>
 
 </body>
+
 </html>
