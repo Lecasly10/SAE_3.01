@@ -12,7 +12,7 @@ class ParkingDAO
     {
         require_once "../../modele/connexion.php";
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM PARKINGS";
+        $this->select = "SELECT * FROM parkings";
     }
 
     private function loadQuery(array $result): array
@@ -34,7 +34,7 @@ class ParkingDAO
             $parking->setInfo($row['info']);
             $parkings[] = $parking;
         }
-        return $salles;
+        return $parkings;
     }
 
     function getAll(): array
@@ -54,9 +54,10 @@ class ParkingDAO
     }
 
     function getSearch(string $search) : array {
-        $search = '%'.$search.'%';
-        $req = $this->select . " WHERE name like :search";
-        return ($this->loadQuery($this->bd->execSQL($req), [':search' => $search]));
+        $r = $this->select . " WHERE name LIKE :search";
+        return $this->loadQuery(
+            $this->bd->execSQL($r, [':search' => "%$search%"])
+        );
     }
 
 }

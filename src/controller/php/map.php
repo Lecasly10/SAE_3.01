@@ -3,26 +3,21 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once '../../modele/parking.class.php';
 require_once '../../modele/parkingDAO.class.php';
 
 $search = (isset($_GET['search']) ? $_GET['search'] : null);
 
 $parkingDAO = new ParkingDAO();
 
-$lignes = [];
-
-if (isset($_GET[$search])) {
+if ($search != " " && $search && isset($search)) {
+    $lignes = "";
     $lesParkings = $parkingDAO->getSearch($search);
-
     foreach ($lesParkings as $parking) {
-        $str = '<td>' . $parking->getName() . '</td>';
-        $str .= '<td>'. $parking->getId() . '</td>';
-        $lignes[] = "<tr>".$str."</tr>";
+        $str='';
+        $str .= $parking->getName();
+        $str .= " | " . $parking->getId();
+        $lignes .= "<a href='test'>$str</a><br/>";
     }
 }
-
-
-
 
 include "../../vue/map.view.php";

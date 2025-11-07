@@ -21,18 +21,11 @@
         </form>
       </div>
       <div id="results">
-        <table>
-          <tbody>
             <?php
-            if(isset($search)) {
-              foreach ($lignes as $ligne) {
-              echo $ligne;
-            }
+            if($search != " " && $search) {
+                echo $lignes;
             } 
             ?>
-          </tbody>
-        </table>
-        <?php echo isset($results) ? "$results" : "" ?>
       </div>
     </div>
   </div>

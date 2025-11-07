@@ -73,6 +73,7 @@ body {
   resize: none;
   color: var(--main);
   font-weight: bolder;
+  font-size: 16px;
 }
 
 #searchbox::placeholder {
@@ -104,6 +105,7 @@ select:focus {
 }
 
 .search-bar {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -123,19 +125,19 @@ select:focus {
   margin-top: 40px;
   left: 0;
   width: 100%;
-  background-color: var(--back);
-  backdrop-filter: blur(0.5rem);
+  background: var(--back);
   color: var(--main);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
   text-align: left;
   max-height: 200px;
   overflow-y: auto;
 }
 
-#results p {
-  margin: 10px;
+#results a {
+  font-size: 16px;
+  color: var(--main);
+  text-decoration: none;
 }
 
 #bottomnav {

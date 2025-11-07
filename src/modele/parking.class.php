@@ -10,8 +10,8 @@ class Parking
     private string $userType;
     private int $maxHeight;
     private int $siretNumber;
-    private int $long;
-    private int $lat; 
+    private float $long;
+    private float $lat; 
     private string $structure;
     private string $info;
 
@@ -24,8 +24,8 @@ class Parking
         string $userType = '',
         int $maxHeight = 0,
         int $siretNumber = 0,
-        int $long = 0,
-        int $lat = 0,
+        float $long = 0,
+        float $lat = 0,
         string $structure = '',
         string $info = '',
     ) {
@@ -36,6 +36,11 @@ class Parking
         $this->lat = $lat;
         $this->structure = $structure;
         $this->info = $info;
+        $this->inseeCode = $inseeCode;
+        $this->url = $url;
+        $this->siretNumber = $siretNumber;
+        $this->userType = $userType;
+        $this->maxHeight = $maxHeight;
     }
 
     public function getId(): string
@@ -68,22 +73,22 @@ class Parking
         $this->adresse = $adresse;
     }
 
-    public function getLong(): int
+    public function getLong(): float
     {
         return $this->long;
     }
 
-    public function setLong(int $long)
+    public function setLong(float $long)
     {
         $this->long = $long;
     }
 
-    public function getLat(): int
+    public function getLat(): float
     {
         return $this->lat;
     }
 
-    public function setLat(int $lat)
+    public function setLat(float $lat)
     {
         $this->lat = $lat;
     }
