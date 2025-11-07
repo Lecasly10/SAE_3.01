@@ -13,7 +13,7 @@
 <body>
 
   <div id="topnav" class="navbar blur-bg">
-      <div class="search-bar">
+      <div class="search-bar" id="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
         <form method="get" action='map.php'>
           <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?>
@@ -27,24 +27,28 @@
              if($lignes) {
                 echo $lignes;
              } else {
-                echo "Aucun résultats";
+                echo "<p>Aucun résultats</p>";
              }
              echo "</div>";
         } 
   ?>
   <div id="map"></div>
   <div id="bottomnav" class="navbar blur-bg">
-    <div id="button" class="button">
+    <div id="centerButton" class="button">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
-    <div id="Homebutton" class="button">
-      <a href="./map.php"><i class="fa fa-home" aria-hidden="true"></i></a>
+    <div id="homebutton" class="button">
+      <a href="./map.php">
+        <i class="fa fa-home" id="home" aria-hidden="true"></i>
+        <i class="fa fa-times" id="cross" aria-hidden="true"></i>
+      </a>
     </div>
-    <div id="Settingsbutton" class="button">
+    <div id="settingsbutton" class="button">
       <a><i class="fa fa-cog" aria-hidden="true"></i></a>
     </div>
   </div>
 
+  <!-- SOURCE : DOCUMENTATION API GOOGLE MAPS -->
   <script>
     (g => {
       var h, a, k, p = "The Google Maps JavaScript API",

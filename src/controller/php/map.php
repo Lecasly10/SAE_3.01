@@ -13,10 +13,16 @@ if ($search != " " && $search && isset($search)) {
     $lignes = "";
     $lesParkings = $parkingDAO->getSearch($search);
     foreach ($lesParkings as $parking) {
+        $lat=$parking->getLat();
+        $long=$parking->getLong();
+        $name=$parking->getName();
         $str='';
-        $str .= $parking->getName();
-        $str .= " | " . $parking->getId();
-        $lignes .= "<a href='test'>$str</a>";
+        $str .= $name;
+        $lignes .= "<a class='parking' 
+        data-lat=" . "'$lat'" . 
+        "data-lng=" . "'$long'" .
+        "data-name=" . "'$name'" . 
+        "href='#'>$str</a>";
     }
 }
 

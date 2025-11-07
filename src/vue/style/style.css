@@ -52,8 +52,13 @@ body {
   top: 0;
 }
 
-#topnav, #rbox {
+#topnav,
+#rbox {
   width: 50%;
+}
+
+#topnav p {
+  margin: 0;
 }
 
 #bottomnav {
@@ -61,7 +66,6 @@ body {
   width: 20%;
   bottom: 0;
 }
-
 
 #searchbox {
   width: 100%;
@@ -92,7 +96,6 @@ select:focus {
   gap: 10px;
 }
 
-
 #rbox {
   display: flex;
   flex-direction: column;
@@ -100,6 +103,10 @@ select:focus {
   left: 50%;
   transform: translateX(-50%);
   top: 5rem;
+  max-height: 400px;
+  overflow-y: scroll;
+  scrollbar-color: var(--accent) transparent;
+  overflow-x: hidden;
   z-index: 10;
   padding: 1rem;
   color: var(--main);
@@ -107,10 +114,10 @@ select:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 #rbox p {
+  font-size: 18px;
   margin: 0 0 5px 0;
   padding: 0;
 }
-
 
 hr {
   width: 100%;
@@ -122,6 +129,13 @@ hr {
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
+  transition: all 0.3s;
+}
+
+#rbox a:hover {
+  font-size: 17px;
+  color: var(--accent);
+  transition: all 0.3s;
 }
 
 .button a:link,
@@ -144,9 +158,9 @@ hr {
   color: var(--accent);
 }
 
-
 @media screen and (max-width: 500px) {
-  #topnav, #rbox {
+  #topnav,
+  #rbox {
     margin: 10px 0 0 0;
     width: 80%;
   }
@@ -169,4 +183,3 @@ hr {
 .gmnoprint div {
   background: none !important;
 }
-
