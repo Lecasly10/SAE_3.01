@@ -14,6 +14,12 @@ body {
   font-weight: bolder;
 }
 
+.blur-bg {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  background-color: var(--back);
+}
+
 #map {
   height: 100%;
   width: 100%;
@@ -26,12 +32,9 @@ body {
 
   width: auto;
   padding: 12px 20px;
-  margin: 10px;
   z-index: 10;
 
   color: var(--main);
-  background-color: var(--back);
-  backdrop-filter: blur(0.5rem);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
   font-weight: bolder;
@@ -50,7 +53,7 @@ body {
   color: var(--main);
 }
 
-/* --- BUTTONS --- */
+
 .button {
   cursor: pointer;
   font-size: 30px;
@@ -65,7 +68,19 @@ body {
   color: var(--accent);
 }
 
-/* --- SEARCH BOX --- */
+
+.carImg {
+  src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png";
+}
+
+/* --- TOP & BOTTOM NAVS --- */
+#topnav {
+  margin-top: 10px;
+  width: 50%;
+  top: 0;
+  flex-direction: column;
+}
+
 #searchbox {
   width: 100%;
   background-color: transparent;
@@ -88,22 +103,6 @@ select:focus {
   border: none;
 }
 
-.carImg {
-  src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png";
-}
-
-/* --- TOP & BOTTOM NAVS --- */
-#topnav {
-  width: 50%;
-  top: 0;
-  flex-direction: column;
-}
-
-.search-container {
-  position: relative;
-  width: 100%;
-}
-
 .search-bar {
   width: 100%;
   display: flex;
@@ -111,45 +110,48 @@ select:focus {
   gap: 10px;
 }
 
-#searchbox {
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  color: var(--main);
-  font-weight: bolder;
-}
-
-#results {
+#rbox {
+  width: 50%;
   position: absolute;
-  top: 100%;
-  margin-top: 40px;
-  left: 0;
-  width: 100%;
-  background: var(--back);
+  left: 50%;
+  transform: translateX(-50%);
+  top: 5rem;
+  z-index: 10;
+  padding: 1rem;
   color: var(--main);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: left;
   max-height: 200px;
-  overflow-y: auto;
+}
+#rbox p {
+  margin: 0 0 5px 0;
+  padding: 0;
 }
 
-#results a {
+hr {
+  border-color: var(--main);
+}
+
+#rbox a {
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
 }
 
 #bottomnav {
+  margin-bottom: 10px;
   width: 20%;
   bottom: 0;
 }
 
 @media screen and (max-width: 500px) {
-  #topnav {
+  #topnav, #rbox {
+    margin: 10px 0 0 0;
     width: 80%;
   }
   #bottomnav {
+    margin: 0 0 10px 0;
     width: 60%;
   }
 }
@@ -167,3 +169,4 @@ select:focus {
 .gmnoprint div {
   background: none !important;
 }
+

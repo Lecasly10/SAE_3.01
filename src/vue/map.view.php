@@ -12,26 +12,28 @@
 
 <body>
 
-  <div id="topnav" class="navbar">
-    <div class="search-container">
+  <div id="topnav" class="navbar blur-bg">
       <div class="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
         <form method="get" action='map.php'>
           <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?>
         </form>
       </div>
-      <div id="results">
-            <?php
-            if($search != " " && $search) {
-                echo $lignes;
-            } 
-            ?>
-      </div>
-    </div>
   </div>
-
+  
+  <?php
+        if($search != " " && $search) {
+             echo '<div id="rbox" class="blur-bg"><p>Résultat :</p><hr>';
+             if($lignes) {
+                echo $lignes;
+             } else {
+                echo "Aucun résultats";
+             }
+             echo "</div>";
+        } 
+  ?>
   <div id="map"></div>
-  <div id="bottomnav" class="navbar">
+  <div id="bottomnav" class="navbar blur-bg">
     <div id="button" class="button">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
