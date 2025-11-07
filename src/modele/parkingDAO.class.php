@@ -42,7 +42,7 @@ class ParkingDAO
         return ($this->loadQuery($this->bd->execSQL($this->select)));
     }
 
-    function getById(string $id): Salle
+    function getById(string $id): Parking
     {
         $unParking = new Parking();
         $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . " WHERE
