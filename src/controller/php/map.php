@@ -16,7 +16,7 @@ if ($search != " " && $search && isset($search)) {
         $str='';
         $str .= $parking->getName();
         $str .= " | " . $parking->getId();
-        $lignes .= "<a href='test'>$str</a><br/>";
+        $lignes .= "<a href='test'>$str</a>";
     }
 }
 

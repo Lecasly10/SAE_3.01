@@ -14,15 +14,15 @@ body {
   font-weight: bolder;
 }
 
+#map {
+  height: 100%;
+  width: 100%;
+}
+
 .blur-bg {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); /* Safari support */
   background-color: var(--back);
-}
-
-#map {
-  height: 100%;
-  width: 100%;
 }
 
 .navbar {
@@ -47,39 +47,21 @@ body {
   gap: 15px;
 }
 
-.button a:link,
-.button a:visited,
-.button a:focus {
-  color: var(--main);
-}
-
-
-.button {
-  cursor: pointer;
-  font-size: 30px;
-  transition: transform 0.2s ease, color 0.2s ease;
-  outline: none;
-  text-decoration: none;
-}
-
-.button:hover,
-.button a:hover {
-  transform: scale(1.2);
-  color: var(--accent);
-}
-
-
-.carImg {
-  src: "https://www.iconpacks.net/icons/4/free-red-car-icon-12764-thumb.png";
-}
-
-/* --- TOP & BOTTOM NAVS --- */
 #topnav {
   margin-top: 10px;
-  width: 50%;
   top: 0;
-  flex-direction: column;
 }
+
+#topnav, #rbox {
+  width: 50%;
+}
+
+#bottomnav {
+  margin-bottom: 10px;
+  width: 20%;
+  bottom: 0;
+}
+
 
 #searchbox {
   width: 100%;
@@ -110,8 +92,10 @@ select:focus {
   gap: 10px;
 }
 
+
 #rbox {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -121,29 +105,45 @@ select:focus {
   color: var(--main);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  text-align: left;
-  max-height: 200px;
 }
 #rbox p {
   margin: 0 0 5px 0;
   padding: 0;
 }
 
+
 hr {
+  width: 100%;
   border-color: var(--main);
 }
 
 #rbox a {
+  margin: 10px;
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
 }
 
-#bottomnav {
-  margin-bottom: 10px;
-  width: 20%;
-  bottom: 0;
+.button a:link,
+.button a:visited,
+.button a:focus {
+  color: var(--main);
 }
+
+.button {
+  cursor: pointer;
+  font-size: 30px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  outline: none;
+  text-decoration: none;
+}
+
+.button:hover,
+.button a:hover {
+  transform: scale(1.2);
+  color: var(--accent);
+}
+
 
 @media screen and (max-width: 500px) {
   #topnav, #rbox {
