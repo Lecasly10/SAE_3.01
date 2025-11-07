@@ -18,10 +18,21 @@
         <i class="fa fa-search" aria-hidden="true"></i>
         <form method="get" action='map.php'>
           <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?>
-            </form>
+        </form>
       </div>
       <div id="results">
-        <?php ?>
+        <table>
+          <tbody>
+            <?php
+            if(isset($search)) {
+              foreach ($lignes as $ligne) {
+              echo $ligne;
+            }
+            } 
+            ?>
+          </tbody>
+        </table>
+        <?php echo isset($results) ? "$results" : "" ?>
       </div>
     </div>
   </div>

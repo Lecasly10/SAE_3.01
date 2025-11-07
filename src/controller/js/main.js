@@ -58,17 +58,6 @@ async function initMap() {
     map.setCenter(marker.position);
   });
 
-  const searchBox = document.getElementById("searchbox");
-  const resultsDiv = document.getElementById("results");
-
-  searchBox.addEventListener("input", () => {
-    const query = searchBox.value.trim();
-    if (query.length === 0) {
-      resultsDiv.innerHTML = "";
-      return;
-    }
-  });
-
   //const params = new URLSearchParams(window.location.search);
 
   //const search = params.get("search");
@@ -76,7 +65,6 @@ async function initMap() {
   //resultsDiv.innerHTML = search;
 }
 
-//button
 function createButton() {
   const controlButton = document.getElementById("button");
   controlButton.style.cursor = "pointer";
@@ -86,4 +74,14 @@ function createButton() {
   return controlButton;
 }
 
-window.addEventListener("load", initMap);
+window.addEventListener("load", () => {
+  initMap();
+  const searchBox = document.getElementById("searchbox");
+  const resultsDiv = document.getElementById("results");
+
+  const query = searchBox.value.trim();
+  if (query.length === 0) {
+    resultsDiv.innerHTML = "";
+    return;
+  }
+});

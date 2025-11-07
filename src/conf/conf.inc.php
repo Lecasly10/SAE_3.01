@@ -2,7 +2,7 @@
 $conf = [
     "SGBD" => 'mysql',
     "HOST" => 'devbdd.iutmetz.univ-lorraine.fr',
-    "PASSWORD" => 'Matteo0507.',
-    "USER" => 'e58632u_appli',
-    "DB_NAME" => 'e58632u_parkings',
+    "PASSWORD" => 'ekipafond',
+    "USER" => 'e12577u_appli',
+    "DB_NAME" => 'e12577u_301',
 ];
