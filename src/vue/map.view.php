@@ -16,7 +16,8 @@
       <div class="search-bar" id="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
         <form method="get" action='map.php'>
-          <input type='text' placeholder="Rechercher..." id="searchbox" name="search" value=<?php echo isset($search) ? "$search>" : ">" ?>
+          <input type="text" placeholder="Rechercher..." id="searchbox" name="search"
+          value="<?php echo isset($search) ? htmlspecialchars($search, ENT_QUOTES, 'UTF-8') : ''; ?>">
         </form>
       </div>
   </div>
