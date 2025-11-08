@@ -3,7 +3,7 @@ const crossIcon = document.getElementById("cross");
 const topnav = document.getElementById("topnav");
 const linkDiv = document.getElementById("rbox");
 const searchBox = document.getElementById("searchbox");
-const resultsDiv = document.getElementById("results");
+const resultsDiv = document.getElementById("rbox");
 const autoSearchButton = document.getElementById("autoSearchButton");
 
 export function toggleNavigationUI(destinationName) {
@@ -34,6 +34,6 @@ export function setupUI() {
 
   const query = searchBox.value.trim();
   if (query.length === 0 && resultsDiv.innerHTML !== "") {
-    resultsDiv.innerHTML = "";
+    resultsDiv.style.display = "none";
   }
 }

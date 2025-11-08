@@ -51,17 +51,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-    } else {
-        echo json_encode([
-            "status" => "erreur",
-            "message" => "JSON invalide"
-        ]);
-    }
-
-} else {
-    http_response_code(405);
-    echo json_encode([
-        "status" => "erreur",
-        "message" => "Méthode non autorisée"
-    ]);
-}
+    } 
+} 

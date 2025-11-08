@@ -23,7 +23,7 @@
   </div>
   
   <?php
-        if($search != " " && $search) {
+        if(!empty($search) && isset($search)) {
              echo '<div id="rbox" class="blur-bg"><p>Résultat :</p><hr>';
              if($lignes) {
                 echo $lignes;
@@ -36,22 +36,21 @@
   <div id="map"></div>
   <div id="bottomnav" class="navbar blur-bg">
 
-    <div id="centerButton" class="button">
+    <div id="centerButton" class="button" title="Recentrer">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
 
-    <div id="autoSearchButton" class="button">
+    <div id="autoSearchButton" class="button" title="Trouver le parking le plus proche">
         <a><i class="fa fa-flag" aria-hidden="true"></i></a>
     </div>
 
-    <div id="homebutton" class="button">
-      <a href="./map.php">
+    <div id="homebutton" class="button" >
+      <a href="./map.php" title="Home">
         <i class="fa fa-home" aria-hidden="true" id="home"></i></a>
-        <a href="./map.php">
+        <a href="./map.php" title="Annuler">
         <i class="fa fa-times" aria-hidden="true" id="cross"></i></a>
-      
     </div>
-    <div id="settingsbutton" class="button">
+    <div id="settingsbutton" class="button" title="Paramètres">
       <a><i class="fa fa-cog" aria-hidden="true"></i></a>
     </div>
   </div>

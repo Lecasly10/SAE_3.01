@@ -9,7 +9,6 @@ require_once './distance.php';
 require_once './dataAPI.php';
 
 $search = (isset($_POST['search']) ? $_POST['search'] : null);
-$autoSearch = (isset($_POST['autosearch']) ? $_POST['autosearch'] : null);
 
 $parkingCapacityDAO = new ParkingCapacityDAO();
 
