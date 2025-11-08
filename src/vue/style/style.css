@@ -145,6 +145,9 @@ hr {
 }
 
 .button {
+  background: none;
+  border: none;
+  color: var(--main);
   cursor: pointer;
   font-size: 30px;
   transition: transform 0.2s ease, color 0.2s ease;

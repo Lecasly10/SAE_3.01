@@ -15,7 +15,7 @@
   <div id="topnav" class="navbar blur-bg">
       <div class="search-bar" id="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
-        <form method="get" action='map.php'>
+        <form method="post" action='map.php'>
           <input type="text" placeholder="Rechercher..." id="searchbox" name="search"
           value="<?php echo isset($search) ? htmlspecialchars($search, ENT_QUOTES, 'UTF-8') : ''; ?>">
         </form>
@@ -35,14 +35,21 @@
   ?>
   <div id="map"></div>
   <div id="bottomnav" class="navbar blur-bg">
+
     <div id="centerButton" class="button">
       <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
     </div>
+
+    <div id="autoSearchButton" class="button">
+        <a><i class="fa fa-flag" aria-hidden="true"></i></a>
+    </div>
+
     <div id="homebutton" class="button">
       <a href="./map.php">
-        <i class="fa fa-home" id="home" aria-hidden="true"></i>
-        <i class="fa fa-times" id="cross" aria-hidden="true"></i>
-      </a>
+        <i class="fa fa-home" aria-hidden="true" id="home"></i></a>
+        <a href="./map.php">
+        <i class="fa fa-times" aria-hidden="true" id="cross"></i></a>
+      
     </div>
     <div id="settingsbutton" class="button">
       <a><i class="fa fa-cog" aria-hidden="true"></i></a>
