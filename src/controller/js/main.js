@@ -44,10 +44,17 @@ async function initMap() {
 
     navigator.geolocation.watchPosition(
       async ({ coords }) => {
-        const userPos = { lat: coords.latitude, lng: coords.longitude };
-        updateUserMarker(map, userPos);
+        const position = { lat: coords.latitude, lng: coords.longitude };
+        userMarker.setMap(null)
+        userMarker = await addMarker(
+          map,
+          position,
+          "Votre Position",
+          carIconURL
+        )
+        map.setCenter(position)
       },
-      (error) => handleGeoError(error, map),
+      (error) => handleGeoError(error, map, userMarker),
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     );
 
@@ -69,11 +76,9 @@ async function initMap() {
   }
 }
 
-async function updateUserMarker(map, position) {
+async function updateUserMarker(map, marker, position) {
   try {
-    let marker = await addMarker(map, position, "Votre position", carIconURL);
-    map.setCenter(position);
-    return marker;
+    
   } catch (error) {
     console.error(
       "Erreur lors de la mise à jour du marqueur utilisateur :",
@@ -82,10 +87,16 @@ async function updateUserMarker(map, position) {
   }
 }
 
-function handleGeoError(error, map) {
+async function handleGeoError(error, map, marker) {
   console.warn("Erreur de géolocalisation :", error);
-  addMarker(map, defaultPosition, "Votre position", carIconURL);
-  map.setCenter(defaultPosition);
+  marker.setMap(null)
+  marker = await addMarker(
+          map,
+          position,
+          "Votre Position",
+          carIconURL
+        )
+  map.setCenter(position)
 }
 
 async function handleParkingClick(event, link, map, userMarker, Route) {
@@ -108,7 +119,7 @@ async function handleParkingClick(event, link, map, userMarker, Route) {
 
     const routeRequest = {
       origin: userMarker.position,
-      destination,
+      destination : destination,
       travelMode: "DRIVING",
       routingPreference: "TRAFFIC_AWARE",
       fields: ["path"],

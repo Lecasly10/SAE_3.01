@@ -7,10 +7,9 @@ require_once '../../modele/parkingDAO.class.php';
 require_once '../../modele/parkingCapacityDAO.class.php';
 
 $search = (isset($_GET['search']) ? $_GET['search'] : null);
-$search = trim($_GET['search']);
-$mots = $mots = explode(" ", $search);
 
-$parkingDAO = new ParkingDAO();
+
+
 $parkingCapacityDAO = new ParkingCapacityDAO();
 
 $url = "https://maps.eurometropolemetz.eu/public/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=public:pub_tsp_sta&srsName=EPSG:4326&outputFormat=application/json&cql_filter=id%20is%20not%20null";
@@ -63,7 +62,10 @@ function placeLibre(array $data, float $lat, float $lon) {
     return null;
 }
 
-function search() : array {
+function search(string $search) : array {
+    $parkingDAO = new ParkingDAO();
+    $search = trim($search);
+    $mots = explode(" ", $search);
     $lesParkings = []; 
 
     foreach ($mots as $mot) {
@@ -76,9 +78,9 @@ function search() : array {
 }
 
 
-if ($search != " " && $search && isset($search)) {
+if (!empty($search) && isset($search)) {
     $lignes = "";
-    $lesParkings = search();
+    $lesParkings = search($search);
 
     foreach ($lesParkings as $parking) {
         $places=$parkingCapacityDAO->getById($parking->getId())->getTotal();
