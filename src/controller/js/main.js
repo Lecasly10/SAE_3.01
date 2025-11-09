@@ -90,12 +90,18 @@ function handleAutoSearchClick(event, map, userMarker) {
 
   toggleNavigationUI("CHARGEMENT...");
 
+  const param = new URLSearchParams();
+
+  for (const key in position) {
+    param.append(key, position[key]);
+  }
+
   fetch("postPosition.php", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(position),
+    body: param.toString(),
   })
     .then((response) => response.json())
     .then((resultat) => {
