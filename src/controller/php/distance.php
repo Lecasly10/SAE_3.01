@@ -13,8 +13,3 @@ function distanceGPS(float $lat1, float $lon1, float $lat2, float $lon2): float 
     return $earthRadius * $c;
 }
 
-function approxDistance(float $lat1, float $lon1, float $lat2, float $lon2): float {
-    $dLat = $lat2 - $lat1;
-    $dLon = $lon2 - $lon1;
-    return $dLat * $dLat + $dLon * $dLon;
-}

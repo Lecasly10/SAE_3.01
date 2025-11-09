@@ -2,8 +2,9 @@ const homeIcon = document.getElementById("home");
 const crossIcon = document.getElementById("cross");
 const topnav = document.getElementById("topnav");
 const linkDiv = document.getElementById("rbox");
+const closeButton = document.getElementById("closeButton");
+const box = document.getElementsByClassName("box");
 const searchBox = document.getElementById("searchbox");
-const resultsDiv = document.getElementById("rbox");
 const autoSearchButton = document.getElementById("autoSearchButton");
 
 export function toggleNavigationUI(destinationName) {
@@ -11,8 +12,9 @@ export function toggleNavigationUI(destinationName) {
   crossIcon.style.display = "initial";
   autoSearchButton.style.display = "none";
 
-  if (linkDiv) {
-    linkDiv.style.display = "none";
+  for (let i = 0; i < box.length; i++) {
+    const e = box.item(i);
+    e.style.display = "none";
   }
 
   topnav.innerHTML = "";
@@ -30,10 +32,26 @@ export function setupUI() {
   crossIcon.style.display = "none";
   autoSearchButton.style.display = "initial";
 
-  if (!searchBox || !resultsDiv) return;
+  if (!searchBox || !linkDiv) return;
 
   const query = searchBox.value.trim();
-  if (query.length === 0 && resultsDiv.innerHTML !== "") {
-    resultsDiv.style.display = "none";
+  if (query.length === 0) {
+    linkDiv.style.display = "none";
   }
+}
+
+searchBox.addEventListener("input", (e) => {
+  const query = searchBox.value.trim();
+  if (query.length === 0) {
+    linkDiv.style.display = "none";
+  }
+});
+
+if (closeButton) {
+  closeButton.addEventListener("click", (e) => {
+    for (let i = 0; i < box.length; i++) {
+      const e = box.item(i);
+      e.style.display = "none";
+    }
+  });
 }

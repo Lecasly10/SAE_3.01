@@ -20,15 +20,50 @@
           value="<?php echo isset($search) ? htmlspecialchars($search, ENT_QUOTES, 'UTF-8') : ''; ?>">
         </form>
       </div>
+      <form method ="post" action="map.php">
+        <button class="button" type="submit" name="list" value="true">
+          <i class="fa fa-list-ol" aria-hidden="true"></i>
+        </button>
+      </form>
   </div>
   
   <?php
-        if(!empty($search) && isset($search)) {
-             echo '<div id="rbox" class="blur-bg"><p>Résultat :</p><hr>';
-             if($lignes) {
-                echo $lignes;
+        if(isset($search) && !empty($search)) {
+             echo '<div id="rbox" class="blur-bg box">';
+             echo '<div class="titlebox"><p>Résultat :</p> 
+             <a class="button" id="closeButton"><i class="fa fa-window-close" aria-hidden="true"></i></a></div><hr>';
+             if(!empty($lignes)) {
+                foreach ($lignes as $ligne) {
+                  echo $ligne;
+                };
              } else {
                 echo "<p>Aucun résultats</p>";
+             }
+             echo "</div>";
+        } 
+        if($list == true) {
+             echo '<div id="lbox" class="blur-bg box">';
+             echo '<div class="titlebox"><p>Listes des Parkings :</p>
+             <a class="button" id="closeButton"><i class="fa fa-window-close" aria-hidden="true"></i></a></div><hr>';
+             if(!empty($lignesList)) {
+                foreach ($lignesList as $ligne) {
+                  echo $ligne;
+                };
+             } else {
+                echo "<p>Aucun parkings</p>";
+             }
+             echo "</div>";
+        }
+        if(isset($info)) {
+            echo '<div id="ibox" class="blur-bg box infobox">';
+            echo '<div class="titlebox"><p>' . $parkingName . ' :</p>
+            <a class="button" id="closeButton"><i class="fa fa-window-close" aria-hidden="true"></i></a></div><hr>';
+            if(!empty($lignesInfo)) {
+                foreach ($lignesInfo as $ligne) {
+                  echo $ligne;
+                };
+            } else {
+                echo "<p>Aucune Informations</p>";
              }
              echo "</div>";
         } 
