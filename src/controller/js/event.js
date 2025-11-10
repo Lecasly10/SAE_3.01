@@ -1,9 +1,5 @@
 import * as element from "./htmlElement.js";
-import {
-  handleAutoSearchClick,
-  handleParkingClick,
-  handleParkingList,
-} from "./eventHandler.js";
+import { handleAutoSearchClick, handleParkingList } from "./eventHandler.js";
 
 import { removeRoute } from "./route.js";
 import { setupUI } from "./UI.js";
@@ -11,20 +7,13 @@ import { phpFetch } from "./phpInteraction.js";
 
 export async function initEvent(map, marker) {
   element.goCenterButton.addEventListener("click", () => {
+    console.log("test");
     map.setCenter(marker.position);
   });
 
   element.autoSearchButton.addEventListener("click", (e) => {
     handleAutoSearchClick(e, map, marker);
   });
-
-  document
-    .querySelectorAll(".parking")
-    .forEach((link) =>
-      link.addEventListener("click", (e) =>
-        handleParkingClick(e, link, map, marker)
-      )
-    );
 
   element.searchBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
@@ -43,7 +32,7 @@ export async function initEvent(map, marker) {
       };
 
       const result = await phpFetch("search.php", search);
-      handleParkingList(result["parkings"]);
+      handleParkingList(result["parkings"], map, marker);
     }
   });
 
@@ -51,12 +40,13 @@ export async function initEvent(map, marker) {
     element.loader.style.display = "block";
     e.preventDefault();
     const result = await phpFetch("search.php", {});
-    handleParkingList(result["parkings"]);
+    handleParkingList(result["parkings"], map, marker);
   });
 
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
       e.preventDefault();
+      element.searchBox.value = "";
       removeRoute("destParking");
       setupUI();
     });

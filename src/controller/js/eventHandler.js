@@ -26,7 +26,24 @@ export async function handleAutoSearchClick(event, map, userMarker) {
   startRoute(map, userMarker.position, destination, routeId);
 }
 
-export async function handleParkingList(parkings) {
+export async function handleParkingClick(event, link, map, userMarker) {
+  event.preventDefault();
+
+  try {
+    const lat = parseFloat(link.dataset.lat);
+    const lng = parseFloat(link.dataset.lng);
+    const name = link.dataset.name;
+    const destination = { lat: lat, lng: lng };
+
+    toggleNavigationUI(name);
+    const routeId = "destParking";
+    startRoute(map, userMarker.position, destination, routeId);
+  } catch (error) {
+    console.error("Erreur lors du calcul de l'itinéraire :", error);
+  }
+}
+
+export async function handleParkingList(parkings, map, marker) {
   element.resultBox.innerHTML = "";
   if (!parkings) {
     const text = document.createElement("p");
@@ -60,6 +77,13 @@ export async function handleParkingList(parkings) {
       link.textContent = nom + places + pLibres;
       link.title = "Cliqer pour lancer l'itiniraire";
       link.style.cursor = "pointer";
+      link.dataset.lat = parking["lat"];
+      link.dataset.lng = parking["lng"];
+      link.dataset.name = parking["nom"];
+
+      link.addEventListener("click", (e) => {
+        handleParkingClick(e, link, map, marker);
+      });
 
       container.appendChild(button);
       container.appendChild(link);
@@ -68,21 +92,4 @@ export async function handleParkingList(parkings) {
   }
   element.resultContainer.style.visibility = "visible";
   element.loader.style.display = "none";
-}
-
-export async function handleParkingClick(event, link, map, userMarker) {
-  event.preventDefault();
-
-  try {
-    const lat = parseFloat(link.dataset.lat);
-    const lng = parseFloat(link.dataset.lng);
-    const name = link.dataset.name;
-    const destination = { lat: lat, lng: lng };
-
-    toggleNavigationUI(name);
-    const routeId = "destParking";
-    startRoute(map, userMarker.position, destination, routeId);
-  } catch (error) {
-    console.error("Erreur lors du calcul de l'itinéraire :", error);
-  }
 }
