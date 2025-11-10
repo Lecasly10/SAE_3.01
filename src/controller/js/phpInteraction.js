@@ -1,6 +1,15 @@
+function getBaseURL() {
+  const { origin, pathname } = window.location;
+
+  const basePath = pathname.substring(0, pathname.lastIndexOf("/") + 1);
+
+  return `${origin}${basePath}controller/php/`;
+}
+
 export async function phpFetch(php, data) {
+  const BASE_URL = getBaseURL();
   try {
-    const resp = await fetch(php, {
+    const resp = await fetch(BASE_URL + php, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

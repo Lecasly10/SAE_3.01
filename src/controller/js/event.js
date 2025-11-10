@@ -42,7 +42,7 @@ export async function initEvent(map, marker) {
         search: query,
       };
 
-      const result = await phpFetch("controller/php/search.php", search);
+      const result = await phpFetch("search.php", search);
       handleParkingList(result["parkings"]);
     }
   });
@@ -50,7 +50,7 @@ export async function initEvent(map, marker) {
   listButton.addEventListener("click", async (e) => {
     element.loader.style.display = "block";
     e.preventDefault();
-    const result = await phpFetch("controller/php/search.php", {});
+    const result = await phpFetch("search.php", {});
     handleParkingList(result["parkings"]);
   });
 

@@ -13,10 +13,7 @@ export async function handleAutoSearchClick(event, map, userMarker) {
   element.loader.style.display = "block";
   toggleNavigationUI("CHARGEMENT...");
 
-  const resultat = await phpFetch(
-    "/controller/php/closestParking.php",
-    position
-  );
+  const resultat = await phpFetch("closestParking.php", position);
   let destination = {
     lat: resultat["lat"],
     lng: resultat["lng"],
@@ -25,7 +22,7 @@ export async function handleAutoSearchClick(event, map, userMarker) {
 
   toggleNavigationUI(name);
   element.loader.style.display = "none";
-  const routeId = "closParking";
+  const routeId = "destParking";
   startRoute(map, userMarker.position, destination, routeId);
 }
 
