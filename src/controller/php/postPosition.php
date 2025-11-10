@@ -1,39 +1,52 @@
 <?php
+header('Content-Type: application/json');
 
 require_once '../../modele/parkingDAO.class.php';
 require_once './distance.php';
 require_once './dataAPI.php';
 
-$lat = floatval($_POST['lat']) ?? null;
-$lng = floatval($_POST['lng']) ?? null;
+$lat = isset($_POST['lat']) ? floatval($_POST['lat']) : null;
+$lng = isset($_POST['lng']) ? floatval($_POST['lng']) : null;
 
-if (isset($lat) && isset($lng)) {
+if ($lat === null || $lng === null) {
+    echo json_encode([
+        "status" => "erreur",
+        "message" => "Paramètres manquants"
+    ]);
+    exit;
+}
 
-    $closeParking=null;
-    $minDist = PHP_INT_MAX; 
+try {
+    $closeParking = null;
+    $minDist = PHP_INT_MAX;
 
-    $parkings = new ParkingDAO()->getAll(); 
+    $parkings = (new ParkingDAO())->getAll();
+
+    if (!$parkings) {
+        echo json_encode([
+            "status" => "erreur",
+            "message" => "Aucun parking trouvé"
+        ]);
+        exit;
+    }
 
     foreach ($parkings as $parking) {
         $nextLat = $parking->getLat();
         $nextLng = $parking->getLong();
 
-           
-        $places = placeLibre($nextLat, $nextLng); 
+        $places = placeLibre($nextLat, $nextLng);
 
-        if ($places > 0) { 
+        if ($places > 0) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
 
             if ($dist < $minDist) {
                 $minDist = $dist;
-                $closeParking=$parking;
+                $closeParking = $parking;
             }
         }
     }
 
-    header('Content-Type: application/json');
-
-    if (isset($closeParking)) {
+    if ($closeParking !== null) {
         echo json_encode([
             "status" => "ok",
             "message" => "Parking le plus proche trouvé",
@@ -48,4 +61,9 @@ if (isset($lat) && isset($lng)) {
         ]);
     }
 
-} 
+} catch (Exception $e) {
+    echo json_encode([
+        "status" => "erreur",
+        "message" => "Erreur serveur: " . $e->getMessage()
+    ]);
+}
