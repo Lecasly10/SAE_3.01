@@ -1,57 +1,31 @@
-const homeIcon = document.getElementById("home");
-const crossIcon = document.getElementById("cross");
-const topnav = document.getElementById("topnav");
-const linkDiv = document.getElementById("rbox");
-const closeButton = document.getElementById("closeButton");
-const box = document.getElementsByClassName("box");
-const searchBox = document.getElementById("searchbox");
-const autoSearchButton = document.getElementById("autoSearchButton");
+import * as element from "./htmlElement.js";
 
 export function toggleNavigationUI(destinationName) {
-  homeIcon.style.display = "none";
-  crossIcon.style.display = "initial";
-  autoSearchButton.style.display = "none";
+  element.homeIcon.style.display = "none";
+  element.crossIcon.style.display = "block";
+  element.autoSearchButton.style.display = "none";
 
-  for (let i = 0; i < box.length; i++) {
-    const e = box.item(i);
-    e.style.display = "none";
-  }
+  element.resultContainer.style.visibility = "hidden";
 
-  topnav.innerHTML = "";
-  const title = document.createElement("p");
-  title.textContent = destinationName;
-  Object.assign(title.style, {
-    fontSize: "20px",
-    fontWeight: "bold",
-  });
-  topnav.appendChild(title);
+  element.searchBar.style.display = "none";
+  element.listButton.style.display = "none";
+
+  element.topnav.style.justifyContent = "center";
+
+  element.itiniraireTitle.style.display = "block";
+  element.itiniraireTitle.textContent = destinationName;
 }
 
 export function setupUI() {
-  homeIcon.style.display = "initial";
-  crossIcon.style.display = "none";
-  autoSearchButton.style.display = "initial";
+  element.topnav.style.justifyContent = "space-arround";
 
-  if (!searchBox || !linkDiv) return;
+  element.itiniraireTitle.style.display = "none";
+  element.searchBar.style.display = "flex";
+  element.listButton.style.display = "flex";
+  element.homeIcon.style.display = "block";
+  element.crossIcon.style.display = "none";
+  element.loader.style.display = "none";
+  element.autoSearchButton.style.display = "block";
 
-  const query = searchBox.value.trim();
-  if (query.length === 0) {
-    linkDiv.style.display = "none";
-  }
-}
-
-searchBox.addEventListener("input", (e) => {
-  const query = searchBox.value.trim();
-  if (query.length === 0) {
-    linkDiv.style.display = "none";
-  }
-});
-
-if (closeButton) {
-  closeButton.addEventListener("click", (e) => {
-    for (let i = 0; i < box.length; i++) {
-      const e = box.item(i);
-      e.style.display = "none";
-    }
-  });
+  element.resultContainer.style.visibility = "hidden";
 }

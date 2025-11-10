@@ -1,0 +1,13 @@
+export const homeIcon = document.getElementById("homeButton");
+export const crossIcon = document.getElementById("stopButton");
+export const topnav = document.getElementById("topnav");
+export const closeButton = document.getElementById("closeButton");
+export const searchBox = document.getElementById("searchbox");
+export const searchBar = document.getElementById("search-bar");
+export const itiniraireTitle = document.getElementById("itiniraireTitle");
+export const autoSearchButton = document.getElementById("autoSearchButton");
+export const resultContainer = document.getElementById("resultContainer");
+export const resultBox = document.getElementById("resultBox");
+export const listButton = document.getElementById("listButton");
+export const loader = document.getElementById("loader");
+export const goCenterButton = document.getElementById("centerButton");

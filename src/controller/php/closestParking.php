@@ -1,12 +1,15 @@
 <?php
 header('Content-Type: application/json');
 
-require_once '../../modele/parkingDAO.class.php';
-require_once './distance.php';
-require_once './dataAPI.php';
+require_once __DIR__ . '/../../modele/parkingDAO.class.php';
+require_once __DIR__ . '/./distance.php';
+require_once __DIR__ . '/./dataAPI.php';
 
-$lat = isset($_POST['lat']) ? floatval($_POST['lat']) : null;
-$lng = isset($_POST['lng']) ? floatval($_POST['lng']) : null;
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
+
+$lat = isset($data['lat']) ? floatval($data['lat']) : null;
+$lng = isset($data['lng']) ? floatval($data['lng']) : null;
 
 if ($lat === null || $lng === null) {
     echo json_encode([

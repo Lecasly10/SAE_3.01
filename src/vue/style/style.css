@@ -189,29 +189,21 @@ select:focus {
   text-decoration: none;
 }
 
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.navbar button {
-  font-size: 16px;
-}
-
 .button:hover,
 .button a:hover {
   transform: scale(1.2);
   color: var(--accent);
 }
 
-#infoButton {
-  font-size: inherit;
+.littleButton {
+  font-size: 18px;
 }
 
-#infoButton:hover {
-  transform: unset;
-  color: var(--accent);
+#itiniraireTitle {
+  font-size: 24px;
+  /* position: absolute;
+  left: 50%;
+  transform: translateX(-50%); */
 }
 
 @media screen and (max-width: 700px) {
@@ -230,6 +222,21 @@ button {
   #bottomnav {
     margin: 0 0 10px 0;
     width: 60%;
+  }
+}
+
+.loader {
+  left: 0;
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 4px solid;
+  border-color: var(--main) var(--accent);
+  animation: l1 1s infinite;
+}
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
   }
 }
 

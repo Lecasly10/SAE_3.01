@@ -1,7 +1,7 @@
 <?php
 
 
-require_once "../../modele/parking.class.php";
+require_once __DIR__ . "/parking.class.php";
 
 class ParkingDAO
 {

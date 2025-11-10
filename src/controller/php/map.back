@@ -18,16 +18,7 @@ $parkingList = $parkingDAO->getAll();
 
 $parkingName="TEST";
 
-function search(string $search): array {
-    $parkingDAO = new ParkingDAO();
-    $mots = explode(" ", trim($search));
-    $resultats = [];
-    foreach($mots as $mot) {
-        $res = $parkingDAO->getSearch($mot);
-        if(!empty($res)) $resultats = array_merge($resultats, $res);
-    }
-    return array_unique($resultats, SORT_REGULAR);
-}
+
 
 function createTable(array $lesParkings): array {
     $parkingCapacityDAO = new ParkingCapacityDAO();
