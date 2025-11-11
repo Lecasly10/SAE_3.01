@@ -2,7 +2,7 @@ import { loadGoogleLibs, getGoogleLibs } from "./googleAPI.js";
 import { mapOptions, defaultPosition } from "./mapConfig.js";
 import { setupUI } from "./UI.js";
 import { initEvent } from "./event.js";
-import { geolocation, startWatchPosition } from "./geolocalisation.js";
+import { geolocation, userMarker } from "./geolocalisation.js";
 
 // ==== CONST ====
 globalThis.carIconURL =
@@ -40,8 +40,7 @@ globalThis.addEventListener("load", async (e) => {
   const map = await initMap();
   setupUI();
 
-  let userMarker = await geolocation(map, defaultPosition);
-  await startWatchPosition(map, userMarker.marker);
+  await geolocation(map);
 
-  await initEvent(map, userMarker);
+  await initEvent(map, userMarker.marker);
 });

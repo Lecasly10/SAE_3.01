@@ -1,7 +1,7 @@
 import { addMarker } from "./addMarkers.js";
 import { defaultPosition } from "./mapConfig.js";
 
-let userMarker = { position: defaultPosition, marker: null };
+export let userMarker = { position: defaultPosition, marker: null };
 
 export async function geolocation(map) {
   let marker = await addMarker(
@@ -29,8 +29,8 @@ export async function geolocation(map) {
         "Votre Position",
         globalThis.carIconURL
       );
-      map.setCenter(position);
 
+      map.setCenter(position);
       userMarker.position = position;
       userMarker.marker = marker;
 
@@ -59,12 +59,15 @@ export async function geolocation(map) {
   return userMarker;
 }
 
-export async function startWatchPosition(map, marker) {
+export function startWatchPosition(map, marker) {
+  if (!navigator.geolocation) return;
+
   navigator.geolocation.watchPosition(
     async ({ coords }) => {
       const position = { lat: coords.latitude, lng: coords.longitude };
 
       if (marker) marker.setMap(null);
+
       marker = await addMarker(
         map,
         position,
