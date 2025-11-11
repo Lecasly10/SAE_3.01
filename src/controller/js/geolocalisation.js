@@ -1,7 +1,9 @@
 import { addMarker } from "./addMarkers.js";
+import { defaultPosition } from "./mapConfig.js";
+
 let userMarker = { position: defaultPosition, marker: null };
 
-export async function getPositionOnce(map, defaultPosition) {
+export async function geolocation(map) {
   let marker = await addMarker(
     map,
     defaultPosition,
@@ -27,11 +29,12 @@ export async function getPositionOnce(map, defaultPosition) {
         "Votre Position",
         globalThis.carIconURL
       );
-
       map.setCenter(position);
 
       userMarker.position = position;
       userMarker.marker = marker;
+
+      startWatchPosition(map, marker);
     },
     async (error) => {
       console.warn("Erreur de géolocalisation :", error);
@@ -43,38 +46,25 @@ export async function getPositionOnce(map, defaultPosition) {
         "Votre Position",
         globalThis.carIconURL
       );
-
       map.setCenter(defaultPosition);
 
       userMarker.position = defaultPosition;
       userMarker.marker = marker;
+
+      startWatchPosition(map, marker);
     },
-    { enableHighAccuracy: true, maximumAge: 0, timeout: 0 }
+    { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
   );
 
   return userMarker;
 }
 
-export async function geolocation(map, defaultPosition) {
-  let marker = await addMarker(
-    map,
-    defaultPosition,
-    "Votre position",
-    globalThis.carIconURL
-  );
-  userMarker.marker = marker;
-
-  if (!navigator.geolocation) {
-    alert("La géolocalisation n'est pas supportée par votre navigateur.");
-    return userMarker;
-  }
-
+export async function startWatchPosition(map, marker) {
   navigator.geolocation.watchPosition(
     async ({ coords }) => {
       const position = { lat: coords.latitude, lng: coords.longitude };
 
       if (marker) marker.setMap(null);
-
       marker = await addMarker(
         map,
         position,
@@ -85,22 +75,9 @@ export async function geolocation(map, defaultPosition) {
       userMarker.position = position;
       userMarker.marker = marker;
     },
-    async (error) => {
-      console.warn("Erreur de géolocalisation :", error);
-
-      if (marker) marker.setMap(null);
-      marker = await addMarker(
-        map,
-        defaultPosition,
-        "Votre Position",
-        globalThis.carIconURL
-      );
-
-      userMarker.position = defaultPosition;
-      userMarker.marker = marker;
+    (error) => {
+      console.warn("Erreur de suivi de géolocalisation :", error);
     },
     { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
   );
-
-  return userMarker;
 }
