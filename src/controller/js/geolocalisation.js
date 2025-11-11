@@ -1,10 +1,7 @@
 import { addMarker } from "./addMarkers.js";
 
 export async function geolocation(map, defaultPosition) {
-  if (!navigator.geolocation) {
-    alert("La géolocalisation n'est pas supportée par votre navigateur.");
-    return;
-  }
+  let userMarker = { position: defaultPosition, marker: null };
 
   let marker = await addMarker(
     map,
@@ -12,11 +9,19 @@ export async function geolocation(map, defaultPosition) {
     "Votre position",
     globalThis.carIconURL
   );
+  userMarker.marker = marker;
+
+  if (!navigator.geolocation) {
+    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+    return userMarker;
+  }
 
   navigator.geolocation.watchPosition(
     async ({ coords }) => {
       const position = { lat: coords.latitude, lng: coords.longitude };
-      marker.setMap(null);
+
+      if (marker) marker.setMap(null);
+
       marker = await addMarker(
         map,
         position,
@@ -24,10 +29,14 @@ export async function geolocation(map, defaultPosition) {
         globalThis.carIconURL
       );
       map.setCenter(position);
+
+      userMarker.position = position;
+      userMarker.marker = marker;
     },
     async (error) => {
       console.warn("Erreur de géolocalisation :", error);
-      marker.setMap(null);
+
+      if (marker) marker.setMap(null);
       marker = await addMarker(
         map,
         defaultPosition,
@@ -35,9 +44,12 @@ export async function geolocation(map, defaultPosition) {
         globalThis.carIconURL
       );
       map.setCenter(defaultPosition);
+
+      userMarker.position = defaultPosition;
+      userMarker.marker = marker;
     },
     { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
   );
 
-  return marker;
+  return userMarker;
 }

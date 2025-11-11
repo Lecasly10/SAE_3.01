@@ -75,13 +75,11 @@ export async function handleParkingInfoClick(event, button) {
     const box = element.resultBox;
     setResultTitle(parking.nom);
 
-    // === Create Containers ===
     const infoBase = document.createElement("div");
     const placesInfo = document.createElement("div");
     const tarifInfo = document.createElement("div");
     const info = document.createElement("div");
 
-    // === Basic Info ===
     const pLibres =
       parking.places_libres > 0
         ? `${parking.places_libres}/${parking.places}`
@@ -102,7 +100,6 @@ export async function handleParkingInfoClick(event, button) {
 
     appendTextElements(infoBase, baseInfoList);
 
-    // === Places Info ===
     const placesList = [
       ["PMR", parking.pmr],
       ["Moto électrique", parking.e2w],
@@ -113,7 +110,6 @@ export async function handleParkingInfoClick(event, button) {
 
     appendTextElements(placesInfo, placesList);
 
-    // === Tariffs Info (only if not free) ===
     if (!parking.free) {
       const rates = {
         "Prix PMR": parking.pmr_rate,
@@ -137,13 +133,11 @@ export async function handleParkingInfoClick(event, button) {
       appendTextElements(tarifInfo, tarifList);
     }
 
-    // === Additional Info Text ===
     const eInfo = document.createElement("p");
     eInfo.className = "text";
     eInfo.textContent = parking.info || "Aucune information supplémentaire.";
     info.appendChild(eInfo);
 
-    // === Append All to Box ===
     [infoBase, placesInfo, tarifInfo, info].forEach((div) =>
       box.appendChild(div)
     );

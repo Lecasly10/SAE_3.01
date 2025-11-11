@@ -24,7 +24,7 @@ function searchParkings(string $search): array {
 
 try {
     if (!$search) {
-        // Si pas de recherche, on renvoie tous les parkings
+       
         $parkings = (new ParkingDAO())->getAll();
         if (!$parkings) {
             echo json_encode([
@@ -48,7 +48,7 @@ try {
     echo json_encode([
         "status" => !empty($res) ? "ok" : "erreur",
         "message" => !empty($res) ? ($search ? "Recherche effectuée" : "Tous les parkings envoyés") : "Parkings non trouvés",
-        "parkings" => $res ?: false
+        "parkings" => $res ?? false
     ]);
 } catch (Exception $e) {
     echo json_encode([
