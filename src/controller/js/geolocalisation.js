@@ -49,6 +49,5 @@ export async function geolocation(map, defaultPosition) {
     { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
   );
 
-  map.panTo(userMarker.position);
   return userMarker;
 }
