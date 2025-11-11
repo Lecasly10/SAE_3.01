@@ -41,6 +41,7 @@ globalThis.addEventListener("load", async (e) => {
   setupUI();
 
   let userMarker = await geolocation(map, defaultPosition);
+  await map.panTo(userMarker.position);
 
   await initEvent(map, userMarker);
 });
