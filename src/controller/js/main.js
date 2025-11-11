@@ -18,7 +18,7 @@ async function initMap() {
     if (!mapElement) throw new Error("Élément #map introuvable.");
 
     const map = new Map(mapElement, {
-      center: { lat: 0, lng: 0 },
+      center: defaultPosition,
       ...mapOptions,
     });
 
