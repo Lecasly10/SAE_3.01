@@ -18,7 +18,7 @@ async function initMap() {
     if (!mapElement) throw new Error("Élément #map introuvable.");
 
     const map = new Map(mapElement, {
-      center: defaultPosition,
+      center: { lat: 0, lng: 0 },
       ...mapOptions,
     });
 
@@ -42,6 +42,5 @@ globalThis.addEventListener("load", async (e) => {
 
   let userMarker = await geolocation(map, defaultPosition);
 
-  await initEvent(map, userMarker);
-  map.panTo(marker.position);
+  await initEvent(map, userMarker).then(map.setCenter(userMarker.position));
 });
