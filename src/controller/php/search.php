@@ -2,86 +2,57 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../modele/parkingDAO.class.php';
-require_once __DIR__ . '/./table.php';
+require_once __DIR__ . '/table.php';
 
 $json = file_get_contents('php://input');
-$data = json_decode($json, true);
-
+$data = json_decode($json, true) ?: [];
 $search = $data['search'] ?? null;
 
-
-function search(string $search): array {
+function searchParkings(string $search): array {
     $parkingDAO = new ParkingDAO();
-    $mots = explode(" ", trim($search));
+    $mots = array_filter(explode(" ", trim($search)));
     $resultats = [];
-    foreach($mots as $mot) {
+
+    foreach ($mots as $mot) {
         $res = $parkingDAO->getSearch($mot);
-        if(!empty($res)) $resultats = array_merge($resultats, $res);
+        if (!empty($res)) {
+            $resultats = array_merge($resultats, $res);
+        }
     }
     return array_unique($resultats, SORT_REGULAR);
 }
 
-
-if (!isset($search)) {
-    try {
-        $parkings= new ParkingDAO()->getAll();
-        if (!$parkings) {
-        echo json_encode([
-            "status" => "erreur",
-            "message" => "Aucun parking trouvé"
-        ]);
-        exit;
-    }
-        $res=createTable($parkings);
-        if(!empty($res)) {
-            echo json_encode([
-            "status" => "ok",
-            "message" => "envoie de tout les parkings",
-            "parkings"=> $res
-        ]);
-        } 
-    exit;
-    } catch (Exception $e) {
-        echo json_encode([
-        "status" => "erreur",
-        "message" => "Erreur serveur: " . $e->getMessage()
-        ]);
-        exit;
-    }
-    
-}
-
-
 try {
-    $parkings = search($search);
-    if (!$parkings) {
-        echo json_encode([
-            "status" => "erreur",
-            "message" => "Aucun parking trouvé"
-        ]);
-        exit;
-    }
-    $res = createTable();
-    if(!empty($res)) {
-        echo json_encode([
-            "status" => "ok",
-            "message" => "Recherche effectuée",
-            "parkings" => $res
-        ]);
-        exit;
+    if (!$search) {
+        // Si pas de recherche, on renvoie tous les parkings
+        $parkings = (new ParkingDAO())->getAll();
+        if (!$parkings) {
+            echo json_encode([
+                "status" => "erreur",
+                "message" => "Aucun parking trouvé"
+            ]);
+            exit;
+        }
     } else {
-        echo json_encode([
-            "status" => "erreur",
-            "message" => "Parkings non trouvés",
-            "parkings" => false,
-        ]);
-        exit;
+        $parkings = searchParkings($search);
+        if (!$parkings) {
+            echo json_encode([
+                "status" => "erreur",
+                "message" => "Aucun parking trouvé"
+            ]);
+            exit;
+        }
     }
-    
+
+    $res = createTable($parkings);
+    echo json_encode([
+        "status" => !empty($res) ? "ok" : "erreur",
+        "message" => !empty($res) ? ($search ? "Recherche effectuée" : "Tous les parkings envoyés") : "Parkings non trouvés",
+        "parkings" => $res ?: false
+    ]);
 } catch (Exception $e) {
     echo json_encode([
         "status" => "erreur",
         "message" => "Erreur serveur: " . $e->getMessage()
     ]);
-    exit;
 }
