@@ -12,24 +12,38 @@ $data = json_decode($json, true);
 
 $parkingId = $data['id'] ?? null;
 
-if (isset($parkingId)) {
-    try {
-        $parking= new ParkingDAO()->getById($parkingId);
-        $res=createTable([$parking]);
-        if(!empty($res)) {
-            echo json_encode([
+if ($parkingId === null) {
+    echo json_encode([
+        "status" => "erreur",
+        "message" => "Paramètres manquants"
+    ]);
+    exit;
+}
+
+
+try {
+    $parking= new ParkingDAO()->getById($parkingId);
+    if (!$parking) {
+        echo json_encode([
+            "status" => "erreur",
+            "message" => "Aucun parking trouvé"
+        ]);
+        exit;
+    }
+    $res=createTable([$parking]);
+    if(!empty($res)) {
+        echo json_encode([
             "status" => "ok",
             "message" => "envoie de tout les parkings",
             "parking"=> $res[0]
             ]);
         } 
     exit;
-    } catch (e) {
-        echo json_encode([
+} catch (Exception $e) {
+    echo json_encode([
         "status" => "erreur",
         "message" => "Erreur serveur: " . $e->getMessage()
-        ]);
-        exit;
-    }
-    
+    ]);
+    exit;
 }
+    

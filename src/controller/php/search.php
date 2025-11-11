@@ -25,6 +25,13 @@ function search(string $search): array {
 if (!isset($search)) {
     try {
         $parkings= new ParkingDAO()->getAll();
+        if (!$parkings) {
+        echo json_encode([
+            "status" => "erreur",
+            "message" => "Aucun parking trouvé"
+        ]);
+        exit;
+    }
         $res=createTable($parkings);
         if(!empty($res)) {
             echo json_encode([
@@ -46,7 +53,15 @@ if (!isset($search)) {
 
 
 try {
-    $res = createTable(search($search));
+    $parkings = search($search);
+    if (!$parkings) {
+        echo json_encode([
+            "status" => "erreur",
+            "message" => "Aucun parking trouvé"
+        ]);
+        exit;
+    }
+    $res = createTable();
     if(!empty($res)) {
         echo json_encode([
             "status" => "ok",
