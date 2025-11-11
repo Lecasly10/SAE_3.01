@@ -1,6 +1,6 @@
 let libs = {};
 
-//GOOGLE API 
+//GOOGLE API
 export async function loadGoogleLibs() {
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");

@@ -13,6 +13,7 @@ import { phpFetch } from "./phpInteraction.js";
 export async function handleAutoSearchClick(event, map, userMarker) {
   event.preventDefault();
   toggleLoader(true);
+
   try {
     let position = {
       lat: userMarker.position.lat,

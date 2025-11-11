@@ -6,9 +6,16 @@ import { emptySearchBox, setupUI, setResultTitle, toggleLoader } from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
 export async function initEvent(map, marker) {
+  map.addListener("center_changed", () => {
+    if (globalThis.routes.length !== 0) {
+      globalThis.setTimeout(() => {
+        map.panTo(marker.position);
+      }, 3000);
+    }
+  });
+
   element.goCenterButton.addEventListener("click", () => {
-    console.log("test");
-    map.setCenter(marker.position);
+    map.panTo(marker.position);
   });
 
   element.autoSearchButton.addEventListener("click", (e) => {
@@ -37,7 +44,7 @@ export async function initEvent(map, marker) {
     }
   });
 
-  listButton.addEventListener("click", async (e) => {
+  element.listButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
     toggleLoader(true);

@@ -28,7 +28,6 @@ export async function geolocation(map, defaultPosition) {
         "Votre Position",
         globalThis.carIconURL
       );
-      map.setCenter(position);
 
       userMarker.position = position;
       userMarker.marker = marker;
@@ -43,7 +42,6 @@ export async function geolocation(map, defaultPosition) {
         "Votre Position",
         globalThis.carIconURL
       );
-      map.setCenter(defaultPosition);
 
       userMarker.position = defaultPosition;
       userMarker.marker = marker;
