@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../modele/parkingDAO.class.php';
-require_once __DIR__ . '/table.php';
+require_once __DIR__ . '/./table.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
@@ -34,7 +34,7 @@ if (!isset($search)) {
         ]);
         } 
     exit;
-    } catch (e) {
+    } catch (Exception $e) {
         echo json_encode([
         "status" => "erreur",
         "message" => "Erreur serveur: " . $e->getMessage()

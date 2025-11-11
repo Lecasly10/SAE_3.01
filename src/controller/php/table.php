@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../../modele/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/../../modele/parkingTarifDAO.class.php';
-require_once __DIR__ . '/distance.php';
-require_once __DIR__ . '/dataAPI.php';
+require_once __DIR__ . '/./distance.php';
+require_once __DIR__ . '/./dataAPI.php';
 
 function createTable(array $lesParkings): array {
     $parkingCapacityDAO = new ParkingCapacityDAO();
