@@ -27,14 +27,30 @@ export function setupUI() {
   element.autoSearchButton.style.display = "block";
 
   toggleLoader(false);
-  element.resultContainer.style.visibility = "hidden";
+  toggleResultContainer(false);
   emptyResultBox();
+}
+
+export function toggleResultContainer(arg) {
+  if (arg) {
+    element.resultContainer.style.visibility = "visible";
+  } else {
+    element.resultContainer.style.visibility = "hidden";
+  }
+}
+
+export function getSearchQuery() {
+  return element.searchBox.value;
 }
 
 export function emptyResultBox() {
   if (element.resultBox.innerHTML !== "") {
     element.resultBox.innerHTML = "";
   }
+}
+
+export function appendResultBox(htmlElement) {
+  element.resultBox.appendChild(htmlElement);
 }
 
 export function emptySearchBox() {
@@ -46,7 +62,7 @@ export function emptySearchBox() {
 export function setResultMessage(message) {
   const text = document.createElement("p");
   text.textContent = message;
-  element.resultBox.appendChild(text);
+  appendResultBox(text);
 }
 
 export function setResultTitle(title) {

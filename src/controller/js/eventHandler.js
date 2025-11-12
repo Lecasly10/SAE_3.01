@@ -1,18 +1,10 @@
-import * as element from "./htmlElement.js";
-import { startRoute } from "./route.js";
-import {
-  toggleNavigationUI,
-  setResultTitle,
-  toggleLoader,
-  emptyResultBox,
-  setResultMessage,
-  appendTextElements,
-} from "./UI.js";
+import { startRoute, removeRoute } from "./route.js";
+import * as UI from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
 export async function handleAutoSearchClick(event, map, userMarker) {
   event.preventDefault();
-  toggleLoader(true);
+  UI.toggleLoader(true);
 
   try {
     let position = {
@@ -20,7 +12,7 @@ export async function handleAutoSearchClick(event, map, userMarker) {
       lng: userMarker.position.lng,
     };
 
-    toggleNavigationUI("CHARGEMENT...");
+    UI.toggleNavigationUI("CHARGEMENT...");
 
     const resultat = await phpFetch("closestParking.php", position);
     if (!resultat || !resultat.lat || !resultat.lng)
@@ -31,18 +23,50 @@ export async function handleAutoSearchClick(event, map, userMarker) {
     };
     const name = resultat.name;
 
-    toggleNavigationUI(name);
+    UI.toggleNavigationUI(name);
     startRoute(map, userMarker.position, destination, "destParking");
   } catch (error) {
     console.error("Erreur : ", error);
   } finally {
-    toggleLoader(false);
+    UI.toggleLoader(false);
   }
+}
+
+export async function handleSearchBoxSubmit(event, map, marker) {
+  event.preventDefault();
+  const query = UI.getSearchQuery().trim();
+
+  if (query.length === 0) {
+    UI.toggleResultContainer(false);
+    return;
+  }
+
+  UI.toggleLoader(true);
+
+  let search = {
+    search: query,
+  };
+
+  const result = await phpFetch("search.php", search);
+  UI.setResultTitle("Résultats");
+  handleParkingList(result.parkings, map, marker);
+}
+
+export async function handleListButton(event, map, marker) {
+  event.preventDefault();
+
+  UI.toggleLoader(true);
+  UI.emptySearchBox();
+
+  const result = await phpFetch("search.php", {});
+
+  UI.setResultTitle("Tous les Parkings");
+  handleParkingList(result.parkings, map, marker);
 }
 
 export async function handleParkingClick(event, link, map, userMarker) {
   event.preventDefault();
-  toggleLoader(true);
+  UI.toggleLoader(true);
 
   try {
     const lat = parseFloat(link.dataset.lat);
@@ -51,21 +75,23 @@ export async function handleParkingClick(event, link, map, userMarker) {
     const name = link.dataset.name;
     const destination = { lat: lat, lng: lng };
 
-    toggleNavigationUI(name);
+    UI.toggleNavigationUI(name);
     startRoute(map, userMarker.position, destination, "destParking");
   } catch (error) {
     console.error("Erreur lors du calcul de l'itinéraire :", error);
   } finally {
-    toggleLoader(false);
+    UI.toggleLoader(false);
   }
 }
 
 export async function handleParkingInfoClick(event, button) {
   event.preventDefault();
-  toggleLoader(true);
+  UI.toggleResultContainer(false);
+  UI.toggleLoader(true);
 
   try {
-    emptyResultBox();
+    UI.emptyResultBox();
+    UI.emptySearchBox();
 
     const id = button.value;
     const result = await phpFetch("parkingInfo.php", { id });
@@ -73,8 +99,7 @@ export async function handleParkingInfoClick(event, button) {
 
     if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
 
-    const box = element.resultBox;
-    setResultTitle(parking.nom);
+    UI.setResultTitle(parking.nom);
 
     const infoBase = document.createElement("div");
     const placesInfo = document.createElement("div");
@@ -99,7 +124,7 @@ export async function handleParkingInfoClick(event, button) {
       ["Places", pLibres],
     ];
 
-    appendTextElements(infoBase, baseInfoList);
+    UI.appendTextElements(infoBase, baseInfoList);
 
     const placesList = [
       ["PMR", parking.pmr],
@@ -109,7 +134,7 @@ export async function handleParkingInfoClick(event, button) {
       ["Places Familles", parking.carpool],
     ];
 
-    appendTextElements(placesInfo, placesList);
+    UI.appendTextElements(placesInfo, placesList);
 
     if (!parking.free) {
       const rates = {
@@ -131,7 +156,7 @@ export async function handleParkingInfoClick(event, button) {
         ["Abonnement non résident", `${parking.nonresident_sub}€ /an`]
       );
 
-      appendTextElements(tarifInfo, tarifList);
+      UI.appendTextElements(tarifInfo, tarifList);
     }
 
     const eInfo = document.createElement("p");
@@ -140,22 +165,23 @@ export async function handleParkingInfoClick(event, button) {
     info.appendChild(eInfo);
 
     [infoBase, placesInfo, tarifInfo, info].forEach((div) =>
-      box.appendChild(div)
+      UI.appendResultBox(div)
     );
+    UI.toggleResultContainer(true);
   } catch (error) {
     console.error("Erreur :", error);
-    setResultTitle("Erreur");
-    setResultMessage("Impossible de charger les informations du parking.");
+    UI.setResultTitle("Erreur");
+    UI.setResultMessage("Impossible de charger les informations du parking.");
   } finally {
-    toggleLoader(false);
+    UI.toggleLoader(false);
   }
 }
 
-export async function handleParkingList(parkings, map, marker) {
-  emptyResultBox();
+async function handleParkingList(parkings, map, marker) {
+  UI.emptyResultBox();
   if (!parkings) {
-    setResultTitle("Aucun résultats");
-    setResultMessage(":(");
+    UI.setResultTitle("Aucun résultats");
+    UI.setResultMessage(":(");
   } else {
     parkings.forEach((parking) => {
       const container = document.createElement("div");
@@ -198,9 +224,21 @@ export async function handleParkingList(parkings, map, marker) {
 
       container.appendChild(button);
       container.appendChild(link);
-      element.resultBox.appendChild(container);
+      UI.appendResultBox(container);
     });
   }
-  element.resultContainer.style.visibility = "visible";
-  toggleLoader(false);
+  UI.toggleResultContainer(true);
+  UI.toggleLoader(false);
+}
+
+export async function handleCrossIcon(event) {
+  event.preventDefault();
+  UI.emptySearchBox();
+  removeRoute("destParking");
+  UI.setupUI();
+}
+
+export function handleCloseButton(event) {
+  event.preventDefault();
+  UI.toggleResultContainer(false);
 }

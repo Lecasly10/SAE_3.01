@@ -1,7 +1,7 @@
 import { addMarker } from "./addMarkers.js";
 import { defaultPosition } from "./mapConfig.js";
 
-export async function geolocation(map, userMarker) {
+export async function getPosition(map, userMarker) {
   let marker = await addMarker(
     map,
     defaultPosition,

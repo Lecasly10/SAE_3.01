@@ -1,49 +1,24 @@
-import { loadGoogleLibs, getGoogleLibs } from "./googleAPI.js";
-import { mapOptions, defaultPosition } from "./mapConfig.js";
+//===IMPORT===
+import { defaultPosition, initMap } from "./mapConfig.js";
 import { setupUI } from "./UI.js";
 import { initEvent } from "./event.js";
-import { geolocation, startWatchPosition } from "./geolocalisation.js";
+import { getPosition, startWatchPosition } from "./geolocalisation.js";
 
-// ==== CONST ====
+//===GLOBAL===
 globalThis.carIconURL =
   "https://cdn-icons-png.flaticon.com/512/8308/8308414.png";
 
-// ==== INIT ====
-async function initMap() {
-  try {
-    await loadGoogleLibs();
-    const { Map } = getGoogleLibs();
+globalThis.routes = globalThis.routes || [];
 
-    const mapElement = document.getElementById("map");
-    if (!mapElement) throw new Error("Élément #map introuvable.");
-
-    const map = new Map(mapElement, {
-      center: defaultPosition,
-      ...mapOptions,
-    });
-
-    const trafficLayer = new google.maps.TrafficLayer();
-
-    trafficLayer.setMap(map);
-
-    return map;
-  } catch (error) {
-    console.error("Erreur lors de l'initialisation de la carte :", error);
-
-    return null;
-  }
-}
-
-// ==== MAIN ====
+//===LOAD===
 globalThis.addEventListener("load", async (e) => {
-  globalThis.routes = globalThis.routes || [];
-  const map = await initMap();
+  const map = await initMap(); //Google Map
   setupUI();
 
   let userMarker = { position: defaultPosition, marker: null };
 
-  userMarker = await geolocation(map, userMarker);
-  userMarker = await startWatchPosition(map, userMarker);
+  userMarker = await getPosition(map, userMarker); //User Position
+  userMarker = await startWatchPosition(map, userMarker); //Watch user position in real time
 
-  await initEvent(map, userMarker);
+  await initEvent(map, userMarker); //eventListner
 });
