@@ -18,7 +18,7 @@ export function toggleNavigationUI(destinationName) {
 export function setupUI() {
   element.homeIcon.style.display = "block";
   element.crossIcon.style.display = "none";
-  element.topnav.style.justifyContent = "space-arround";
+  element.topnav.style.justifyContent = "space-around";
 
   element.itiniraireTitle.style.display = "none";
   element.searchBar.style.display = "flex";
@@ -29,6 +29,32 @@ export function setupUI() {
   toggleLoader(false);
   toggleResultContainer(false);
   emptyResultBox();
+}
+
+export function toggleConfirmBox() {
+  const container = document.createElement("div");
+  container.style.display = "flex";
+  container.style.flexDirection = "row";
+  container.style.justifyContent = "space-evenly";
+
+  const confirm = document.createElement("a");
+  confirm.className = "button nohover";
+  confirm.textContent = "Confirmer";
+
+  const cancel = document.createElement("a");
+  cancel.className = "button";
+  cancel.textContent = "Annuler";
+
+  confirm.style.margin = "5px";
+  cancel.style.margin = "5px";
+
+  container.appendChild(confirm);
+  container.appendChild(cancel);
+
+  appendResultBox(container);
+  toggleResultContainer(true);
+
+  return { confirm, cancel };
 }
 
 export function toggleResultContainer(arg) {

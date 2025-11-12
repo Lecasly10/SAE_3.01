@@ -1,5 +1,7 @@
 import { addMarker } from "./addMarkers.js";
-import { defaultPosition } from "./mapConfig.js";
+import { defaultOptions } from "./mapConfig.js";
+
+const defaultPosition = defaultOptions.defaultPosition;
 
 export async function getPosition(map, userMarker) {
   let marker = await addMarker(

@@ -29,9 +29,21 @@ export async function startRoute(map, origin, destination, id) {
     return;
   }
 
-  const polylines = routes[0].createPolylines();
+  const route = routes[0];
+  const polylines = route.createPolylines();
 
   polylines.forEach((polyline) => polyline.setMap(map));
+
+  const bounds = new google.maps.LatLngBounds();
+
+  polylines.forEach((polyline) => {
+    const path = polyline.getPath();
+    path.forEach((latLng) => bounds.extend(latLng));
+  });
+
+  map.fitBounds(bounds);
+
+  map.panTo(bounds.getCenter());
 
   globalThis.routes.push({
     id,
@@ -49,4 +61,10 @@ export function removeRoute(id) {
   route.marker?.setMap(null);
 
   globalThis.routes = globalThis.routes.filter((r) => r.id !== id);
+}
+
+export function midPoint(origin, destination) {
+  const midLat = (origin.lat + destination.lat) / 2;
+  const midLng = (origin.lng + destination.lng) / 2;
+  return { lat: midLat, lng: midLng };
 }

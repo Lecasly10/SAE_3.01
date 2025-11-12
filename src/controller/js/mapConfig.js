@@ -1,10 +1,14 @@
 import { loadGoogleLibs, getGoogleLibs } from "./googleAPI.js";
-export const defaultPosition = { lat: 49.1193, lng: 6.1757 }; //Mairie de Metz
 
+export const defaultOptions = {
+  defaultPosition: { lat: 49.1193, lng: 6.1757 }, //Mairie de Metz
+  defaultZoom: 20,
+};
 //===Options===
 
 export const mapOptions = {
-  zoom: 20,
+  center: defaultOptions.defaultPosition,
+  zoom: defaultOptions.defaultZoom,
   mapId: "map",
   mapTypeId: "roadmap",
   disableDefaultUI: true,
@@ -21,7 +25,6 @@ export async function initMap() {
     if (!mapElement) throw new Error("Élément #map introuvable.");
 
     const map = new Map(mapElement, {
-      center: defaultPosition,
       ...mapOptions,
     });
 

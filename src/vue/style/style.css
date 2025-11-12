@@ -52,8 +52,7 @@ body {
   top: 0;
 }
 
-#topnav,
-.box {
+#topnav {
   width: 50%;
 }
 
@@ -96,6 +95,7 @@ select:focus {
 }
 
 .box {
+  width: auto;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -157,7 +157,7 @@ select:focus {
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
-  transition: all 0.3s;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .text {
@@ -166,10 +166,9 @@ select:focus {
   text-justify: auto;
 }
 
-.box a:hover {
-  font-size: 17px;
+.item:hover {
   color: var(--accent);
-  transition: all 0.3s;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .button a:link,
@@ -191,8 +190,8 @@ select:focus {
 
 .button:hover,
 .button a:hover {
-  transform: scale(1.2);
   color: var(--accent);
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .littleButton {
@@ -222,16 +221,6 @@ select:focus {
   .item,
   .box .button {
     font-size: 13px;
-  }
-
-  .button a:hover,
-  .button:hover,
-  .button p:hover {
-    transform: unset;
-  }
-
-  .box a:hover {
-    font-size: unset;
   }
 
   #bottomnav {

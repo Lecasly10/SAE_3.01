@@ -3,7 +3,7 @@ import * as handler from "./eventHandler.js";
 
 export async function initEvent(map, marker) {
   map.addListener("center_changed", () => {
-    if (globalThis.routes.length !== 0) {
+    if (globalThis.navigation) {
       globalThis.setTimeout(() => {
         map.panTo(marker.position);
       }, 3000);
@@ -30,7 +30,7 @@ export async function initEvent(map, marker) {
 
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
-      handler.handleCrossIcon(e, map, marker);
+      handler.handleCrossIcon(map, e, marker);
     });
   }
 

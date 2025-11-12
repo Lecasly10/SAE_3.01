@@ -1,6 +1,7 @@
-import { startRoute, removeRoute } from "./route.js";
+import { startRoute, removeRoute, midPoint } from "./route.js";
 import * as UI from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
+import { defaultOptions } from "./mapConfig.js";
 
 export async function handleAutoSearchClick(event, map, userMarker) {
   event.preventDefault();
@@ -17,19 +18,49 @@ export async function handleAutoSearchClick(event, map, userMarker) {
     const resultat = await phpFetch("closestParking.php", position);
     if (!resultat || !resultat.lat || !resultat.lng)
       throw new Error("Aucune donnée trouvé");
+    if (isNaN(resultat.lat) || isNaN(resultat.lng))
+      throw new Error("Coordonnées invalides");
     let destination = {
       lat: resultat.lat,
       lng: resultat.lng,
     };
     const name = resultat.name;
-
-    UI.toggleNavigationUI(name);
-    startRoute(map, userMarker.position, destination, "destParking");
+    handleNavigationEvent(map, userMarker, destination, name);
   } catch (error) {
+    UI.setupUI();
     console.error("Erreur : ", error);
   } finally {
     UI.toggleLoader(false);
   }
+}
+
+async function handleNavigationEvent(
+  map,
+  userMarker,
+  destination,
+  destinationName
+) {
+  const origin = userMarker.position;
+  startRoute(map, origin, destination, "destParking");
+
+  UI.setupUI();
+  UI.emptyResultBox();
+
+  UI.setResultTitle(destinationName);
+  UI.setResultMessage("Voulez vous aller à ce parking ?");
+
+  const { confirm, cancel } = UI.toggleConfirmBox();
+  confirm.addEventListener("click", (e) => {
+    e.preventDefault();
+    map.panTo(origin);
+    map.setZoom(25);
+    UI.toggleNavigationUI(destinationName);
+    globalThis.navigation = true;
+  });
+
+  cancel.addEventListener("click", (e) => {
+    handleCrossIcon(map, e, userMarker);
+  });
 }
 
 export async function handleSearchBoxSubmit(event, map, marker) {
@@ -75,8 +106,7 @@ export async function handleParkingClick(event, link, map, userMarker) {
     const name = link.dataset.name;
     const destination = { lat: lat, lng: lng };
 
-    UI.toggleNavigationUI(name);
-    startRoute(map, userMarker.position, destination, "destParking");
+    handleNavigationEvent(map, userMarker, destination, name);
   } catch (error) {
     console.error("Erreur lors du calcul de l'itinéraire :", error);
   } finally {
@@ -231,14 +261,21 @@ async function handleParkingList(parkings, map, marker) {
   UI.toggleLoader(false);
 }
 
-export async function handleCrossIcon(event) {
+export async function handleCrossIcon(map, event, userMarker) {
   event.preventDefault();
+  globalThis.navigation = false;
   UI.emptySearchBox();
   removeRoute("destParking");
   UI.setupUI();
+  map.setZoom(defaultOptions.defaultZoom);
+  map.panTo(userMarker.position);
 }
 
 export function handleCloseButton(event) {
   event.preventDefault();
   UI.toggleResultContainer(false);
+
+  if (globalThis.routes.length > 0) {
+    removeRoute("destParking");
+  }
 }

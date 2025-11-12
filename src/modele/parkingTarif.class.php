@@ -28,11 +28,11 @@ class ParkingTarif
         $this->id = $id;
         $this->is_free = $is_free;
         $this->pmr_rate = $pmr_rate;
-        $this->rat_1h = $rat_1h;
-        $this->rat_2h = $rat_2h;
-        $this->rat_3h = $rat_3h;
-        $this->rat_4h = $rat_4h;
-        $this->rat_24h = $rat_24h;
+        $this->rate_1h = $rate_1h;
+        $this->rate_2h = $rate_2h;
+        $this->rate_3h = $rate_3h;
+        $this->rate_4h = $rate_4h;
+        $this->rate_24h = $rate_24h;
         $this->resident_sub = $resident_sub;
         $this->nonresident_sub = $nonresident_sub;
     }
