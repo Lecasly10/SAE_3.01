@@ -31,8 +31,6 @@ export async function geolocation(map, userMarker) {
       map.setCenter(position);
       userMarker.position = position;
       userMarker.marker = marker;
-
-      startWatchPosition(map, marker);
     },
     async (error) => {
       console.warn("Erreur de géolocalisation :", error);
@@ -64,7 +62,7 @@ export function startWatchPosition(map, userMarker) {
 
       if (userMarker.marker) userMarker.marker.setMap(null);
 
-      marker = await addMarker(
+      let marker = await addMarker(
         map,
         position,
         "Votre Position",
