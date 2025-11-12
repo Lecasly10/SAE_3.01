@@ -28,10 +28,6 @@ export async function initMap() {
       ...mapOptions,
     });
 
-    const trafficLayer = new google.maps.TrafficLayer();
-
-    trafficLayer.setMap(map);
-
     return map;
   } catch (error) {
     console.error("Erreur lors de l'initialisation de la carte :", error);
