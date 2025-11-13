@@ -219,7 +219,7 @@ async function handleParkingList(parkings, map, marker) {
 
       const button = document.createElement("a");
       button.value = parking["id"];
-      button.className = "littleButton button";
+      button.className = "littleButton button fade";
       button.title = "Cliquez pour voir les informations";
 
       const icon = document.createElement("i");
@@ -236,10 +236,9 @@ async function handleParkingList(parkings, map, marker) {
           : "complet";
 
       const link = document.createElement("a");
-      link.className = "item parking";
+      link.className = "item parking fade";
       link.textContent = nom + pLibres;
       link.title = "Cliqer pour lancer l'itiniraire";
-      link.style.cursor = "pointer";
       link.dataset.lat = parking["lat"];
       link.dataset.lng = parking["lng"];
       link.dataset.name = parking["nom"];

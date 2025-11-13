@@ -5,13 +5,14 @@
   color: var(--main);
 }
 
+/*BASE*/
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: "SF Pro Display", sans-serif;
-  font-weight: bolder;
 }
 
 #map {
@@ -19,11 +20,30 @@ body {
   width: 100%;
 }
 
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: flex !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 .blur-bg {
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  -webkit-backdrop-filter: blur(10px);
   background-color: var(--back);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
+
+.fade {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/*BAR*/
 
 .navbar {
   position: absolute;
@@ -35,7 +55,6 @@ body {
   z-index: 10;
 
   color: var(--main);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
   font-weight: bolder;
   border-radius: 20px;
@@ -48,12 +67,9 @@ body {
 }
 
 #topnav {
+  width: 50%;
   margin-top: 10px;
   top: 0;
-}
-
-#topnav {
-  width: 50%;
 }
 
 #topnav p {
@@ -66,6 +82,7 @@ body {
   bottom: 0;
 }
 
+/*SEARCH BAR*/
 #searchbox {
   background-color: transparent;
   border: none;
@@ -94,6 +111,8 @@ select:focus {
   gap: 10px;
 }
 
+/*BOX*/
+
 .box {
   width: auto;
   display: flex;
@@ -108,7 +127,6 @@ select:focus {
   padding: 1rem;
   color: var(--main);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .titlebox {
@@ -151,14 +169,24 @@ select:focus {
   border: 2px dotted var(--accent);
 }
 
+.resultDiv {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .item {
   margin: 10px;
-  font-weight: normal;
+  cursor: pointer;
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
-  transition: transform 0.2s ease, color 0.2s ease;
 }
+
+.parking:hover {
+  color: var(--accent);
+}
+
+/*PARKING INFO*/
 
 .text {
   justify-content: center;
@@ -166,10 +194,29 @@ select:focus {
   text-justify: auto;
 }
 
-.item:hover {
-  color: var(--accent);
-  transition: transform 0.2s ease, color 0.2s ease;
+.divInfo {
+  display: flex;
+  flex-direction: row;
 }
+
+.divInfo p {
+  padding-right: 5px;
+}
+
+/*CONFIRM DIALOG*/
+
+.dialog {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.dialog a {
+  margin: 5px;
+  font-size: 16px;
+}
+
+/*BUTTONS*/
 
 .button a:link,
 .button a:visited,
@@ -178,6 +225,7 @@ select:focus {
 }
 
 .button {
+  font-weight: bold;
   background: none;
   border: none;
   color: var(--main);
@@ -198,14 +246,13 @@ select:focus {
   font-size: 18px;
 }
 
+/*NAVIGATION MODE TITLE*/
+
 #itiniraireTitle {
   font-size: 24px;
 }
 
-.resultDiv {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
+/*MOBILE*/
 
 @media screen and (max-width: 700px) {
   #topnav,
@@ -229,6 +276,8 @@ select:focus {
   }
 }
 
+/*LOADER ANIMATIONS*/
+
 .loader {
   left: 0;
   width: 15px;
@@ -244,7 +293,7 @@ select:focus {
   }
 }
 
-/*Cacher la ligne de lien de google maps */
+/*HIDE GOOGLE MAPS LINKS*/
 .gm-style-cc {
   display: none !important;
 }
