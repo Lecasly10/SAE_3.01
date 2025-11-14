@@ -10,7 +10,7 @@ globalThis.carIconURL =
   "https://cdn-icons-png.flaticon.com/512/5193/5193688.png";
 
 //===LOAD===
-document.addEventListener("deviceready", async () => {
+globalThis.addEventListener("load", async () => {
   try {
     const builder = new MapBuilder();
     await builder.initMap();
