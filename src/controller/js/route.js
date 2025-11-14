@@ -61,10 +61,5 @@ export function removeRoute(id) {
   route.marker?.setMap(null);
 
   globalThis.routes = globalThis.routes.filter((r) => r.id !== id);
-}
-
-export function midPoint(origin, destination) {
-  const midLat = (origin.lat + destination.lat) / 2;
-  const midLng = (origin.lng + destination.lng) / 2;
-  return { lat: midLat, lng: midLng };
+  globalThis.navigation = false;
 }

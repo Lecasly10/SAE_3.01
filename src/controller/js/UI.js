@@ -85,7 +85,7 @@ export function setResultMessage(message) {
 export function setResultTitle(title) {
   element.resultTitle.textContent = title;
 }
-
+//CONFIRM BOX CONSTRUCTIONS
 export function toggleConfirmBox() {
   const container = document.createElement("div");
   container.className = "dialog";

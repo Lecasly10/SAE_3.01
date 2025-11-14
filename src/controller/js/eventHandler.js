@@ -1,4 +1,4 @@
-import { startRoute, removeRoute, midPoint } from "./route.js";
+import { startRoute, removeRoute } from "./route.js";
 import * as UI from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
 import { defaultOptions } from "./mapConfig.js";

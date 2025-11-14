@@ -1,4 +1,12 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 function distanceGPS(float $lat1, float $lon1, float $lat2, float $lon2): float {
     $earthRadius = 6371000; 

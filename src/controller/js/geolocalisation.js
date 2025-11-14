@@ -1,7 +1,8 @@
 import { addMarker } from "./addMarkers.js";
+import { handleCrossIcon } from "./eventHandler.js";
 import { defaultOptions } from "./mapConfig.js";
 
-const defaultPosition = defaultOptions.defaultPosition;
+const { defaultPosition } = defaultOptions;
 
 export async function getPosition(map, userMarker) {
   let marker = await addMarker(
@@ -73,6 +74,16 @@ export function startWatchPosition(map, userMarker) {
 
       userMarker.position = position;
       userMarker.marker = marker;
+
+      if (globalThis.routes.length > 0 && globalThis.navigation) {
+        let route = globalThis.routes[0];
+        let destination = route.destination;
+        let dist = distance(userMarker.position, destination);
+
+        if (dist < 0.05) {
+          handleCrossIcon();
+        }
+      }
     },
     (error) => {
       console.warn("Erreur de suivi de géolocalisation :", error);
@@ -81,4 +92,20 @@ export function startWatchPosition(map, userMarker) {
   );
 
   return userMarker;
+}
+
+function distance(a, b) {
+  const R = 6371;
+  const dLat = deg2rad(b.lat - a.lat);
+  const dLng = deg2rad(b.lng - a.lng);
+  const s =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(deg2rad(a.lat)) *
+      Math.cos(deg2rad(b.lat)) *
+      Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.atan2(Math.sqrt(s), Math.sqrt(1 - s));
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
 }
