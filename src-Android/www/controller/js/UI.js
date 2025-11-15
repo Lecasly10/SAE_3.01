@@ -32,7 +32,7 @@ export function setupUI() {
   emptyResultBox();
 }
 
-function toggleSearchInput(showInput) {
+function toggleSearchInput(showInput = false) {
   const { itiniraireTitle, autoSearchButton, searchBar, listButton } = element;
   if (showInput) {
     hide(itiniraireTitle);
@@ -47,7 +47,7 @@ function toggleSearchInput(showInput) {
   }
 }
 
-function toggleHomeCrossIcon(showHome) {
+function toggleHomeCrossIcon(showHome = false) {
   const { homeIcon, crossIcon } = element;
   if (showHome) {
     show(homeIcon);
@@ -58,7 +58,7 @@ function toggleHomeCrossIcon(showHome) {
   }
 }
 
-export function toggleResultContainer(showContainer) {
+export function toggleResultContainer(showContainer = false) {
   const { resultContainer } = element;
   showContainer ? visible(resultContainer) : invisible(resultContainer);
 }
@@ -76,6 +76,7 @@ export function appendResultBox(htmlElement) {
   element.resultBox.appendChild(htmlElement);
 }
 
+//RESULT BOX MODIF
 export function setResultMessage(message) {
   const text = document.createElement("p");
   text.textContent = message;
@@ -85,6 +86,7 @@ export function setResultMessage(message) {
 export function setResultTitle(title) {
   element.resultTitle.textContent = title;
 }
+
 //CONFIRM BOX CONSTRUCTIONS
 export function toggleConfirmBox() {
   const container = document.createElement("div");
