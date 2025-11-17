@@ -1,4 +1,4 @@
-import { loadGoogleLibs, getGoogleLibs } from "../controller/js/googleAPI.js";
+import { loadGoogleLibs, getGoogleLibs } from "../../controller/js/googleAPI.js";
 
 export class MapBuilder {
   constructor() {

@@ -1,6 +1,6 @@
-import { addMarker } from "../controller/js/addMarkers.js";
-import { handleCrossIcon } from "../controller/js/eventHandler.js";
-import { toggleLoader } from "../controller/js/UI.js";
+import { addMarker } from "../../controller/js/addMarkers.js";
+import { handleCrossIcon } from "../../controller/js/eventHandler.js";
+import { toggleLoader } from "../../controller/js/UI.js";
 
 export class Geolocation {
   constructor(builder) {

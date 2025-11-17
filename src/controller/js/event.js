@@ -4,7 +4,7 @@ import * as handler from "./eventHandler.js";
 export async function initEvent(builder) {
   const userMarker = builder.userMarker;
   builder.map.addListener("center_changed", () => {
-    if (map.navigation) {
+    if (builder.map.navigation) {
       globalThis.setTimeout(() => {
         builder.map.panTo(userMarker.position);
       }, 3000);

@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once __DIR__ . '/../../modele/parkingCapacityDAO.class.php';
-require_once __DIR__ . '/../../modele/parkingTarifDAO.class.php';
+require_once __DIR__ . '/../../modele/php/parkingCapacityDAO.class.php';
+require_once __DIR__ . '/../../modele/php/parkingTarifDAO.class.php';
 require_once __DIR__ . '/distance.php';
 require_once __DIR__ . '/dataAPI.php';
 

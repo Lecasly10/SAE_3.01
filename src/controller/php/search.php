@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../modele/parkingDAO.class.php';
+require_once __DIR__ . '/../../modele/php/parkingDAO.class.php';
 require_once __DIR__ . '/table.php';
 
 $json = file_get_contents('php://input');
