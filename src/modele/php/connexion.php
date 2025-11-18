@@ -7,7 +7,7 @@ class Connexion
     function __construct()
     {
         try {
-            include __DIR__ . '/../conf/conf.inc.php';
+            include __DIR__ . '/../../conf/conf.inc.php';
             $this->db = new PDO(
                 $conf['SGBD'] . ':host=' . $conf['HOST'] . ';dbname=' . $conf['DB_NAME'],
                 $conf['USER'],
