@@ -10,7 +10,7 @@ class ParkingTarifDAO
 
     public function __construct()
     {
-        require_once "../../modele/connexion.php";
+        require_once "../../modele/php/connexion.php";
         $this->bd = new Connexion();
         $this->select = "SELECT * FROM parking_rates";
     }
