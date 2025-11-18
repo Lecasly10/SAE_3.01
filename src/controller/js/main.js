@@ -2,8 +2,8 @@
 import { setupUI, toggleLoader } from "./UI.js";
 import { initEvent } from "./event.js";
 
-import { Geolocation } from "../../modele/geolocation.js";
-import { MapBuilder } from "../../modele/builder.js";
+import { Geolocation } from "../../modele/js/geolocation.js";
+import { MapBuilder } from "../../modele/js/builder.js";
 
 //===GLOBAL===
 globalThis.carIconURL =
