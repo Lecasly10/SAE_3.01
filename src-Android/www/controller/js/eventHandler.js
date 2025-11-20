@@ -2,6 +2,9 @@ import { startRoute, removeRoute } from "./route.js";
 import * as UI from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
+//Toutes les fonctions lier au différents events de l'app
+
+//parking le plus proche
 export async function handleAutoSearchClick(event, builder, userMarker) {
   event.preventDefault();
   UI.toggleLoader(true);
@@ -33,6 +36,7 @@ export async function handleAutoSearchClick(event, builder, userMarker) {
   }
 }
 
+//Pour lancer le mode navigation
 async function handleNavigationEvent(
   builder,
   userMarker,
@@ -62,6 +66,7 @@ async function handleNavigationEvent(
   });
 }
 
+//La recherche
 export async function handleSearchBoxSubmit(event, builder, marker) {
   event.preventDefault();
   const query = UI.getSearchQuery().trim();
@@ -82,6 +87,7 @@ export async function handleSearchBoxSubmit(event, builder, marker) {
   handleParkingList(result.parkings, builder, marker);
 }
 
+//Liste de tout les parkings
 export async function handleListButton(event, builder, marker) {
   event.preventDefault();
 
@@ -94,6 +100,7 @@ export async function handleListButton(event, builder, marker) {
   handleParkingList(result.parkings, builder, marker);
 }
 
+//Clique sur un parking dans une liste
 export async function handleParkingClick(event, link, builder, userMarker) {
   event.preventDefault();
   UI.toggleLoader(true);
@@ -113,6 +120,7 @@ export async function handleParkingClick(event, link, builder, userMarker) {
   }
 }
 
+//Load les infos d'un parking
 export async function handleParkingInfoClick(event, button) {
   event.preventDefault();
   UI.toggleResultContainer(false);
@@ -206,6 +214,7 @@ export async function handleParkingInfoClick(event, button) {
   }
 }
 
+//Load une liste de parking
 async function handleParkingList(parkings, builder, marker) {
   UI.emptyResultBox();
   if (!parkings) {
@@ -259,6 +268,7 @@ async function handleParkingList(parkings, builder, marker) {
   UI.toggleLoader(false);
 }
 
+//Stop ou annuler
 export async function handleCrossIcon(event, builder, userMarker) {
   event.preventDefault();
   UI.emptySearchBox();
@@ -272,6 +282,7 @@ export async function handleCrossIcon(event, builder, userMarker) {
   builder.map.panTo(userMarker.position);
 }
 
+//Fermer les différentes resultbox
 export function handleCloseButton(event, builder) {
   event.preventDefault();
   UI.toggleResultContainer(false);

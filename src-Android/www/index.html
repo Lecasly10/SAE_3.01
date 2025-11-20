@@ -17,6 +17,7 @@
   </head>
 
   <body>
+    <!-- Bar en haut -->
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
@@ -34,6 +35,7 @@
       </div>
     </div>
 
+    <!-- BOX contenant résulats et infos  -->
     <div id="resultContainer" class="blur-bg box">
       <div class="titlebox">
         <p id="resultTitle" class="bold"></p>
@@ -45,12 +47,16 @@
       <div id="resultBox"></div>
     </div>
 
+    <!-- MAP -->
     <div id="map"></div>
+
+    <!-- Bar en bas -->
     <div id="bottomnav" class="navbar blur-bg">
       <div id="centerButton" class="button fade" title="Recentrer">
         <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
       </div>
 
+      <!-- Suite de boutons -->
       <div
         id="autoSearchButton"
         class="button fade"
@@ -74,7 +80,7 @@
       </div>
     </div>
 
-    <!-- SOURCE : DOCUMENTATION API GOOGLE MAPS -->
+    <!-- API GOOGLE MAPS (Copié de la documentation) -->
     <script>
       ((g) => {
         var h,

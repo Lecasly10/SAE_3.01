@@ -1,21 +1,21 @@
-//Bottom Nav Elements
-export const homeIcon = document.getElementById("homeButton"); //Home button
-export const crossIcon = document.getElementById("stopButton"); //Cancel/Stop button
-export const goCenterButton = document.getElementById("centerButton"); //Recenter button
-export const autoSearchButton = document.getElementById("autoSearchButton"); //Closest Parking button
+//Bottom Bar
+export const homeIcon = document.getElementById("homeButton"); //Bouton home
+export const crossIcon = document.getElementById("stopButton"); //Bouton pour annuler / stop
+export const goCenterButton = document.getElementById("centerButton"); //Bouton pour recentrer
+export const autoSearchButton = document.getElementById("autoSearchButton"); //Bouton pour trouver le partking le plus proche
 
-//Top Bar Elements
-export const topnav = document.getElementById("topnav"); //Top bar
-export const searchBox = document.getElementById("searchbox"); // search box => Icon + Input
-export const searchBar = document.getElementById("search-bar"); // searchbar => input
-export const itiniraireTitle = document.getElementById("itiniraireTitle"); // Itiniraire Title / loading title
-export const listButton = document.getElementById("listButton"); // List all Metz parking
+//Top Bar
+export const topnav = document.getElementById("topnav"); //Topbar
+export const searchBox = document.getElementById("searchbox"); // searchbox
+export const searchBar = document.getElementById("search-bar"); // searchbar
+export const itiniraireTitle = document.getElementById("itiniraireTitle"); // Itiniraire / loading
+export const listButton = document.getElementById("listButton"); // Bouton pour lister les parkings
 
-//results elements
-export const resultContainer = document.getElementById("resultContainer"); // Result container => Result Window
-export const resultBox = document.getElementById("resultBox"); // result box => all links and results
-export const resultTitle = document.getElementById("resultTitle"); // Result title
-export const closeButton = document.getElementById("closeButton"); // Hide result box
+//results
+export const resultContainer = document.getElementById("resultContainer");
+export const resultBox = document.getElementById("resultBox");
+export const resultTitle = document.getElementById("resultTitle");
+export const closeButton = document.getElementById("closeButton");
 
-//loading animation element
+//loading animation
 export const loader = document.getElementById("loader");

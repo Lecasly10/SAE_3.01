@@ -1,5 +1,6 @@
 import * as element from "./htmlElement.js";
 
+//différentes fonctions pour gérer l'interface
 function show(el) {
   el.classList.remove("hidden");
 }

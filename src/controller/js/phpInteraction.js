@@ -1,6 +1,8 @@
+//Fonction pour faire des requete post en JSON
 export async function phpFetch(php, data) {
   try {
     const resp = await fetch(
+      //devweb de l'iut
       `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/` +
         php,
       {

@@ -2,11 +2,12 @@ import { addMarker } from "../controller/js/addMarkers.js";
 import { handleCrossIcon } from "../controller/js/eventHandler.js";
 import { toggleLoader } from "../controller/js/UI.js";
 
+//classe pour setup la géolocalisation dans l'app
 export class Geolocation {
   constructor(builder) {
     toggleLoader(true);
-    this.builder = builder;
-    this.watchId = null;
+    this.builder = builder; //L'objet builder
+    this.watchId = null; //ID du watchposition
   }
 
   async locateUser() {
@@ -57,6 +58,7 @@ export class Geolocation {
         }
 
         if (this.builder.routes.length > 0 && this.builder.navigation) {
+          this.builder.map.panTo(userPosition);
           const route = this.builder.routes[0];
           const destination = route.destination;
           const dist = this.distance(

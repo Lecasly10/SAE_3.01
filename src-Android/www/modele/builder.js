@@ -1,16 +1,18 @@
 import { loadGoogleLibs, getGoogleLibs } from "../controller/js/googleAPI.js";
 
+//Classe pour créer et initialiser la map avec des params par défaut
 export class MapBuilder {
   constructor() {
-    this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
-    this.defaultZoom = 20;
-    this.routes = [];
-    this.map = null;
-    this.userMarker = null;
-    this.navigation = false;
+    this.defaultPosition = { lat: 49.1193, lng: 6.1757 }; //Mairie de Metz
+    this.defaultZoom = 20; //le zoom par défaut
+    this.routes = []; //les routes
+    this.map = null; //L'objet map de google map
+    this.userMarker = null; //marqueur utilisateur
+    this.navigation = false; //Mode navigation
   }
 
   async initMap() {
+    //initialisation map
     try {
       await loadGoogleLibs();
       const { Map } = getGoogleLibs();

@@ -4,6 +4,7 @@ import { addMarker } from "./addMarkers.js";
 const destinationIconURL =
   "https://cdn-icons-png.flaticon.com/512/4668/4668400.png";
 
+//Démarrer l'itiniraire
 export async function startRoute(builder, origin, destination, id) {
   const { Route } = getGoogleLibs();
 
@@ -53,6 +54,7 @@ export async function startRoute(builder, origin, destination, id) {
   });
 }
 
+//Supprimer l'itiniraire
 export function removeRoute(builder, id) {
   const route = builder.routes.find((r) => r.id === id);
   if (!route) return;
