@@ -1,6 +1,7 @@
 import * as element from "./htmlElement.js";
 import * as handler from "./eventHandler.js";
 
+//Contrôle des évenements de l'application
 export async function initEvent(builder) {
   const userMarker = builder.userMarker; //point sur la map ou se trouve l'utilisateur
 

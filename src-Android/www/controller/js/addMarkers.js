@@ -2,9 +2,9 @@ import { getGoogleLibs } from "./googleAPI.js";
 
 //Creer un marqueur sur la map
 export async function addMarker(builder, pos, message, iconURL) {
-  const { AdvancedMarkerElement } = getGoogleLibs();
+  const { AdvancedMarkerElement } = getGoogleLibs(); //Objet marker API Maps
 
-  if (!builder.map) {
+  if (!builder.map) { 
     throw new Error("La carte n'est pas initialisée !");
   }
 

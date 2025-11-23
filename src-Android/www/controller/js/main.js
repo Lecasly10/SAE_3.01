@@ -25,5 +25,6 @@ document.addEventListener("deviceready", async () => {
     toggleLoader(false);
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);
+    alert("Erreur lors l'initialisation de l'application");
   }
 });

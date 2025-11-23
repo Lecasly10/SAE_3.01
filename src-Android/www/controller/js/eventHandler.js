@@ -2,7 +2,7 @@ import { startRoute, removeRoute } from "./route.js";
 import * as UI from "./UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
-//Toutes les fonctions lier au différents events de l'app
+//Fonctions liées au évenements de l'application
 
 //parking le plus proche
 export async function handleAutoSearchClick(event, builder, userMarker) {
@@ -17,7 +17,7 @@ export async function handleAutoSearchClick(event, builder, userMarker) {
 
     UI.toggleNavigationUI("CHARGEMENT...");
 
-    const resultat = await phpFetch("closestParking.php", position);
+    const resultat = await phpFetch("closestParking.php", position); //Requete POST
     if (!resultat || !resultat.lat || !resultat.lng)
       throw new Error("Aucune donnée trouvé");
     if (isNaN(resultat.lat) || isNaN(resultat.lng))
@@ -27,7 +27,7 @@ export async function handleAutoSearchClick(event, builder, userMarker) {
       lng: resultat.lng,
     };
     const name = resultat.name;
-    handleNavigationEvent(builder, userMarker, destination, name);
+    handleNavigationEvent(builder, userMarker, destination, name); //Mode navigation
   } catch (error) {
     UI.setupUI();
     console.error("Erreur : ", error);
@@ -66,7 +66,7 @@ async function handleNavigationEvent(
   });
 }
 
-//La recherche
+//recherche des parkings
 export async function handleSearchBoxSubmit(event, builder, marker) {
   event.preventDefault();
   const query = UI.getSearchQuery().trim();
