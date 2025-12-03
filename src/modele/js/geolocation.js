@@ -1,6 +1,6 @@
-import { addMarker } from "../controller/js/addMarkers.js";
-import { handleCrossIcon } from "../controller/js/eventHandler.js";
-import { toggleLoader } from "../controller/js/UI.js";
+import { addMarker } from "../../controller/js/addMarkers.js";
+import { handleCrossIcon } from "../../controller/js/eventHandler.js";
+import { toggleLoader } from "../../controller/js/UI.js";
 import { nightMode } from "../../controller/js/maps/nightMode.js";
 //classe pour setup la géolocalisation dans l'app
 export class Geolocation {

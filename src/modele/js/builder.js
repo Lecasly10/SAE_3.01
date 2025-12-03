@@ -1,5 +1,8 @@
-import { loadGoogleLibs, getGoogleLibs } from "../controller/js/googleAPI.js";
-import { style } from "../../controller/js/maps/styles.js";
+import {
+  loadGoogleLibs,
+  getGoogleLibs,
+} from "../../controller/js/googleAPI.js";
+import { lightId } from "../../controller/js/maps/styles.js";
 
 //Classe pour créer et initialiser la map avec des params par défaut
 export class MapBuilder {
@@ -25,7 +28,7 @@ export class MapBuilder {
       const map = new Map(mapElement, {
         center: this.defaultPosition,
         zoom: this.defaultZoom,
-        mapId: "map",
+        mapId: lightId,
         mapTypeId: "roadmap",
         disableDefaultUI: true,
       });

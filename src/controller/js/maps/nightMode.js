@@ -1,4 +1,4 @@
-import { style } from "./styles.js";
+import { darkId, lightId } from "./styles.js";
 
 export function nightMode(builder) {
   const now = new Date();
@@ -8,12 +8,12 @@ export function nightMode(builder) {
   if (isNight && !builder.nightMode) {
     builder.nightMode = true;
     builder.map.setOptions({
-      styles: style["night"],
+      mapId: darkId,
     });
   } else if (!isNight && builder.nightMode) {
     builder.nightMode = false;
     builder.map.setOptions({
-      styles: style["default"],
+      mapId: lightId,
     });
   }
 }
