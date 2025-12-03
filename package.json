@@ -1,0 +1,23 @@
+{
+  "name": "sae_3.01",
+  "version": "1.0.0",
+  "description": "Application de navigations vers les différents parking de Metz disponible dans notre BDD. Possible de trouver le parking le plus proche en 1 clique !",
+  "homepage": "https://github.com/Lecasly10/SAE_3.01#readme",
+  "bugs": {
+    "url": "https://github.com/Lecasly10/SAE_3.01/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lecasly10/SAE_3.01.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "ts",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/google.maps": "^3.58.1"
+  }
+}

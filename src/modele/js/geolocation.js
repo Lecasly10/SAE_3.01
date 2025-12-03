@@ -1,7 +1,7 @@
 import { addMarker } from "../controller/js/addMarkers.js";
 import { handleCrossIcon } from "../controller/js/eventHandler.js";
 import { toggleLoader } from "../controller/js/UI.js";
-
+import { nightMode } from "../../controller/js/maps/nightMode.js";
 //classe pour setup la géolocalisation dans l'app
 export class Geolocation {
   constructor(builder) {
@@ -12,6 +12,7 @@ export class Geolocation {
 
   async locateUser() {
     try {
+      nightMode(this.builder);
       const userPosition = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           ({ coords }) =>
@@ -44,6 +45,7 @@ export class Geolocation {
   startWatching() {
     this.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {
+        nightMode(this.builder);
         const userPosition = { lat: coords.latitude, lng: coords.longitude };
 
         if (!this.builder.userMarker) {

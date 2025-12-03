@@ -1,4 +1,5 @@
 import { loadGoogleLibs, getGoogleLibs } from "../controller/js/googleAPI.js";
+import { style } from "../../controller/js/maps/styles.js";
 
 //Classe pour créer et initialiser la map avec des params par défaut
 export class MapBuilder {
@@ -9,6 +10,7 @@ export class MapBuilder {
     this.map = null; //L'objet map de google map
     this.userMarker = null; //marqueur utilisateur
     this.navigation = false; //Mode navigation
+    this.nightMode = false; // Mode nuit
   }
 
   async initMap() {
