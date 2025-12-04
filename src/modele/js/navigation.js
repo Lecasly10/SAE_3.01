@@ -48,17 +48,27 @@ export class Navigation {
   }
 
   async closestParking() {
-    const builder = Navigation.builder;
-    if (!builder?.userMarker) throw new Error("userMarker non défini");
-
     try {
-      const pos = builder.userMarker.position;
-      const result = await phpFetch("closestParking.php", pos);
-      if (!result?.lat || !result?.lng || !result?.id || !result?.name)
-        throw new Error("Pas de parking trouvé");
-      return { ...result };
-    } catch (err) {
-      console.error("Erreur closestParking :", err);
+      let position = Navigation.builder.userMarker.position;
+      const resultat = await phpFetch("closestParking.php", position);
+      if (
+        !resultat ||
+        !resultat.lat ||
+        !resultat.lng ||
+        !resultat.id ||
+        !resultat.name
+      )
+        throw new Error("Aucune donnée trouvé");
+      if (isNaN(resultat.lat) || isNaN(resultat.lng))
+        throw new Error("Coordonnées invalides");
+      return {
+        name: resultat.name,
+        id: resultat.id,
+        lat: resultat.lat,
+        lng: resultat.lng,
+      };
+    } catch {
+      console.error("Erreur : ", error);
       return null;
     }
   }

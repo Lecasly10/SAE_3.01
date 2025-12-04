@@ -8,6 +8,9 @@ export function createHandlers(builder, navigation) {
     await navigation.startNavigation(destination);
 
     const { confirm, cancel } = UI.togglePreview(destination);
+    const bounds = navigation.route.bounds;
+    builder.map.fitBounds(bounds);
+    builder.map.panTo(bounds.getCenter());
 
     confirm.addEventListener("click", (e) => {
       e.preventDefault();
@@ -32,8 +35,6 @@ export function createHandlers(builder, navigation) {
       const closest = await navigation.closestParking();
       if (closest) {
         handleNavigation(closest);
-      } else {
-        throw new Error("Aucun parking trouvé");
       }
     } catch (error) {
       UI.setupUI();
