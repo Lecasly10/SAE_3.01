@@ -21,23 +21,7 @@ class LondreAPI implements ParkingAPI {
     }
 
     private function call(string $url): array {
-
-        $ch = curl_init($url);
-
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 4,
-            CURLOPT_CONNECTTIMEOUT => 2,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-        ]);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        if (!$response) return [];
-
-        return json_decode($response, true) ?? [];
+        return fetch($url);
     }
 
     public function fetchData(): array { 
@@ -56,7 +40,7 @@ class LondreAPI implements ParkingAPI {
             return null;
         }
 
-        if (isset($data["places"][0]["id"])) {
+        if (isset($data["places"][0]) || !empty($data["places"][0])) {
             return $data["places"][0]["id"];
         } else {
             return null;

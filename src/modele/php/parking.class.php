@@ -43,121 +43,121 @@ class Parking
         $this->maxHeight = $maxHeight;
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId(?string $id)
     {
         $this->id = $id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(?string $name)
     {
         $this->name = $name;
     }
 
-    public function getAdresse(): string
+    public function getAdresse(): ?string
     {
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse)
+    public function setAdresse(?string $adresse)
     {
         $this->adresse = $adresse;
     }
 
-    public function getLong(): float
+    public function getLong(): ?float
     {
         return $this->long;
     }
 
-    public function setLong(float $long)
+    public function setLong(?float $long)
     {
         $this->long = $long;
     }
 
-    public function getLat(): float
+    public function getLat(): ?float
     {
         return $this->lat;
     }
 
-    public function setLat(float $lat)
+    public function setLat(?float $lat)
     {
         $this->lat = $lat;
     }
 
-    public function getStructure(): string
+    public function getStructure(): ?string
     {
         return $this->structure;
     }
 
-    public function setStructure(string $structure)
+    public function setStructure(?string $structure)
     {
         $this->structure = $structure;
     }
 
-    public function getInfo(): string
+    public function getInfo(): ?string
     {
         return $this->info;
     }
 
-    public function setInfo(string $info)
+    public function setInfo(?string $info)
     {
         $this->info = $info;
     }
 
-    public function getInsee(): string
+    public function getInsee(): ?string
     {
         return $this->inseeCode;
     }
 
-    public function setInsee(string $inseeCode)
+    public function setInsee(?string $inseeCode)
     {
         $this->inseeCode = $inseeCode;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    public function setUrl(string $url)
+    public function setUrl(?string $url)
     {
         $this->url = $url;
     }
 
-    public function getUserType(): string
+    public function getUserType(): ?string
     {
         return $this->userType;
     }
 
-    public function setUserType(string $userType)
+    public function setUserType(?string $userType)
     {
         $this->userType = $userType;
     }    
-    public function getMaxHeight(): int
+    public function getMaxHeight(): ?int
     {
         return $this->maxHeight;
     }
 
-    public function setMaxHeight(int $maxHeight)
+    public function setMaxHeight(?int $maxHeight)
     {
         $this->maxHeight = $maxHeight;
     }
 
-    public function getSiret(): int 
+    public function getSiret(): ?int 
     {
         return $this->siretNumber;
     }
 
-    public function setSiret(int $siretNumber)
+    public function setSiret(?int $siretNumber)
     {
         $this->siretNumber = $siretNumber;
     }
