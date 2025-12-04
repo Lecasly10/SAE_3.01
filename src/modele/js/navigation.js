@@ -134,7 +134,7 @@ export class Navigation {
       destination,
       travelMode: "DRIVING",
       routingPreference: "TRAFFIC_AWARE",
-      fields: ["polyline", "routes.polyline"],
+      fields: ["path"],
     });
 
     if (!routes?.length) return alert("Aucun itinéraire trouvé");
