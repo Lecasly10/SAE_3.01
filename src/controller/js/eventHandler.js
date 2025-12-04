@@ -239,7 +239,7 @@ async function handleParkingList(parkings, builder, marker) {
 
       const nom = parking["nom"];
       const pLibres = !parking["places_libres"]
-        ? "NA"
+        ? ""
         : parking["places_libres"] > 0
         ? " | " + parking["places_libres"] + " places libres"
         : " | " + "complet";
