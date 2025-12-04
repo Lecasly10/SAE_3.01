@@ -48,9 +48,9 @@ function createTable(array $lesParkings): array {
         if (!$placesObj || !$tarifObj) continue;
 
         $pLibre = null;
-        $city="metz";
+        $city=detectCity($parking->getLat(), $parking->getLong());
         try {
-            if($city) {
+            if(isset($city)) {
                  $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
             }  
         } catch (Exception $e) {
@@ -59,7 +59,7 @@ function createTable(array $lesParkings): array {
 
         $res[] = [
             "id" => $id,
-            "nom" => $parking->getName() ?? "non renseigné",
+            "nom" => $parking->getName()?? "non renseigné",
             "lat" => $parking->getLat()?? "non renseigné",
             "lng" => $parking->getLong()?? "non renseigné",
             "address" => $parking->getAdresse()?? "non renseigné",
