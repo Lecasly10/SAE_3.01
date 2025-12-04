@@ -67,7 +67,7 @@ export class Navigation {
         lat: resultat.lat,
         lng: resultat.lng,
       };
-    } catch {
+    } catch (error) {
       console.error("Erreur : ", error);
       return null;
     }
