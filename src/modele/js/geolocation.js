@@ -1,14 +1,17 @@
 import { addMarker } from "../../controller/js/addMarkers.js";
 import { nightMode } from "../../controller/js/maps/nightMode.js";
-import { MapBuilder } from "./builder.js";
-const builder = MapBuilder.instance;
 
 export class Geolocation {
   static watchId = null;
+  static builder = null;
+
+  static init(builder) {
+    Geolocation.builder = builder;
+  }
 
   static async locateUser() {
     try {
-      nightMode(builder);
+      nightMode(Geolocation.builder);
 
       const pos = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
@@ -19,18 +22,18 @@ export class Geolocation {
         );
       });
 
-      if (!builder.userMarker) {
-        builder.userMarker = await addMarker(
-          builder,
+      if (!Geolocation.builder.userMarker) {
+        Geolocation.builder.userMarker = await addMarker(
+          Geolocation.builder,
           pos,
           "Votre Position",
           globalThis.carIconURL
         );
       } else {
-        builder.userMarker.position = pos;
+        Geolocation.builder.userMarker.position = pos;
       }
 
-      builder.map.setCenter(pos);
+      Geolocation.builder.map.setCenter(pos);
       return pos;
     } catch (e) {
       console.warn("Erreur locateUser :", e);
@@ -39,22 +42,23 @@ export class Geolocation {
   }
 
   static startWatching() {
-    if (!builder) throw new Error("Geolocation.init(builder) doit être appelé");
+    if (!Geolocation.builder)
+      throw new Error("Geolocation.init(builder) doit être appelé");
 
     Geolocation.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {
-        nightMode(builder);
+        nightMode(Geolocation.builder);
         const pos = { lat: coords.latitude, lng: coords.longitude };
 
-        if (!builder.userMarker) {
-          builder.userMarker = await addMarker(
-            builder,
+        if (!Geolocation.builder.userMarker) {
+          Geolocation.builder.userMarker = await addMarker(
+            Geolocation.builder,
             pos,
             "Votre Position",
             globalThis.carIconURL
           );
         } else {
-          builder.userMarker.position = pos;
+          Geolocation.builder.userMarker.position = pos;
         }
       },
       (err) => console.warn("Erreur watchPosition :", err),

@@ -18,11 +18,11 @@ globalThis.addEventListener("load", async () => {
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
     UI.setupUI();
-
+    Geolocation.init(builder);
     await Geolocation.locateUser();
     Geolocation.startWatching();
 
-    Navigation.init();
+    Navigation.init(builder);
 
     await initEvent();
   } catch (e) {

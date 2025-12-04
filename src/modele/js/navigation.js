@@ -2,16 +2,16 @@ import { addMarker } from "../../controller/js/addMarkers.js";
 import { getGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
-import { MapBuilder } from "./builder.js";
-const builder = MapBuilder.instance;
 
 const destinationIconURL =
   "https://cdn-icons-png.flaticon.com/512/4668/4668400.png";
 
 export class Navigation {
   static instance = null;
-  static init() {
+  static builder = null;
+  static init(builder) {
     if (!Navigation.instance) Navigation.instance = new Navigation();
+    Navigation.builder = builder;
     return Navigation.instance;
   }
 
@@ -42,7 +42,7 @@ export class Navigation {
 
   async closestParking() {
     try {
-      const pos = builder.userMarker.position;
+      const pos = Navigation.builder.userMarker.position;
       const result = await phpFetch("closestParking.php", pos);
       if (!result?.lat || !result?.lng || !result?.id || !result?.name)
         throw new Error("Pas de parking trouvé");
@@ -60,7 +60,10 @@ export class Navigation {
     this.parkMonitor = setInterval(async () => {
       if (!this.destination) return;
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = Geolocation.distance(builder.userMarker.position, coord);
+      const dist = Geolocation.distance(
+        Navigation.builder.userMarker.position,
+        coord
+      );
 
       if (dist < 0.05) {
         await this.stopNavigation();
@@ -104,14 +107,14 @@ export class Navigation {
     if (this.route) return;
 
     const { Route } = getGoogleLibs();
-    const origin = builder.userMarker.position;
+    const origin = Navigation.builder.userMarker.position;
     const destination = {
       lat: this.destination.lat,
       lng: this.destination.lng,
     };
 
     const marker = await addMarker(
-      builder,
+      Navigation.builder,
       destination,
       `Votre destination : ${this.destination.name}`,
       destinationIconURL
@@ -129,7 +132,7 @@ export class Navigation {
 
     const route = routes[0];
     const polylines = route.createPolylines();
-    polylines.forEach((p) => p.setMap(builder.map));
+    polylines.forEach((p) => p.setMap(Navigation.builder.map));
 
     const bounds = new google.maps.LatLngBounds();
     polylines.forEach((p) =>
