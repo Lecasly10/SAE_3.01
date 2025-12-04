@@ -69,6 +69,7 @@ try {
         echo json_encode([
             "status" => "ok",
             "message" => "Parking le plus proche trouvé",
+            "id" => $closeParking->getId(),
             "lat" => $closeParking->getLat(),
             "lng" => $closeParking->getLong(),
             "name" => $closeParking->getName()
