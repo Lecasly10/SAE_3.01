@@ -15,6 +15,12 @@ export class Navigation {
     return Navigation.instance;
   }
 
+  static getInstance() {
+    if (!Navigation.instance)
+      throw new Error("Navigation n'a pas encore été initialisée !");
+    return Navigation.instance;
+  }
+
   constructor() {
     if (Navigation.instance)
       throw new Error("Utilisez Navigation.init(builder)");

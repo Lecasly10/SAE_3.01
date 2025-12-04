@@ -14,6 +14,12 @@ export class MapBuilder {
     return MapBuilder.instance;
   }
 
+  static getInstance() {
+    if (!MapBuilder.instance)
+      throw new Error("Navigation n'a pas encore été initialisée !");
+    return MapBuilder.instance;
+  }
+
   constructor() {
     if (MapBuilder.instance) {
       throw new Error("Utilisez MapBuilder.init() au lieu de new MapBuilder()");

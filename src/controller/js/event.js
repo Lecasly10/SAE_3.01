@@ -1,7 +1,7 @@
 import * as element from "./htmlElement.js";
 import * as handler from "./eventHandler.js";
 import { MapBuilder } from "../../modele/js/builder.js";
-const builder = MapBuilder.init();
+const builder = MapBuilder.getInstance();
 
 export async function initEvent() {
   //Recentrer

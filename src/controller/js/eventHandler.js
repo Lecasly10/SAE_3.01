@@ -2,8 +2,8 @@ import { UI } from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
 import { Navigation } from "../../modele/js/navigation.js";
 import { MapBuilder } from "../../modele/js/builder.js";
-const builder = MapBuilder.init();
-const navigation = Navigation.init(builder);
+const builder = MapBuilder.getInstance();
+const navigation = Navigation.getInstance(builder);
 
 //Toutes les fonctions lier au différents events de l'app
 
@@ -30,7 +30,7 @@ export async function handleAutoSearchClick(event) {
 
   try {
     UI.toggleNavigationUI("CHARGEMENT...");
-    let closest = navigation.closestParking();
+    let closest = await navigation.closestParking();
     if (closest) {
       handleNavigation(builder, closest);
     } else throw new Error("Aucun parking trouvé");
@@ -56,7 +56,6 @@ export async function handleParkingClick(event, link) {
     if (!id) throw new Error("Identifiant invalide");
     if (isNaN(lat) || isNaN(lng)) throw new Error("Coordonnées invalides");
     const destination = { id: id, lat: lat, lng: lng, name: name };
-
     handleNavigation(builder, destination);
   } catch (error) {
     alert(error);
