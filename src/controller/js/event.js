@@ -1,9 +1,9 @@
 import * as element from "./htmlElement.js";
 import * as handler from "./eventHandler.js";
+import { MapBuilder } from "../../modele/js/builder.js";
+const builder = MapBuilder.instance;
 
-export async function initEvent(builder) {
-  const userMarker = builder.userMarker; //point sur la map ou se trouve l'utilisateur
-
+export async function initEvent() {
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
     builder.map.panTo(userMarker.position);
@@ -11,32 +11,32 @@ export async function initEvent(builder) {
 
   //Rechercher le parking le plus proche
   element.autoSearchButton.addEventListener("click", (e) => {
-    handler.handleAutoSearchClick(e, builder, userMarker);
+    handler.handleAutoSearchClick(e);
   });
 
   //Rechercher parkings
   element.searchBox.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
-      handler.handleSearchBoxSubmit(e, builder, userMarker);
+      handler.handleSearchBoxSubmit(e);
     }
   });
 
   //Lister les parkings
   element.listButton.addEventListener("click", async (e) => {
-    handler.handleListButton(e, builder, userMarker);
+    handler.handleListButton(e);
   });
 
   //Annuler ou stop
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
-      handler.handleCrossIcon(e, builder, userMarker);
+      handler.handleCrossIcon(e);
     });
   }
 
   //Fermer les box
   if (element.closeButton) {
     element.closeButton.addEventListener("click", (e) => {
-      handler.handleCloseButton(e, builder);
+      handler.handleCloseButton(e);
     });
   }
 }

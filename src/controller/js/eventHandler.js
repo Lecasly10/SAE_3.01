@@ -1,73 +1,73 @@
-import { startRoute, removeRoute } from "./route.js";
-import * as UI from "./UI.js";
+import * as UI from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
+import { Navigation } from "../../modele/js/navigation.js";
+import { MapBuilder } from "../../modele/js/builder.js";
+const builder = MapBuilder.instance;
+const navigation = Navigation.instance;
 
 //Toutes les fonctions lier au différents events de l'app
 
+export async function handleNavigation(destination) {
+  await navigation.startNavigation(destination);
+  const { confirm, cancel } = UI.togglePreview(destination);
+
+  confirm.addEventListener("click", (e) => {
+    e.preventDefault();
+    builder.map.panTo(origin);
+    builder.map.setZoom(25);
+    UI.toggleNavigationUI(destination.name);
+  });
+
+  cancel.addEventListener("click", (e) => {
+    handleStop(e);
+  });
+}
+
 //parking le plus proche
-export async function handleAutoSearchClick(event, builder, userMarker) {
+export async function handleAutoSearchClick(event) {
   event.preventDefault();
   UI.toggleLoader(true);
 
   try {
-    let position = {
-      lat: userMarker.position.lat,
-      lng: userMarker.position.lng,
-    };
-
     UI.toggleNavigationUI("CHARGEMENT...");
-
-    const resultat = await phpFetch("closestParking.php", position);
-    if (!resultat || !resultat.lat || !resultat.lng)
-      throw new Error("Aucune donnée trouvé");
-    if (isNaN(resultat.lat) || isNaN(resultat.lng))
-      throw new Error("Coordonnées invalides");
-    let destination = {
-      lat: resultat.lat,
-      lng: resultat.lng,
-    };
-    const name = resultat.name;
-    handleNavigationEvent(builder, userMarker, destination, name);
+    let closest = navigation.closestParking();
+    if (closest) {
+      handleNavigation(builder, closest);
+    } else throw new Error("Aucun parking trouvé");
   } catch (error) {
     UI.setupUI();
+    alert(error);
     console.error("Erreur : ", error);
   } finally {
     UI.toggleLoader(false);
   }
 }
 
-//Pour lancer le mode navigation
-async function handleNavigationEvent(
-  builder,
-  userMarker,
-  destination,
-  destinationName
-) {
-  const origin = userMarker.position;
-  startRoute(builder, origin, destination, "destParking");
+//Clique sur un parking dans une liste
+export async function handleParkingClick(event, link) {
+  event.preventDefault();
+  UI.toggleLoader(true);
 
-  UI.setupUI();
-  UI.emptyResultBox();
+  try {
+    const lat = parseFloat(link.dataset.lat);
+    const lng = parseFloat(link.dataset.lng);
+    const name = link.dataset.name;
+    const id = link.dataset.id;
+    if (!id) throw new Error("Identifiant invalide");
+    if (isNaN(lat) || isNaN(lng)) throw new Error("Coordonnées invalides");
+    const destination = { id: id, lat: lat, lng: lng, name: name };
 
-  UI.setResultTitle(destinationName);
-  UI.setResultMessage("Voulez vous aller à ce parking ?");
-
-  const { confirm, cancel } = UI.toggleConfirmBox();
-  confirm.addEventListener("click", (e) => {
-    e.preventDefault();
-    builder.map.panTo(origin);
-    builder.map.setZoom(25);
-    UI.toggleNavigationUI(destinationName);
-    builder.navigation = true;
-  });
-
-  cancel.addEventListener("click", (e) => {
-    handleCrossIcon(e, builder, userMarker);
-  });
+    handleNavigation(builder, destination);
+  } catch (error) {
+    alert(error);
+    console.error("Erreur lors du calcul de l'itinéraire :", error);
+  } finally {
+    UI.toggleLoader(false);
+  }
 }
 
 //La recherche
-export async function handleSearchBoxSubmit(event, builder, marker) {
+export async function handleSearchBoxSubmit(event) {
   event.preventDefault();
   const query = UI.getSearchQuery().trim();
 
@@ -84,40 +84,19 @@ export async function handleSearchBoxSubmit(event, builder, marker) {
 
   const result = await phpFetch("search.php", search);
   UI.setResultTitle("Résultats");
-  handleParkingList(result.parkings, builder, marker);
+  handleParkingList(result.parkings, builder);
 }
 
 //Liste de tout les parkings
-export async function handleListButton(event, builder, marker) {
+export async function handleListButton(event) {
   event.preventDefault();
 
   UI.toggleLoader(true);
   UI.emptySearchBox();
 
   const result = await phpFetch("search.php", {});
-
   UI.setResultTitle("Tous les Parkings");
-  handleParkingList(result.parkings, builder, marker);
-}
-
-//Clique sur un parking dans une liste
-export async function handleParkingClick(event, link, builder, userMarker) {
-  event.preventDefault();
-  UI.toggleLoader(true);
-
-  try {
-    const lat = parseFloat(link.dataset.lat);
-    const lng = parseFloat(link.dataset.lng);
-    if (isNaN(lat) || isNaN(lng)) throw new Error("Coordonnées invalides");
-    const name = link.dataset.name;
-    const destination = { lat: lat, lng: lng };
-
-    handleNavigationEvent(builder, userMarker, destination, name);
-  } catch (error) {
-    console.error("Erreur lors du calcul de l'itinéraire :", error);
-  } finally {
-    UI.toggleLoader(false);
-  }
+  handleParkingList(result.parkings, builder);
 }
 
 //Load les infos d'un parking
@@ -215,7 +194,7 @@ export async function handleParkingInfoClick(event, button) {
 }
 
 //Load une liste de parking
-async function handleParkingList(parkings, builder, marker) {
+async function handleParkingList(parkings) {
   UI.emptyResultBox();
   if (!parkings) {
     UI.setResultTitle("Aucun résultats");
@@ -250,10 +229,11 @@ async function handleParkingList(parkings, builder, marker) {
       link.title = "Cliqer pour lancer l'itiniraire";
       link.dataset.lat = parking["lat"];
       link.dataset.lng = parking["lng"];
+      link.dataset.id = parking["id"];
       link.dataset.name = parking["nom"];
 
       link.addEventListener("click", (e) => {
-        handleParkingClick(e, link, builder, marker);
+        handleParkingClick(e, link, builder);
       });
 
       button.addEventListener("click", (e) => {
@@ -269,26 +249,26 @@ async function handleParkingList(parkings, builder, marker) {
   UI.toggleLoader(false);
 }
 
-//Stop ou annuler
-export async function handleCrossIcon(event, builder, userMarker) {
+export async function handleStop(event) {
   event.preventDefault();
   UI.emptySearchBox();
 
-  if (builder.routes.length > 0) {
-    removeRoute(builder, "destParking");
-  }
+  navigation.stopNavigation();
 
   UI.setupUI();
   builder.map.setZoom(builder.defaultZoom);
-  builder.map.panTo(userMarker.position);
+  builder.map.panTo(builder.userMarker.position);
+}
+
+//Stop ou annuler
+export async function handleCrossIcon(event) {
+  handleStop(event, builder);
 }
 
 //Fermer les différentes resultbox
-export function handleCloseButton(event, builder) {
+export function handleCloseButton(event) {
   event.preventDefault();
   UI.toggleResultContainer(false);
 
-  if (builder.routes.length > 0) {
-    removeRoute(builder, "destParking");
-  }
+  navigation.stopNavigation();
 }

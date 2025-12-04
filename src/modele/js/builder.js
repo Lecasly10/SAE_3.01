@@ -4,20 +4,30 @@ import {
 } from "../../controller/js/googleAPI.js";
 import { lightId } from "../../controller/js/maps/styles.js";
 
-//Classe pour créer et initialiser la map avec des params par défaut
 export class MapBuilder {
+  static instance = null;
+
+  static init() {
+    if (!MapBuilder.instance) {
+      MapBuilder.instance = new MapBuilder();
+    }
+    return MapBuilder.instance;
+  }
+
   constructor() {
-    this.defaultPosition = { lat: 49.1193, lng: 6.1757 }; //Mairie de Metz
-    this.defaultZoom = 20; //le zoom par défaut
-    this.routes = []; //les routes
-    this.map = null; //L'objet map de google map
-    this.userMarker = null; //marqueur utilisateur
-    this.navigation = false; //Mode navigation
+    if (MapBuilder.instance) {
+      throw new Error("Utilisez MapBuilder.init() au lieu de new MapBuilder()");
+    }
+
+    this.defaultPosition = { lat: 49.1193, lng: 6.1757 }; // Mairie de Metz
+    this.defaultZoom = 20; // Zoom par défaut
+    this.map = null; // Google Map
+    this.userMarker = null; // Marqueur utilisateur
     this.nightMode = false; // Mode nuit
   }
 
+  // INIT MAP
   async initMap() {
-    //initialisation map
     try {
       await loadGoogleLibs();
       const { Map } = getGoogleLibs();
