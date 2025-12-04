@@ -1,19 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
 
 require_once __DIR__ . '/parkingApi.php';
-require_once __DIR__ . '/cache.php';
+require_once __DIR__ . '/dataAPI.php'; // contient la fonction fetch et distanceGPS
 
 class LondonAPI implements ParkingAPI {
-
-    private CacheManager $cache;
 
     private string $urlAll;
     private string $urlPark;
@@ -22,8 +12,6 @@ class LondonAPI implements ParkingAPI {
     private int $radius;
 
     public function __construct(array $config) {
-
-        $this->cache = new CacheManager(__DIR__ . "/cache_london");
 
         $this->urlAll = $config["londreUrlAll"];
         $this->urlPark = $config["londreUrlPark"];
@@ -58,13 +46,6 @@ class LondonAPI implements ParkingAPI {
 
     private function getNearestParkingId(float $lat, float $lon): ?string {
 
-        $tile = "id_" . floor($lat*100) . "_" . floor($lon*100);
-
-        $cached = $this->cache->get($tile, 86400);
-        if ($cached !== null) {
-            return $cached;
-        }
-
         $url = $this->urlLoc
             . "lat={$lat}&lon={$lon}&radius={$this->radius}&type=CarPark"
             . $this->key;
@@ -88,10 +69,6 @@ class LondonAPI implements ParkingAPI {
             }
         }
 
-        if ($best !== null) {
-            $this->cache->set($tile, $best);
-        }
-
         return $best;
     }
 
@@ -100,13 +77,6 @@ class LondonAPI implements ParkingAPI {
         $id = $this->getNearestParkingId($lat, $lon);
         if (!$id) return null;
 
-        $cacheKey = "occupancy_" . $id;
-        $cached = $this->cache->get($cacheKey, 30);
-
-        if ($cached !== null) {
-            return $cached;
-        }
-
         $url = $this->urlPark . $id . $this->key;
         $data = $this->call($url);
 
@@ -114,11 +84,7 @@ class LondonAPI implements ParkingAPI {
 
         foreach ($data[0]["bays"] as $bay) {
             if ($bay["bayType"] === "General") {
-                $free = $bay["free"] ?? null;
-
-                $this->cache->set($cacheKey, $free);
-
-                return $free;
+                return $bay["free"] ?? null;
             }
         }
 
