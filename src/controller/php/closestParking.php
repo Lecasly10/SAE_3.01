@@ -46,7 +46,14 @@ try {
         $nextLat = $parking->getLat();
         $nextLng = $parking->getLong();
 
-        $places = placeLibre($nextLat, $nextLng);
+        $city = detectCity($nextLat, $nextLng);
+        if (!$city) continue;
+            $places = null;
+            try {
+                $places = placeLibre($city, $nextLat, $nextLng);
+            } catch (Exception $e) {
+                $places = null;
+        }
 
         if (isset($places) && $places > 0) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);

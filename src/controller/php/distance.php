@@ -21,3 +21,18 @@ function distanceGPS(float $lat1, float $lon1, float $lat2, float $lon2): float 
     return $earthRadius * $c;
 }
 
+$cities = [
+    'metz' => ['latMin'=>48.9, 'latMax'=>49.2, 'lonMin'=>6.1, 'lonMax'=>6.3],
+    'londre' => ['latMin'=>51.4, 'latMax'=>51.7, 'lonMin'=>-0.3, 'lonMax'=>0.2]
+];
+
+function detectCity(float $lat, float $lon): ?string {
+    global $cities;
+    foreach ($cities as $name => $bounds) {
+        if ($lat >= $bounds['latMin'] && $lat <= $bounds['latMax'] &&
+            $lon >= $bounds['lonMin'] && $lon <= $bounds['lonMax']) {
+            return $name;
+        }
+    }
+    return null;
+}
