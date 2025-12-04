@@ -12,8 +12,13 @@ require_once __DIR__ . '/../../modele/php/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/../../modele/php/parkingTarifDAO.class.php';
 require_once __DIR__ . '/distance.php';
 require_once __DIR__ . '/dataAPI.php';
+require_once __DIR__ . '/cache.php';
+
+$cache = new CacheManager(__DIR__ . "/cache_parkings");
 
 function createTable(array $lesParkings): array {
+    global $cache; 
+
     $parkingCapacityDAO = new ParkingCapacityDAO();
     $parkingTarifDAO = new ParkingTarifDAO();
     $res = [];
@@ -27,11 +32,16 @@ function createTable(array $lesParkings): array {
 
         if (!$placesObj || !$tarifObj) continue;
 
-        $pLibre = null;
-        try {
-            $pLibre = placeLibre($parking->getLat(), $parking->getLong());
-        } catch (Exception $e) {
-            $pLibre = null;
+        $cacheKey = "places_libres_" . $id;
+        $pLibre = $cache->get($cacheKey, 30);
+
+        if ($pLibre === null) {
+            try {
+                $pLibre = placeLibre($parking->getId(), $parking->getLat(), $parking->getLong());
+            } catch (Exception $e) {
+                $pLibre = null;
+            }
+            $cache->set($cacheKey, $pLibre);
         }
 
         $res[] = [
