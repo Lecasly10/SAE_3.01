@@ -3,7 +3,7 @@
 require_once __DIR__ . '/parkingApi.php';
 require_once __DIR__ . '/dataAPI.php'; // contient la fonction fetch et distanceGPS
 
-class LondonAPI implements ParkingAPI {
+class LondreAPI implements ParkingAPI {
 
     private string $urlAll;
     private string $urlPark;

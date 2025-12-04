@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 include __DIR__ . '/../../conf/conf.inc.php';
 include __DIR__ . '/metzApi.php';
-include __DIR__ . '/LondreApi.php';
+include __DIR__ . '/londreApi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
