@@ -16,7 +16,7 @@ export class MapBuilder {
 
   static getInstance() {
     if (!MapBuilder.instance)
-      throw new Error("Navigation n'a pas encore été initialisée !");
+      throw new Error("Builder n'a pas encore été initialisée !");
     return MapBuilder.instance;
   }
 
@@ -55,3 +55,5 @@ export class MapBuilder {
     }
   }
 }
+
+export let builder = null;
