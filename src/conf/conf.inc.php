@@ -16,8 +16,8 @@ $API = [
     "radius" => 300,
 ];
 
-#CarParks_800484
-#lat=$lat&lon=$long&radius=$radius&type=CarPark
+#ID : CarParks_800484
+#ByCoord : lat=$lat&lon=$long&radius=$radius&type=CarPark
 #https://api.tfl.gov.uk/Place?lat=51.5750&lon=0.0897&radius=500&type=CarPark
 #https://api.tfl.gov.uk/Occupancy/CarPark/CarParks_800484?app_key=7c9ac4bcd2aa4799a10bf840662095d2
 

@@ -155,7 +155,7 @@ export async function handleParkingInfoClick(event, button) {
       ["Type", parking.structure],
       ["Hauteur Max.", `${parking.max_height} cm`],
       ["Insee", parking.insee],
-      ["Siret", parking.siret],
+      ["Siret", parking.siret === 0 ? "Aucun" : parking.siret],
       ["Utilisateur", parking.user],
       ["Gratuit", parking.free ? "Oui" : "Non"],
       ["Places", pLibres],
@@ -237,11 +237,12 @@ async function handleParkingList(parkings, builder, marker) {
 
       button.appendChild(icon);
 
-      const nom = parking["nom"] + " | ";
-      const pLibres =
-        parking["places_libres"] > 0
-          ? parking["places_libres"] + " places libres"
-          : "complet";
+      const nom = parking["nom"];
+      const pLibres = !parking["places_libres"]
+        ? "NA"
+        : parking["places_libres"] > 0
+        ? " | " + parking["places_libres"] + " places libres"
+        : " | " + "complet";
 
       const link = document.createElement("a");
       link.className = "item parking fade";
