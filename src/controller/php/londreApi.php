@@ -40,14 +40,14 @@ class LondreAPI implements ParkingAPI {
         return json_decode($response, true) ?? [];
     }
 
-    public function fetchData(): array {
+    public function fetchData(): array { 
         return $this->call($this->urlAll . $this->key);
     }
 
     private function getNearestParkingId(float $lat, float $lon): ?string {
 
         $url = $this->urlLoc
-            . "lat={$lat}&lon={$lon}&radius={$this->radius}&type=CarPark"
+            . "lat={$lat}&lon={$lon}&radius={$this->radius}&type=CarPark&"
             . $this->key;
 
         $data = $this->call($url);
@@ -56,20 +56,12 @@ class LondreAPI implements ParkingAPI {
             return null;
         }
 
-        $best = null;
-        $bestDist = PHP_INT_MAX;
-
-        foreach ($data["places"] as $p) {
-
-            $dist = distanceGPS($lat, $lon, $p["lat"], $p["lon"]);
-
-            if ($dist < $bestDist) {
-                $bestDist = $dist;
-                $best = $p["id"];
-            }
+        if (isset($data["places"][0]["id"])) {
+            return $data["places"][0]["id"];
+        } else {
+            return null;
         }
 
-        return $best;
     }
 
     public function getFreePlaces(float $lat, float $lon): ?int {
