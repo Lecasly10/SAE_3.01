@@ -1,12 +1,11 @@
 import * as element from "./htmlElement.js";
 import * as handler from "./eventHandler.js";
-
-const builder = globalThis.builder;
-
+import { MapBuilder } from "../../modele/js/builder.js";
 export async function initEvent() {
+  const builder = MapBuilder.getInstance();
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
-    builder.map.panTo(userMarker.position);
+    builder.map.panTo(builder.userMarker.position);
   });
 
   //Rechercher le parking le plus proche

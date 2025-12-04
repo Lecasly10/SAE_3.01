@@ -15,20 +15,17 @@ globalThis.addEventListener("load", async () => {
   try {
     UI.toggleLoader(true);
 
-    globalThis.builder = MapBuilder.init();
-    builder = globalThis.builder;
-
+    const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
 
-    UI.setupUI();
-
-    Geolocation.init(builder);
+    Geolocation.init();
     await Geolocation.locateUser();
     Geolocation.startWatching();
 
-    globalThis.navigation = Navigation.init(builder);
+    Navigation.init(builder);
 
+    UI.setupUI();
     await initEvent();
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);

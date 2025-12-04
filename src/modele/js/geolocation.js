@@ -1,75 +1,85 @@
 import { addMarker } from "../../controller/js/addMarkers.js";
 import { nightMode } from "../../controller/js/maps/nightMode.js";
+import { MapBuilder } from "./builder.js";
 
 export class Geolocation {
-  static watchId = null;
-  static builder = null;
+  static instance = null;
 
-  static init(builder) {
-    Geolocation.builder = builder;
+  static init() {
+    if (!Geolocation.instance) Geolocation.instance = new Geolocation();
+    return Geolocation.instance;
   }
 
-  static async locateUser() {
-    try {
-      nightMode(Geolocation.builder);
+  static getInstance() {
+    if (!Geolocation.instance) throw new Error("Geolocation non initialisée.");
+    return Geolocation.instance;
+  }
 
-      const pos = await new Promise((resolve, reject) => {
+  constructor() {
+    if (Geolocation.instance) throw new Error("Utilise Geolocation.init()");
+    this.builder = MapBuilder.getInstance();
+    this.watchId = null;
+  }
+
+  async locateUser() {
+    try {
+      nightMode(this.builder);
+      const userPosition = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           ({ coords }) =>
             resolve({ lat: coords.latitude, lng: coords.longitude }),
-          reject,
+          (err) => reject(err),
           { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
       });
 
-      if (!Geolocation.builder.userMarker) {
-        Geolocation.builder.userMarker = await addMarker(
-          Geolocation.builder,
-          pos,
+      if (!this.builder.userMarker) {
+        this.builder.userMarker = await addMarker(
+          this.builder,
+          userPosition,
           "Votre Position",
           globalThis.carIconURL
         );
       } else {
-        Geolocation.builder.userMarker.position = pos;
+        this.builder.userMarker.position = userPosition;
       }
 
-      Geolocation.builder.map.setCenter(pos);
-      return pos;
-    } catch (e) {
-      console.warn("Erreur locateUser :", e);
+      this.builder.map.setCenter(userPosition);
+      return userPosition;
+    } catch (err) {
+      console.warn("Erreur Geolocation :", err);
       return null;
     }
   }
 
-  static startWatching() {
-    if (!Geolocation.builder)
-      throw new Error("Geolocation.init(builder) doit être appelé");
+  startWatching() {
+    if (this.watchId) return;
 
-    Geolocation.watchId = navigator.geolocation.watchPosition(
+    this.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {
-        nightMode(Geolocation.builder);
-        const pos = { lat: coords.latitude, lng: coords.longitude };
+        nightMode(this.builder);
+        const userPosition = { lat: coords.latitude, lng: coords.longitude };
 
-        if (!Geolocation.builder.userMarker) {
-          Geolocation.builder.userMarker = await addMarker(
-            Geolocation.builder,
-            pos,
+        if (!this.builder.userMarker) {
+          this.builder.userMarker = await addMarker(
+            this.builder,
+            userPosition,
             "Votre Position",
             globalThis.carIconURL
           );
         } else {
-          Geolocation.builder.userMarker.position = pos;
+          this.builder.userMarker.position = userPosition;
         }
       },
-      (err) => console.warn("Erreur watchPosition :", err),
+      (error) => console.warn("Erreur watchPosition :", error),
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
   }
 
-  static stopWatching() {
-    if (Geolocation.watchId !== null) {
-      navigator.geolocation.clearWatch(Geolocation.watchId);
-      Geolocation.watchId = null;
+  stopWatching() {
+    if (this.watchId !== null) {
+      navigator.geolocation.clearWatch(this.watchId);
+      this.watchId = null;
     }
   }
 

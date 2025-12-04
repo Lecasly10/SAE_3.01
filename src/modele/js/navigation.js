@@ -9,6 +9,7 @@ const destinationIconURL =
 export class Navigation {
   static instance = null;
   static builder = null;
+
   static init(builder) {
     if (!Navigation.instance) Navigation.instance = new Navigation();
     Navigation.builder = builder;
@@ -17,7 +18,7 @@ export class Navigation {
 
   static getInstance() {
     if (!Navigation.instance)
-      throw new Error("Navigation n'a pas encore été initialisée !");
+      throw new Error("Navigation n'a pas été initialisé !");
     return Navigation.instance;
   }
 
@@ -47,12 +48,14 @@ export class Navigation {
   }
 
   async closestParking() {
+    const builder = Navigation.builder;
+    if (!builder?.userMarker) throw new Error("userMarker non défini");
+
     try {
-      const pos = Navigation.builder.userMarker.position;
+      const pos = builder.userMarker.position;
       const result = await phpFetch("closestParking.php", pos);
       if (!result?.lat || !result?.lng || !result?.id || !result?.name)
         throw new Error("Pas de parking trouvé");
-
       return { ...result };
     } catch (err) {
       console.error("Erreur closestParking :", err);
@@ -64,12 +67,11 @@ export class Navigation {
     if (!this.destination || this.parkMonitor) return;
 
     this.parkMonitor = setInterval(async () => {
-      if (!this.destination) return;
+      const builder = Navigation.builder;
+      if (!builder?.userMarker) return;
+
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = Geolocation.distance(
-        Navigation.builder.userMarker.position,
-        coord
-      );
+      const dist = Geolocation.distance(builder.userMarker.position, coord);
 
       if (dist < 0.05) {
         await this.stopNavigation();
@@ -109,18 +111,19 @@ export class Navigation {
   }
 
   async buildRoute() {
-    if (!this.destination) return;
+    const builder = Navigation.builder;
+    if (!this.destination || !builder?.userMarker) return;
     if (this.route) return;
 
     const { Route } = getGoogleLibs();
-    const origin = Navigation.builder.userMarker.position;
+    const origin = builder.userMarker.position;
     const destination = {
       lat: this.destination.lat,
       lng: this.destination.lng,
     };
 
     const marker = await addMarker(
-      Navigation.builder,
+      builder,
       destination,
       `Votre destination : ${this.destination.name}`,
       destinationIconURL
@@ -138,7 +141,7 @@ export class Navigation {
 
     const route = routes[0];
     const polylines = route.createPolylines();
-    polylines.forEach((p) => p.setMap(Navigation.builder.map));
+    polylines.forEach((p) => p.setMap(builder.map));
 
     const bounds = new google.maps.LatLngBounds();
     polylines.forEach((p) =>
