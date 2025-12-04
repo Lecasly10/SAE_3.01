@@ -1,6 +1,7 @@
 import * as element from "./htmlElement.js";
 import * as handler from "./eventHandler.js";
-import { builder } from "../../modele/js/builder.js";
+
+const builder = globalThis.builder;
 
 export async function initEvent() {
   //Recentrer

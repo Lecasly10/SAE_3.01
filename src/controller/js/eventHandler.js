@@ -1,7 +1,8 @@
 import { UI } from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
-import { navigation } from "../../modele/js/navigation.js";
-import { builder } from "../../modele/js/builder.js";
+
+const builder = globalThis.builder; //Instance de builder
+const navigation = globalThis.navigation; //Instance de navigation
 
 //Toutes les fonctions lier au différents events de l'app
 

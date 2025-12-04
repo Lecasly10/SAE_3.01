@@ -56,4 +56,3 @@ export class MapBuilder {
   }
 }
 
-export let builder = null;

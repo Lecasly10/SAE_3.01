@@ -3,8 +3,8 @@ import { UI } from "../../modele/js/UI.js";
 import { initEvent } from "./event.js";
 
 import { Geolocation } from "../../modele/js/geolocation.js";
-import { MapBuilder, builder } from "../../modele/js/builder.js";
-import { Navigation, navigation } from "../../modele/js/navigation.js";
+import { MapBuilder } from "../../modele/js/builder.js";
+import { Navigation } from "../../modele/js/navigation.js";
 
 //===GLOBAL===
 globalThis.carIconURL =
@@ -14,15 +14,20 @@ globalThis.carIconURL =
 globalThis.addEventListener("load", async () => {
   try {
     UI.toggleLoader(true);
-    builder = MapBuilder.init();
+
+    globalThis.builder = MapBuilder.init();
+    builder = globalThis.builder;
+
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
+
     UI.setupUI();
+
     Geolocation.init(builder);
     await Geolocation.locateUser();
     Geolocation.startWatching();
 
-    navigation = Navigation.init(builder);
+    globalThis.navigation = Navigation.init(builder);
 
     await initEvent();
   } catch (e) {

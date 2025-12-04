@@ -155,5 +155,3 @@ export class Navigation {
     this.route = null;
   }
 }
-
-export let navigation = null;
