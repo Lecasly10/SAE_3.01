@@ -1,9 +1,9 @@
-import * as UI from "../../modele/js/UI.js";
+import { UI } from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
 import { Navigation } from "../../modele/js/navigation.js";
 import { MapBuilder } from "../../modele/js/builder.js";
-const builder = MapBuilder.instance;
-const navigation = Navigation.instance;
+const builder = MapBuilder.init();
+const navigation = Navigation.init(builder);
 
 //Toutes les fonctions lier au différents events de l'app
 
