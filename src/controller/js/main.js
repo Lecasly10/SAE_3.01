@@ -14,6 +14,7 @@ globalThis.carIconURL =
 globalThis.addEventListener("load", async () => {
   try {
     UI.toggleLoader(true);
+    UI.setupUI();
 
     const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");
@@ -25,7 +26,6 @@ globalThis.addEventListener("load", async () => {
 
     Navigation.init(builder);
 
-    UI.setupUI();
     await initEvent();
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);

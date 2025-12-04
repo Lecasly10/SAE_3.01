@@ -288,4 +288,12 @@ export function createHandlers(builder, navigation) {
     UI.toggleResultContainer(false);
     navigation.stopNavigation();
   }
+
+  return {
+    handleAutoSearchClick,
+    handleSearchBoxSubmit,
+    handleCloseButton,
+    handleCrossIcon,
+    handleListButton,
+  };
 }
