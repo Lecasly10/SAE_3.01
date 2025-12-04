@@ -22,7 +22,7 @@ function placeLibre(string $city, float $lat, float $lon): ?int {
     global $apis;
 
     if (!isset($apis[$city])) {
-        throw new Exception("API inconnue : " . $city);
+        return null;
     }
 
     return $apis[$city]->getFreePlaces($lat, $lon);

@@ -27,7 +27,7 @@ class ParkingDAO
             $parking->setUrl($row['url']);
             $parking->setUserType($row['user_type']);
             $parking->setMaxHeight($row['max_height']);
-            $parking->setSiret($row['siret_number']);
+            $parking->setSiret($row['siret_number'] ?? 0);
             $parking->setLong($row['longitude']);
             $parking->setLat($row['latitude']);
             $parking->setStructure($row['structure_type']);

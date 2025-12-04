@@ -48,7 +48,7 @@ try {
 
         $places = placeLibre($nextLat, $nextLng);
 
-        if ($places > 0) {
+        if (isset($places) && $places > 0) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
 
             if ($dist < $minDist) {

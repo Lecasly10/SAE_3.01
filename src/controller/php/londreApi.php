@@ -21,7 +21,13 @@ class LondreAPI implements ParkingAPI {
     }
 
     private function call(string $url): array {
-        return fetch($url);
+        $data = fetch($url);
+
+        if ($data === null) {
+            die("Erreur JSON Metz");
+        }
+
+        return $data;
     }
 
     public function fetchData(): array { 
