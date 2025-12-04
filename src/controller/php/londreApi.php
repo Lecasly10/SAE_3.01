@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/parkingApi.php';
-require_once __DIR__ . '/dataAPI.php'; // contient la fonction fetch et distanceGPS
+require_once __DIR__ . '/dataAPI.php'; 
 
 class LondreAPI implements ParkingAPI {
 

@@ -4,7 +4,7 @@ class Parking
 {
     private string $id;
     private string $name;
-    private int $inseeCode;
+    private string $inseeCode;
     private string $adresse;
     private string $url;
     private string $userType;
@@ -18,7 +18,7 @@ class Parking
     function __construct(
         string $id = '',
         string $name = '', 
-        int $inseeCode = 0,
+        string $inseeCode = '',
         string $adresse = '',
         string $url = '',
         string $userType = '',
@@ -113,12 +113,12 @@ class Parking
         $this->info = $info;
     }
 
-    public function getInsee(): int
+    public function getInsee(): string
     {
         return $this->inseeCode;
     }
 
-    public function setInsee(int $inseeCode)
+    public function setInsee(string $inseeCode)
     {
         $this->inseeCode = $inseeCode;
     }
@@ -152,7 +152,7 @@ class Parking
         $this->maxHeight = $maxHeight;
     }
 
-    public function getSiret(): int
+    public function getSiret(): int 
     {
         return $this->siretNumber;
     }
@@ -163,3 +163,4 @@ class Parking
     }
 
 }
+
