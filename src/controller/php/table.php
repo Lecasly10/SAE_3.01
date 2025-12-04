@@ -48,7 +48,7 @@ function createTable(array $lesParkings): array {
         if (!$placesObj || !$tarifObj) continue;
 
         $pLibre = null;
-        $city= detectCity($parking->getLat(), $parking->getLong());
+        $city="metz";
         try {
             if($city) {
                  $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
