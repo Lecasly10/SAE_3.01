@@ -19,9 +19,9 @@ globalThis.addEventListener("load", async () => {
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
 
-    Geolocation.init();
-    await Geolocation.locateUser();
-    Geolocation.startWatching();
+    const geo = Geolocation.init();
+    await geo.locateUser();
+    geo.startWatching();
 
     Navigation.init(builder);
 
