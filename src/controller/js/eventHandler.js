@@ -2,8 +2,7 @@ import { UI } from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
 export function createHandlers(builder, navigation) {
-  // Navigation vers une destination
-
+  // Navigation vers une destination avec confirmation
   async function handleNavigation(destination) {
     await navigation.startNavigation(destination);
 
@@ -16,6 +15,7 @@ export function createHandlers(builder, navigation) {
       e.preventDefault();
       builder.map.panTo(builder.userMarker.position);
       builder.map.setZoom(25);
+      navigation.focus = true; //Suivre le marker
       UI.toggleNavigationUI(destination.name);
     });
 
@@ -25,7 +25,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Parking le plus proche
-
   async function handleAutoSearchClick(event) {
     event.preventDefault();
     UI.toggleLoader(true);
@@ -46,7 +45,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Cliquer sur un parking dans la liste
-
   async function handleParkingClick(event, link) {
     event.preventDefault();
     UI.toggleLoader(true);
@@ -72,7 +70,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Soumission de la recherche
-
   async function handleSearchBoxSubmit(event) {
     event.preventDefault();
     const query = UI.getSearchQuery().trim();
@@ -95,7 +92,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Liste de tous les parkings
-
   async function handleListButton(event) {
     event.preventDefault();
     UI.toggleLoader(true);
@@ -113,7 +109,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Détails d’un parking
-
   async function handleParkingInfoClick(event, button) {
     event.preventDefault();
     UI.toggleResultContainer(false);
@@ -140,8 +135,7 @@ export function createHandlers(builder, navigation) {
     }
   }
 
-  // Fonction interne pour afficher les infos
-
+  // Fonction pour afficher les infos
   function displayParkingInfo(parking) {
     const infoBase = document.createElement("div");
     const placesInfo = document.createElement("div");
@@ -213,7 +207,6 @@ export function createHandlers(builder, navigation) {
   }
 
   // Gestion de la liste de parkings
-
   function handleParkingList(parkings) {
     UI.emptyResultBox();
     if (!parkings || !parkings.length) {
@@ -276,20 +269,19 @@ export function createHandlers(builder, navigation) {
     if (builder.userMarker) builder.map.panTo(builder.userMarker.position);
   }
 
-  // Gestion de la croix pour fermer
-
+  // Gestion cross icon
   async function handleCrossIcon(event) {
     handleStop(event);
   }
 
   // Fermer les resultbox
-
   function handleCloseButton(event) {
     event.preventDefault();
     UI.toggleResultContainer(false);
     navigation.stopNavigation();
   }
 
+  //export
   return {
     handleAutoSearchClick,
     handleSearchBoxSubmit,

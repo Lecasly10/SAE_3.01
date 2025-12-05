@@ -29,6 +29,7 @@ export class Navigation {
     this.parkMonitor = null;
     this.destination = null;
     this.route = null;
+    this.focus = false;
     this.redirecting = false;
   }
 
@@ -45,6 +46,7 @@ export class Navigation {
     this.stopParkingMonitor();
     this.removeRoute();
     this.destination = null;
+    this.focus = false;
   }
 
   async closestParking() {
@@ -61,12 +63,7 @@ export class Navigation {
         throw new Error("Aucune donnée trouvé");
       if (isNaN(resultat.lat) || isNaN(resultat.lng))
         throw new Error("Coordonnées invalides");
-      return {
-        name: resultat.name,
-        id: resultat.id,
-        lat: resultat.lat,
-        lng: resultat.lng,
-      };
+      return { ...resultat };
     } catch (error) {
       console.error("Erreur : ", error);
       return null;
@@ -83,17 +80,27 @@ export class Navigation {
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
 
+      //Suivre le marker
+      if (this.focus) {
+        builder.map.panTo(builder.userMarker.position);
+      }
+
+      //Arrivé a destination
       if (dist < 0.05) {
         await this.stopNavigation();
         return;
       }
 
+      //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
       if (!placesLibres && !this.redirecting) {
         this.redirecting = true;
         await this.stopNavigation();
         const newDest = await this.closestParking();
-        if (newDest) await this.startNavigation(newDest);
+        if (newDest) {
+          await this.startNavigation(newDest);
+          this.focus = true;
+        }
         this.redirecting = false;
       }
     }, 10000);
