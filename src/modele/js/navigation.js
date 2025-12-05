@@ -2,7 +2,7 @@ import { addMarker } from "../../controller/js/addMarkers.js";
 import { getGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
-
+import { UI } from "./UI.js";
 const destinationIconURL =
   "https://cdn-icons-png.flaticon.com/512/4668/4668400.png";
 
@@ -97,10 +97,12 @@ export class Navigation {
       if(!placesLibres) return
       if (placesLibres < 1 && !this.redirecting) {
         this.redirecting = true;
+        UI.toggleNavigationUI("CHARGEMENT...");
         await this.stopNavigation();
         const newDest = await this.closestParking();
         if (newDest) {
           await this.startNavigation(newDest);
+          UI.toggleNavigationUI(newDest.name);
           this.focus = true;
         }
         this.redirecting = false;
