@@ -74,6 +74,7 @@ export class Navigation {
     if (!this.destination || this.parkMonitor) return;
 
     this.parkMonitor = setInterval(async () => {
+      if(!this.parkMonitor) return;
       const builder = Navigation.builder;
       if (!builder?.userMarker) return;
 
