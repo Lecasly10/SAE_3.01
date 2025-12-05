@@ -93,7 +93,8 @@ export class Navigation {
 
       //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
-      if (!placesLibres && !this.redirecting) {
+      if(!placesLibres) return
+      if (placesLibres < 1 && !this.redirecting) {
         this.redirecting = true;
         await this.stopNavigation();
         const newDest = await this.closestParking();
