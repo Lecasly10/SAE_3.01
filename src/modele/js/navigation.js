@@ -74,10 +74,12 @@ export class Navigation {
 
     this.parkMonitor = setInterval(async () => {
       const builder = Navigation.builder;
-      if (!builder?.userMarker) return;
+      console.log("Monitor :")
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
+      console.log(coord)
+      console.log(dist)
 
       //Suivre le marker
       if (this.focus) {
