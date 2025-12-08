@@ -74,15 +74,16 @@ export class Navigation {
 
     this.parkMonitor = setInterval(async () => {
       const builder = Navigation.builder;
-      console.log("Monitor :")
+      console.log("Monitor :");
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
-      console.log(coord)
-      console.log(dist)
+      console.log(coord);
+      console.log(dist);
 
       //Suivre le marker
       if (this.focus) {
+        console.log("Recentrage");
         builder.map.panTo(builder.userMarker.position);
       }
 
@@ -95,7 +96,7 @@ export class Navigation {
       //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
       console.log(placesLibres);
-      if(!placesLibres) return
+      if (!placesLibres) return;
       if (placesLibres < 1 && !this.redirecting) {
         this.redirecting = true;
         UI.toggleNavigationUI("CHARGEMENT...");
