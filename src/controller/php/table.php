@@ -24,15 +24,15 @@ function createTable(array $lesParkings): array {
 
         if (!$placesObj || !$tarifObj) continue;
 
-        $pLibre = null;
-        $city=detectCity($parking->getLat(), $parking->getLong());
-        try {
-            if(isset($city)) {
-                 $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
-            }
-        } catch (Exception $e) {
-            $pLibre = null;
-        } 
+        $pLibre = 0;
+        // $city=detectCity($parking->getLat(), $parking->getLong());
+        // try {
+        //     if(isset($city)) {
+        //          $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
+        //     }
+        // } catch (Exception $e) {
+        //     $pLibre = null;
+        // } 
 
         $res[] = [
             "id" => $id,
@@ -48,7 +48,7 @@ function createTable(array $lesParkings): array {
             "user" => $parking->getUserType(),
             "max_height" => $parking->getMaxHeight(),
             "places" => $placesObj->getTotal(),
-            "places_libres" => $pLibre ?? -1,
+            "places_libres" => $pLibre ,
             "pmr" => $placesObj->getPmr(),
             "e2w" => $placesObj->getElectric2W(),
             "eCar" => $placesObj->getElectricCar(),
