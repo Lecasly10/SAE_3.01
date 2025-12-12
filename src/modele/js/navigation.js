@@ -79,7 +79,6 @@ export class Navigation {
       const builder = Navigation.builder;
 
       if (this.focus) {
-        console.log("Recentrage");
         builder.map.panTo(builder.userMarker.position)
       }
 
@@ -94,7 +93,7 @@ export class Navigation {
 
       //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
-      console.log(placesLibres);
+
       if (!placesLibres || placesLibres == -1) return;
       if (placesLibres < 1 && !this.redirecting) {
         this.redirecting = true;
@@ -108,7 +107,7 @@ export class Navigation {
         }
         this.redirecting = false;
       }
-    }, 10000);
+    }, 5000);
   }
 
   stopParkingMonitor() {
@@ -125,7 +124,7 @@ export class Navigation {
       const res = await phpFetch("parkingInfo.php", {
         id: this.destination.id,
       });
-      return res?.parking?.places_libres > 0 || false;
+      return res.parking.places_libres;
     } catch (err) {
       console.error("Erreur checkParkingAvailability :", err);
       return null;

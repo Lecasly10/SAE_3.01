@@ -25,7 +25,7 @@ export class MapBuilder {
     this.map = null;
     this.userMarker = null;
     this.nightMode = false;
-    this.debug = true;
+    this.debug = false;
   }
 
   async initMap() {
