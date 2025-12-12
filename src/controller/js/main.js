@@ -16,6 +16,15 @@ globalThis.addEventListener("load", async () => {
     UI.toggleLoader(true);
     UI.setupUI();
 
+    const auth = localStorage.getItem("userSession");
+
+    if (!auth) {
+      console.log("Pas connecté")
+    } else {
+      const authInfo = JSON.stringify(auth);
+      console.log("Connecté");
+    }
+
     const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();

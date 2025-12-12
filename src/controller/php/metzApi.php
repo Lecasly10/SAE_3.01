@@ -16,7 +16,7 @@ class MetzAPI implements ParkingAPI {
         $data = fetch($this->url);
 
         if ($data === null) {
-            die("Erreur JSON Metz");
+            return null;
         }
 
         return $data;
