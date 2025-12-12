@@ -34,7 +34,9 @@ function createTable(array $lesParkings): array {
         try {
             if(isset($city)) {
                  $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
-            }  
+            }  else {
+                $pLibre = null;
+            }
         } catch (Exception $e) {
             $pLibre = null;
         }

@@ -11,7 +11,7 @@ class MetzAPI implements ParkingAPI {
         $this->url = $url;
     }
 
-    public function fetchData(): array {
+    public function fetchData(): ?array {
 
         $data = fetch($this->url);
 
@@ -25,6 +25,8 @@ class MetzAPI implements ParkingAPI {
     public function getFreePlaces(float $lat, float $lon): ?int {
 
         $data = $this->fetchData();
+
+        if(!isset($data)) return null;
 
         foreach ($data["features"] as $feature) {
 

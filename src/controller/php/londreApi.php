@@ -20,11 +20,12 @@ class LondreAPI implements ParkingAPI {
         $this->radius  = $config["radius"] ?? 200;
     }
 
-    private function call(string $url): array {
+    private function call(string $url): ?array {
         $data = fetch($url);
 
         if ($data === null) {
-            die("Erreur JSON Metz");
+            //die("Erreur JSON Metz");
+            return null;
         }
 
         return $data;
