@@ -237,7 +237,7 @@ export function createHandlers(builder, navigation) {
         (parking.places_libres > 0
           ? ` | ${parking.places_libres} places libres`
           : parking.places_libres == -1
-            ? "| API HS "
+            ? ""
             : " | complet");
       link.title = "Cliquez pour lancer l'itinéraire";
       link.dataset.lat = parking.lat;
