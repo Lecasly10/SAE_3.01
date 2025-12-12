@@ -34,6 +34,8 @@ globalThis.addEventListener("load", async () => {
     geo.startWatching();
 
     Navigation.init(builder);
+    Navigation.getInstance().startParkingMonitor();
+    Navigation.getInstance().focus = true;
 
     await initEvent();
   } catch (e) {

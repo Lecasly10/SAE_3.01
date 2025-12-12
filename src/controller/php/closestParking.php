@@ -56,7 +56,7 @@ try {
             $places = null;
         }
 
-        if (isset($places) && $places > 0) {
+        if (isset($places) && ($places > 0 || $places == -1)) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
 
             if ($dist < $minDist) {

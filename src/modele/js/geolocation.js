@@ -47,13 +47,21 @@ export class Geolocation {
       this.builder.map.setCenter(userPosition);
       return userPosition;
     } catch (err) {
+      alert("Géolocalisation indisponible !")
+
+      if (this.builder.debug) this.builder.userMarker = await addMarker(
+        this.builder,
+        { lat: 49.116229, lng: 6.169006 },
+        "Votre Position",
+        globalThis.carIconURL
+      );
       console.warn("Erreur Geolocation :", err);
       return null;
     }
   }
 
   startWatching() {
-    if (this.watchId) return;
+    if (this.watchId || this.builder.debug) return;
 
     this.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {
@@ -90,8 +98,8 @@ export class Geolocation {
     const s =
       Math.sin(dLat / 2) ** 2 +
       Math.cos(Geolocation.deg2rad(a.lat)) *
-        Math.cos(Geolocation.deg2rad(b.lat)) *
-        Math.sin(dLng / 2) ** 2;
+      Math.cos(Geolocation.deg2rad(b.lat)) *
+      Math.sin(dLng / 2) ** 2;
     return 2 * R * Math.atan2(Math.sqrt(s), Math.sqrt(1 - s));
   }
 

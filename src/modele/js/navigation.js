@@ -73,19 +73,16 @@ export class Navigation {
     if (!this.destination || this.parkMonitor) return;
 
     this.parkMonitor = setInterval(async () => {
+
       const builder = Navigation.builder;
-      console.log("Monitor :");
+
+      if (this.focus) {
+        console.log("Recentrage");
+        builder.map.panTo(builder.userMarker.position)
+      }
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
-      console.log(coord);
-      console.log(dist);
-
-      //Suivre le marker
-      if (this.focus) {
-        console.log("Recentrage");
-        builder.map.panTo(builder.userMarker.position);
-      }
 
       //Arrivé a destination
       if (dist < 0.05) {
@@ -96,7 +93,7 @@ export class Navigation {
       //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
       console.log(placesLibres);
-      if (!placesLibres) return;
+      if (!placesLibres || placesLibres == -1) return;
       if (placesLibres < 1 && !this.redirecting) {
         this.redirecting = true;
         UI.toggleNavigationUI("CHARGEMENT...");
