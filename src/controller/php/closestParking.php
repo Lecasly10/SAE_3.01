@@ -19,6 +19,7 @@ $data = json_decode($json, true);
 
 $lat = isset($data['lat']) ? floatval($data['lat']) : null;
 $lng = isset($data['lng']) ? floatval($data['lng']) : null;
+$test = 0;
 
 if ($lat === null || $lng === null) {
     echo json_encode([
@@ -50,14 +51,16 @@ try {
         if (!$city)
             continue;
 
-        $places = -1;
+        $places = null;
         try {
             $places = placeLibre($city, $nextLat, $nextLng);
         } catch (Exception $e) {
-            $places = -1;
+            $places = null;
         }
 
-        if (isset($places) && ($places > 0 || $paces === -1)) {
+        $places = $places ?? -1;
+
+        if ($places > 0 || $places == -1) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
 
             if ($dist < $minDist) {
@@ -79,7 +82,8 @@ try {
     } else {
         echo json_encode([
             'status' => 'erreur',
-            'message' => 'Aucun parking disponible à proximité'
+            'message' => 'Aucun parking disponible à proximité',
+            'places' => $test
         ]);
     }
 } catch (Exception $e) {

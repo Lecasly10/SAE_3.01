@@ -51,9 +51,8 @@ export class Navigation {
   async closestParking() {
     try {
       let position = Navigation.builder.userMarker.position;
-      console.log("test: ", position)
-      console.log({ lat: position.lat, lng: position.lng })
-      const resultat = await phpFetch("closestParking.php", { lat: position.lat, lng: position.lng });
+
+      const resultat = await phpFetch("closestParking.php", position);
       if (
         !resultat ||
         !resultat.lat ||
