@@ -51,7 +51,7 @@ export class Geolocation {
 
       if (this.builder.debug) this.builder.userMarker = await addMarker(
         this.builder,
-        { lat: 49.116229, lng: 6.169006 },
+        { lat: 49.119178, lng: 6.168469 },
         "Votre Position",
         globalThis.carIconURL
       );

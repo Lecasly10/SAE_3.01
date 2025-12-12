@@ -59,7 +59,8 @@ export class Navigation {
         !resultat.id ||
         !resultat.name
       )
-        throw new Error("Aucune donnée trouvé");
+        throw new Error("Aucune donnée trouvé") && console.log(resultat);
+
       if (isNaN(resultat.lat) || isNaN(resultat.lng))
         throw new Error("Coordonnées invalides");
       return { ...resultat };

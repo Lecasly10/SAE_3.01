@@ -49,14 +49,15 @@ try {
         $city = detectCity($nextLat, $nextLng);
         if (!$city)
             continue;
-        $places = null;
+
+        $places = -1;
         try {
             $places = placeLibre($city, $nextLat, $nextLng);
         } catch (Exception $e) {
-            $places = null;
+            $places = -1;
         }
 
-        if (isset($places) && ($places > 0 || $places == -1)) {
+        if (isset($places) && $places > 0) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
 
             if ($dist < $minDist) {
