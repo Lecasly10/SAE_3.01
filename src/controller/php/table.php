@@ -3,11 +3,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
 require_once __DIR__ . '/../../modele/php/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/../../modele/php/parkingTarifDAO.class.php';
 require_once __DIR__ . '/distance.php';
@@ -34,12 +29,10 @@ function createTable(array $lesParkings): array {
         try {
             if(isset($city)) {
                  $pLibre = placeLibre($city, $parking->getLat(), $parking->getLong());
-            }  else {
-                $pLibre = null;
             }
         } catch (Exception $e) {
             $pLibre = null;
-        }
+        } 
 
         $res[] = [
             "id" => $id,
@@ -55,7 +48,7 @@ function createTable(array $lesParkings): array {
             "user" => $parking->getUserType(),
             "max_height" => $parking->getMaxHeight(),
             "places" => $placesObj->getTotal(),
-            "places_libres" => $pLibre,
+            "places_libres" => $pLibre ?? -1,
             "pmr" => $placesObj->getPmr(),
             "e2w" => $placesObj->getElectric2W(),
             "eCar" => $placesObj->getElectricCar(),
