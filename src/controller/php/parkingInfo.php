@@ -1,7 +1,7 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -22,8 +22,8 @@ $parkingId = $data['id'] ?? null;
 
 if (!$parkingId) {
     echo json_encode([
-        "status" => "erreur",
-        "message" => "Paramètre 'id' manquant"
+        'status' => 'erreur',
+        'message' => "Paramètre 'id' manquant"
     ]);
     exit;
 }
@@ -32,21 +32,21 @@ try {
     $parking = (new ParkingDAO())->getById($parkingId);
     if (!$parking) {
         echo json_encode([
-            "status" => "erreur",
-            "message" => "Aucun parking trouvé"
+            'status' => 'erreur',
+            'message' => 'Aucun parking trouvé'
         ]);
         exit;
     }
 
     $res = createTable([$parking]);
     echo json_encode([
-        "status" => "ok",
-        "message" => "Parking trouvé",
-        "parking" => $res[0] ?? null
+        'status' => 'ok',
+        'message' => 'Parking trouvé',
+        'parking' => $res[0] ?? null
     ]);
 } catch (Exception $e) {
     echo json_encode([
-        "status" => "erreur",
-        "message" => "Erreur serveur: " . $e->getMessage()
+        'status' => 'erreur',
+        'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

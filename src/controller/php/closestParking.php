@@ -1,7 +1,7 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -22,8 +22,8 @@ $lng = isset($data['lng']) ? floatval($data['lng']) : null;
 
 if ($lat === null || $lng === null) {
     echo json_encode([
-        "status" => "erreur",
-        "message" => "Paramètres manquants"
+        'status' => 'erreur',
+        'message' => 'Paramètres manquants'
     ]);
     exit;
 }
@@ -36,8 +36,8 @@ try {
 
     if (!$parkings) {
         echo json_encode([
-            "status" => "erreur",
-            "message" => "Aucun parking trouvé"
+            'status' => 'erreur',
+            'message' => 'Aucun parking trouvé'
         ]);
         exit;
     }
@@ -47,12 +47,13 @@ try {
         $nextLng = $parking->getLong();
 
         $city = detectCity($nextLat, $nextLng);
-        if (!$city) continue;
+        if (!$city)
+            continue;
+        $places = null;
+        try {
+            $places = placeLibre($city, $nextLat, $nextLng);
+        } catch (Exception $e) {
             $places = null;
-            try {
-                $places = placeLibre($city, $nextLat, $nextLng);
-            } catch (Exception $e) {
-                $places = null;
         }
 
         if (isset($places) && $places > 0) {
@@ -67,23 +68,22 @@ try {
 
     if ($closeParking !== null) {
         echo json_encode([
-            "status" => "ok",
-            "message" => "Parking le plus proche trouvé",
-            "id" => $closeParking->getId(),
-            "lat" => $closeParking->getLat(),
-            "lng" => $closeParking->getLong(),
-            "name" => $closeParking->getName()
+            'status' => 'ok',
+            'message' => 'Parking le plus proche trouvé',
+            'id' => $closeParking->getId(),
+            'lat' => $closeParking->getLat(),
+            'lng' => $closeParking->getLong(),
+            'name' => $closeParking->getName()
         ]);
     } else {
         echo json_encode([
-            "status" => "erreur",
-            "message" => "Aucun parking disponible à proximité"
+            'status' => 'erreur',
+            'message' => 'Aucun parking disponible à proximité'
         ]);
     }
-
 } catch (Exception $e) {
     echo json_encode([
-        "status" => "erreur",
-        "message" => "Erreur serveur: " . $e->getMessage()
+        'status' => 'erreur',
+        'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

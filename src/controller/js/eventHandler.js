@@ -234,9 +234,11 @@ export function createHandlers(builder, navigation) {
       link.className = "item parking fade";
       link.textContent =
         parking.nom +
-        (parking.places_libres
+        (parking.places_libres > 0
           ? ` | ${parking.places_libres} places libres`
-          : " | complet");
+          : parking.places_libres == -1
+            ? "| API HS "
+            : " | complet");
       link.title = "Cliquez pour lancer l'itinéraire";
       link.dataset.lat = parking.lat;
       link.dataset.lng = parking.lng;
