@@ -11,12 +11,12 @@ export class Geolocation {
   }
 
   static getInstance() {
-    if (!Geolocation.instance) throw new Error("Geolocation non initialisée.");
+    if (!Geolocation.instance) throw new Error("Geolocation non init.");
     return Geolocation.instance;
   }
 
   constructor() {
-    if (Geolocation.instance) throw new Error("Utilise Geolocation.init()");
+    if (Geolocation.instance) throw new Error("Geolocation déjà init");
     this.builder = MapBuilder.getInstance();
     this.watchId = null;
   }

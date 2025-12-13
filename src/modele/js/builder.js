@@ -14,12 +14,12 @@ export class MapBuilder {
 
   static getInstance() {
     if (!MapBuilder.instance)
-      throw new Error("MapBuilder non initialisé. Appelle init() d'abord.");
+      throw new Error("MapBuilder non initialisé.");
     return MapBuilder.instance;
   }
 
   constructor() {
-    if (MapBuilder.instance) throw new Error("Utilise MapBuilder.init()");
+    if (MapBuilder.instance) throw new Error("Builder déjà init !");
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 20;
     this.map = null;

@@ -18,13 +18,13 @@ export class Navigation {
 
   static getInstance() {
     if (!Navigation.instance)
-      throw new Error("Navigation n'a pas été initialisé !");
+      throw new Error("Navigation non init !");
     return Navigation.instance;
   }
 
   constructor() {
     if (Navigation.instance)
-      throw new Error("Utilisez Navigation.init(builder)");
+      throw new Error("Navigation déjà init");
 
     this.parkMonitor = null;
     this.destination = null;
