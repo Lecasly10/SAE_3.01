@@ -72,7 +72,7 @@ class UserDAO
             ':surname' => $user->getFirstName(),
             ':passw' => $user->getPasswordHash(),
             ':tel' => $user->getPhone(),
-            ':date' => $user->getRegistrationDate()
+            ':date' => $user->getRegistrationDate()->format('Y-m-d')
         ]);
 
         if ($ex->rowCount() === 1) {
