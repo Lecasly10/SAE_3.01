@@ -5,6 +5,7 @@ import { initEvent } from "./event.js";
 import { Geolocation } from "../../modele/js/geolocation.js";
 import { MapBuilder } from "../../modele/js/builder.js";
 import { Navigation } from "../../modele/js/navigation.js";
+import { User } from "../../modele/js/user.js";
 
 //===GLOBAL===
 globalThis.carIconURL =
@@ -16,15 +17,6 @@ globalThis.addEventListener("load", async () => {
     UI.toggleLoader(true);
     UI.setupUI();
 
-    const auth = localStorage.getItem("userSession");
-
-    if (!auth) {
-      console.log("Pas connecté")
-    } else {
-      const authInfo = JSON.stringify(auth);
-      console.log("Connecté");
-    }
-
     const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
@@ -35,7 +27,10 @@ globalThis.addEventListener("load", async () => {
 
     Navigation.init(builder);
 
+    User.init();
     await initEvent();
+
+
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);
     alert("Erreur lors l'initialisation de l'application");

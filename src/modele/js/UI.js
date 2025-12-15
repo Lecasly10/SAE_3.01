@@ -22,6 +22,7 @@ export class UI {
 
     UI.toggleSearchInput(true);
     UI.toggleHomeCrossIcon(true);
+    UI.show(UI.el.settingsButton);
     UI.toggleLoader(false);
     UI.toggleResultContainer(false);
     UI.emptyResultBox();
@@ -29,6 +30,7 @@ export class UI {
 
   static toggleNavigationUI(destinationName) {
     UI.toggleHomeCrossIcon(false);
+    UI.hide(UI.el.settingsButton);
     UI.toggleResultContainer(false);
     UI.toggleSearchInput(false);
 
@@ -59,6 +61,30 @@ export class UI {
     UI.toggleResultContainer(true);
 
     return { confirm, cancel };
+  }
+
+  static toggleAuth(show = false) {
+    const { auth } = UI.el
+
+    show ? UI.show(auth) : UI.hide(auth)
+  }
+
+  static toggleInsc(show = false) {
+    const { nameI, telI, surnameI, inscrLink, connLink } = UI.el
+
+    if (show) {
+      UI.show(nameI)
+      UI.show(telI)
+      UI.show(surnameI)
+      UI.show(connLink)
+      UI.hide(inscrLink)
+    } else {
+      UI.hide(nameI)
+      UI.hide(telI)
+      UI.hide(surnameI)
+      UI.hide(connLink)
+      UI.show(inscrLink)
+    }
   }
 
   static toggleSearchInput(showInput = false) {

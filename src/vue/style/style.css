@@ -43,6 +43,108 @@ body {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
+/*AUTH*/
+
+#auth {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+#auth-container {
+  width: min(420px, 90vw);
+  padding: 2.2rem;
+
+  background: white;
+  border-radius: 26px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+
+  animation: pop 0.25s ease-out;
+}
+
+#auth-container > a {
+  display: block;
+  position: absolute;
+  color: black;
+}
+
+
+@keyframes pop {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+#auth-container p {
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #111;
+}
+
+
+#connexion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  color: black;
+}
+
+.link {
+  cursor: pointer;
+}
+
+#auth-container input {
+  padding: 14px 16px;
+  border-radius: 14px;
+
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+
+  font-size: 1rem;
+  color: #111;
+
+  transition: all 0.2s ease;
+}
+
+#auth-container input::placeholder {
+  color: #999;
+}
+
+#auth-container input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.15);
+}
+
+@media (max-width: 480px) {
+  #auth-container {
+    margin: 0px 1rem;
+    padding: 1.8rem;
+    border-radius: 20px;
+  }
+}
 /*BAR*/
 
 .navbar {

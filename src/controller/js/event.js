@@ -2,6 +2,8 @@ import * as element from "./htmlElement.js";
 import { MapBuilder } from "../../modele/js/builder.js";
 import { Navigation } from "../../modele/js/navigation.js";
 import { createHandlers } from "./eventHandler.js";
+import { User } from "../../modele/js/user.js";
+import { UI } from "../../modele/js/UI.js";
 
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
@@ -10,6 +12,10 @@ export async function initEvent() {
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
     builder.map.panTo(builder.userMarker.position);
+  });
+
+  element.settingsButton.addEventListener("click", (e) => {
+    handlers.handleSettingButton(e);
   });
 
   //Rechercher le parking le plus proche
@@ -41,5 +47,21 @@ export async function initEvent() {
     element.closeButton.addEventListener("click", (e) => {
       handlers.handleCloseButton(e);
     });
+
+    element.closeAuthButton.addEventListener("click", (e) => {
+      handlers.handleCloseButton(e);
+    })
+  }
+
+  if (element.inscrLink) {
+    element.inscrLink.addEventListener("click", (e) => {
+      UI.toggleInsc(true)
+    })
+  }
+
+  if (element.connLink) {
+    element.connLink.addEventListener("click", (e) => {
+      UI.toggleInsc(false)
+    })
   }
 }

@@ -280,7 +280,12 @@ export function createHandlers(builder, navigation) {
   function handleCloseButton(event) {
     event.preventDefault();
     UI.toggleResultContainer(false);
+    UI.toggleAuth(false)
     navigation.stopNavigation();
+  }
+
+  function handleSettingButton(event) {
+    UI.toggleAuth(true)
   }
 
   //export
@@ -290,5 +295,6 @@ export function createHandlers(builder, navigation) {
     handleCloseButton,
     handleCrossIcon,
     handleListButton,
+    handleSettingButton,
   };
 }
