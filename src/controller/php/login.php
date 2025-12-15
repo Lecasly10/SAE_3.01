@@ -26,7 +26,7 @@ if (!$mail || !$password) {
     exit;
 }
 
-if ($mail == 'admin@admin.com' && $password == '12345678') {
+if ($mail === 'admin@admin.com' && $password === 'admin123') {
     echo json_encode([
         'status' => 'success'
     ]);

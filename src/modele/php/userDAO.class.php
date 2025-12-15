@@ -22,7 +22,7 @@ class UserDAO
             $user->setId($row['user_id']);
             $user->setLastName($row['last_name']);
             $user->setFirstName($row['first_name']);
-            $user->setMail($row['mail']);
+            $user->setMail($row['email']);
             $user->setPasswordHash($row['password_hash']);
             $user->setPhone(intval($row['phone']));
             $user->setRegistrationDate(new DateTime($row['date']));
@@ -51,7 +51,7 @@ class UserDAO
     {
         $user = new User();
         $users = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
-        mail=:mail', [':mail' => $mail]));
+        email=:mail', [':mail' => $mail]));
         if (count($users) > 0) {
             $user = $users[0];
         }
