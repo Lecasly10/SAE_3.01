@@ -1,17 +1,19 @@
 //Fonction pour faire des requete post en JSON
-export async function phpFetch(php, data) {
+export async function phpFetch(php, data, options = null) {
+  options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    ...options
+  }
+
   try {
     const resp = await fetch(
       //devweb de l'iut
       `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/` +
-        php,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
+      php, options
     );
 
     if (!resp.ok) {

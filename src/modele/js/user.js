@@ -4,10 +4,9 @@ import { UI } from "./UI.js";
 export class User {
     static instance = null;
 
-    static init() {
+    static async init() {
         if (!User.instance) User.instance = new User();
-        User.instance.isLogged = User.instance.checkAuth();
-        console.log(User.instance.isLogged)
+        User.instance.isLogged = await User.instance.checkAuth();
         return User.instance;
     }
 
@@ -29,36 +28,33 @@ export class User {
     }
 
     async checkAuth() {
-        await fetch("checkAuth.php", {
-            credentials: "include"
-        })
-            .then(r => r.json())
-            .then(data => {
-                if (!data) throw new Error("Erreur serveur !")
-                if (data.authenticated) {
-                    return true
-                }
-                UI.toggleAuth(true);
-                return false
+        try {
+            const data = await phpFetch("checkAuth.php", {}, {
+                credentials: "include"
             });
+
+            if (!data) throw new Error("Erreur serveur !");
+
+
+            if (!data.authenticated) UI.toggleAuth(true);
+            return data.authenticated ? data.authenticated : false;
+
+        } catch (error) {
+            console.error("checkAuth error:", error);
+            return false;
+        }
     }
 
     async login(mail, password) {
-        await fetch("login.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+        const data = await phpFetch("login.php", { mail, password }, {
             credentials: "include",
-            body: JSON.stringify({ mail, password })
         })
-            .then(r => r.json())
-            .then(data => {
-                if (!data) throw new Error("Erreur serveur !")
-                if (data.success) {
-                    console.log("Connecté !")
-                } else {
-                    console.log("Fail !")
-                }
-            })
+
+        if (data.success) console.log("connecté !")
+        else {
+            console.log("Erreur !")
+            console.log(data.message)
+        }
     }
 
     async signin(info) {
@@ -67,15 +63,15 @@ export class User {
 
     async auth(info) {
         try {
-            const { name, surname, tel, mail, password } = info
-            if (!mail || !password) {
+            const { name, surname, tel, mail, pass } = info
+            if (!mail || !pass) {
                 throw new Error("Password et mail requis pour la connections")
             }
             if (this.createAccount) {
                 if (!name || !surname || !tel) throw new Error("Des informations requises sont manquantes ! ")
-                this.signin(info);
+                await this.signin(info);
             } else {
-                this.login({ mail, password });
+                await this.login(mail, pass);
             }
         } catch (error) {
             alert("Une Erreur s'est produites, Veuillez réessayer !")
