@@ -18,11 +18,11 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $mail = $data['mail'] ?? null;
 $password = $data['password'] ?? null;
-$tel = intval($data['tel']) ?? null;
+$tel = $data['tel'] ?? null;
 $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 
-if (!$mail || !$password || !$tel || !$name || !$surname) {
+if (!isset($mail) || !isset($password) || !isset($tel) || !isset($name) || !isset($surname)) {
     echo json_encode([
         'status' => 'fail',
         'message' => 'Paramètre manquants !'
@@ -47,7 +47,7 @@ try {
     $user = new User();
     $user->setLastName($name);
     $user->setFirstName($surname);
-    $user->setPhone($tel);
+    $user->setPhone(intval($tel));
     $user->setMail($mail);
     $user->setPasswordHash($hash);
 
