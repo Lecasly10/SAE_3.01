@@ -25,16 +25,11 @@ $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 
 if (!$mail || $password || !$tel || !$name || !$surname) {
-    // echo json_encode([
-    //     'status' => 'fail',
-    //     'message' => 'Paramètre manquants !'
-    // ]);
-    // exit;
-    $mail = 'test@gmail.com';
-    $password = 'matteo123';
-    $tel = '0637649664';
-    $name = 'Plancher';
-    $surname = 'Mattéo';
+    echo json_encode([
+        'status' => 'fail',
+        'message' => 'Paramètre manquants !'
+    ]);
+    exit;
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -54,7 +49,7 @@ try {
     $user = new User();
     $user->setLastName($name);
     $user->setFirstName($surname);
-    $user->setPhone(intval($tel));
+    $user->setPhone($tel);
     $user->setMail($mail);
     $user->setPasswordHash($hash);
 

@@ -6,7 +6,7 @@ class User
     private string $firstName;
     private string $mail;
     private string $passwordHash;
-    private int $phone;
+    private string $phone;
     private DateTime $registrationDate;
 
     function __construct(
@@ -15,7 +15,7 @@ class User
         string $firstName = '',
         string $mail = '',
         string $passwordHash = '',
-        int $phone = 0,
+        string $phone = '',
         ?DateTime $registrationDate = null,
     ) {
         $this->id = $id;
@@ -67,12 +67,12 @@ class User
         $this->mail = $mail;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(?int $phone)
+    public function setPhone(?string $phone)
     {
         $this->phone = $phone;
     }
