@@ -15,10 +15,10 @@ header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-$email = $data['email'] ?? '';
+$mail = $data['mail'] ?? '';
 $password = $data['password'] ?? '';
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !$password) {
+if (!$mail || !$password) {
     echo json_encode([
         'status' => 'fail',
         'message' => 'Paramètre manquants !'
@@ -26,7 +26,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !$password) {
     exit;
 }
 
-if ($email == 'admin@admin.com' && $password == '12345678') {
+if ($mail == 'admin@admin.com' && $password == '12345678') {
     echo json_encode([
         'status' => 'success'
     ]);
