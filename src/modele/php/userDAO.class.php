@@ -47,13 +47,15 @@ class UserDAO
         return $user;
     }
 
-    function getByMail(string $mail): User
+    function getByMail(string $mail): ?User
     {
         $user = new User();
         $users = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
         email=:mail', [':mail' => $mail]));
         if (count($users) > 0) {
             $user = $users[0];
+        } else {
+            return null;
         }
         return $user;
     }
