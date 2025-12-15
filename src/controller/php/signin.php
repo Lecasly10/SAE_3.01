@@ -33,7 +33,8 @@ if (!$mail || !$password || !$tel || !$name || !$surname) {
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    $userMail = (new userDAO())->getByMail($mail);
+    $DAO = new userDAO();
+    $userMail = $DAO->getByMail($mail);
 
     if (isset($userMail)) {
         echo json_encode([
@@ -50,10 +51,21 @@ try {
     $user->setMail($mail);
     $user->setPasswordHash($hash);
 
-    echo json_encode([
-        'status' => 'success',
-    ]);
-    exit;
+    $insert = $DAO->create($user);
+
+    if (!isset($insert)) {
+        echo json_encode([
+            'status' => 'fail',
+            'message' => 'Erreur de création !'
+        ]);
+        exit;
+    }
+    if ($insert) {
+        echo json_encode([
+            'status' => 'success',
+        ]);
+        exit;
+    }
 } catch (Exception $e) {
     echo json_encode([
         'status' => 'fail',

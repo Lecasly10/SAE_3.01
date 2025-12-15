@@ -61,7 +61,9 @@ export class User {
             credentials: "include",
         });
 
-        if (data.status === "success") console.log("Compte créer et connecté");
+        if (data.status === "success") {
+            await this.login(info.mail, info.password)
+        }
         else {
             console.log("Erreur : " + data.message);
         }
