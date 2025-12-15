@@ -5,16 +5,6 @@ export function createHandlers(builder, navigation, user) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (user.isLogged) {
-      try {
-        user.logout();
-        alert("Logged out !")
-      } catch (e) {
-        console.log(e)
-      }
-      return
-    }
-
     const {
       mail,
       pass,
@@ -374,6 +364,15 @@ export function createHandlers(builder, navigation, user) {
 
   function handleSettingButton(event) {
     event.preventDefault();
+    if (user.isLogged) {
+      try {
+        user.logout();
+        alert("Logged out !")
+      } catch (e) {
+        console.log(e)
+      }
+      return
+    }
     UI.toggleAuth(true)
   }
 
