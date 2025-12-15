@@ -3,7 +3,8 @@ import { phpFetch } from "./phpInteraction.js";
 
 export function createHandlers(builder, navigation, user) {
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
+    user.createAccount = false;
     event.preventDefault();
     const {
       mail,
@@ -65,7 +66,7 @@ export function createHandlers(builder, navigation, user) {
       return;
     }
 
-    const res = user.auth({
+    const res = await user.auth({
       name: nameI.value,
       surname: surnameI.value,
       tel: telI.value,
