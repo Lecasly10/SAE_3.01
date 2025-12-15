@@ -50,7 +50,7 @@ export class User {
             credentials: "include",
         })
 
-        if (data.success) console.log("connecté !")
+        if (data.status === "success") console.log("connecté !")
         else {
             console.log("Erreur !")
             console.log(data.message)
