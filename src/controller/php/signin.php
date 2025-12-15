@@ -8,6 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../modele/php/user.class.php';
 
