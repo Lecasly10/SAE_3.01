@@ -80,6 +80,7 @@ export class User {
 
         if (data.status === "success") {
             this.isLogged = false
+            UI.toggleAuthIcon(false);
         } else {
             console.log("Erreur : " + data.message)
         }
