@@ -19,11 +19,6 @@ export class User {
         if (User.instance)
             throw new Error("User déjà init !");
         this.isLogged = false
-        this.nom = null
-        this.prenom = null
-        this.num = null
-        this.mail = null
-        this.token = null;
         this.createAccount = false;
     }
 
@@ -34,7 +29,6 @@ export class User {
             });
 
             if (!data) throw new Error("Erreur serveur !");
-
 
             if (!data.authenticated) UI.toggleAuth(true);
             return data.authenticated ? data.authenticated : false;
@@ -50,7 +44,9 @@ export class User {
             credentials: "include",
         });
 
-        if (data.status === "success") console.log("connecté !");
+        if (data.status === "success") {
+            UI.toggleAuth(false);
+        }
         else {
             console.log("Erreur : " + data.message);
         }
@@ -63,9 +59,22 @@ export class User {
 
         if (data.status === "success") {
             await this.login(info.mail, info.password)
+            this.createAccount = false
         }
         else {
             console.log("Erreur : " + data.message);
+        }
+    }
+
+    async logout() {
+        const data = await phpFetch("logout.php", {}, {
+            credentials: "iclude",
+        })
+
+        if (data.status === "success") {
+            this.isLogged = false
+        } else {
+            console.log("Erreur : " + data.message)
         }
     }
 

@@ -20,6 +20,5 @@ if (isset($_SESSION['user_id'])) {
 } else {
     echo json_encode([
         'authenticated' => false,
-        'message' => 'Non identifier'
     ]);
 }
