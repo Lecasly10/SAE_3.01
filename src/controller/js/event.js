@@ -1,14 +1,15 @@
 import * as element from "./htmlElement.js";
 import { MapBuilder } from "../../modele/js/builder.js";
 import { Navigation } from "../../modele/js/navigation.js";
-import { createHandlers } from "./eventHandler.js";
 import { User } from "../../modele/js/user.js";
+import { createHandlers } from "./eventHandler.js";
 import { UI } from "../../modele/js/UI.js";
 
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
   const navigation = Navigation.getInstance();
-  const handlers = createHandlers(builder, navigation);
+  const user = User.getInstance();
+  const handlers = createHandlers(builder, navigation, user);
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
     builder.map.panTo(builder.userMarker.position);
@@ -34,6 +35,10 @@ export async function initEvent() {
   element.listButton.addEventListener("click", async (e) => {
     handlers.handleListButton(e);
   });
+
+  element.submitButton.addEventListener("click", async (e) => {
+    handlers.handleSubmit(e);
+  })
 
   //Annuler ou stop
   if (element.crossIcon) {

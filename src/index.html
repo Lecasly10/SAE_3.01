@@ -17,52 +17,68 @@
 
   <body>
     <div id="auth" class="blur-bg hidden">
-  <div id="auth-container">
-      <a class="button fade" id="closeAuthButton">
-        <i class="fa fa-window-close" aria-hidden="true"></i>
-      </a>
-    <p>CONNEXION</p>
-    <div id="preinfo">
-       <input
-        type="text"
-        placeholder="Nom"
-        id="name"
-        name="name"
-        class="hidden"
-      >
-      <input
-        type="text"
-        class="hidden"
-        placeholder="Prénom"
-        id="surname"
-        name="surname"
-      >
+      <div id="auth-container">
+        <a class="button fade" id="closeAuthButton">
+          <i class="fa fa-window-close" aria-hidden="true"></i>
+        </a>
+        <p id="titleAuth">CONNEXION</p>
+        <div>
+          <p id="errorAuth" class="error hidden"></p>
+          <div id="preinfo">
+            <input
+              type="text"
+              placeholder="Nom"
+              id="name"
+              name="name"
+              class="hidden"
+            />
+            <input
+              type="text"
+              class="hidden"
+              placeholder="Prénom"
+              id="surname"
+              name="surname"
+            />
+          </div>
+          <div id="connexion">
+            <input
+              type="tel"
+              class="hidden"
+              placeholder="Numéro de tel ex: 06 12 12 23 33"
+              id="tel"
+              name="tel"
+              pattern="[0-9]{10}"
+              required
+            />
+            <input
+              type="email"
+              placeholder="Votre email..."
+              id="mail"
+              name="mail"
+            />
+            <input
+              type="password"
+              placeholder="Votre mot de passe"
+              id="password"
+              name="password"
+            />
+
+            <input
+              type="password"
+              placeholder="Confirmer le mot de passe"
+              id="confirmpasswordbox"
+              name="password"
+              class="hidden"
+            />
+            <div id="authbottom">
+              <a id="inscription" class="link">Pas de compte ? Inscription</a>
+              <a id="connexionLink" class="hidden link">Connexion</a>
+              <button id="submit" class="button">Valider</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="connexion">
-      <input
-        type="tel"
-        class="hidden"
-        placeholder="Numéro de tel"
-        id="tel"
-        name="tel"
-      >
-      <input
-        type="email"
-        placeholder="Votre email..."
-        id="mailbox"
-        name="mail"
-      >
-      <input
-        type="password"
-        placeholder="Votre mot de passe"
-        id="passwordbox"
-        name="password"
-      >
-      <a id="inscription" class="link">Pas de compte ? Inscription</a>
-      <a id="connexionLink" class="hidden link">Connexion</a>
-    </div>
-  </div>
-</div>
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
@@ -97,8 +113,6 @@
       <div id="centerButton" class="button fade" title="Recentrer">
         <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
       </div>
-
-  
 
       <div
         id="autoSearchButton"

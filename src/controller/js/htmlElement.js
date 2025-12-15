@@ -25,6 +25,11 @@ export const connLink = document.getElementById("connexionLink");
 export const nameI = document.getElementById("name")
 export const telI = document.getElementById("tel")
 export const surnameI = document.getElementById("surname")
+export const pass = document.getElementById("password")
+export const mail = document.getElementById("mail")
+export const confPass = document.getElementById("confirmpasswordbox")
+export const submitButton = document.getElementById("submit")
+export const errorI = document.getElementById("errorAuth")
 
 //loading animation
 export const loader = document.getElementById("loader");

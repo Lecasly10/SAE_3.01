@@ -1,7 +1,6 @@
 <?php
 
-
-require_once __DIR__ . "/user.class.php";
+require_once __DIR__ . '/user.class.php';
 
 class UserDAO
 {
@@ -10,9 +9,9 @@ class UserDAO
 
     public function __construct()
     {
-        require_once "../../modele/php/connexion.php";
+        require_once '../../modele/php/connexion.php';
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM users";
+        $this->select = 'SELECT * FROM users';
     }
 
     private function loadQuery(array $result): array
@@ -40,12 +39,22 @@ class UserDAO
     function getById(string $id): User
     {
         $user = new User();
-        $users = $this->loadQuery($this->bd->execSQL($this->select . " WHERE
-        user_id=:id", [':id' => $id]));
+        $users = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
+        user_id=:id', [':id' => $id]));
         if (count($users) > 0) {
             $user = $users[0];
         }
         return $user;
     }
 
+    function getByMail(string $mail): User
+    {
+        $user = new User();
+        $users = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
+        mail=:mail', [':mail' => $mail]));
+        if (count($users) > 0) {
+            $user = $users[0];
+        }
+        return $user;
+    }
 }

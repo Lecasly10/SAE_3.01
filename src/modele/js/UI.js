@@ -70,26 +70,27 @@ export class UI {
   }
 
   static toggleInsc(show = false) {
-    const { nameI, telI, surnameI, inscrLink, connLink } = UI.el
-
+    const { nameI, telI, surnameI, inscrLink, connLink, confPass, errorI } = UI.el
+    UI.hide(errorI)
     if (show) {
-      UI.show(nameI)
-      UI.show(telI)
-      UI.show(surnameI)
-      UI.show(connLink)
-      UI.hide(inscrLink)
+      UI.show(nameI);
+      UI.show(telI);
+      UI.show(surnameI);
+      UI.show(connLink);
+      UI.show(confPass);
+      UI.hide(inscrLink);
     } else {
-      UI.hide(nameI)
-      UI.hide(telI)
-      UI.hide(surnameI)
-      UI.hide(connLink)
-      UI.show(inscrLink)
+      UI.hide(nameI);
+      UI.hide(telI);
+      UI.hide(surnameI);
+      UI.hide(connLink);
+      UI.hide(confPass);
+      UI.show(inscrLink);
     }
   }
 
   static toggleSearchInput(showInput = false) {
     const { itiniraireTitle, autoSearchButton, searchBar, listButton } = UI.el;
-
     if (showInput) {
       UI.hide(itiniraireTitle);
       UI.show(autoSearchButton);

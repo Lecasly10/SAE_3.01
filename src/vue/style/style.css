@@ -43,6 +43,19 @@ body {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
+.link {
+  cursor: pointer;
+}
+
+.error {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: bolder;
+  color: #993737;
+  white-space: pre-line;
+}
+
 /*AUTH*/
 
 #auth {
@@ -80,7 +93,6 @@ body {
   color: black;
 }
 
-
 @keyframes pop {
   from {
     transform: scale(0.94);
@@ -92,8 +104,7 @@ body {
   }
 }
 
-
-#auth-container p {
+#auth-container #titleAuth {
   margin: 0;
   text-align: center;
   font-size: 1.5rem;
@@ -102,20 +113,53 @@ body {
   color: #111;
 }
 
-
-#connexion {
+#connexion,
+#preinfo,
+#authbottom {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 1.2rem;
   color: black;
 }
 
-.link {
-  cursor: pointer;
+#preinfo,
+#authbottom {
+  flex-direction: row;
+}
+
+#preinfo {
+  margin: 1rem 0px 14px 0px;
+}
+
+#authbottom {
+  justify-content: space-between;
+}
+
+#authbottom button {
+  border: none;
+  outline: none;
+  background-color: var(--accent);
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 5px;
+  transition: all ease 0.1s;
+  box-shadow: 0px 5px 0px 0px #66accc;
+}
+
+#authbottom button:active {
+  transform: translateY(5px);
+  box-shadow: 0px 0px 0px 0px #66accc;
+}
+
+#authbottom a {
+  font-size: 16px;
 }
 
 #auth-container input {
-  padding: 14px 16px;
+  padding: 12px 10px;
   border-radius: 14px;
 
   border: 1px solid #ddd;
@@ -138,13 +182,6 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.15);
 }
 
-@media (max-width: 480px) {
-  #auth-container {
-    margin: 0px 1rem;
-    padding: 1.8rem;
-    border-radius: 20px;
-  }
-}
 /*BAR*/
 
 .navbar {
@@ -375,6 +412,18 @@ select:focus {
   #bottomnav {
     margin: 0 0 10px 0;
     width: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  #auth-container {
+    margin: 0px 1rem;
+    padding: 1.8rem;
+    border-radius: 20px;
+  }
+
+  #preinfo {
+    flex-direction: column;
   }
 }
 

@@ -1,7 +1,85 @@
 import { UI } from "../../modele/js/UI.js";
 import { phpFetch } from "./phpInteraction.js";
 
-export function createHandlers(builder, navigation) {
+export function createHandlers(builder, navigation, user) {
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const {
+      mail,
+      pass,
+      confPass,
+      nameI,
+      surnameI,
+      telI,
+      errorI
+    } = UI.el;
+
+    let errors = [];
+    const isEmpty = (value) => !value || value.trim() === "";
+    const isValidEmail = (email) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidString = (string) =>
+      /^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/.test(string)
+    const isValidPhone = (phone) =>
+      /^[0-9]{8,15}$/.test(phone);
+
+    errorI.textContent = "";
+    UI.hide(errorI);
+
+    if (isEmpty(mail.value))
+      errors.push("L’email est obligatoire.");
+    else if (!isValidEmail(mail.value))
+      errors.push("Email invalide.");
+
+    if (isEmpty(pass.value))
+      errors.push("Le mot de passe est obligatoire.");
+    else if (pass.value.length < 8)
+      errors.push("Le mot de passe doit contenir au moins 8 caractères.");
+
+    if (!confPass.classList.contains("hidden")) {
+      user.createAccount = true;
+
+      if (isEmpty(confPass.value))
+        errors.push("La confirmation du mot de passe est obligatoire.");
+      else if (pass.value !== confPass.value)
+        errors.push("Les mots de passe ne correspondent pas.");
+      if (isEmpty(nameI.value))
+        errors.push("Le prénom est obligatoire.");
+      else if (!isValidString(nameI.value))
+        errors.push("Nom invalide !")
+      if (isEmpty(surnameI.value))
+        errors.push("Le nom est obligatoire.");
+      else if (!isValidString(surnameI.value))
+        errors.push("Prénom invalide !")
+      if (isEmpty(telI.value))
+        errors.push("Le téléphone est obligatoire.");
+      else if (!isValidPhone(telI.value))
+        errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
+    }
+
+    if (errors.length > 0) {
+      user.createAccount = false;
+      errorI.textContent = errors.join("\n");
+      UI.show(errorI);
+      return;
+    }
+
+    const res = user.auth({
+      name: nameI,
+      surname: surnameI,
+      telI: telI,
+      mail: mail,
+      pass: pass,
+    })
+
+    if (!res) {
+      errorI.textContent = "Mot de passe ou mail invalide !"
+      UI.show(errorI);
+    }
+
+  }
+
   // Navigation vers une destination avec confirmation
   async function handleNavigation(destination) {
     await navigation.startNavigation(destination);
@@ -285,6 +363,7 @@ export function createHandlers(builder, navigation) {
   }
 
   function handleSettingButton(event) {
+    event.preventDefault();
     UI.toggleAuth(true)
   }
 
@@ -296,5 +375,6 @@ export function createHandlers(builder, navigation) {
     handleCrossIcon,
     handleListButton,
     handleSettingButton,
+    handleSubmit,
   };
 }
