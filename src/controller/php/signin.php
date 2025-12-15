@@ -18,7 +18,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $mail = $data['mail'] ?? null;
 $password = $data['password'] ?? null;
-$tel = $data['tel'] ?? null;
+$tel = intval($data['tel']) ?? null;
 $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 
