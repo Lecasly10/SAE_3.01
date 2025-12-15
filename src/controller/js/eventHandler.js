@@ -14,6 +14,7 @@ export function createHandlers(builder, navigation, user) {
       }
       return
     }
+
     const {
       mail,
       pass,

@@ -68,7 +68,7 @@ export class User {
 
     async logout() {
         const data = await phpFetch("logout.php", {}, {
-            credentials: "iclude",
+            credentials: "include",
         })
 
         if (data.status === "success") {
