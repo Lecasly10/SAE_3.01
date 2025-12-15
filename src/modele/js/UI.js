@@ -69,6 +69,18 @@ export class UI {
     show ? UI.show(auth) : UI.hide(auth)
   }
 
+  static toggleAuthIcon(show = false) {
+    const { userIcon } = UI.el
+    if (show) {
+      userIcon.classList.add("fa-user-circle-o")
+      userIcon.classList.remove("fa-user-plus")
+    } else {
+      userIcon.classList.remove("fa-user-circle-o")
+      userIcon.classList.add("fa-user-plus")
+    }
+
+  }
+
   static toggleInsc(show = false) {
     const { nameI, telI, surnameI, inscrLink, connLink, confPass, errorI } = UI.el
     UI.hide(errorI)

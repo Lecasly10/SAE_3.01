@@ -30,6 +30,6 @@ export const mail = document.getElementById("mail")
 export const confPass = document.getElementById("confirmpasswordbox")
 export const submitButton = document.getElementById("submit")
 export const errorI = document.getElementById("errorAuth")
-
+export const userIcon = document.getElementById("userIcon")
 //loading animation
 export const loader = document.getElementById("loader");
