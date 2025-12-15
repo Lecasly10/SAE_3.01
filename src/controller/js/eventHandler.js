@@ -66,11 +66,11 @@ export function createHandlers(builder, navigation, user) {
     }
 
     const res = user.auth({
-      name: nameI,
-      surname: surnameI,
-      telI: telI,
-      mail: mail,
-      pass: pass,
+      name: nameI.value,
+      surname: surnameI.value,
+      telI: telI.value,
+      mail: mail.value,
+      pass: pass.value,
     })
 
     if (!res) {
