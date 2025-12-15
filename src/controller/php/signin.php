@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../modele/php/user.class.php';
 
-session_start();
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -22,12 +21,17 @@ $tel = $data['tel'] ?? null;
 $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 
-if (!isset($mail) || !isset($password) || !isset($tel) || !isset($name) || !isset($surname)) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Paramètre manquants !'
-    ]);
-    exit;
+if (!$mail || $password || !$tel || !$name || !$surname) {
+    // echo json_encode([
+    //     'status' => 'fail',
+    //     'message' => 'Paramètre manquants !'
+    // ]);
+    // exit;
+    $mail = 'test@gmail.com';
+    $password = 'matteo123';
+    $tel = '0637649664';
+    $name = 'Plancher';
+    $surname = 'Mattéo';
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -36,7 +40,7 @@ try {
     $DAO = new userDAO();
     $userMail = $DAO->getByMail($mail);
 
-    if (isset($userMail)) {
+    if ($userMail !== null) {
         echo json_encode([
             'status' => 'fail',
             'message' => "L'adresse est déjà utilisé !"

@@ -1,5 +1,4 @@
 <?php
-
 class User
 {
     private string $id;
@@ -13,11 +12,11 @@ class User
     function __construct(
         string $id = '',
         string $lastName = '',
-        string $firstName ='',
-        string $mail='',
-        string $passwordHash='',
-        int $phone=0,
-        ?DateTime $registrationDate=null,
+        string $firstName = '',
+        string $mail = '',
+        string $passwordHash = '',
+        int $phone = 0,
+        ?DateTime $registrationDate = null,
     ) {
         $this->id = $id;
         $this->lastName = $lastName;
@@ -26,7 +25,6 @@ class User
         $this->passwordHash = $passwordHash;
         $this->phone = $phone;
         $this->registrationDate = $registrationDate ?? new DateTime();
-
     }
 
     public function getId(): ?string
@@ -38,7 +36,6 @@ class User
     {
         $this->id = $id;
     }
-
 
     public function getLastName(): ?string
     {
@@ -99,5 +96,4 @@ class User
     {
         $this->registrationDate = $registrationDate;
     }
-
 }
