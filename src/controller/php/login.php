@@ -26,13 +26,6 @@ if (!$mail || !$password) {
     exit;
 }
 
-if ($mail === 'admin@admin.com' && $password === 'admin123') {
-    echo json_encode([
-        'status' => 'success'
-    ]);
-    exit;
-}
-
 try {
     $user = (new userDAO())->getByMail($mail);
 

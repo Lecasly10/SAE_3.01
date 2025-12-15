@@ -46,10 +46,13 @@ export class User {
 
         if (data.status === "success") {
             UI.toggleAuth(false);
+            this.isLogged = true;
         }
         else {
             console.log("Erreur : " + data.message);
         }
+
+        return data
     }
 
     async signin(info) {
@@ -64,6 +67,8 @@ export class User {
         else {
             console.log("Erreur : " + data.message);
         }
+
+        return data
     }
 
     async logout() {
@@ -76,23 +81,28 @@ export class User {
         } else {
             console.log("Erreur : " + data.message)
         }
+
+        return data
     }
 
     async auth(info) {
         try {
             const { name, surname, tel, mail, password } = info
+            let data;
             if (!mail || !password) {
                 throw new Error("Password et mail requis pour la connections")
             }
             if (this.createAccount) {
                 if (!name || !surname || !tel) throw new Error("Des informations requises sont manquantes ! ")
-                await this.signin(info);
+                data = await this.signin(info);
             } else {
-                await this.login(mail, password);
+                data = await this.login(mail, password);
             }
+            return data
         } catch (error) {
             alert("Une Erreur s'est produites, Veuillez réessayer !")
             console.log(error)
+            return null
         }
     }
 }

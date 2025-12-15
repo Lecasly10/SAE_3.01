@@ -73,8 +73,8 @@ export function createHandlers(builder, navigation, user) {
       password: pass.value,
     })
 
-    if (!res) {
-      errorI.textContent = "Mot de passe ou mail invalide !"
+    if (res.status === "fail") {
+      errorI.textContent = res.message
       UI.show(errorI);
     }
 
