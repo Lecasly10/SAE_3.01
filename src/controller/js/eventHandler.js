@@ -68,9 +68,9 @@ export function createHandlers(builder, navigation, user) {
     const res = user.auth({
       name: nameI.value,
       surname: surnameI.value,
-      telI: telI.value,
+      tel: telI.value,
       mail: mail.value,
-      pass: pass.value,
+      password: pass.value,
     })
 
     if (!res) {

@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../../modele/php/userDAO.class.php';
+require_once __DIR__ . '/../../modele/php/user.class.php';
 
 session_start();
 header('Content-Type: application/json');
@@ -17,8 +18,11 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $mail = $data['mail'] ?? null;
 $password = $data['password'] ?? null;
+$tel = $data['tel'] ?? null;
+$name = $data['nom'] ?? null;
+$surname = $data['prenom'] ?? null;
 
-if (!$mail || !$password) {
+if (!$mail || !$password || !$tel || !$name || !$surname) {
     echo json_encode([
         'status' => 'fail',
         'message' => 'Paramètre manquants !'
@@ -26,39 +30,30 @@ if (!$mail || !$password) {
     exit;
 }
 
-if ($mail === 'admin@admin.com' && $password === 'admin123') {
-    echo json_encode([
-        'status' => 'success'
-    ]);
-    exit;
-}
+$hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    $user = (new userDAO())->getByMail($mail);
+    $userMail = (new userDAO())->getByMail($mail);
 
-    if (!$user) {
+    if (isset($userMail)) {
         echo json_encode([
             'status' => 'fail',
-            'message' => 'Ce mail ne correspond a aucun compte'
+            'message' => "L'adresse est déjà utilisé !"
         ]);
         exit;
     }
 
-    if ($user && password_verify($password, $user->getPasswordHash())) {
-        session_regenerate_id(true);
+    $user = new User();
+    $user->setLastName($name);
+    $user->setFirstName($surname);
+    $user->setPhone($tel);
+    $user->setMail($mail);
+    $user->setPasswordHash($hash);
 
-        $_SESSION['user_id'] = $user->getId();
-        $_SESSION['mail'] = $mail;
-        echo json_encode([
-            'status' => 'success'
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 'fail',
-            'message' => 'Identifants incorrect !'
-        ]);
-        exit;
-    }
+    echo json_encode([
+        'status' => 'success',
+    ]);
+    exit;
 } catch (Exception $e) {
     echo json_encode([
         'status' => 'fail',

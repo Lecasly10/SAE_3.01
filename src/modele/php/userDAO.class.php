@@ -25,7 +25,7 @@ class UserDAO
             $user->setMail($row['email']);
             $user->setPasswordHash($row['password_hash']);
             $user->setPhone(intval($row['phone']));
-            $user->setRegistrationDate(new DateTime($row['date']));
+            $user->setRegistrationDate(new DateTime($row['registration_date']));
             $users[] = $user;
         }
         return $users;
@@ -56,5 +56,27 @@ class UserDAO
             $user = $users[0];
         }
         return $user;
+    }
+
+    function create(User $user): boolval
+    {
+        $result = true;
+        $req = 'INSERT INTO users (email) (last_name) (first_name) (password_hash) (phone) (registration_date) VALUES (:mail) (:name) (:surname) (:passw) (:tel) (:date)';
+        $ex = $this->bd->execSQL($req, [
+            ':mail' => $user->getMail(),
+            ':name' => $user->getLastName(),
+            ':surname' => $user->getFirstName(),
+            ':passw' => $user->getPasswordHash(),
+            ':tel' => $user->getPhone(),
+            ':date' => $user->getRegistrationDate()
+        ]);
+
+        if ($ex->rowCount() === 1) {
+            $res = true;
+            $user->setId($ex->lastInsertId());
+        } else {
+            $res = false;
+        }
+        return $res;
     }
 }

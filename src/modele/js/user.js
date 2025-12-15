@@ -48,30 +48,36 @@ export class User {
     async login(mail, password) {
         const data = await phpFetch("login.php", { mail, password }, {
             credentials: "include",
-        })
+        });
 
-        if (data.status === "success") console.log("connecté !")
+        if (data.status === "success") console.log("connecté !");
         else {
-            console.log("Erreur !")
-            console.log(data.message)
+            console.log("Erreur : " + data.message);
         }
     }
 
     async signin(info) {
-        const req = await phpFetch("", info)
+        const data = await phpFetch("signin.php", info, {
+            credentials: "include",
+        });
+
+        if (data.status === "success") console.log("Compte créer et connecté");
+        else {
+            console.log("Erreur : " + data.message);
+        }
     }
 
     async auth(info) {
         try {
-            const { name, surname, tel, mail, pass } = info
-            if (!mail || !pass) {
+            const { name, surname, tel, mail, password } = info
+            if (!mail || !password) {
                 throw new Error("Password et mail requis pour la connections")
             }
             if (this.createAccount) {
                 if (!name || !surname || !tel) throw new Error("Des informations requises sont manquantes ! ")
                 await this.signin(info);
             } else {
-                await this.login(mail, pass);
+                await this.login(mail, password);
             }
         } catch (error) {
             alert("Une Erreur s'est produites, Veuillez réessayer !")
