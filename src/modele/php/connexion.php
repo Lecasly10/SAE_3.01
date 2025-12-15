@@ -31,4 +31,9 @@ class Connexion
             die($exception->getMessage());
         }
     }
+
+    public function getPDO(): PDO
+    {
+        return $this->db;
+    }
 }

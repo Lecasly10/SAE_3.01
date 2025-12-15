@@ -24,7 +24,7 @@ $tel = $data['tel'] ?? null;
 $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 
-if (!$mail || $password || !$tel || !$name || !$surname) {
+if (!$mail || !$password || !$tel || !$name || !$surname) {
     echo json_encode([
         'status' => 'fail',
         'message' => 'Paramètre manquants !'

@@ -62,12 +62,15 @@ class UserDAO
         return $user;
     }
 
-    function create(User $user): boolval
+    function create(User $user): bool
     {
-        $stmt = $this->bd->pdo->prepare('
-    INSERT INTO users (email, last_name, first_name, password_hash, phone, registration_date)
-    VALUES (:mail, :name, :surname, :passw, :tel, :date)
+        $pdo = $this->bd->getPDO();
+
+        $stmt = $pdo->prepare('
+        INSERT INTO users (email, last_name, first_name, password_hash, phone, registration_date)
+        VALUES (:mail, :name, :surname, :passw, :tel, :date)
     ');
+
         $stmt->execute([
             ':mail' => $user->getMail(),
             ':name' => $user->getLastName(),
@@ -78,7 +81,7 @@ class UserDAO
         ]);
 
         if ($stmt->rowCount() === 1) {
-            $user->setId($this->bd->pdo->lastInsertId());
+            $user->setId($pdo->lastInsertId());
             return true;
         }
         return false;
