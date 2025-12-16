@@ -361,6 +361,7 @@ export function createHandlers(builder, navigation, user) {
     event.preventDefault();
     UI.toggleResultContainer(false);
     UI.toggleAuth(false)
+    UI.toggleSetting(false);
     navigation.stopNavigation();
   }
 

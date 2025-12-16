@@ -40,7 +40,7 @@ export const nameParam = document.getElementById("nameParam");
 export const surnameParam = document.getElementById("surnameParam");
 export const mailParam = document.getElementById("mailParam");
 export const telParam = document.getElementById("telParam");
-
+export const closeSettingButton = document.getElementById("closeSettingButton");
 
 //loading animation
 export const loader = document.getElementById("loader");

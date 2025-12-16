@@ -48,15 +48,19 @@ export async function initEvent() {
   }
 
   //Fermer les box
-  if (element.closeButton) {
-    element.closeButton.addEventListener("click", (e) => {
-      handlers.handleCloseButton(e);
-    });
 
-    element.closeAuthButton.addEventListener("click", (e) => {
-      handlers.handleCloseButton(e);
-    })
-  }
+  element.closeButton.addEventListener("click", (e) => {
+    handlers.handleCloseButton(e);
+  });
+
+  element.closeAuthButton.addEventListener("click", (e) => {
+    handlers.handleCloseButton(e);
+  })
+
+  element.closeSettingButton.addEventListener("click", (e) => {
+    handlers.handleCloseButton(e);
+  });
+
 
   if (element.inscrLink) {
     element.inscrLink.addEventListener("click", (e) => {
