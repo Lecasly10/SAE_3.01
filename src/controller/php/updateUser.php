@@ -21,9 +21,9 @@ $userId = $data['id'] ?? null;
 $name = $data['name'] ?? null;
 $surname = $data['surname'] ?? null;
 $tel = $data['tel'] ?? null;
-$free = $data['free'] ?? null;
-$pmr = $data['pmr'] ?? null;
-$covered = $data['covered'] ?? null;
+$free = $data['free'];
+$pmr = $data['pmr'];
+$covered = $data['covered'];
 $maxh = $data['maxHourly'] ?? null;
 $maxd = $data['maxDist'] ?? null;
 
@@ -31,11 +31,11 @@ if (!$userId ||
         !$name ||
         !$surname ||
         !$tel ||
-        !$free ||
-        !$pmr ||
-        !$covered ||
+        !isset($free) ||
+        !isset($pmr) ||
+        !isset($covered) ||
         !$maxd ||
-        !$maxd) {
+        !$maxh) {
     echo json_encode([
         'status' => 'erreur',
         'message' => 'Paramètres manquant'
