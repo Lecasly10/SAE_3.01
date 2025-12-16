@@ -26,7 +26,7 @@ if (!$userId) {
 }
 
 try {
-    $user = (new UserDAO())->getById($userId);
+    $user = (new UserDAO())->getById(intval($userId));
     if (!$user) {
         echo json_encode([
             'status' => 'erreur',
@@ -34,11 +34,15 @@ try {
         ]);
         exit;
     } else {
+        $name = $user->getLastName();
+        $surname = $user->getFirstName();
+        $tel == $user->getPhone();
+
         echo json_encode([
             'status' => 'success',
-            'name' => $user->getLastName(),
-            'surname' => $user->getFirstName(),
-            'tel' => $user->getPhone()
+            'name' => $name,
+            'surname' => $surname,
+            'tel' => $tel,
         ]);
     }
 } catch (Exception $e) {

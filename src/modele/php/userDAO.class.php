@@ -38,15 +38,16 @@ class UserDAO
         return ($this->loadQuery($this->bd->execSQL($this->select)));
     }
 
-    function getById(string $id): User
+    function getById(string $id): ?User
     {
         $user = new User();
         $users = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
-        user_id=:id', [':id' => $id]));
+        user_id=:id', [':id' => intval($id)]));
         if (count($users) > 0) {
             $user = $users[0];
+            return $user;
         }
-        return $user;
+        return null;
     }
 
     function getByMail(string $mail): ?User
