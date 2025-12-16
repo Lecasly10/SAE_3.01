@@ -86,7 +86,7 @@ class UserPrefDAO
             prefer_covered = :cover,
             max_hourly_budget = :maxh,
             max_distance_km = :maxd
-        WHERE id = :id
+        WHERE user_id = :id
     ');
 
         $stmt->execute([

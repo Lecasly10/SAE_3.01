@@ -98,7 +98,7 @@ class UserDAO
             last_name = :name,
             first_name = :surname,
             phone = :tel
-        WHERE id = :id
+        WHERE user_id = :id
     ');
 
         $stmt->execute([
