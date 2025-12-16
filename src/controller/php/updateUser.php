@@ -34,8 +34,8 @@ if (!$userId ||
         !isset($free) ||
         !isset($pmr) ||
         !isset($covered) ||
-        !$maxd ||
-        !$maxh) {
+        !isset($maxd) ||
+        !isset($maxh)) {
     echo json_encode([
         'status' => 'erreur',
         'message' => 'Paramètres manquant'
