@@ -43,7 +43,9 @@ try {
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['mail'] = $mail;
         echo json_encode([
-            'status' => 'success'
+            'status' => 'success',
+            'user_id' => $_SESSION['user_id'],
+            'mail' => $_SESSION['mail']
         ]);
     } else {
         echo json_encode([

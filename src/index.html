@@ -31,6 +31,7 @@
               id="name"
               name="name"
               class="hidden"
+              required
             />
             <input
               type="text"
@@ -38,6 +39,7 @@
               placeholder="Prénom"
               id="surname"
               name="surname"
+              required
             />
           </div>
           <div id="connexion">
@@ -79,6 +81,24 @@
         </div>
       </div>
     </div>
+
+    <div id="settings" class="blur-bg hidden">
+      <div id="settingContainer">
+        <div id="personnalContainer">
+          <input type="text" id="nameParam" required />
+          <input type="text" id="surnameParam" required />
+          <input type="email" id="mailParam" disabled />
+          <input
+            type="tel"
+            placeholder="Numéro de tel ex: 06 12 12 23 33"
+            id="telParam"
+            pattern="[0-9]{10}"
+            required
+          />
+        </div>
+      </div>
+    </div>
+
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>

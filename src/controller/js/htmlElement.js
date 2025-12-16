@@ -3,6 +3,7 @@ export const homeIcon = document.getElementById("homeButton"); //Bouton home
 export const crossIcon = document.getElementById("stopButton"); //Bouton pour annuler / stop
 export const goCenterButton = document.getElementById("centerButton"); //Bouton pour recentrer
 export const autoSearchButton = document.getElementById("autoSearchButton"); //Bouton pour trouver le partking le plus proche
+export const userIcon = document.getElementById("userIcon")
 
 //Top Bar
 export const topnav = document.getElementById("topnav"); //Topbar
@@ -19,17 +20,27 @@ export const resultBox = document.getElementById("resultBox");
 export const resultTitle = document.getElementById("resultTitle");
 export const closeButton = document.getElementById("closeButton");
 
-export const auth = document.getElementById("auth")
+//Connection / inscription
+export const auth = document.getElementById("auth");
 export const inscrLink = document.getElementById("inscription");
 export const connLink = document.getElementById("connexionLink");
-export const nameI = document.getElementById("name")
-export const telI = document.getElementById("tel")
-export const surnameI = document.getElementById("surname")
-export const pass = document.getElementById("password")
-export const mail = document.getElementById("mail")
-export const confPass = document.getElementById("confirmpasswordbox")
-export const submitButton = document.getElementById("submit")
-export const errorI = document.getElementById("errorAuth")
-export const userIcon = document.getElementById("userIcon")
+export const nameI = document.getElementById("name");
+export const telI = document.getElementById("tel");
+export const surnameI = document.getElementById("surname");
+export const pass = document.getElementById("password");
+export const mail = document.getElementById("mail");
+export const confPass = document.getElementById("confirmpasswordbox");
+export const submitButton = document.getElementById("submit");
+export const errorI = document.getElementById("errorAuth");
+
+//Settings
+export const settings = document.getElementById("settings");
+export const settingContainer = document.getElementById("settingContainer");
+export const nameParam = document.getElementById("nameParam");
+export const surnameParam = document.getElementById("surnameParam");
+export const mailParam = document.getElementById("mailParam");
+export const telParam = document.getElementById("telParam");
+
+
 //loading animation
 export const loader = document.getElementById("loader");

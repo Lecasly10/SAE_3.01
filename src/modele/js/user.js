@@ -20,6 +20,8 @@ export class User {
             throw new Error("User déjà init !");
         this.isLogged = false
         this.createAccount = false;
+        this.userId = null;
+        this.mail = null;
     }
 
     async checkAuth() {
@@ -27,7 +29,6 @@ export class User {
             const data = await phpFetch("checkAuth.php", {}, {
                 credentials: "include"
             });
-
             if (!data) throw new Error("Erreur serveur !");
 
             if (!data.authenticated) UI.toggleAuth(true);
@@ -35,8 +36,19 @@ export class User {
             return data.authenticated ? data.authenticated : false;
 
         } catch (error) {
-            console.error("checkAuth error:", error);
+            console.error("checkAuth error: ", error);
             return false;
+        }
+    }
+
+    async loadInfo(id) {
+        try {
+            const data = await phpFetch("loadInfo.php", { id: id })
+            if (!data) throw new Error("Erreur serveur !");
+            else return data
+        } catch (error) {
+            console.error("Load info error: ", error)
+            return null
         }
     }
 
@@ -49,9 +61,11 @@ export class User {
             UI.toggleAuth(false);
             UI.toggleAuthIcon(true);
             this.isLogged = true;
+            this.userId = data.user_id;
+            this.mail = data.mail;
         }
         else {
-            console.log("Erreur : " + data.message);
+            throw new Error("Erreur serveur : " + data.message);
         }
 
         return data
@@ -67,7 +81,7 @@ export class User {
             this.createAccount = false
         }
         else {
-            console.log("Erreur : " + data.message);
+            throw new Error("Erreur serveur : " + data.message);
         }
 
         return data
@@ -79,10 +93,12 @@ export class User {
         })
 
         if (data.status === "success") {
-            this.isLogged = false
+            this.isLogged = false;
+            this.mail = null;
+            this.userId = null;
             UI.toggleAuthIcon(false);
         } else {
-            console.log("Erreur : " + data.message)
+            throw new Error("Erreur serveur : " + data.message)
         }
 
         return data

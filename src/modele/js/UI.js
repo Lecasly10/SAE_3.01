@@ -69,6 +69,12 @@ export class UI {
     show ? UI.show(auth) : UI.hide(auth)
   }
 
+  static toggleSetting(show = false) {
+    const { settings } = UI.el
+
+    show ? UI.show(settings) : UI.hide(settings);
+  }
+
   static toggleAuthIcon(show = false) {
     const { userIcon } = UI.el
     if (show) {

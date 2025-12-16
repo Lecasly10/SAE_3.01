@@ -366,15 +366,24 @@ export function createHandlers(builder, navigation, user) {
   function handleSettingButton(event) {
     event.preventDefault();
     if (user.isLogged) {
-      try {
-        user.logout();
-        alert("Logged out !")
-      } catch (e) {
-        console.log(e)
-      }
+      handleSettings();
       return
     }
     UI.toggleAuth(true)
+  }
+
+  function handleSettings() {
+    const { nameParam, mailParam, telParam, surnameParam } = UI.el
+    const data = user.loadInfo(user.userId);
+    if (!data) alert("Une erreur est survenu !")
+    else {
+      nameParam.value = data.name;
+      surnameParam.value = data.surname;
+      mailParam.value = user.mail;
+      telParam.value = data.tel;
+
+      UI.toggleSetting(true);
+    }
   }
 
   //export
