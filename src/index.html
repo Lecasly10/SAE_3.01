@@ -26,6 +26,7 @@
           <p id="errorAuth" class="error hidden"></p>
           <div id="preinfo">
             <input
+              class="inputPref"
               type="text"
               placeholder="Nom"
               id="name"
@@ -34,6 +35,7 @@
               required
             />
             <input
+              class="inputPref"
               type="text"
               class="hidden"
               placeholder="Prénom"
@@ -44,6 +46,7 @@
           </div>
           <div id="connexion">
             <input
+              class="inputPref"
               type="tel"
               class="hidden"
               placeholder="Numéro de tel ex: 06 12 12 23 33"
@@ -53,12 +56,14 @@
               required
             />
             <input
+              class="inputPref"
               type="email"
               placeholder="Votre email..."
               id="mail"
               name="mail"
             />
             <input
+              class="inputPref"
               type="password"
               placeholder="Votre mot de passe"
               id="password"
@@ -66,6 +71,7 @@
             />
 
             <input
+              class="inputPref"
               type="password"
               placeholder="Confirmer le mot de passe"
               id="confirmpasswordbox"
@@ -75,20 +81,26 @@
             <div id="authbottom">
               <a id="inscription" class="link">Pas de compte ? Inscription</a>
               <a id="connexionLink" class="hidden link">Connexion</a>
-              <button id="submit" class="button">Valider</button>
+              <button id="submit" class="button submit">Valider</button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="settings" class="blur-bg hidden">
+    <div id="settings" class="blur-bg">
       <div id="settingContainer">
         <div id="personnalContainer">
-          <input type="text" id="nameParam" required />
-          <input type="text" id="surnameParam" required />
-          <input type="email" id="mailParam" disabled />
+          <p>Informations</p>
+          <label class="inputTitle">Nom</label>
+          <input class="inputPref" type="text" id="nameParam" required />
+          <label class="inputTitle">Prénom</label>
+          <input class="inputPref" type="text" id="surnameParam" required />
+          <label class="inputTitle">Mail</label>
+          <input class="inputPref" type="email" id="mailParam" disabled />
+          <label class="inputTitle">Numéro de Tel.</label>
           <input
+            class="inputPref"
             type="tel"
             placeholder="Numéro de tel ex: 06 12 12 23 33"
             id="telParam"
