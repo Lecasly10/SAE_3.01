@@ -32,7 +32,11 @@ export class User {
             if (!data) throw new Error("Erreur serveur !");
 
             if (!data.authenticated) UI.toggleAuth(true);
-            if (data.authenticated) UI.toggleAuthIcon(true);
+            if (data.authenticated) {
+                UI.toggleAuthIcon(true)
+                this.userId = data.mail;
+                this.mail = data.user_id;
+            };
             return data.authenticated ? data.authenticated : false;
 
         } catch (error) {
