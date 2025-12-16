@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/userPref.class.php";
+require_once __DIR__ . '/userPref.class.php';
 
 class UserPrefDAO
 {
@@ -9,9 +9,9 @@ class UserPrefDAO
 
     public function __construct()
     {
-        require_once "../../modele/php/connexion.php";
+        require_once '../../modele/php/connexion.php';
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM user_pref";
+        $this->select = 'SELECT * FROM user_preferences';
     }
 
     private function loadQuery(array $result): array
@@ -19,7 +19,6 @@ class UserPrefDAO
         $prefs = [];
 
         foreach ($result as $row) {
-
             $pref = new UserPref(
                 $row['user_id'],
                 floatval($row['max_hourly_budget']),
@@ -47,7 +46,7 @@ class UserPrefDAO
         $pref = new UserPref();
         $prefs = $this->loadQuery(
             $this->bd->execSQL(
-                $this->select . " WHERE user_id = :id",
+                $this->select . ' WHERE user_id = :id',
                 [':id' => $id]
             )
         );

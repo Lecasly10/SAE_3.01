@@ -76,6 +76,8 @@ body {
 #settingContainer {
   width: min(420px, 90vw);
   padding: 2.2rem;
+  overflow-y: auto; /* scroll vertical */
+  overflow-x: hidden;
 
   background: white;
   border-radius: 26px;
@@ -90,7 +92,7 @@ body {
 }
 
 #settingContainer label {
-  font-weight: bolder;
+  font-weight: normal;
   margin: 0;
   padding: 0;
 }
@@ -135,11 +137,19 @@ body {
   color: #111;
 }
 
+#mainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 2rem;
+}
+
 #connexion,
 #preinfo,
 #authbottom,
 #settbottom,
-#personnalContainer {
+#personnalContainer,
+#prefContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -147,11 +157,24 @@ body {
   color: black;
 }
 
+#prefContainer {
+  height: fit-content;
+  width: fit-content;
+}
+
+.divinput {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 #personnalContainer {
   gap: 0.75rem;
 }
 
-#personnalContainer p {
+#mainContainer p {
+  margin: 0;
   font-size: 18px;
   font-weight: bolder;
 }
@@ -232,6 +255,18 @@ body {
   border-color: var(--accent);
   background: white;
   box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.15);
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  accent-color: #1e88ff; /* bleu quand coché */
+  cursor: pointer;
+}
+
+.int {
+  padding: 1px 2px 1px 5px;
+  max-width: 50px;
 }
 
 /*BAR*/
@@ -469,9 +504,14 @@ select:focus {
 
 @media (max-width: 480px) {
   #auth-container {
+    max-height: 80%;
     margin: 0px 1rem;
     padding: 1.8rem;
     border-radius: 20px;
+  }
+
+  #mainContainer {
+    flex-direction: column;
   }
 
   #preinfo {
@@ -479,6 +519,7 @@ select:focus {
   }
 
   #settingContainer {
+    max-height: 80%;
     width: 60%;
   }
 }

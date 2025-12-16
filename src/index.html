@@ -84,29 +84,64 @@
       </div>
     </div>
 
-    <div id="settings" class="blur-bg hidden">
+    <div id="settings" class="blur-bg">
       <div id="settingContainer">
         <a class="fade close" id="closeSettingButton"
           ><i class="fa fa-window-close" aria-hidden="true"></i>
         </a>
         <p class="titleWindow">PARAMETRES</p>
-        <div id="personnalContainer">
-          <p>Informations</p>
-          <label class="inputTitle">Nom</label>
-          <input class="inputPref" type="text" id="nameParam" required />
-          <label class="inputTitle">Prénom</label>
-          <input class="inputPref" type="text" id="surnameParam" required />
-          <label class="inputTitle">Mail</label>
-          <input class="inputPref" type="email" id="mailParam" disabled />
-          <label class="inputTitle">Numéro de Tel.</label>
-          <input
-            class="inputPref"
-            type="text"
-            placeholder="Numéro de tel ex: 06 12 12 23 33"
-            id="telParam"
-            pattern="[0-9]{10}"
-            required
-          />
+        <div id="mainContainer">
+          <div id="personnalContainer">
+            <p>Informations</p>
+            <label class="inputTitle">Nom</label>
+            <input class="inputPref" type="text" id="nameParam" required />
+            <label class="inputTitle">Prénom</label>
+            <input class="inputPref" type="text" id="surnameParam" required />
+            <label class="inputTitle">Mail</label>
+            <input class="inputPref" type="email" id="mailParam" disabled />
+            <label class="inputTitle">Numéro de Tel.</label>
+            <input
+              class="inputPref"
+              type="text"
+              placeholder="Numéro de tel ex: 06 12 12 23 33"
+              id="telParam"
+              pattern="[0-9]{10}"
+              required
+            />
+          </div>
+          <div id="prefContainer">
+            <p>Préférences</p>
+            <div class="divinput">
+              <label class="inputTitle">Parking Gratuit</label>
+              <input class="check" type="checkbox" id="freeParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Parking couvert</label>
+              <input class="check" type="checkbox" id="coverParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">PMR</label>
+              <input class="check" type="checkbox" id="pmrParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Budget Max /h</label>
+              <input
+                class="inputPref int"
+                type="number"
+                id="budgetParam"
+                required
+              />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Max. Dist</label>
+              <input
+                class="inputPref int"
+                type="number"
+                id="distParam"
+                required
+              />
+            </div>
+          </div>
         </div>
         <div id="settbottom">
           <button id="logout" class="submit">Déconnexion</button>

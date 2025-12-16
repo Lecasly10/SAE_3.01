@@ -42,5 +42,12 @@ export const mailParam = document.getElementById("mailParam");
 export const telParam = document.getElementById("telParam");
 export const closeSettingButton = document.getElementById("closeSettingButton");
 
+export const freeParam = document.getElementById("freeParam")
+export const coverParam = document.getElementById("coverParam")
+export const pmrParam = document.getElementById("pmrParam")
+export const maxDistParam = document.getElementById("distParam")
+export const maxHBudgetParam = document.getElementById("budgetParam")
+
+
 //loading animation
 export const loader = document.getElementById("loader");
