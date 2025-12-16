@@ -36,21 +36,16 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
-        if (!$pref) {
-            echo json_encode([
-                'status' => 'erreur',
-                'message' => 'Aucun pref user trouvé'
-            ]);
-            exit;
+        if ($pref) {
+            $pmr = $pref->getIsPmr();
+            $maxDistance = $pref->getMaxDistance();
+            $maxHourly = $pref->getMaxHourlyBudget();
+            $free = $pref->getPreferFree();
+            $covered = $pref->getPreferCovered();
         }
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
-        $pmr = $pref->getIsPmr();
-        $maxDistance = $pref->getMaxDistance();
-        $maxHourly = $pref->getMaxHourlyBudget();
-        $free = $pref->getPreferFree();
-        $covered = $pref->getPreferCovered();
 
         echo json_encode([
             'status' => 'success',
