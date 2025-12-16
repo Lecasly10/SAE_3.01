@@ -38,7 +38,7 @@ try {
             'status' => 'success',
             'name' => $user->getLastName(),
             'surname' => $user->getFirstName(),
-            'tel' => $uset->getPhone()
+            'tel' => $user->getPhone()
         ]);
     }
 } catch (Exception $e) {
