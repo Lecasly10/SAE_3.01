@@ -368,8 +368,6 @@ export function createHandlers(builder, navigation, user) {
   function handleSettingButton(event) {
     event.preventDefault();
     if (user.isLogged) {
-      console.log(user.mail)
-      console.log(user.userId)
       handleSettings();
     } else {
       UI.toggleAuth(true);
@@ -388,7 +386,11 @@ export function createHandlers(builder, navigation, user) {
       surnameParam.value = data.surname;
       mailParam.value = user.mail;
       telParam.value = data.tel;
-
+      pmrParam.checked = data.pmr == true;
+      coverParam.checked = data.covered == true;
+      freeParam.checked = data.free == true;
+      maxDistParam.value = data.maxDistance;
+      maxHBudgetParam.value = data.maxHourly;
       UI.toggleSetting(true);
     }
   }
