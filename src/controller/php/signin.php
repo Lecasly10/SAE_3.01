@@ -69,7 +69,7 @@ try {
         $userPref = $PrefDAO->getById($user->getId());
         if (!$userPref) {
             $userPref = new UserPref($user->getId());
-            $r = $prefDAO->create($userPref);
+            $r = $PrefDAO->create($userPref);
             if (!$r) {
                 echo json_encode([
                     'status' => 'fail',
