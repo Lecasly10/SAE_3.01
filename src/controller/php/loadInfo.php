@@ -36,6 +36,15 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
+        $name = $user->getLastName();
+        $surname = $user->getFirstName();
+        $tel = $user->getPhone();
+        $pmr = null;
+        $maxDistance = null;
+        $maxHourly = null;
+        $free = null;
+        $covered = null;
+
         if ($pref) {
             $pmr = $pref->getIsPmr();
             $maxDistance = $pref->getMaxDistance();
@@ -43,9 +52,6 @@ try {
             $free = $pref->getPreferFree();
             $covered = $pref->getPreferCovered();
         }
-        $name = $user->getLastName();
-        $surname = $user->getFirstName();
-        $tel = $user->getPhone();
 
         echo json_encode([
             'status' => 'success',
