@@ -367,15 +367,14 @@ export function createHandlers(builder, navigation, user) {
     event.preventDefault();
     if (user.isLogged) {
       handleSettings();
-      return
     }
     UI.toggleAuth(true)
   }
 
   async function handleSettings() {
-    const { nameParam, mailParam, telParam, surnameParam } = UI.el
-    const data = await user.loadInfo(user.userId);
-    if (!data) alert("Une erreur est survenu !")
+    const { nameParam, mailParam, telParam, surnameParam } = UI.el;
+    const data = await user.load(user.userId);
+    if (!data) alert("Une erreur est survenu !");
     else {
       nameParam.value = data.name;
       surnameParam.value = data.surname;

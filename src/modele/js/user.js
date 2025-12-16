@@ -41,7 +41,7 @@ export class User {
         }
     }
 
-    async loadInfo(id) {
+    async load(id) {
         try {
             const data = await phpFetch("loadInfo.php", { id: id })
             if (!data) throw new Error("Erreur serveur !");
