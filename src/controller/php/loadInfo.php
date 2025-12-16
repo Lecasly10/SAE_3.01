@@ -36,6 +36,13 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
+        if (!$pref) {
+            echo json_encode([
+                'status' => 'erreur',
+                'message' => 'Aucun pref user trouvé'
+            ]);
+            exit;
+        }
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
