@@ -41,7 +41,7 @@ class UserPrefDAO
         );
     }
 
-    public function getById(string $id): UserPref
+    public function getById(string $id): ?UserPref
     {
         $pref = new UserPref();
         $prefs = $this->loadQuery(
