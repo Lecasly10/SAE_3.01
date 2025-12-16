@@ -72,7 +72,7 @@ class UserDAO
         VALUES (:mail, :name, :surname, :passw, :tel, :date)
     ');
 
-        $stmt->execute([
+        $r = $stmt->execute([
             ':mail' => $user->getMail(),
             ':name' => $user->getLastName(),
             ':surname' => $user->getFirstName(),
@@ -81,7 +81,7 @@ class UserDAO
             ':date' => $user->getRegistrationDate()->format('Y-m-d')
         ]);
 
-        if ($stmt->rowCount() === 1) {
+        if ($r) {
             $user->setId($pdo->lastInsertId());
             return true;
         }
@@ -101,13 +101,11 @@ class UserDAO
         WHERE user_id = :id
     ');
 
-        $stmt->execute([
+        return $stmt->execute([
             ':name' => $user->getLastName(),
             ':surname' => $user->getFirstName(),
             ':tel' => $user->getPhone(),
             ':id' => intval($user->getId())
         ]);
-
-        return $stmt->rowCount() === 1;
     }
 }

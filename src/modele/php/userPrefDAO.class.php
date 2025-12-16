@@ -67,11 +67,9 @@ class UserPrefDAO
         VALUES (:id)
     ');
 
-        $stmt->execute([
+        return $stmt->execute([
             ':id' => intval($user->getId()),
         ]);
-
-        return $stmt->rowCount() === 1;
     }
 
     function update(UserPref $user): bool
@@ -89,7 +87,7 @@ class UserPrefDAO
         WHERE user_id = :id
     ');
 
-        $stmt->execute([
+        return $stmt->execute([
             ':pmr' => intval($user->getIsPmr()),
             ':free' => intval($user->getPreferFree()),
             ':cover' => intval($user->getPreferCovered()),
@@ -97,7 +95,5 @@ class UserPrefDAO
             ':maxd' => floatval($user->getMaxDistance()),
             ':id' => intval($user->getId()),
         ]);
-
-        return $stmt->rowCount() === 1;
     }
 }
