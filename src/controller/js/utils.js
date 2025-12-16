@@ -8,7 +8,7 @@ export class Utils {
         /^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/.test(string);
 
     static isValidNumber = (string) =>
-        /^\d+$/.test(string);
+        /^\d+(\.\d+)?$/.test(string);
 
     static isValidPhone = (phone) =>
         /^[0-9]{8,15}$/.test(phone);

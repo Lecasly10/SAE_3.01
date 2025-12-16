@@ -424,6 +424,8 @@ export function createHandlers(builder, navigation, user) {
       errors.push("Le budget maximal par heure est obligatoire")
     else if (!isValidNumber(maxHBudgetParam.value))
       errors.push("Le budget maximal par heure doit etre un nombre positif")
+
+
     if (errors.length > 0) {
       errorS.textContent = errors.join("\n");
       UI.show(errorS);
