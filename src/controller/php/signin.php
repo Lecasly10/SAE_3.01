@@ -13,6 +13,8 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../modele/php/user.class.php';
+require_once __DIR__ . '/../../modele/php/userPrefDAO.class.php';
+require_once __DIR__ . '/../../modele/php/userPref.class.php';
 
 header('Content-Type: application/json');
 
@@ -35,7 +37,8 @@ if (!$mail || !$password || !$tel || !$name || !$surname) {
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    $DAO = new userDAO();
+    $DAO = new UserDAO();
+    $PrefDAO = new UserPrefDAO();
     $userMail = $DAO->getByMail($mail);
 
     if ($userMail !== null) {
@@ -63,6 +66,18 @@ try {
         exit;
     }
     if ($insert) {
+        $userPref = $PrefDAO->getById($user->getId());
+        if (!$userPref) {
+            $userPref = new UserPref($user->getId());
+            $r = $prefDAO->create($userPref);
+            if (!$r) {
+                echo json_encode([
+                    'status' => 'fail',
+                    'message' => 'Compte créer mais erreur a la creation des prefs'
+                ]);
+                exit;
+            }
+        }
         echo json_encode([
             'status' => 'success',
         ]);
