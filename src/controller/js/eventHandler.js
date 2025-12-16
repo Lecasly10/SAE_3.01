@@ -391,7 +391,7 @@ export function createHandlers(builder, navigation, user) {
 
   async function handleUpdate(e) {
     e.preventDefault()
-    const { isEmpty, isValidPhone, isValidString } = Utils
+    const { isEmpty, isValidPhone, isValidString, isValidNumber } = Utils
     const {
       nameParam, telParam,
       surnameParam, maxDistParam, maxHBudgetParam,
@@ -416,11 +416,14 @@ export function createHandlers(builder, navigation, user) {
       errors.push("Le téléphone est obligatoire.");
     else if (!isValidPhone(telParam.value))
       errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
-    if (parseFloat(maxDistParam.value) < 0)
-      errors.push("La distance maximal doit être un entier positif")
-    if (parseFloat(maxHBudgetParam.value) < 0)
-      errors.push("Le budget maximal par heure doit être un entier positif")
-
+    if (isEmpty(maxDistParam.value))
+      errors.push("La distance maximal est obligatoire")
+    else if (!isValidNumber(maxDistParam.value))
+      errors.push("La distance maximal doit etre un nombre positif")
+    if (isEmpty(maxHBudgetParam.value))
+      errors.push("Le budget maximal par heure est obligatoire")
+    else if (!isValidNumber(maxHBudgetParam.value))
+      errors.push("Le budget maximal par heure doit etre un nombre positif")
     if (errors.length > 0) {
       errorS.textContent = errors.join("\n");
       UI.show(errorS);
