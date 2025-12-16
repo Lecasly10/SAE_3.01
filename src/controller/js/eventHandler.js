@@ -414,9 +414,9 @@ export function createHandlers(builder, navigation, user) {
       errors.push("Le téléphone est obligatoire.");
     else if (!isValidPhone(telParam.value))
       errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
-    if (!maxDistParam.value >= 0)
+    if (!parseFloat(maxDistParam.value) >= 0)
       errors.push("La distance maximal doit être un entier positif")
-    if (!maxHBudgetParam.value >= 0)
+    if (!parseFloat(maxHBudgetParam.value) >= 0)
       errors.push("Le budget maximal par heure doit être un entier positif")
 
     if (errors.length > 0) {
