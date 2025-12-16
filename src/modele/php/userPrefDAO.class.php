@@ -90,11 +90,11 @@ class UserPrefDAO
     ');
 
         $stmt->execute([
-            ':pmr' => $user->getIsPmr(),
-            ':free' => $user->getPreferFree(),
-            ':cover' => $user->getPreferCovered(),
-            ':maxh' => $user->getMaxHourlyBudget(),
-            ':maxd' => $user->getMaxDistance(),
+            ':pmr' => intval($user->getIsPmr()),
+            ':free' => intval($user->getPreferFree()),
+            ':cover' => intval($user->getPreferCovered()),
+            ':maxh' => floatval($user->getMaxHourlyBudget()),
+            ':maxd' => floatval($user->getMaxDistance()),
             ':id' => intval($user->getId()),
         ]);
 
