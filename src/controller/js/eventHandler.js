@@ -408,11 +408,11 @@ export function createHandlers(builder, navigation, user) {
       errors.push("Prénom invalide !")
     if (isEmpty(surnameParam.value))
       errors.push("Le nom est obligatoire.");
-    else if (!isValidString(surnameI.value))
+    else if (!isValidString(surnameParam.value))
       errors.push("nom invalide !")
     if (isEmpty(telParam.value))
       errors.push("Le téléphone est obligatoire.");
-    else if (!isValidPhone(telI.value))
+    else if (!isValidPhone(telParam.value))
       errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
     if (!maxDistParam.value >= 0)
       errorS.push("La distance maximal doit être un entier positif")
