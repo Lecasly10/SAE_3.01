@@ -56,15 +56,11 @@ try {
     } else {
         $userPref = $prefDAO->getById($userId);
         if (!$userPref) {
-            $userPref = new UserPref($userId);
-            $r = $prefDAO->create($userPref);
-            if (!$r) {
-                echo json_encode([
-                    'status' => 'fail',
-                    'message' => 'Erreur a la creation des prefs'
-                ]);
-                exit;
-            }
+            echo json_encode([
+                'status' => 'fail',
+                'message' => 'Aucun Param trouvé pour cette User'
+            ]);
+            exit;
         }
         $user->setFirstName($surname);
         $user->setLastName($name);
