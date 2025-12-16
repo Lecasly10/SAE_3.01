@@ -36,7 +36,7 @@ try {
     } else {
         $name = $user->getLastName();
         $surname = $user->getFirstName();
-        $tel == $user->getPhone();
+        $tel = $user->getPhone();
 
         echo json_encode([
             'status' => 'success',

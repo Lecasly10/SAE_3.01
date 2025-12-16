@@ -34,8 +34,8 @@ export class User {
             if (!data.authenticated) UI.toggleAuth(true);
             if (data.authenticated) {
                 UI.toggleAuthIcon(true)
-                this.userId = data.mail;
-                this.mail = data.user_id;
+                this.userId = data.user_id;
+                this.mail = data.mail;
             };
             return data.authenticated ? data.authenticated : false;
 
