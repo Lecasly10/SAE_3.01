@@ -377,7 +377,10 @@ export function createHandlers(builder, navigation, user) {
   }
 
   async function handleSettings() {
-    const { nameParam, mailParam, telParam, surnameParam } = UI.el;
+    const {
+      nameParam, mailParam, telParam,
+      surnameParam, maxDistParam, maxHBudgetParam,
+      pmrParam, coverParam, freeParam } = UI.el;
     let data = await user.load(user.userId);
     if (!data) alert("Une erreur est survenu !");
     else {

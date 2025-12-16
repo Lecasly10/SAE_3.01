@@ -47,7 +47,7 @@ export const coverParam = document.getElementById("coverParam")
 export const pmrParam = document.getElementById("pmrParam")
 export const maxDistParam = document.getElementById("distParam")
 export const maxHBudgetParam = document.getElementById("budgetParam")
-
+export const logoutButton = document.getElementById("logout")
 
 //loading animation
 export const loader = document.getElementById("loader");

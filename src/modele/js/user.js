@@ -101,6 +101,7 @@ export class User {
             this.mail = null;
             this.userId = null;
             UI.toggleAuthIcon(false);
+            UI.toggleSetting(false);
         } else {
             throw new Error("Erreur serveur : " + data.message)
         }

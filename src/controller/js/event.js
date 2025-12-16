@@ -36,6 +36,10 @@ export async function initEvent() {
     handlers.handleListButton(e);
   });
 
+  element.logoutButton.addEventListener("click", async (e) => {
+    await user.logout();
+  })
+
   element.submitButton.addEventListener("click", async (e) => {
     handlers.handleSubmit(e);
   })
