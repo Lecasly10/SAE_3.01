@@ -138,6 +138,7 @@ body {
 #connexion,
 #preinfo,
 #authbottom,
+#settbottom,
 #personnalContainer {
   display: flex;
   flex-direction: column;
@@ -156,7 +157,8 @@ body {
 }
 
 #preinfo,
-#authbottom {
+#authbottom,
+#settbottom {
   flex-direction: row;
 }
 
@@ -165,6 +167,10 @@ body {
 }
 
 #authbottom {
+  justify-content: space-between;
+}
+
+#settbottom {
   justify-content: space-between;
 }
 
@@ -179,6 +185,16 @@ body {
   border-radius: 5px;
   transition: all ease 0.1s;
   box-shadow: 0px 5px 0px 0px #66accc;
+}
+
+#logout {
+  background-color: #b43d3d;
+  box-shadow: 0px 5px 0px 0px #993737;
+}
+
+#logout:active {
+  transform: translateY(5px);
+  box-shadow: 0px 0px 0px 0px #993737;
 }
 
 .submit:active {
