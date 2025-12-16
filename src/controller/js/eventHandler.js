@@ -1,4 +1,5 @@
 import { UI } from "../../modele/js/UI.js";
+import { User } from "../../modele/js/user.js";
 import { phpFetch } from "./phpInteraction.js";
 
 export function createHandlers(builder, navigation, user) {
@@ -366,14 +367,17 @@ export function createHandlers(builder, navigation, user) {
   function handleSettingButton(event) {
     event.preventDefault();
     if (user.isLogged) {
-      handleSettings();
+      console.log(user.mail)
+      console.log(user.userId)
+      handleSettings(user);
+    } else {
+      UI.toggleAuth(true);
     }
-    UI.toggleAuth(true)
   }
 
-  async function handleSettings() {
+  async function handleSettings(user) {
     const { nameParam, mailParam, telParam, surnameParam } = UI.el;
-    const data = await user.load(user.userId);
+    let data = await user.load(user.userId);
     if (!data) alert("Une erreur est survenu !");
     else {
       nameParam.value = data.name;
