@@ -53,7 +53,51 @@ class UserPrefDAO
 
         if (count($prefs) > 0) {
             $pref = $prefs[0];
+            return $pref;
         }
-        return $pref;
+        return null;
+    }
+
+    function create(UserPref $user): bool
+    {
+        $pdo = $this->bd->getPDO();
+
+        $stmt = $pdo->prepare('
+        INSERT INTO user_preferences (user_id)
+        VALUES (:id)
+    ');
+
+        $stmt->execute([
+            ':id' => intval($user->getId()),
+        ]);
+
+        return $stmt->rowCount() === 1;
+    }
+
+    function update(UserPref $user): bool
+    {
+        $pdo = $this->bd->getPDO();
+
+        $stmt = $pdo->prepare('
+        UPDATE user_preferences
+        SET 
+            pmr = :pmr,
+            prefer_free = :free,
+            prefer_covered = :cover,
+            max_hourly_budget = :maxh,
+            max_distance_km = :maxd
+        WHERE id = :id
+    ');
+
+        $stmt->execute([
+            ':pmr' => $user->getIsPmr(),
+            ':free' => $user->getPreferFree(),
+            ':cover' => $user->getPreferCovered(),
+            ':maxh' => $user->getMaxHourlyBudget(),
+            ':maxd' => $user->getMaxDistance(),
+            ':id' => intval($user->getId()),
+        ]);
+
+        return $stmt->rowCount() === 1;
     }
 }

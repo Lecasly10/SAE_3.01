@@ -1,10 +1,11 @@
 import { UI } from "../../modele/js/UI.js";
-import { User } from "../../modele/js/user.js";
 import { phpFetch } from "./phpInteraction.js";
+import { Utils } from "./utils.js";
 
 export function createHandlers(builder, navigation, user) {
 
   async function handleSubmit(event) {
+    const { isEmpty, isValidEmail, isValidPhone, isValidString } = Utils
     user.createAccount = false;
     event.preventDefault();
     const {
@@ -18,13 +19,6 @@ export function createHandlers(builder, navigation, user) {
     } = UI.el;
 
     let errors = [];
-    const isEmpty = (value) => !value || value.trim() === "";
-    const isValidEmail = (email) =>
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isValidString = (string) =>
-      /^[A-Za-zÀ-ÖØ-öø-ÿ]+([ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/.test(string)
-    const isValidPhone = (phone) =>
-      /^[0-9]{8,15}$/.test(phone);
 
     errorI.textContent = "";
     UI.hide(errorI);
@@ -75,7 +69,7 @@ export function createHandlers(builder, navigation, user) {
       password: pass.value,
     })
 
-    if (res.status === "fail") {
+    if (res.status === "fail" && res.message) {
       errorI.textContent = res.message
       UI.show(errorI);
     }
@@ -395,6 +389,61 @@ export function createHandlers(builder, navigation, user) {
     }
   }
 
+  async function handleUpdate(e) {
+    e.preventDefault()
+    const { isEmpty, isValidPhone, isValidString } = Utils
+    const {
+      nameParam, telParam,
+      surnameParam, maxDistParam, maxHBudgetParam,
+      pmrParam, coverParam, freeParam, errorS } = UI.el;
+
+    let errors = [];
+
+    errorS.textContent = "";
+    UI.hide(errorS);
+
+    if (isEmpty(nameParam.value))
+      errors.push("Le prénom est obligatoire.");
+    else if (!isValidString(nameParam.value))
+      errors.push("Prénom invalide !")
+    if (isEmpty(surnameParam.value))
+      errors.push("Le nom est obligatoire.");
+    else if (!isValidString(surnameI.value))
+      errors.push("nom invalide !")
+    if (isEmpty(telParam.value))
+      errors.push("Le téléphone est obligatoire.");
+    else if (!isValidPhone(telI.value))
+      errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
+    if (!maxDistParam.value >= 0)
+      errorS.push("La distance maximal doit être un entier positif")
+    if (!maxHBudgetParam.value >= 0)
+      errorS.push("Le budget maximal par heure doit être un entier positif")
+
+    if (errors.length > 0) {
+      errorS.textContent = errors.join("\n");
+      UI.show(errorS);
+      return;
+    }
+
+    const res = user.update({
+      id: user.userId,
+      name: nameParam.value,
+      surname: surnameParam.value,
+      tel: telParam.value,
+      free: freeParam.checked,
+      pmr: pmrParam.checked,
+      covered: coverParam.checked,
+      maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
+      maxDist: maxDistParam.value ? maxDistParam.value : 0,
+    })
+
+    if (res.status === "fail" && res.message) {
+      errorS.textContent = res.message
+      UI.show(errorS);
+    }
+
+  }
+
   //export
   return {
     handleAutoSearchClick,
@@ -404,5 +453,6 @@ export function createHandlers(builder, navigation, user) {
     handleListButton,
     handleSettingButton,
     handleSubmit,
+    handleUpdate,
   };
 }

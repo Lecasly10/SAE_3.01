@@ -45,6 +45,17 @@ export class User {
         }
     }
 
+    async update(info) {
+        try {
+            const data = await phpFetch("updateUser.php", info)
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (error) {
+            console.error("Update Error : ", error)
+        }
+
+    }
+
     async load(id) {
         try {
             const data = await phpFetch("loadInfo.php", { id: id })
@@ -52,7 +63,6 @@ export class User {
             else return data
         } catch (error) {
             console.error("Load info error: ", error)
-            return null
         }
     }
 
@@ -68,9 +78,6 @@ export class User {
             this.userId = data.user_id;
             this.mail = data.mail;
         }
-        else {
-            throw new Error("Erreur serveur : " + data.message);
-        }
 
         return data
     }
@@ -83,9 +90,6 @@ export class User {
         if (data.status === "success") {
             await this.login(info.mail, info.password)
             this.createAccount = false
-        }
-        else {
-            throw new Error("Erreur serveur : " + data.message);
         }
 
         return data
@@ -102,8 +106,6 @@ export class User {
             this.userId = null;
             UI.toggleAuthIcon(false);
             UI.toggleSetting(false);
-        } else {
-            throw new Error("Erreur serveur : " + data.message)
         }
 
         return data

@@ -44,6 +44,10 @@ export async function initEvent() {
     handlers.handleSubmit(e);
   })
 
+  element.submitSett.addEventListener("click", async (e) => {
+    handlers.handleUpdate(e)
+  })
+
   //Annuler ou stop
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {

@@ -87,4 +87,27 @@ class UserDAO
         }
         return false;
     }
+
+    function update(User $user): bool
+    {
+        $pdo = $this->bd->getPDO();
+
+        $stmt = $pdo->prepare('
+        UPDATE users
+        SET 
+            last_name = :name,
+            first_name = :surname,
+            phone = :tel
+        WHERE id = :id
+    ');
+
+        $stmt->execute([
+            ':name' => $user->getLastName(),
+            ':surname' => $user->getFirstName(),
+            ':tel' => $user->getPhone(),
+            ':id' => intval($user->getId())
+        ]);
+
+        return $stmt->rowCount() === 1;
+    }
 }
