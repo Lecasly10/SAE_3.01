@@ -49,6 +49,7 @@ export class User {
         try {
             const data = await phpFetch("updateUser.php", info)
             if (!data) throw new Error("Erreur serveur !")
+            if (data.status === "success") UI.toggleSetting(false);
             return data
         } catch (error) {
             console.error("Update Error : ", error)
