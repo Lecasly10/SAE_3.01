@@ -27,6 +27,7 @@ if (!$userId) {
 
 try {
     $user = (new UserDAO())->getById(intval($userId));
+    $prefDAO = new UserPrefDAO();
     if (!$user) {
         echo json_encode([
             'status' => 'erreur',
@@ -34,15 +35,26 @@ try {
         ]);
         exit;
     } else {
+        $pref = $prefDAO->getById(intval($userId));
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
+        $pmr = $pref->getIsPmr();
+        $maxDistance = $pref->getMaxDistance();
+        $maxHourly = $pref->getMaxHourlyBudget();
+        $free = $pref->getPreferFree();
+        $covered = $pref->getPreferCovered();
 
         echo json_encode([
             'status' => 'success',
             'name' => $name,
             'surname' => $surname,
             'tel' => $tel,
+            'pmr' => $pmr,
+            'maxDistance' => $maxDistance,
+            'maxHourly' => $maxHourly,
+            'free' => $free,
+            'covered' => $covered
         ]);
     }
 } catch (Exception $e) {
