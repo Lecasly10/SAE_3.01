@@ -372,9 +372,9 @@ export function createHandlers(builder, navigation, user) {
     UI.toggleAuth(true)
   }
 
-  function handleSettings() {
+  async function handleSettings() {
     const { nameParam, mailParam, telParam, surnameParam } = UI.el
-    const data = user.loadInfo(user.userId);
+    const data = await user.loadInfo(user.userId);
     if (!data) alert("Une erreur est survenu !")
     else {
       nameParam.value = data.name;
