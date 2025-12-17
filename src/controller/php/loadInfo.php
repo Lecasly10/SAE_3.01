@@ -38,7 +38,6 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
-        $vehicule = $vehDAO->getById(intval($userId));
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
