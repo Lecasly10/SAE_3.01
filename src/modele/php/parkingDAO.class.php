@@ -83,11 +83,9 @@ class ParkingDAO
         float $userLng,
         array $options = [],
         int $limit = 4,
-        ParkingTarifDAO $tarifDAO = null,
-        ParkingCapacityDAO $capDAO = null
     ): array {
-        $parkingTarifDAO = $tarifDAO ?? new ParkingTarifDAO();
-        $parkingCapDAO = $capDAO ?? new ParkingCapacityDAO();
+        $parkingTarifDAO = new ParkingTarifDAO();
+        $parkingCapDAO = new ParkingCapacityDAO();
 
         $params = [];
         $where = ' WHERE 1=1';
@@ -112,7 +110,7 @@ class ParkingDAO
             });
         }
 
-        $parkings = array_filter($parkings, function ($p) use ($options) {
+        $parkings = array_filter($parkings, function ($p) use ($options, $parkingTarifDAO, $parkingCapDAO) {
             $tarif = $parkingTarifDAO->getById($p->getId());
             $cap = $parkingCapDAO->getById($p->getId());
 
