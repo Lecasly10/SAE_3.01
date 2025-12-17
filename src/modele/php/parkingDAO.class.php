@@ -86,6 +86,7 @@ class ParkingDAO
         $parkings = $this->loadQuery($results);
 
         $maxDistanceKm = $options['maxDistanceKm'] ?? null;
+
         if ($maxDistanceKm) {
             $latRange = $maxDistanceKm / 111;
             $lngRange = $maxDistanceKm / (111 * cos(deg2rad($userLat)));

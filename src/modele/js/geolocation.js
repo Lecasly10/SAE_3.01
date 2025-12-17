@@ -1,6 +1,7 @@
 import { addMarker } from "../../controller/js/addMarkers.js";
 import { nightMode } from "../../controller/js/maps/nightMode.js";
 import { MapBuilder } from "./builder.js";
+import { Navigation } from "./navigation.js";
 
 export class Geolocation {
   static instance = null;
@@ -67,6 +68,7 @@ export class Geolocation {
       async ({ coords }) => {
         nightMode(this.builder);
         const userPosition = { lat: coords.latitude, lng: coords.longitude };
+        const nav = Navigation.getInstance();
 
         if (!this.builder.userMarker) {
           this.builder.userMarker = await addMarker(
@@ -77,6 +79,10 @@ export class Geolocation {
           );
         } else {
           this.builder.userMarker.position = userPosition;
+        }
+
+        if (nav.focus) {
+          this.builder.map.panTo(builder.userMarker.position)
         }
       },
       (error) => console.warn("Erreur watchPosition :", error),

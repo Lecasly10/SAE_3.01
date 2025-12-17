@@ -78,20 +78,14 @@ export class Navigation {
 
       const builder = Navigation.builder;
 
-      if (this.focus) {
-        builder.map.panTo(builder.userMarker.position)
-      }
-
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
 
-      //Arrivé a destination
       if (dist < 0.05) {
         await this.stopNavigation();
         return;
       }
 
-      //Redirection si plus de place
       const placesLibres = await this.checkParkingAvailability();
 
       if (!placesLibres || placesLibres == -1) return;
