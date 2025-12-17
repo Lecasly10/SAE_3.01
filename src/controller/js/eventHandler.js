@@ -444,7 +444,7 @@ export function createHandlers(builder, navigation, user) {
       maxDist: maxDistParam.value ? maxDistParam.value : 0,
     })
 
-    if ((res.status === "fail" || res.status === "erreur") && res.message) {
+    if ((res.status && res.status !== "success") && res.message) {
       errorS.textContent = res.message
       UI.show(errorS);
     }
