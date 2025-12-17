@@ -50,7 +50,7 @@ try {
     }
 
     $parkingDAO = new ParkingDAO();
-    $closestParkings = $parkingDAO->getNearbyWithFilters($lat, $lng, $options, 1);
+    $closestParkings = $parkingDAO->getNearbyWithFilters($lat, $lng, $options, 1, new ParkingTarifDAO(), new ParkingCapacityDAO());
 
     if (count($closestParkings) > 0) {
         $parking = $closestParkings[0];
