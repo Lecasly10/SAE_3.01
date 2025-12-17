@@ -44,21 +44,6 @@ class ParkingDAO
         return ($this->loadQuery($this->bd->execSQL($this->select)));
     }
 
-    function getBy(Array $filters): array
-    {
-        $sql = 'SELECT * FROM parkings WHERE 1=1';
-        $params = [];
-
-        foreach ($filters as $key => $value) {
-            if (!empty($value)) {
-                $sql .= " AND $key = :$key";
-                $params[":$key"] = $value;
-            }
-        }
-
-        return ($this->loadQuery($this->bd->execSQL($sql, $params)));
-    }
-
     function getById(string $id): Parking
     {
         $unParking = new Parking();
