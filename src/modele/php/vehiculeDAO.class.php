@@ -79,10 +79,10 @@ class VehiculeDAO
         $stmt = $pdo->prepare('
         UPDATE vehicles
         SET 
-            vehicle_type:type
-            motorization:motor
-            vehicle_height:height
-            license_plate:plate
+            vehicle_type = :type
+            motorization = :motor
+            vehicle_height = :height
+            license_plate = :plate
         WHERE user_id = :id
     ');
 

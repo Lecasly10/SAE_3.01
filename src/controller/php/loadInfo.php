@@ -62,9 +62,6 @@ try {
             $covered = $pref->getPreferCovered();
         }
 
-        if ($vehicule) {
-        }
-
         echo json_encode([
             'status' => 'success',
             'name' => $name,
