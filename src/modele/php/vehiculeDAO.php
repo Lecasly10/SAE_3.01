@@ -43,17 +43,17 @@ class VehiculeDAO
 
     public function getByUserId(string $id): ?Vehicule
     {
-        $pref = new Vehicule();
-        $prefs = $this->loadQuery(
+        $veh = new Vehicule();
+        $vehs = $this->loadQuery(
             $this->bd->execSQL(
                 $this->select . ' WHERE user_id = :id',
                 [':id' => $id]
             )
         );
 
-        if (count($prefs) > 0) {
-            $pref = $prefs[0];
-            return $pref;
+        if (count($vehs) > 0) {
+            $veh = $vehs[0];
+            return $veh;
         }
         return null;
     }

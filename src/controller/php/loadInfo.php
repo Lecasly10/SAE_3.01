@@ -12,6 +12,7 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../modele/php/userPrefDAO.class.php';
+require_once __DIR__ . '/../../modele/php/vehiculeDAO.class.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json, true) ?: [];
@@ -28,6 +29,7 @@ if (!$userId) {
 try {
     $user = (new UserDAO())->getById(intval($userId));
     $prefDAO = new UserPrefDAO();
+    $vehDAO = new VehiculeDAO();
     if (!$user) {
         echo json_encode([
             'status' => 'erreur',
@@ -36,6 +38,7 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
+        $vehicule = $vehDAO->getById(intval($userId));
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
@@ -46,12 +49,20 @@ try {
         $free = null;
         $covered = null;
 
+        $type = null;
+        $motor = null;
+        $plate = null;
+        $height = null;
+
         if ($pref) {
             $pmr = $pref->getIsPmr();
             $maxDistance = $pref->getMaxDistance();
             $maxHourly = $pref->getMaxHourlyBudget();
             $free = $pref->getPreferFree();
             $covered = $pref->getPreferCovered();
+        }
+
+        if ($vehicule) {
         }
 
         echo json_encode([
