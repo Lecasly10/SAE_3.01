@@ -1,7 +1,6 @@
 <?php
 
-
-require_once __DIR__ . "/parkingCapacity.class.php";
+require_once __DIR__ . '/parkingCapacity.class.php';
 
 class ParkingCapacityDAO
 {
@@ -10,9 +9,9 @@ class ParkingCapacityDAO
 
     public function __construct()
     {
-        require_once "../../modele/php/connexion.php";
+        require_once '../../modele/php/connexion.php';
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM parking_capacity";
+        $this->select = 'SELECT * FROM parking_capacity';
     }
 
     private function loadQuery(array $result): array
@@ -42,12 +41,11 @@ class ParkingCapacityDAO
     function getById(string $id): ParkingCapacity
     {
         $capacity = new ParkingCapacity();
-        $capacities = $this->loadQuery($this->bd->execSQL($this->select . " WHERE
-        parking_id=:id", [':id' => $id]));
+        $capacities = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
+        parking_id=:id', [':id' => $id]));
         if (count($capacities) > 0) {
             $capacity = $capacities[0];
         }
         return $capacity;
     }
-
 }

@@ -1,7 +1,6 @@
 <?php
 
-
-require_once __DIR__ . "/parking.class.php";
+require_once __DIR__ . '/parking.class.php';
 
 class ParkingDAO
 {
@@ -10,9 +9,9 @@ class ParkingDAO
 
     public function __construct()
     {
-        require_once "../../modele/php/connexion.php";
+        require_once '../../modele/php/connexion.php';
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM parkings";
+        $this->select = 'SELECT * FROM parkings';
     }
 
     private function loadQuery(array $result): array
@@ -42,22 +41,37 @@ class ParkingDAO
         return ($this->loadQuery($this->bd->execSQL($this->select)));
     }
 
+    function getBy(Array $filters): array
+    {
+        $sql = 'SELECT * FROM parkings WHERE 1=1';
+        $params = [];
+
+        foreach ($filters as $key => $value) {
+            if (!empty($value)) {
+                $sql .= " AND $key = :$key";
+                $params[":$key"] = $value;
+            }
+        }
+
+        return ($this->loadQuery($this->bd->execSQL($sql, $params)));
+    }
+
     function getById(string $id): Parking
     {
         $unParking = new Parking();
-        $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . " WHERE
-        parking_id=:id", [':id' => $id]));
+        $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
+        parking_id=:id', [':id' => $id]));
         if (count($lesParkings) > 0) {
             $unParking = $lesParkings[0];
         }
         return $unParking;
     }
 
-    function getSearch(string $search) : array {
-        $r = $this->select . " WHERE name LIKE :search";
+    function getSearch(string $search): array
+    {
+        $r = $this->select . ' WHERE name LIKE :search';
         return $this->loadQuery(
             $this->bd->execSQL($r, [':search' => "%$search%"])
         );
     }
-
 }

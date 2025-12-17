@@ -9,8 +9,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 header('Content-Type: application/json');
+session_start();
+
+$user_id = $_SESSION['user_id'] ?? null;
 
 require_once __DIR__ . '/../../modele/php/parkingDAO.class.php';
+require_once __DIR__ . '/../../modele/php/userDAO.class.php';
+require_once __DIR__ . '/../../modele/php/userPrefDAO.class.php';
+require_once __DIR__ . '/../../modele/php/parkingCapacityDAO.class.php';
+require_once __DIR__ . '/../../modele/php/parkingTarifDAO.class.php';
 require_once __DIR__ . '/./distance.php';
 require_once __DIR__ . '/./dataAPI.php';
 
@@ -31,13 +38,27 @@ if ($lat === null || $lng === null) {
 
 try {
     $closeParking = null;
+    $parkings = null;
     $minDist = PHP_INT_MAX;
+    $userDAO = new UserPrefDAO();
+    $parkingCapDAO = new ParkingCapacityDAO();
+    $parkingTarifDAO = new ParkingTarifDAO();
+    if ($user_id)
+        $user = $userDAO->getById($user_id);
 
-    $parkings = (new ParkingDAO())->getAll();
+    $pfilters = [];
+
+    if ($user) {
+        if ($user->getPreferCovered()) {
+            $pfilters['structure_type'] = 'enclos_en_surface';
+        }
+    }
+
+    $parkings = (new ParkingDAO())->getBy($pfilters);
 
     if (!$parkings) {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'fail',
             'message' => 'Aucun parking trouvé'
         ]);
         exit;
@@ -46,6 +67,24 @@ try {
     foreach ($parkings as $parking) {
         $nextLat = $parking->getLat();
         $nextLng = $parking->getLong();
+
+        $cap = $parkingCapDAO->getById($parking->getId());
+        $tarif = $parkingTarifDAO->getById($parking->getId());
+
+        if ($user) {
+            if ($user->getPreferFree() && !$tarif->getFree())
+                continue;
+
+            if ($user->getIsPmr() && !$cap->getPmr() < 1)
+                continue;
+
+            $hour = $tarif->getRate1h();
+            $maxHour = $user->getMaxHourlyBudget();
+            $maxHour = $maxHour == 0 ? null : $maxHour;
+
+            if ($maxHour && $hour < $maxHour)
+                continue;
+        }
 
         $city = detectCity($nextLat, $nextLng);
         if (!$city)
@@ -62,6 +101,13 @@ try {
 
         if ($places > 0 || $places == -1) {
             $dist = distanceGPS($nextLat, $nextLng, $lat, $lng);
+            if ($user) {
+                $maxD = $user->getMaxDistance();
+                $maxD = $maxD == 0 ? null : $maxD;
+
+                if ($maxD && $dist > $maxD)
+                    continue;
+            }
 
             if ($dist < $minDist) {
                 $minDist = $dist;
@@ -81,14 +127,14 @@ try {
         ]);
     } else {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'fail',
             'message' => 'Aucun parking disponible à proximité',
             'places' => $test
         ]);
     }
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

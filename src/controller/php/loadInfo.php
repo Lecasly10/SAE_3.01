@@ -39,6 +39,7 @@ try {
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
+
         $pmr = null;
         $maxDistance = null;
         $maxHourly = null;
