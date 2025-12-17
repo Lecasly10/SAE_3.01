@@ -78,12 +78,31 @@ try {
             if ($user->getIsPmr() && !$cap->getPmr() < 1)
                 continue;
 
-            $hour = $tarif->getRate1h();
-            $maxHour = $user->getMaxHourlyBudget();
-            $maxHour = $maxHour == 0 ? null : $maxHour;
+            $maxHourly = $user->getMaxHourlyBudget();
+            $maxHourly = ($maxHourly > 0) ? $maxHourly : null;
 
-            if ($maxHour && $hour < $maxHour)
-                continue;
+            if ($maxHourly) {
+                $valid = false;
+
+                $prices = [
+                    1 => $tarif->getRate1h(),
+                    2 => $tarif->getRate2h(),
+                    3 => $tarif->getRate3h(),
+                    4 => $tarif->getRate4h(),
+                    24 => $tarif->getRate24h()
+                ];
+
+                foreach ($prices as $hours => $price) {
+                    if ($price !== null && $price <= $maxHourly * $hours) {
+                        $valid = true;
+                        break;
+                    }
+                }
+
+                if (!$valid) {
+                    continue;
+                }
+            }
         }
 
         $city = detectCity($nextLat, $nextLng);
