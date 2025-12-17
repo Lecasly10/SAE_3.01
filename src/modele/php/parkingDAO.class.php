@@ -1,6 +1,9 @@
 <?php
 
 require_once __DIR__ . '/parking.class.php';
+require_once __DIR__ . '/parkingCapacityDAO.class.php';
+require_once __DIR__ . '/parkingTarifDAO.class.php';
+require_once __DIR__ . '/../../controller/php/distance.php';
 
 class ParkingDAO
 {
@@ -73,5 +76,76 @@ class ParkingDAO
         return $this->loadQuery(
             $this->bd->execSQL($r, [':search' => "%$search%"])
         );
+    }
+
+    public function getNearbyWithFilters(
+        float $userLat,
+        float $userLng,
+        array $options = [],
+        int $limit = 4
+    ): array {
+        $params = [];
+        $where = ' WHERE 1=1';
+
+        $sql = $this->select;
+
+        if (!empty($options['preferCovered'])) {
+            $where .= ' AND structure_type = :structure';
+            $params[':structure'] = 'enclos_en_surface';
+        }
+
+        $results = $this->bd->execSQL($sql . $where, $params);
+        $parkings = $this->loadQuery($results);
+
+        $maxDistanceKm = $options['maxDistanceKm'] ?? null;
+        if ($maxDistanceKm) {
+            $latRange = $maxDistanceKm / 111;
+            $lngRange = $maxDistanceKm / (111 * cos(deg2rad($userLat)));
+            $parkings = array_filter($parkings, function ($p) use ($userLat, $userLng, $latRange, $lngRange) {
+                return ($p->getLat() >= $userLat - $latRange && $p->getLat() <= $userLat + $latRange) &&
+                    ($p->getLong() >= $userLng - $lngRange && $p->getLong() <= $userLng + $lngRange);
+            });
+        }
+
+        $parkings = array_filter($parkings, function ($p) use ($options) {
+            global $parkingTarifDAO, $parkingCapDAO;
+
+            $tarif = $parkingTarifDAO->getById($p->getId());
+            $cap = $parkingCapDAO->getById($p->getId());
+
+            if (!empty($options['preferFree']) && !$tarif->getFree())
+                return false;
+
+            if (!empty($options['isPmr']) && $cap->getPmr() < 1)
+                return false;
+
+            if (!empty($options['maxHourlyBudget'])) {
+                $maxH = (float) $options['maxHourlyBudget'];
+                $prices = [
+                    1 => $tarif->getRate1h(),
+                    2 => $tarif->getRate2h(),
+                    3 => $tarif->getRate3h(),
+                    4 => $tarif->getRate4h(),
+                    24 => $tarif->getRate24h()
+                ];
+                $valid = false;
+                foreach ($prices as $h => $price) {
+                    if ($price !== null && $price <= $maxH * $h) {
+                        $valid = true;
+                        break;
+                    }
+                }
+                if (!$valid)
+                    return false;
+            }
+
+            return true;
+        });
+
+        usort($parkings, function ($a) use ($userLat, $userLng) {
+            return distanceGPS($a->getLat(), $a->getLong(), $userLat, $userLng) <=> distanceGPS($a->getLat(), $a->getLong(), $userLat, $userLng);
+        });
+
+        return array_slice($parkings, 0, $limit);
     }
 }
