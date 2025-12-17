@@ -7,10 +7,6 @@ import { MapBuilder } from "../../modele/js/builder.js";
 import { Navigation } from "../../modele/js/navigation.js";
 import { User } from "../../modele/js/user.js";
 
-//===GLOBAL===
-globalThis.carIconURL =
-  "https://cdn-icons-png.flaticon.com/512/5193/5193688.png";
-
 //===LOAD===
 globalThis.addEventListener("load", async () => {
   try {

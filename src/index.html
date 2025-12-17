@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div id="settings" class="blur-bg hidden">
+    <div id="settings" class="blur-bg">
       <div id="settingContainer">
         <a class="fade close" id="closeSettingButton"
           ><i class="fa fa-window-close" aria-hidden="true"></i>
@@ -146,10 +146,43 @@
                 required
               />
             </div>
+            <div class="divinput">
+              <label class="inputTitle">Votre Véhicule</label>
+              <select class="inputPref int" id="carParam">
+                <option value="none">Aucune</option>
+              </select>
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Motorisation</label>
+              <select class="inputPref int" id="motorParam">
+                <option value="none">Aucune</option>
+              </select>
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Plaque</label>
+              <input
+                class="inputPref int"
+                type="text"
+                id="plateParam"
+                required
+              />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Hauteur</label>
+              <input
+                class="inputPref int"
+                type="number"
+                min="0"
+                step="0.01"
+                id="heightParam"
+                required
+              />
+            </div>
           </div>
         </div>
         <div id="settbottom">
           <button id="logout" class="submit">Déconnexion</button>
+          <!-- <button id="accept" class="submit">Véhicules</button> -->
           <button id="submitSett" class="submit">Valider</button>
         </div>
       </div>

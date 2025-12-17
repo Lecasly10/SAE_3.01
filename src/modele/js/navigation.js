@@ -3,8 +3,7 @@ import { getGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
 import { UI } from "./UI.js";
-const destinationIconURL =
-  "https://cdn-icons-png.flaticon.com/512/4668/4668400.png";
+import { Utils } from "../../controller/js/utils.js";
 
 export class Navigation {
   static instance = null;
@@ -135,7 +134,7 @@ export class Navigation {
       builder,
       destination,
       `Votre destination : ${this.destination.name}`,
-      destinationIconURL
+      Utils.distIcon
     );
 
     const { routes } = await Route.computeRoutes({

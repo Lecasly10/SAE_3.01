@@ -2,6 +2,7 @@ import { addMarker } from "../../controller/js/addMarkers.js";
 import { nightMode } from "../../controller/js/maps/nightMode.js";
 import { MapBuilder } from "./builder.js";
 import { Navigation } from "./navigation.js";
+import { Utils } from "../../controller/js/utils.js";
 
 export class Geolocation {
   static instance = null;
@@ -39,7 +40,7 @@ export class Geolocation {
           this.builder,
           userPosition,
           "Votre Position",
-          globalThis.carIconURL
+          Utils.carIcon
         );
       } else {
         this.builder.userMarker.position = userPosition;
@@ -54,7 +55,7 @@ export class Geolocation {
         this.builder,
         { lat: 49.119178, lng: 6.168469 },
         "Votre Position",
-        globalThis.carIconURL
+        Utils.carIcon
       );
       console.warn("Erreur Geolocation :", err);
       return null;
@@ -75,7 +76,7 @@ export class Geolocation {
             this.builder,
             userPosition,
             "Votre Position",
-            globalThis.carIconURL
+            Utils.carIcon
           );
         } else {
           this.builder.userMarker.position = userPosition;
