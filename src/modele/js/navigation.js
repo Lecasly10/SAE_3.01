@@ -53,21 +53,15 @@ export class Navigation {
       let position = Navigation.builder.userMarker.position;
 
       const resultat = await phpFetch("closestParking.php", position);
-      if (
-        !resultat ||
-        !resultat.lat ||
-        !resultat.lng ||
-        !resultat.id ||
-        !resultat.name
-      )
-        throw new Error("Aucune donnée trouvé") && console.log(resultat);
-
-      if (isNaN(resultat.lat) || isNaN(resultat.lng))
-        throw new Error("Coordonnées invalides");
-      return { ...resultat };
+      if (!resultat) throw new Error("Erreur serveur !")
+      if (resultat.status === "success") return resultat
+      else if (resultat.message) {
+        alert(resultat.message)
+        UI.setupUI();
+      }
     } catch (error) {
+      UI.setupUI();
       console.error("Erreur : ", error);
-      return null;
     }
   }
 

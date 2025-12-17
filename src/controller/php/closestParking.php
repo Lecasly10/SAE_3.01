@@ -55,7 +55,7 @@ try {
     if (count($closestParkings) > 0) {
         $parking = $closestParkings[0];
         echo json_encode([
-            'status' => 'ok',
+            'status' => 'success',
             'message' => 'Parking le plus proche trouvé',
             'id' => $parking->getId(),
             'lat' => $parking->getLat(),
