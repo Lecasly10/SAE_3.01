@@ -67,8 +67,6 @@ export class Navigation {
   followRoute(step = 0) {
     if (!this.route) return;
 
-    const { Geo } = getGoogleLibs();
-
     const builder = Navigation.builder;
     const path = this.route.polylines[0].getPath();
 
@@ -183,7 +181,6 @@ export class Navigation {
     );
 
     this.route = { bounds, destination: this.destination, polylines, marker };
-    this.followRoute();
   }
 
   removeRoute() {

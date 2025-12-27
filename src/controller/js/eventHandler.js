@@ -90,6 +90,7 @@ export function createHandlers(builder, navigation, user) {
       builder.map.panTo(builder.userMarker.position);
       builder.map.setZoom(25);
       navigation.focus = true; //Suivre le marker
+      navigation.followRoute();
       UI.toggleNavigationUI(destination.name);
     });
 
