@@ -1,5 +1,5 @@
 import { addMarker } from "../../controller/js/addMarkers.js";
-import { getGoogleLibs, loadGoogleLibs } from "../../controller/js/googleAPI.js";
+import { getGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
 import { UI } from "./UI.js";
@@ -28,6 +28,7 @@ export class Navigation {
     this.parkMonitor = null;
     this.destination = null;
     this.route = null;
+    this.followingRoute = null;
     this.focus = false;
     this.redirecting = false;
   }

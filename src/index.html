@@ -1,96 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
-    <title>SmartParking Metz</title>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartParking Metz</title>
+
+    <!-- Fonts & Icons -->
     <link
       href="https://fonts.cdnfonts.com/css/sf-pro-display"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./vue/style/style.css" />
-    <script type="module" src="./controller/js/main.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./vue/style/style.css" />
+
+    <!-- JS -->
+    <script type="module" src="./controller/js/main.js" defer></script>
   </head>
 
   <body>
+    <!-- AUTH POPUP -->
     <div id="auth" class="popupBg blur-bg hidden">
       <div id="auth-container" class="popup">
-        <a class="fade close" id="closeAuthButton">
-          <i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
+        <a class="fade close" id="closeAuthButton"
+          ><i class="fa fa-window-close"></i
+        ></a>
         <p class="titleWindow">CONNEXION</p>
-        <div>
-          <p id="errorAuth" class="error hidden"></p>
-          <div id="preinfo" class="divContent">
-            <input
-              class="inputPref hidden"
-              type="text"
-              placeholder="Nom"
-              id="name"
-              name="name"
-              required
-            />
-            <input
-              class="inputPref hidden"
-              type="text"
-              placeholder="Prénom"
-              id="surname"
-              name="surname"
-              required
-            />
-          </div>
-          <div id="connexion" class="divContent">
-            <input
-              class="inputPref hidden"
-              type="tel"
-              placeholder="Numéro de tel ex: 06 12 12 23 33"
-              id="tel"
-              name="tel"
-              pattern="[0-9]{10}"
-              required
-            />
-            <input
-              class="inputPref"
-              type="email"
-              placeholder="Votre email..."
-              id="mail"
-              name="mail"
-            />
-            <input
-              class="inputPref"
-              type="password"
-              placeholder="Votre mot de passe"
-              id="password"
-              name="password"
-            />
 
-            <input
-              class="inputPref hidden"
-              type="password"
-              placeholder="Confirmer le mot de passe"
-              id="confirmpasswordbox"
-              name="password"
-            />
-            <div id="authbottom" class="divContent">
-              <a id="inscription" class="link">Pas de compte ? Inscription</a>
-              <a id="connexionLink" class="hidden link">Connexion</a>
-              <button id="submit" class="submit">Valider</button>
-            </div>
+        <p id="errorAuth" class="error hidden"></p>
+
+        <div id="preinfo" class="divContent">
+          <input
+            class="inputPref hidden"
+            type="text"
+            placeholder="Nom"
+            id="name"
+            name="name"
+            required
+          />
+          <input
+            class="inputPref hidden"
+            type="text"
+            placeholder="Prénom"
+            id="surname"
+            name="surname"
+            required
+          />
+        </div>
+
+        <div id="connexion" class="divContent">
+          <input
+            class="inputPref hidden"
+            type="tel"
+            placeholder="Numéro de tel ex: 06 12 12 23 33"
+            id="tel"
+            name="tel"
+            pattern="[0-9]{10}"
+            required
+          />
+          <input
+            class="inputPref"
+            type="email"
+            placeholder="Votre email..."
+            id="mail"
+            name="mail"
+          />
+          <input
+            class="inputPref"
+            type="password"
+            placeholder="Votre mot de passe"
+            id="password"
+            name="password"
+          />
+          <input
+            class="inputPref hidden"
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            id="confirmpasswordbox"
+            name="password"
+          />
+
+          <div id="authbottom" class="divContent">
+            <a id="inscription" class="link">Pas de compte ? Inscription</a>
+            <a id="connexionLink" class="hidden link">Connexion</a>
+            <button id="submit" class="submit">Valider</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- SETTINGS POPUP -->
     <div id="settings" class="popupBg blur-bg hidden">
       <div id="settingContainer" class="popup">
         <a class="fade close overlay" id="closeSettingButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
+          ><i class="fa fa-window-close"></i
+        ></a>
         <p class="titleWindow">PARAMETRES</p>
         <p id="errorSett" class="error hidden"></p>
+
         <div id="mainContainer">
           <div id="personnalContainer" class="divContent">
             <p>Informations</p>
@@ -110,6 +121,7 @@
               required
             />
           </div>
+
           <div id="prefContainer" class="divContent">
             <p>Préférences</p>
             <div class="divinput">
@@ -154,6 +166,7 @@
             </div>
           </div>
         </div>
+
         <div id="settbottom" class="divContent">
           <button id="logout" class="submit red">Déconnexion</button>
           <button id="carButton" class="submit green">Véhicules</button>
@@ -162,13 +175,15 @@
       </div>
     </div>
 
+    <!-- VEHICLES POPUP -->
     <div id="voiture" class="popupBg blur-bg hidden">
       <div id="voitureContainer" class="popup">
         <a class="fade close overlay" id="closeVoitButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
+          ><i class="fa fa-window-close"></i
+        ></a>
         <p class="titleWindow">VOS VOITURES</p>
         <p id="errorVoit" class="error hidden"></p>
+
         <div class="mainContainer">
           <div id="listVoit">
             <select id="carTab" size="5">
@@ -176,6 +191,7 @@
             </select>
           </div>
         </div>
+
         <div id="voitbottom" class="divContent">
           <button id="deleteCar" class="submit red" disabled>Supprimer</button>
           <button id="addCar" class="submit green">Nouveau</button>
@@ -184,13 +200,15 @@
       </div>
     </div>
 
+    <!-- EDIT VEHICLE POPUP -->
     <div id="voitureEdit" class="popupBg blur-bg hidden">
       <div id="voitureEditContainer" class="popup">
         <a class="fade close overlay" id="closeVoitEditButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
+          ><i class="fa fa-window-close"></i
+        ></a>
         <p class="titleWindow" id="editTitle">MODIFICATIONS</p>
         <p id="errorVoitEdit" class="error hidden"></p>
+
         <div class="mainContainer">
           <div class="divContent" style="width: 100%">
             <label class="inputTitle">Plaque</label>
@@ -206,21 +224,23 @@
             <select class="inputPref" id="vMotorParam">
               <option value="thermique" selected>Thermique</option>
               <option value="hybride">Hybride</option>
-              <option value="electrique">électrique</option>
+              <option value="electrique">Électrique</option>
             </select>
           </div>
         </div>
+
         <div id="voitEditBottom" class="divContent">
           <button id="submitEditCar" class="submit">Valider</button>
         </div>
       </div>
     </div>
 
+    <!-- TOP NAVBAR -->
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
       <div class="search-bar" id="search-bar">
-        <i class="fa fa-search" aria-hidden="true"></i>
+        <i class="fa fa-search"></i>
         <input
           type="text"
           placeholder="Rechercher..."
@@ -229,52 +249,49 @@
         />
       </div>
       <div class="button littleButton fade" id="listButton">
-        <a><i class="fa fa-list-ol" aria-hidden="true"></i></a>
+        <i class="fa fa-list-ol"></i>
       </div>
     </div>
 
-    <div id="resultContainer" class="blur-bg box">
+    <!-- RESULT BOX -->
+    <div id="resultContainer" class="blur-bg box hidden">
       <div class="titlebox">
         <p id="resultTitle" class="bold"></p>
         <a class="button fade" id="closeButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
+          ><i class="fa fa-window-close"></i
+        ></a>
       </div>
       <hr />
       <div id="resultBox"></div>
     </div>
 
+    <!-- GOOGLE MAP -->
     <div id="map"></div>
 
+    <!-- BOTTOM NAVBAR -->
     <div id="bottomnav" class="navbar blur-bg">
       <div id="centerButton" class="button fade" title="Recentrer">
-        <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        <i class="fa fa-map-marker"></i>
       </div>
-
       <div
         id="autoSearchButton"
         class="button fade"
         title="Trouver le parking le plus proche"
       >
-        <a><i class="fa fa-flag" aria-hidden="true"></i></a>
+        <i class="fa fa-flag"></i>
       </div>
-
-      <div id="homeButton" class="button fade">
-        <a href="index.html" title="Home">
-          <i class="fa fa-home" aria-hidden="true"></i
-        ></a>
+      <div id="homeButton" class="button fade" title="Home">
+        <a href="index.html"><i class="fa fa-home"></i></a>
       </div>
-      <div id="stopButton" class="button fade">
-        <a href="index.html" title="Annuler">
-          <i class="fa fa-times" aria-hidden="true"></i
-        ></a>
+      <div id="stopButton" class="button fade" title="Annuler">
+        <a href="index.html"><i class="fa fa-times"></i></a>
       </div>
       <div id="settingsButton" class="button fade" title="Paramètres">
-        <a><i class="fa fa-user-plus" aria-hidden="true" id="userIcon"></i></a>
+        <i class="fa fa-user-plus" id="userIcon"></i>
       </div>
     </div>
 
-    <!-- SOURCE : DOCUMENTATION API GOOGLE MAPS -->
+    <!-- GOOGLE MAPS API -->
     <script>
       ((g) => {
         var h,
@@ -310,10 +327,7 @@
         d[l]
           ? console.warn(p + " only loads once. Ignoring:", g)
           : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
-      })({
-        key: "AIzaSyCEuViMd3021ccwghkLzVt5IYesXUjnJ2o",
-        v: "beta",
-      });
+      })({ key: "AIzaSyCEuViMd3021ccwghkLzVt5IYesXUjnJ2o", v: "beta" });
     </script>
   </body>
 </html>
