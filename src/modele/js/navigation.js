@@ -1,5 +1,5 @@
 import { addMarker } from "../../controller/js/addMarkers.js";
-import { getGoogleLibs } from "../../controller/js/googleAPI.js";
+import { getGoogleLibs, loadGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
 import { UI } from "./UI.js";
@@ -64,8 +64,10 @@ export class Navigation {
     }
   }
 
-  followRoute(step = 0) {
+  async followRoute(step = 0) {
     if (!this.route) return;
+
+    const { Geo } = getGoogleLibs();
 
     const builder = Navigation.builder;
     const path = this.route.polylines[0].getPath();
@@ -75,7 +77,7 @@ export class Navigation {
     const from = path.getAt(step);
     const to = path.getAt(step + 1);
 
-    const heading = google.maps.geometry.spherical.computeHeading(from, to);
+    const heading = Geo.spherical.computeHeading(from, to);
 
     builder.map.moveCamera({
       center: from,
