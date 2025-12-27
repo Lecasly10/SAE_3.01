@@ -3,12 +3,12 @@ let libs = {};
 //charger les libs de l'api google
 export async function loadGoogleLibs() {
   const { Map } = await google.maps.importLibrary("maps");
-  const { Geo } = await google.maps.importLibrary("geometry");
+  await google.maps.importLibrary("geometry");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   const { ColorScheme } = await google.maps.importLibrary("core");
   const { Route } = await google.maps.importLibrary("routes");
 
-  libs = { Map, Geo, AdvancedMarkerElement, ColorScheme, Route };
+  libs = { Map, AdvancedMarkerElement, ColorScheme, Route };
 }
 
 //Récup une libs

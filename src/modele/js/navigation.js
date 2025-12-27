@@ -64,7 +64,7 @@ export class Navigation {
     }
   }
 
-  async followRoute(step = 0) {
+  followRoute(step = 0) {
     if (!this.route) return;
 
     const { Geo } = getGoogleLibs();
@@ -77,7 +77,7 @@ export class Navigation {
     const from = path.getAt(step);
     const to = path.getAt(step + 1);
 
-    const heading = Geo.spherical.computeHeading(from, to);
+    const heading = google.maps.geometry.spherical.computeHeading(from, to);
 
     builder.map.moveCamera({
       center: from,
