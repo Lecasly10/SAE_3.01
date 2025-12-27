@@ -355,8 +355,6 @@ export function createHandlers(builder, navigation, user) {
   function handleCloseButton(event) {
     event.preventDefault();
     UI.toggleResultContainer(false);
-    UI.toggleAuth(false)
-    UI.toggleSetting(false);
     navigation.stopNavigation();
   }
 

@@ -83,11 +83,11 @@ export async function initEvent() {
   });
 
   element.closeAuthButton.addEventListener("click", (e) => {
-    handlers.handleCloseButton(e);
+    UI.toggleAuth(false);
   })
 
   element.closeSettingButton.addEventListener("click", (e) => {
-    handlers.handleCloseButton(e);
+    UI.toggleSetting(false);
   });
 
 
