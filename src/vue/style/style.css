@@ -58,8 +58,7 @@ body {
 
 /*AUTH*/
 
-#auth,
-#settings {
+.popupBg {
   position: fixed;
   inset: 0;
   z-index: 99999;
@@ -72,11 +71,10 @@ body {
   backdrop-filter: blur(6px);
 }
 
-#auth-container,
-#settingContainer {
+.popup {
   width: min(420px, 90vw);
   padding: 2.2rem;
-  overflow-y: auto; /* scroll vertical */
+  overflow-y: auto;
   overflow-x: hidden;
 
   background: white;
@@ -91,15 +89,14 @@ body {
   animation: pop 0.25s ease-out;
 }
 
-#settingContainer label {
+.popup label {
   font-weight: normal;
   margin: 0;
   padding: 0;
+  color: black;
 }
 
 #settingContainer {
-  display: flex;
-  flex-direction: column;
   width: 420px;
 }
 
@@ -107,13 +104,13 @@ body {
   font-size: 24px;
   display: block;
   position: absolute;
-  color: black;
+  color: #111;
   cursor: pointer;
   transition: font-size 0.1s ease-in-out;
 }
 
 .overlay {
-  padding: 5px;
+  padding: 5px 10px;
   backdrop-filter: blur(6px);
   border-radius: 20px;
 }
@@ -143,19 +140,15 @@ body {
   color: #111;
 }
 
-#mainContainer {
+#mainContainer,
+.mainContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   gap: 2rem;
 }
 
-#connexion,
-#preinfo,
-#authbottom,
-#settbottom,
-#personnalContainer,
-#prefContainer {
+.divContent {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -196,6 +189,11 @@ body {
   flex-direction: row;
 }
 
+#voitbottom {
+  justify-content: space-between;
+  flex-direction: row;
+}
+
 #preinfo {
   margin: 1rem 0px 14px 0px;
 }
@@ -227,7 +225,7 @@ body {
   box-shadow: 0px 5px 0px 0px #993737;
 }
 
-.red:active {
+.red:active:not(:disabled) {
   transform: translateY(5px);
   box-shadow: 0px 0px 0px 0px #993737;
 }
@@ -237,14 +235,19 @@ body {
   box-shadow: 0px 5px 0px 0px #278b6d;
 }
 
-.green:active {
+.green:active:not(:disabled) {
   transform: translateY(5px);
   box-shadow: 0px 0px 0px 0px #278b6d;
 }
 
-.submit:active {
+.submit:active:not(:disabled) {
   transform: translateY(5px);
   box-shadow: 0px 0px 0px 0px #66accc;
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 #authbottom a {
@@ -294,6 +297,12 @@ select {
   display: inline-block;
   font: inherit;
   padding: 2px 0.5em 2px 0.5em;
+}
+
+#listVoit,
+#carTab {
+  text-align: center;
+  width: 100%;
 }
 
 .int {
@@ -542,26 +551,29 @@ select:focus {
     border-radius: 20px;
   }
 
-  #mainContainer {
+  #mainContainer,
+  .mainContainer {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
   }
 
-  #mainContainer > * {
+  #mainContainer > *,
+  .mainContainer > * {
     width: 100%;
   }
 
   #preinfo {
     flex-direction: column;
   }
-  #settbottom {
+  #settbottom,
+  #voitbottom {
     flex-direction: column-reverse;
   }
 
-  #settingContainer {
+  .popup {
     max-height: 80%;
-    width: 70%;
+    max-width: 70%;
   }
 }
 

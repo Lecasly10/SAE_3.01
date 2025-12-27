@@ -16,15 +16,15 @@
   </head>
 
   <body>
-    <div id="auth" class="blur-bg hidden">
-      <div id="auth-container">
+    <div id="auth" class="popupBg blur-bg hidden">
+      <div id="auth-container" class="popup">
         <a class="fade close" id="closeAuthButton">
           <i class="fa fa-window-close" aria-hidden="true"></i>
         </a>
         <p class="titleWindow">CONNEXION</p>
         <div>
           <p id="errorAuth" class="error hidden"></p>
-          <div id="preinfo">
+          <div id="preinfo" class="divContent">
             <input
               class="inputPref hidden"
               type="text"
@@ -42,7 +42,7 @@
               required
             />
           </div>
-          <div id="connexion">
+          <div id="connexion" class="divContent">
             <input
               class="inputPref hidden"
               type="tel"
@@ -74,7 +74,7 @@
               id="confirmpasswordbox"
               name="password"
             />
-            <div id="authbottom">
+            <div id="authbottom" class="divContent">
               <a id="inscription" class="link">Pas de compte ? Inscription</a>
               <a id="connexionLink" class="hidden link">Connexion</a>
               <button id="submit" class="submit">Valider</button>
@@ -84,15 +84,15 @@
       </div>
     </div>
 
-    <div id="settings" class="blur-bg hidden">
-      <div id="settingContainer">
+    <div id="settings" class="popupBg blur-bg hidden">
+      <div id="settingContainer" class="popup">
         <a class="fade close overlay" id="closeSettingButton"
           ><i class="fa fa-window-close" aria-hidden="true"></i>
         </a>
         <p class="titleWindow">PARAMETRES</p>
         <p id="errorSett" class="error hidden"></p>
         <div id="mainContainer">
-          <div id="personnalContainer" class="flexdiv">
+          <div id="personnalContainer" class="divContent">
             <p>Informations</p>
             <label class="inputTitle">Nom</label>
             <input class="inputPref" type="text" id="nameParam" required />
@@ -110,7 +110,7 @@
               required
             />
           </div>
-          <div id="prefContainer" class="flexdiv">
+          <div id="prefContainer" class="divContent">
             <p>Préférences</p>
             <div class="divinput">
               <label class="inputTitle">Parking Gratuit</label>
@@ -154,10 +154,64 @@
             </div>
           </div>
         </div>
-        <div id="settbottom">
-          <button id="logout" class="submit">Déconnexion</button>
+        <div id="settbottom" class="divContent">
+          <button id="logout" class="submit red">Déconnexion</button>
           <button id="carButton" class="submit green">Véhicules</button>
-          <button id="submitSett" class="submit red">Valider</button>
+          <button id="submitSett" class="submit">Valider</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="voiture" class="popupBg blur-bg hidden">
+      <div id="voitureContainer" class="popup">
+        <a class="fade close overlay" id="closeVoitButton"
+          ><i class="fa fa-window-close" aria-hidden="true"></i>
+        </a>
+        <p class="titleWindow">VOS VOITURES</p>
+        <p id="errorVoit" class="error hidden"></p>
+        <div class="mainContainer">
+          <div id="listVoit">
+            <select id="carTab" size="5">
+              <option>Aucune</option>
+            </select>
+          </div>
+        </div>
+        <div id="voitbottom" class="divContent">
+          <button id="deleteCar" class="submit red" disabled>Supprimer</button>
+          <button id="addCar" class="submit green">Nouveau</button>
+          <button id="submitCar" class="submit" disabled>Modifier</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="voitureEdit" class="popupBg blur-bg">
+      <div id="voitureEditContainer" class="popup">
+        <a class="fade close overlay" id="closeVoitEditButton"
+          ><i class="fa fa-window-close" aria-hidden="true"></i>
+        </a>
+        <p class="titleWindow" id="editTitle">MODIFICATIONS</p>
+        <p id="errorVoitEdit" class="error hidden"></p>
+        <div class="mainContainer">
+          <div class="divContent" style="width: 100%">
+            <label class="inputTitle">Plaque</label>
+            <input class="inputPref" type="text" id="plateParam" required />
+            <label class="inputTitle">Hauteur (cm)</label>
+            <input class="inputPref" type="number" id="vHeihgtParam" required />
+            <label class="inputTitle">Type</label>
+            <select class="inputPref" id="vTypeParam">
+              <option value="voiture" selected>Voiture</option>
+              <option value="moto">Moto</option>
+            </select>
+            <label class="inputTitle">Moteur</label>
+            <select class="inputPref" id="vMotorParam">
+              <option value="thermique" selected>Thermique</option>
+              <option value="hybride">Hybride</option>
+              <option value="electrique">électrique</option>
+            </select>
+          </div>
+        </div>
+        <div id="voitEditBottom" class="divContent">
+          <button id="submitEditCar" class="submit">Valider</button>
         </div>
       </div>
     </div>

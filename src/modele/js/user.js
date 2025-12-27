@@ -42,7 +42,7 @@ export class User {
                     try {
                         this.data = JSON.parse(storedData);
                     } catch (e) {
-                        console.warn("userVeh n'est pas un JSON valide, réinitialisation", e);
+                        console.warn("JSON invalide : ", e);
                         this.data = null;
                         localStorage.removeItem("userVeh");
                     }
@@ -60,7 +60,7 @@ export class User {
 
     async update(info) {
         try {
-            if (info.vehId != 'none') {
+            if (info.vehId != this.data.vehId) {
                 localStorage.setItem('userVeh', JSON.stringify({
                     vehId: info.vehId
                 }))
