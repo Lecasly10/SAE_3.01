@@ -49,6 +49,7 @@ export async function initEvent() {
   })
 
   element.carButton.addEventListener("click", async (e) => {
+    handlers.handleCar(e);
     UI.toggleVoiture(true);
   })
 
@@ -57,7 +58,6 @@ export async function initEvent() {
   })
 
   element.closeVoit.addEventListener("click", async (e) => {
-    handlers.handleCar(e);
     UI.toggleVoiture(false);
   })
 
