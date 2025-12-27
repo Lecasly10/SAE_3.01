@@ -79,7 +79,11 @@ export class UI {
   }
 
   static toggleVoiture(show = false) {
-    const { voitureDiv } = UI.el
+    const { voitureDiv, listvoit } = UI.el
+    if (!show) {
+      listvoit.innerHTML = "";
+      listvoit.add(new Option("Aucun", "none"))
+    }
     show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
   }
 
