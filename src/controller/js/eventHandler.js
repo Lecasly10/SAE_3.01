@@ -336,7 +336,7 @@ export function createHandlers(builder, navigation, user) {
   // Arrêter ou annuler la navigation
 
   async function handleStop(event) {
-    event?.preventDefault?.();
+    event.preventDefault();
 
     navigation.stopNavigation();
     UI.setupUI();
