@@ -56,6 +56,14 @@ export async function initEvent() {
     UI.toggleVoitureEdit(true);
   })
 
+  element.closeVoit("click", async () => {
+    UI.toggleVoiture(false);
+  })
+
+  element.closeEdit("click", async () => {
+    UI.toggleVoitureEdit(false);
+  })
+
   element.listvoit.addEventListener("change", () => {
     element.deleteCar.disabled = element.listvoit.value === "";
     element.editCar.disabled = element.listvoit.value === "";
