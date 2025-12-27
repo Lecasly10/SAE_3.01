@@ -37,8 +37,17 @@ export class User {
                 UI.toggleAuthIcon(true)
                 this.userId = data.user_id;
                 this.mail = data.mail;
-                if (localStorage.getItem('userVeh')) {
-                    this.data = JSON.parse(localStorage.getItem("userVeh"));
+                const storedData = localStorage.getItem("userVeh");
+                if (storedData) {
+                    try {
+                        this.data = JSON.parse(storedData);
+                    } catch (e) {
+                        console.warn("userVeh n'est pas un JSON valide, réinitialisation", e);
+                        this.data = null;
+                        localStorage.removeItem("userVeh");
+                    }
+                } else {
+                    this.data = null;
                 }
             };
             return data.authenticated ? data.authenticated : false;
