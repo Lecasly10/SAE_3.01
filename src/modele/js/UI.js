@@ -70,8 +70,9 @@ export class UI {
   }
 
   static toggleSetting(show = false) {
-    const { settings } = UI.el
-
+    const { settings, carParam } = UI.el
+    carParam.innerHTML = "";
+    carParam.add(new Option("Aucun", "none"))
     show ? UI.show(settings) : UI.hide(settings);
   }
 

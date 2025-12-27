@@ -389,9 +389,9 @@ export function createHandlers(builder, navigation, user) {
       if (data.vehicules) {
         data.vehicules.forEach(veh => {
           if (user.data && user.data.vehId == veh.id) {
-            carParam.add(new Option(`${veh.type} - ${veh.id}`, veh.id, true, true))
+            carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
           } else
-            carParam.add(new Option(`${veh.type} - ${veh.id}`, veh.id))
+            carParam.add(new Option(`${veh.plate}`, veh.id))
         });
       }
       UI.toggleSetting(true);
