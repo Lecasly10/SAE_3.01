@@ -78,6 +78,16 @@ export class UI {
     show ? UI.show(settings) : UI.hide(settings);
   }
 
+  static toggleVoiture(show = false) {
+    const { voitureDiv } = UI.el
+    show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
+  }
+
+  static toggleVoitureEdit(show = false) {
+    const { voitureEditDiv } = UI.el
+    show ? UI.show(voitureEditDiv) : UI.hide(voitureEditDiv)
+  }
+
   static toggleAuthIcon(show = false) {
     const { userIcon } = UI.el
     if (show) {

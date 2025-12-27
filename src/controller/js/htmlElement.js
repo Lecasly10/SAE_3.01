@@ -53,6 +53,7 @@ export const errorS = document.getElementById("errorSett");
 export const submitSett = document.getElementById("submitSett");
 
 export const carButton = document.getElementById("carButton")
-
+export const voitureDiv = document.getElementById("voiture")
+export const voitureEditDiv = document.getElementById("voitureEdit")
 //loading animation
 export const loader = document.getElementById("loader");

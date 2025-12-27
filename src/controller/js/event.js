@@ -48,6 +48,10 @@ export async function initEvent() {
     handlers.handleUpdate(e)
   })
 
+  element.carButton.addEventListener("click", async () => {
+    UI.toggleVoiture(true);
+  })
+
   //Annuler ou stop
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
