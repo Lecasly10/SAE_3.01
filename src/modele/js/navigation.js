@@ -64,28 +64,27 @@ export class Navigation {
     }
   }
 
-  followRoute(step = 0) {
+  followRoute() {
     if (!this.route) return;
 
     const builder = Navigation.builder;
-    const path = this.route.polylines[0].getPath();
+    const polyline = this.route.polylines[0];
+    const path = polyline.getPath();
 
-    if (step >= path.getLength() - 1) return;
+    if (path.getLength() < 2) return;
 
-    const from = path.getAt(step);
-    const to = path.getAt(step + 1);
+    const from = path.getAt(0);
+    const to = path.getAt(1);
 
     const heading = google.maps.geometry.spherical.computeHeading(from, to);
 
     builder.map.moveCamera({
       center: from,
       heading,
-      tilt: 60
+      tilt: 60,
+      zoom: 18
     });
-
-    requestAnimationFrame(() => this.followRoute(step + 1));
   }
-
 
 
   async startParkingMonitor() {

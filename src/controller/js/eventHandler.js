@@ -88,7 +88,7 @@ export function createHandlers(builder, navigation, user) {
     confirm.addEventListener("click", (e) => {
       e.preventDefault();
       builder.map.panTo(builder.userMarker.position);
-      builder.map.setZoom(25);
+      builder.map.setZoom(18);
       navigation.focus = true; //Suivre le marker
       navigation.followRoute();
       UI.toggleNavigationUI(destination.name);
