@@ -82,7 +82,7 @@ export class UI {
     const { voitureDiv, listvoit } = UI.el
     if (!show) {
       listvoit.innerHTML = "";
-      listvoit.add(new Option("Aucun", "none"))
+      listvoit.add(new Option("Sélectionner un véhicule", "none"))
     }
     show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
   }

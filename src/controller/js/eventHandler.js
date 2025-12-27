@@ -384,17 +384,23 @@ export function createHandlers(builder, navigation, user) {
   async function handleCarEdit(event) {
     event.preventDefault()
     const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam } = UI.el;
-
-    try {
-      let data = JSON.parse(listvoit.value)
-      plateParam.value = data.plate;
-      vHeightParam.value = data.height;
-      vMotorParam.value = data.motor;
-      vTypeParam.value = data.type;
-    } catch (e) {
-      console.error("Erreur : ", e)
-      alert("Une erreur est survenue")
+    let b = event.target.value
+    if (b == "new") {
+      plateParam.value = "";
+      vHeightParam.value = "";
+    } else {
+      try {
+        let data = JSON.parse(listvoit.value)
+        plateParam.value = data.plate;
+        vHeightParam.value = data.height;
+        vMotorParam.value = data.motor;
+        vTypeParam.value = data.type;
+      } catch (e) {
+        console.error("Erreur : ", e)
+        alert("Une erreur est survenue")
+      }
     }
+
   }
 
   async function handleSettings() {
