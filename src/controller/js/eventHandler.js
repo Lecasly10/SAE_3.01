@@ -367,6 +367,23 @@ export function createHandlers(builder, navigation, user) {
     }
   }
 
+  async function handleCar(event) {
+    event.preventDefault();
+    const { listvoit } = UI.el;
+    let data = await user.load(user.userId);
+    if (!data) alert("Une erreur est survenu !");
+    else {
+      if (data.vehicules) {
+        data.vehicules.forEach(veh => {
+          if (user.data && user.data.vehId == veh.id) {
+            listvoit.add(new Option(`${veh.plate}`, veh.id, true, true))
+          } else
+            listvoit.add(new Option(`${veh.plate}`, veh.id))
+        });
+      }
+    }
+  }
+
   async function handleSettings() {
     const {
       nameParam, mailParam, telParam,
@@ -468,5 +485,6 @@ export function createHandlers(builder, navigation, user) {
     handleSettingButton,
     handleSubmit,
     handleUpdate,
+    handleCar,
   };
 }
