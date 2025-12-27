@@ -65,8 +65,8 @@ export async function initEvent() {
   })
 
   element.listvoit.addEventListener("change", (e) => {
-    element.deleteCar.disabled = element.listvoit.value === "";
-    element.editCar.disabled = element.listvoit.value === "";
+    element.deleteCar.disabled = element.listvoit.value === "none" || element.listvoit.value === "";
+    element.editCar.disabled = element.listvoit.value === "none" || element.listvoit.value === "";
   });
 
   //Annuler ou stop

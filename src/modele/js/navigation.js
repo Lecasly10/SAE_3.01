@@ -64,6 +64,30 @@ export class Navigation {
     }
   }
 
+  followRoute(step = 0) {
+    if (!this.route) return;
+
+    const builder = Navigation.builder;
+    const path = this.route.polylines[0].getPath();
+
+    if (step >= path.getLength() - 1) return;
+
+    const from = path.getAt(step);
+    const to = path.getAt(step + 1);
+
+    const heading = google.maps.geometry.spherical.computeHeading(from, to);
+
+    builder.map.moveCamera({
+      center: from,
+      heading,
+      tilt: 60
+    });
+
+    requestAnimationFrame(() => this.followRoute(step + 1));
+  }
+
+
+
   async startParkingMonitor() {
     if (!this.destination || this.parkMonitor) return;
 
@@ -157,6 +181,7 @@ export class Navigation {
     );
 
     this.route = { bounds, destination: this.destination, polylines, marker };
+    this.followRoute();
   }
 
   removeRoute() {
