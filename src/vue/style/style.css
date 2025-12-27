@@ -542,11 +542,14 @@ select:focus {
     border-radius: 20px;
   }
 
-  #mainContainer,
-  .flexdiv {
+  #mainContainer {
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  #mainContainer > * {
+    width: 100%;
   }
 
   #preinfo {
