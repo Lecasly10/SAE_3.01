@@ -56,11 +56,11 @@ export async function initEvent() {
     UI.toggleVoitureEdit(true);
   })
 
-  element.closeVoit("click", async () => {
+  element.closeVoit.addEventListener("click", async () => {
     UI.toggleVoiture(false);
   })
 
-  element.closeEdit("click", async () => {
+  element.closeEdit.addEventListener("click", async () => {
     UI.toggleVoitureEdit(false);
   })
 
