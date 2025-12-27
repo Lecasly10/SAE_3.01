@@ -48,23 +48,23 @@ export async function initEvent() {
     handlers.handleUpdate(e)
   })
 
-  element.carButton.addEventListener("click", async () => {
+  element.carButton.addEventListener("click", async (e) => {
     UI.toggleVoiture(true);
   })
 
-  element.addCar.addEventListener("click", async () => {
+  element.addCar.addEventListener("click", async (e) => {
     UI.toggleVoitureEdit(true);
   })
 
-  element.closeVoit.addEventListener("click", async () => {
+  element.closeVoit.addEventListener("click", async (e) => {
     UI.toggleVoiture(false);
   })
 
-  element.closeEdit.addEventListener("click", async () => {
+  element.closeEdit.addEventListener("click", async (e) => {
     UI.toggleVoitureEdit(false);
   })
 
-  element.listvoit.addEventListener("change", () => {
+  element.listvoit.addEventListener("change", (e) => {
     element.deleteCar.disabled = element.listvoit.value === "";
     element.editCar.disabled = element.listvoit.value === "";
   });
