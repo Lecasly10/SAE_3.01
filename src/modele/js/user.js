@@ -61,11 +61,12 @@ export class User {
     async update(info) {
         try {
             if (info.vehId != 'none') {
-                localStorage.setItem('userVeh', {
+                localStorage.setItem('userVeh', JSON.stringify({
                     vehId: info.vehId
-                })
-                this.data = localStorage.getItem('userVeh');
+                }))
+                this.data = JSON.parse(localStorage.getItem('userVeh'));
             }
+            console.log(this.data)
             const data = await phpFetch("updateUser.php", info)
             if (!data) throw new Error("Erreur serveur !")
             if (data.status === "success") UI.toggleSetting(false);
