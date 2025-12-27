@@ -111,7 +111,8 @@ body {
 
 .overlay {
   padding: 5px 10px;
-  margin: 10px;
+  margin: 0;
+  left: 0;
   backdrop-filter: blur(6px);
   border-radius: 20px;
 }
