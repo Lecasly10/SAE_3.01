@@ -375,10 +375,11 @@ export function createHandlers(builder, navigation, user) {
     else {
       if (data.vehicules) {
         data.vehicules.forEach(veh => {
-          listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)))
+          listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
         });
       }
     }
+    listvoit.value = "none";
   }
 
   async function handleCarEdit(event) {
