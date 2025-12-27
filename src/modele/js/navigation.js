@@ -42,6 +42,7 @@ export class Navigation {
 
   async stopNavigation() {
     this.stopParkingMonitor();
+    this.stopFollowRoute();
     this.removeRoute();
     this.destination = null;
     this.focus = false;
@@ -64,25 +65,61 @@ export class Navigation {
     }
   }
 
-  followRoute() {
-    if (!this.route) return;
+  startFollowRoute() {
+    if (!this.route || this.followingRoute) return;
 
+    this.followingRoute = true;
+
+    this.followInterval = setInterval(() => {
+      if (!this.route) return;
+
+      const builder = Navigation.builder;
+      const path = this.route.polylines[0].getPath();
+      const position = builder.userMarker?.position;
+      if (!position || path.getLength() < 2) return;
+
+
+      let closestIndex = 0;
+      let minDist = Infinity;
+
+      path.forEach((p, i) => {
+        const d = google.maps.geometry.spherical.computeDistanceBetween(position, p);
+        if (d < minDist) {
+          minDist = d;
+          closestIndex = i;
+        }
+      });
+
+      if (closestIndex >= path.getLength() - 1) return;
+
+      const from = path.getAt(closestIndex);
+      const to = path.getAt(closestIndex + 1);
+
+      const heading =
+        google.maps.geometry.spherical.computeHeading(from, to);
+
+      builder.map.moveCamera({
+        center: position,
+        heading,
+        tilt: 60,
+        zoom: 18
+      });
+
+    }, 1000);
+  }
+
+  stopFollowRoute() {
+    this.followingRoute = false;
+
+    if (this.followInterval) {
+      clearInterval(this.followInterval);
+      this.followInterval = null;
+    }
     const builder = Navigation.builder;
-    const polyline = this.route.polylines[0];
-    const path = polyline.getPath();
-
-    if (path.getLength() < 2) return;
-
-    const from = path.getAt(0);
-    const to = path.getAt(1);
-
-    const heading = google.maps.geometry.spherical.computeHeading(from, to);
 
     builder.map.moveCamera({
-      center: from,
-      heading,
-      tilt: 60,
-      zoom: 18
+      heading: 0,
+      tilt: 0
     });
   }
 

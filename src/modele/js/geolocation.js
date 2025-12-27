@@ -82,9 +82,9 @@ export class Geolocation {
           this.builder.userMarker.position = userPosition;
         }
 
-        if (nav.focus) {
-          this.builder.map.panTo(userPosition)
-        }
+        // if (nav.focus) {
+        //   this.builder.map.panTo(userPosition)
+        // }
       },
       (error) => console.warn("Erreur watchPosition :", error),
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
