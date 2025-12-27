@@ -22,6 +22,7 @@ export class User {
         this.createAccount = false;
         this.userId = null;
         this.mail = null;
+        this.data = null;
     }
 
     async checkAuth() {
@@ -36,6 +37,9 @@ export class User {
                 UI.toggleAuthIcon(true)
                 this.userId = data.user_id;
                 this.mail = data.mail;
+                if (localStorage.getItem('userVeh')) {
+                    this.data = JSON.parse(localStorage.getItem("userVeh"));
+                }
             };
             return data.authenticated ? data.authenticated : false;
 
@@ -47,6 +51,11 @@ export class User {
 
     async update(info) {
         try {
+            if (info.vehId != 'none') {
+                localStorage.setItem('userVeh', {
+                    vehId: info.vehId
+                })
+            }
             const data = await phpFetch("updateUser.php", info)
             if (!data) throw new Error("Erreur serveur !")
             if (data.status === "success") UI.toggleSetting(false);
@@ -61,7 +70,9 @@ export class User {
         try {
             const data = await phpFetch("loadInfo.php", { id: id })
             if (!data) throw new Error("Erreur serveur !");
-            else return data
+            else {
+                return data
+            }
         } catch (error) {
             console.error("Load info error: ", error)
         }

@@ -43,6 +43,7 @@ export const telParam = document.getElementById("telParam");
 export const closeSettingButton = document.getElementById("closeSettingButton");
 
 export const freeParam = document.getElementById("freeParam");
+export const carParam = document.getElementById("carParam");
 export const coverParam = document.getElementById("coverParam");
 export const pmrParam = document.getElementById("pmrParam");
 export const maxDistParam = document.getElementById("distParam");
@@ -50,6 +51,8 @@ export const maxHBudgetParam = document.getElementById("budgetParam");
 export const logoutButton = document.getElementById("logout");
 export const errorS = document.getElementById("errorSett");
 export const submitSett = document.getElementById("submitSett");
+
+export const carButton = document.getElementById("carButton")
 
 //loading animation
 export const loader = document.getElementById("loader");

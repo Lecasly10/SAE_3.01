@@ -372,7 +372,7 @@ export function createHandlers(builder, navigation, user) {
     const {
       nameParam, mailParam, telParam,
       surnameParam, maxDistParam, maxHBudgetParam,
-      pmrParam, coverParam, freeParam } = UI.el;
+      pmrParam, coverParam, freeParam, carParam } = UI.el;
     let data = await user.load(user.userId);
     if (!data) alert("Une erreur est survenu !");
     else {
@@ -385,6 +385,15 @@ export function createHandlers(builder, navigation, user) {
       freeParam.checked = data.free == true;
       maxDistParam.value = data.maxDistance;
       maxHBudgetParam.value = data.maxHourly;
+
+      if (data.vehicules) {
+        data.vehicules.forEach(veh => {
+          if (user.data && user.data.vehId == veh.id) {
+            carParam.add(new Option(`${veh.type} - ${veh.id}`, veh.id, true, true))
+          } else
+            carParam.add(new Option(`${veh.type} - ${veh.id}`, veh.id))
+        });
+      }
       UI.toggleSetting(true);
     }
   }
@@ -395,7 +404,7 @@ export function createHandlers(builder, navigation, user) {
     const {
       nameParam, telParam,
       surnameParam, maxDistParam, maxHBudgetParam,
-      pmrParam, coverParam, freeParam, errorS } = UI.el;
+      pmrParam, coverParam, freeParam, errorS, carParam } = UI.el;
 
     let errors = [];
 
@@ -442,6 +451,7 @@ export function createHandlers(builder, navigation, user) {
       covered: coverParam.checked,
       maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
       maxDist: maxDistParam.value ? maxDistParam.value : 0,
+      vehId: carParam.value
     })
 
     if ((res.status && res.status !== "success") && res.message) {

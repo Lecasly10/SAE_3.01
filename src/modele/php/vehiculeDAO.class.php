@@ -51,9 +51,8 @@ class VehiculeDAO
             )
         );
 
-        if (count($vehs) > 0) {
-            $veh = $vehs[0];
-            return $veh;
+        if (!empty($vehs)) {
+            return $vehs;
         }
         return null;
     }

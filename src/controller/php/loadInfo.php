@@ -38,6 +38,8 @@ try {
         exit;
     } else {
         $pref = $prefDAO->getById(intval($userId));
+        $veh = $vehDAO->getByUserId(intval($userId));
+
         $name = $user->getLastName();
         $surname = $user->getFirstName();
         $tel = $user->getPhone();
@@ -61,6 +63,19 @@ try {
             $covered = $pref->getPreferCovered();
         }
 
+        $vehicules = [];
+        if ($veh) {
+            foreach ($veh as $v) {
+                $vehicules[] = [
+                    'id' => $v->getId(),
+                    'type' => $v->getType(),
+                    'motor' => $v->getMotor(),
+                    'height' => $v->getVehiculeHeight(),
+                    'plate' => $v->getPlate()
+                ];
+            }
+        }
+
         echo json_encode([
             'status' => 'success',
             'name' => $name,
@@ -70,7 +85,8 @@ try {
             'maxDistance' => $maxDistance,
             'maxHourly' => $maxHourly,
             'free' => $free,
-            'covered' => $covered
+            'covered' => $covered,
+            'vehicules' => empty($vehicules) ? null : $vehicules,
         ]);
     }
 } catch (Exception $e) {

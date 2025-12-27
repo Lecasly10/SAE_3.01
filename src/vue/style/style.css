@@ -216,22 +216,22 @@ body {
   box-shadow: 0px 5px 0px 0px #66accc;
 }
 
-#logout {
+.red {
   background-color: #b43d3d;
   box-shadow: 0px 5px 0px 0px #993737;
 }
 
-#logout:active {
+.red:active {
   transform: translateY(5px);
   box-shadow: 0px 0px 0px 0px #993737;
 }
 
-#accept {
+.green {
   background-color: #3db490;
   box-shadow: 0px 5px 0px 0px #278b6d;
 }
 
-#accept:active {
+.green:active {
   transform: translateY(5px);
   box-shadow: 0px 0px 0px 0px #278b6d;
 }
