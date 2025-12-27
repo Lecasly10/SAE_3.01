@@ -41,7 +41,7 @@ class VehiculeDAO
         );
     }
 
-    public function getByUserId(string $id): ?Vehicule
+    public function getByUserId(string $id): ?array
     {
         $veh = new Vehicule();
         $vehs = $this->loadQuery(
