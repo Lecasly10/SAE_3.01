@@ -53,6 +53,10 @@ export async function initEvent() {
     UI.toggleVoiture(true);
   })
 
+  element.editCar.addEventListener("click", async (e) => {
+    handlers.handleCarEdit(e);
+  })
+
   element.addCar.addEventListener("click", async (e) => {
     UI.toggleVoitureEdit(true);
   })

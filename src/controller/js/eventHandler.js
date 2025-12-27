@@ -375,12 +375,25 @@ export function createHandlers(builder, navigation, user) {
     else {
       if (data.vehicules) {
         data.vehicules.forEach(veh => {
-          if (user.data && user.data.vehId == veh.id) {
-            listvoit.add(new Option(`${veh.plate}`, veh.id, true, true))
-          } else
-            listvoit.add(new Option(`${veh.plate}`, veh.id))
+          listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)))
         });
       }
+    }
+  }
+
+  async function handleCarEdit(event) {
+    event.preventDefault()
+    const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam } = UI.el;
+
+    try {
+      let data = JSON.parse(listvoit.value)
+      plateParam.value = data.plate;
+      vHeightParam.value = data.height;
+      vMotorParam.value = data.motor;
+      vTypeParam.value = data.type;
+    } catch (e) {
+      console.error("Erreur : ", e)
+      alert("Une erreur est survenue")
     }
   }
 
@@ -486,5 +499,6 @@ export function createHandlers(builder, navigation, user) {
     handleSubmit,
     handleUpdate,
     handleCar,
+    handleCarEdit,
   };
 }
