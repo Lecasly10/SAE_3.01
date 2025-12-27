@@ -104,7 +104,7 @@ body {
 .close {
   font-size: 24px;
   display: block;
-  position: absolute;
+  position: sticky;
   color: #111;
   cursor: pointer;
   transition: font-size 0.1s ease-in-out;
