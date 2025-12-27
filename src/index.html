@@ -16,6 +16,7 @@
   </head>
 
   <body>
+    <!-- POPUP AUTH -->
     <div id="auth" class="popupBg blur-bg hidden">
       <div id="auth-container" class="popup">
         <a class="fade close" id="closeAuthButton">
@@ -84,6 +85,7 @@
       </div>
     </div>
 
+    <!-- POPUP SETTINGS -->
     <div id="settings" class="popupBg blur-bg hidden">
       <div id="settingContainer" class="popup">
         <a class="fade close overlay" id="closeSettingButton"
@@ -162,6 +164,7 @@
       </div>
     </div>
 
+    <!-- POPUP GESTION VOITURES -->
     <div id="voiture" class="popupBg blur-bg hidden">
       <div id="voitureContainer" class="popup">
         <a class="fade close overlay" id="closeVoitButton"
@@ -184,6 +187,7 @@
       </div>
     </div>
 
+    <!-- POPUP EDIT ET AJOUT VOITURES -->
     <div id="voitureEdit" class="popupBg blur-bg hidden">
       <div id="voitureEditContainer" class="popup">
         <a class="fade close overlay" id="closeVoitEditButton"
@@ -216,6 +220,7 @@
       </div>
     </div>
 
+    <!-- TOPBAR -->
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
@@ -233,6 +238,7 @@
       </div>
     </div>
 
+    <!-- POPUP DES RESULTATS -->
     <div id="resultContainer" class="blur-bg box">
       <div class="titlebox">
         <p id="resultTitle" class="bold"></p>
@@ -244,8 +250,10 @@
       <div id="resultBox"></div>
     </div>
 
+    <!-- GOOGLE MAP -->
     <div id="map"></div>
 
+    <!-- BOTTOM BAR -->
     <div id="bottomnav" class="navbar blur-bg">
       <div id="centerButton" class="button fade" title="Recentrer">
         <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
@@ -274,7 +282,7 @@
       </div>
     </div>
 
-    <!-- SOURCE : DOCUMENTATION API GOOGLE MAPS -->
+    <!-- API GOOGLE MAPS => VOIR DOCU GOOGLE MAPS -->
     <script>
       ((g) => {
         var h,
