@@ -112,6 +112,12 @@ body {
   transition: font-size 0.1s ease-in-out;
 }
 
+.overlay {
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+}
+
 .close:hover {
   font-size: 32px;
   transition: font-size 0.1s ease-in-out;
@@ -538,10 +544,12 @@ select:focus {
 
   #mainContainer {
     flex-direction: column;
+    justify-content: center;
   }
 
   #preinfo {
     flex-direction: column;
+    justify-content: center;
   }
   #settbottom {
     flex-direction: column-reverse;

@@ -86,13 +86,13 @@
 
     <div id="settings" class="blur-bg hidden">
       <div id="settingContainer">
-        <a class="fade close" id="closeSettingButton"
+        <a class="fade close overlay" id="closeSettingButton"
           ><i class="fa fa-window-close" aria-hidden="true"></i>
         </a>
         <p class="titleWindow">PARAMETRES</p>
         <p id="errorSett" class="error hidden"></p>
         <div id="mainContainer">
-          <div id="personnalContainer">
+          <div id="personnalContainer" class="flexdiv">
             <p>Informations</p>
             <label class="inputTitle">Nom</label>
             <input class="inputPref" type="text" id="nameParam" required />
@@ -110,7 +110,7 @@
               required
             />
           </div>
-          <div id="prefContainer">
+          <div id="prefContainer" class="flexdiv">
             <p>Préférences</p>
             <div class="divinput">
               <label class="inputTitle">Parking Gratuit</label>
