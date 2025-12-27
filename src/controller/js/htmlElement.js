@@ -52,8 +52,12 @@ export const logoutButton = document.getElementById("logout");
 export const errorS = document.getElementById("errorSett");
 export const submitSett = document.getElementById("submitSett");
 
-export const carButton = document.getElementById("carButton")
-export const voitureDiv = document.getElementById("voiture")
-export const voitureEditDiv = document.getElementById("voitureEdit")
+export const carButton = document.getElementById("carButton");
+export const voitureDiv = document.getElementById("voiture");
+export const voitureEditDiv = document.getElementById("voitureEdit");
+export const deleteCar = document.getElementById("deleteCar")
+export const addCar = document.getElementById("addCar")
+export const editCar = document.getElementById("editCar")
+export const listvoit = document.getElementById("listVoit");
 //loading animation
 export const loader = document.getElementById("loader");

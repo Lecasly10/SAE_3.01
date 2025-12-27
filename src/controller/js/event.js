@@ -52,6 +52,15 @@ export async function initEvent() {
     UI.toggleVoiture(true);
   })
 
+  element.addCar.addEventListener("click", async () => {
+    UI.toggleVoitureEdit(true);
+  })
+
+  element.listvoit.addEventListener("change", () => {
+    element.deleteCar.disabled = element.listvoit.value === "";
+    element.editCar.disabled = element.listvoit.value === "";
+  });
+
   //Annuler ou stop
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
