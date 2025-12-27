@@ -113,7 +113,7 @@ body {
 }
 
 .overlay {
-  padding: 20px;
+  padding: 5px;
   backdrop-filter: blur(6px);
   border-radius: 20px;
 }
@@ -542,14 +542,15 @@ select:focus {
     border-radius: 20px;
   }
 
-  #mainContainer {
+  #mainContainer,
+  .flexdiv {
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
   }
 
   #preinfo {
     flex-direction: column;
-    justify-content: center;
   }
   #settbottom {
     flex-direction: column-reverse;
