@@ -410,8 +410,6 @@ export function createHandlers(builder, navigation, user) {
 
     errorS.textContent = "";
     UI.hide(errorS);
-    console.log(maxHBudgetParam.value)
-    console.log(maxDistParam.value)
 
     if (isEmpty(nameParam.value))
       errors.push("Le prénom est obligatoire.");

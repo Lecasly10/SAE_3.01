@@ -64,6 +64,7 @@ export class User {
                 localStorage.setItem('userVeh', {
                     vehId: info.vehId
                 })
+                this.data = localStorage.getItem('userVeh');
             }
             const data = await phpFetch("updateUser.php", info)
             if (!data) throw new Error("Erreur serveur !")
