@@ -22,6 +22,7 @@ export const closeButton = document.getElementById("closeButton");
 
 //Connection / inscription
 export const auth = document.getElementById("auth");
+export const preInfo = document.getElementById("preinfo");
 export const inscrLink = document.getElementById("inscription");
 export const connLink = document.getElementById("connexionLink");
 export const nameI = document.getElementById("name");

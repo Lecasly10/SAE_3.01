@@ -387,7 +387,7 @@ export function createHandlers(builder, navigation, user) {
     const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
     let b = event.target.value
     if (b == "new") {
-      editTitle.textContent = "NOUVEAU VEHICULE"
+      editTitle.textContent = "NOUVEAU"
       plateParam.value = "";
       vHeightParam.value = "";
     } else {

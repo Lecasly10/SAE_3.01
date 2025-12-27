@@ -24,79 +24,80 @@
     <!-- POPUP AUTH -->
     <div id="auth" class="popupBg blur-bg hidden">
       <div id="auth-container" class="popup">
-        <a class="fade close" id="closeAuthButton">
-          <i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
-        <p class="titleWindow">CONNEXION</p>
-        <div>
-          <p id="errorAuth" class="error hidden"></p>
-          <div id="preinfo" class="divContent">
-            <input
-              class="inputPref hidden"
-              type="text"
-              placeholder="Nom"
-              id="name"
-              name="name"
-              required
-            />
-            <input
-              class="inputPref hidden"
-              type="text"
-              placeholder="Prénom"
-              id="surname"
-              name="surname"
-              required
-            />
-          </div>
-          <div id="connexion" class="divContent">
-            <input
-              class="inputPref hidden"
-              type="tel"
-              placeholder="Numéro de tel ex: 06 12 12 23 33"
-              id="tel"
-              name="tel"
-              pattern="[0-9]{10}"
-              required
-            />
-            <input
-              class="inputPref"
-              type="email"
-              placeholder="Votre email..."
-              id="mail"
-              name="mail"
-            />
-            <input
-              class="inputPref"
-              type="password"
-              placeholder="Votre mot de passe"
-              id="password"
-              name="password"
-            />
+        <div class="popup-header">
+          <a class="fade" id="closeAuthButton">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </a>
+          <p class="titleWindow">CONNEXION</p>
+        </div>
 
-            <input
-              class="inputPref hidden"
-              type="password"
-              placeholder="Confirmer le mot de passe"
-              id="confirmpasswordbox"
-              name="password"
-            />
-            <div id="authbottom" class="divContent">
-              <a id="inscription" class="link">Pas de compte ? Inscription</a>
-              <a id="connexionLink" class="hidden link">Connexion</a>
-              <button id="submit" class="submit">Valider</button>
-            </div>
+        <p id="errorAuth" class="error hidden"></p>
+        <div id="preinfo" class="divContent hidden">
+          <input
+            class="inputPref"
+            type="text"
+            placeholder="Nom"
+            id="name"
+            name="name"
+            required
+          />
+          <input
+            class="inputPref"
+            type="text"
+            placeholder="Prénom"
+            id="surname"
+            name="surname"
+            required
+          />
+        </div>
+        <div id="connexion" class="divContent">
+          <input
+            class="inputPref hidden"
+            type="tel"
+            placeholder="Numéro de tel ex: 06 12 12 23 33"
+            id="tel"
+            name="tel"
+            pattern="[0-9]{10}"
+            required
+          />
+          <input
+            class="inputPref"
+            type="email"
+            placeholder="Votre email..."
+            id="mail"
+            name="mail"
+          />
+          <input
+            class="inputPref"
+            type="password"
+            placeholder="Votre mot de passe"
+            id="password"
+            name="password"
+          />
+
+          <input
+            class="inputPref hidden"
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            id="confirmpasswordbox"
+            name="password"
+          />
+          <div id="authbottom" class="divContent">
+            <a id="inscription" class="link">Pas de compte ? Inscription</a>
+            <a id="connexionLink" class="hidden link">Connexion</a>
+            <button id="submit" class="submit">Valider</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- POPUP SETTINGS -->
-    <div id="settings" class="popupBg blur-bg hidden">
+    <div id="settings" class="popupBg blur-bg">
       <div id="settingContainer" class="popup">
-        <a class="fade close overlay" id="closeSettingButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
-        <p class="titleWindow">PARAMETRES</p>
+        <div class="popup-header">
+          <a id="closeSettingButton"><i class="fa fa-window-close"></i></a>
+          <p class="titleWindow">PARAMETRES</p>
+        </div>
         <p id="errorSett" class="error hidden"></p>
         <div id="mainContainer">
           <div id="personnalContainer" class="divContent">
@@ -172,10 +173,12 @@
     <!-- POPUP GESTION VOITURES -->
     <div id="voiture" class="popupBg blur-bg hidden">
       <div id="voitureContainer" class="popup">
-        <a class="fade close overlay" id="closeVoitButton"
-          ><i class="fa fa-window-close" aria-hidden="true"></i>
-        </a>
-        <p class="titleWindow">VOS VOITURES</p>
+        <div class="popup-header">
+          <a class="fade" id="closeVoitButton"
+            ><i class="fa fa-window-close" aria-hidden="true"></i>
+          </a>
+          <p class="titleWindow">VOS VOITURES</p>
+        </div>
         <p id="errorVoit" class="error hidden"></p>
         <div class="mainContainer">
           <div id="listVoit">
@@ -199,7 +202,7 @@
     <!-- POPUP EDIT ET AJOUT VOITURES -->
     <div id="voitureEdit" class="popupBg blur-bg hidden">
       <div id="voitureEditContainer" class="popup">
-        <div class="close overlay">
+        <div class="popup-header">
           <a class="fade" id="closeVoitEditButton"
             ><i class="fa fa-window-close" aria-hidden="true"></i>
           </a>
