@@ -383,14 +383,16 @@ export function createHandlers(builder, navigation, user) {
 
   async function handleCarEdit(event) {
     event.preventDefault()
-    const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam } = UI.el;
+    const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
     let b = event.target.value
     if (b == "new") {
+      editTitle.textContent = "NOUVEAU VEHICULE"
       plateParam.value = "";
       vHeightParam.value = "";
     } else {
       try {
         let data = JSON.parse(listvoit.value)
+        editTitle.textContent = "MODIFICATION"
         plateParam.value = data.plate;
         vHeightParam.value = data.height;
         vMotorParam.value = data.motor;

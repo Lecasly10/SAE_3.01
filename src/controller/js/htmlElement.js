@@ -52,6 +52,7 @@ export const logoutButton = document.getElementById("logout");
 export const errorS = document.getElementById("errorSett");
 export const submitSett = document.getElementById("submitSett");
 
+export const editTitle = document.getElementById("editTitle")
 export const plateParam = document.getElementById("plateParam")
 export const vHeightParam = document.getElementById("vHeightParam")
 export const vTypeParam = document.getElementById("vTypeParam")
