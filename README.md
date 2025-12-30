@@ -4,9 +4,9 @@ Application de navigations vers les différents parking de Metz disponible dans 
 Possible de trouver le parking le plus proche en 1 clique !
 
 > [!WARNING]
-> Actuellement compatible avec les parkings de Londre et de Metz
-> Android et web seulement
-> VPN de l'iut OBLIGATOIRE en attendant un hebergement 
+> Actuellement compatible avec les parkings de Londre et de Metz  
+> Android et web seulement  
+> VPN de l'iut OBLIGATOIRE en attendant un hebergement  
 ---
 
 ## INFORMATION
