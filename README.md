@@ -6,8 +6,6 @@ Possible de trouver le parking le plus proche en 1 clique !
 ---
 
 **INFORMATION**
-
-Structure :
 - HTML / JS / CSS => FrontEnd
 - PHP => BackEnd
 - Cordova => Version Android
