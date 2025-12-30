@@ -1,7 +1,7 @@
 import {
   loadGoogleLibs,
   getGoogleLibs,
-} from "../googleAPI.js";
+} from "../api/googleAPI.js";
 import { lightId } from "./styles.js";
 
 export class MapBuilder {

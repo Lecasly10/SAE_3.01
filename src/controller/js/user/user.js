@@ -1,4 +1,4 @@
-import { phpFetch } from "../phpInteraction.js";
+import { phpFetch } from "../api/phpInteraction.js";
 import { UI } from "../ui/UI.js";
 
 export class User {
@@ -54,7 +54,6 @@ export class User {
 
         } catch (error) {
             console.error("checkAuth error: ", error);
-            alert("Erreur Serveur, vérifiez votre connexion Internet")
             return false;
         }
     }

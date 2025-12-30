@@ -1,9 +1,9 @@
-import { addMarker } from "../../controller/js/maps/addMarkers.js";
-import { getGoogleLibs } from "../../controller/js/googleAPI.js";
-import { phpFetch } from "../../controller/js/phpInteraction.js";
+import { addMarker } from "../maps/addMarkers.js";
+import { getGoogleLibs } from "../api/googleAPI.js";
+import { phpFetch } from "../api/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";
 import { UI } from "./UI.js";
-import { Utils } from "../../controller/js/utils.js";
+import { Utils } from "../utils.js";
 
 export class Navigation {
   static instance = null;

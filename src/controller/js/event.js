@@ -12,9 +12,18 @@ export async function initEvent() {
   const handlers = createHandlers(builder, navigation, user);
 
   document.addEventListener('offline', () => {
-    console.log("User offline !");
+    console.warn("User offline !");
     alert("La connexion à été perdu !")
   });
+
+  window.addEventListener('error', (event) => {
+    console.error('Erreur :', event.message);
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error("Erreur :", event.reason);
+  });
+
 
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {

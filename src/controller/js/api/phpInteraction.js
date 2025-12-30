@@ -23,7 +23,7 @@ export async function phpFetch(php, data, options = null) {
     const json = await resp.json();
     return json;
   } catch (erreur) {
-    console.log("Erreur : ", erreur);
+    console.log("Erreur Serveur : ", erreur);
     return null;
   }
 }

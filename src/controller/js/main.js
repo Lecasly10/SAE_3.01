@@ -10,8 +10,8 @@ import { User } from "./user/user.js";
 //===LOAD===
 globalThis.addEventListener("load", async () => {
   if (!navigator.onLine) {
-    alert("Veuillez vous connecter à internet !")
-    return
+    alert("Veuillez vous connecter à internet !");
+    return;
   }
 
   try {

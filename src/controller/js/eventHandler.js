@@ -1,5 +1,5 @@
 import { UI } from "./ui/UI.js";
-import { phpFetch } from "./phpInteraction.js";
+import { phpFetch } from "./api/phpInteraction.js";
 import { Utils } from "./utils.js";
 
 export function createHandlers(builder, navigation, user) {
