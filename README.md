@@ -18,7 +18,8 @@ Possible de trouver le parking le plus proche en 1 clique !
 - Se connecter au VPN de l'IUT
 - Accéder à l'URL pour tester la version web :
 [Cliquez ici](http://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/)
-- Ou, installer et télécharger l'APK sur un téléphone android
+- Ou, installer et télécharger l'APK sur un téléphone android :
+[Dernière Version](https://github.com/Lecasly10/SAE_3.01/releases/latest/)
 
 **FONCTIONS**
 - Recherche des parkings
