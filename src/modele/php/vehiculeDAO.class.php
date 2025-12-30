@@ -55,7 +55,7 @@ class VehiculeDAO
 
         if (count($vehs) > 0) {
             $veh = $vehs[0];
-            return $user;
+            return $veh;
         }
         return null;
     }
