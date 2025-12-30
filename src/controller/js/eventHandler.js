@@ -417,6 +417,8 @@ export function createHandlers(builder, navigation, user) {
       if (res.status != "success" && res.message) {
         console.log(res.message)
         alert(res.message)
+      } else {
+        handleCar(event);
       }
     }
   }
