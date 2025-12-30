@@ -411,7 +411,7 @@ export function createHandlers(builder, navigation, user) {
 
     if (!listvoit.value === "none" || !listvoit === "") return;
 
-    const id = JSON.parse(listvoit).id;
+    const id = JSON.parse(listvoit.value).id;
     if (confirm("Voulez vraiment supprimer ce véhicule")) {
       let res = await user.deleteCar(id);
       if (res.status != "success" && res.message) {
