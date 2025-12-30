@@ -1,4 +1,4 @@
-import { addMarker } from "../../controller/js/addMarkers.js";
+import { addMarker } from "../../controller/js/maps/addMarkers.js";
 import { getGoogleLibs } from "../../controller/js/googleAPI.js";
 import { phpFetch } from "../../controller/js/phpInteraction.js";
 import { Geolocation } from "./geolocation.js";

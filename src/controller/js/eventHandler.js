@@ -1,4 +1,4 @@
-import { UI } from "../../modele/js/UI.js";
+import { UI } from "./ui/UI.js";
 import { phpFetch } from "./phpInteraction.js";
 import { Utils } from "./utils.js";
 
@@ -406,6 +406,17 @@ export function createHandlers(builder, navigation, user) {
 
   }
 
+  async function handleDeleteCar(event) {
+    event.preventDefault();
+    const { listvoit } = UI.el;
+
+    if (!listvoit.value === "none" || !listvoit === "") return;
+    else {
+      const id = JSON.parse(listvoit).id;
+      user.deleteCar(id);
+    }
+  }
+
   async function handleSettings() {
     const {
       nameParam, mailParam, telParam,
@@ -509,5 +520,6 @@ export function createHandlers(builder, navigation, user) {
     handleUpdate,
     handleCar,
     handleCarEdit,
+    handleDeleteCar,
   };
 }

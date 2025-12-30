@@ -1,20 +1,22 @@
 import * as element from "./htmlElement.js";
-import { MapBuilder } from "../../modele/js/builder.js";
+import { MapBuilder } from "./maps/builder.js";
 import { Navigation } from "../../modele/js/navigation.js";
-import { User } from "../../modele/js/user.js";
+import { User } from "./user/user.js";
 import { createHandlers } from "./eventHandler.js";
-import { UI } from "../../modele/js/UI.js";
+import { UI } from "./ui/UI.js";
 
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
   const navigation = Navigation.getInstance();
   const user = User.getInstance();
   const handlers = createHandlers(builder, navigation, user);
+
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
     builder.map.panTo(builder.userMarker.position);
   });
 
+  //Settings
   element.settingsButton.addEventListener("click", (e) => {
     handlers.handleSettingButton(e);
   });
@@ -36,17 +38,22 @@ export async function initEvent() {
     handlers.handleListButton(e);
   });
 
+  //User
   element.logoutButton.addEventListener("click", async (e) => {
     await user.logout();
   })
 
+  //Bouton valider USER 
   element.submitButton.addEventListener("click", async (e) => {
     handlers.handleSubmit(e);
   })
 
+  //Bouton valider Param
   element.submitSett.addEventListener("click", async (e) => {
     handlers.handleUpdate(e)
   })
+
+  //Gestion Voiture
 
   element.carButton.addEventListener("click", async (e) => {
     handlers.handleCar(e);
@@ -63,12 +70,12 @@ export async function initEvent() {
     UI.toggleVoitureEdit(true);
   })
 
-  element.closeVoit.addEventListener("click", async (e) => {
-    UI.toggleVoiture(false);
+  element.deleteCar.addEventListener("click", async (e) => {
+    handlers.handleDeleteCar(e);
   })
 
-  element.closeEdit.addEventListener("click", async (e) => {
-    UI.toggleVoitureEdit(false);
+  element.submitEditCar.addEventListener("click", async (e) => {
+
   })
 
   element.listvoit.addEventListener("change", (e) => {
@@ -77,6 +84,7 @@ export async function initEvent() {
   });
 
   //Annuler ou stop
+
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
       handlers.handleCrossIcon(e);
@@ -97,6 +105,15 @@ export async function initEvent() {
     UI.toggleSetting(false);
   });
 
+  element.closeVoit.addEventListener("click", async (e) => {
+    UI.toggleVoiture(false);
+  })
+
+  element.closeEdit.addEventListener("click", async (e) => {
+    UI.toggleVoitureEdit(false);
+  })
+
+  //User Account Button
 
   if (element.inscrLink) {
     element.inscrLink.addEventListener("click", (e) => {

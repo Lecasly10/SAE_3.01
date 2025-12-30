@@ -1,5 +1,5 @@
-import { phpFetch } from "../../controller/js/phpInteraction.js";
-import { UI } from "./UI.js";
+import { phpFetch } from "../phpInteraction.js";
+import { UI } from "../ui/UI.js";
 
 export class User {
     static instance = null;
@@ -60,7 +60,11 @@ export class User {
 
     async update(info) {
         try {
-            if (info.vehId != this.data.vehId) {
+            if (!info.vehId) {
+                localStorage.removeItem('userVeh')
+                this.data = null
+            }
+            else {
                 localStorage.setItem('userVeh', JSON.stringify({
                     vehId: info.vehId
                 }))

@@ -1,3 +1,4 @@
+//Class avec des fct utiles
 export class Utils {
     static isEmpty = (value) => !value || value.trim() === "";
 

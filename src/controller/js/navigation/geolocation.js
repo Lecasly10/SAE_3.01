@@ -1,8 +1,8 @@
-import { addMarker } from "../../controller/js/addMarkers.js";
-import { nightMode } from "../../controller/js/maps/nightMode.js";
-import { MapBuilder } from "./builder.js";
+import { addMarker } from "../maps/addMarkers.js";
+import { nightMode } from "../maps/nightMode.js";
+import { MapBuilder } from "../maps/builder.js";
 import { Navigation } from "./navigation.js";
-import { Utils } from "../../controller/js/utils.js";
+import { Utils } from "../utils.js";
 
 export class Geolocation {
   static instance = null;

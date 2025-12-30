@@ -1,4 +1,4 @@
-//Fonction pour faire des requete post en JSON
+//Fct pour call PHP
 export async function phpFetch(php, data, options = null) {
   options = {
     method: "POST",

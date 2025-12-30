@@ -1,8 +1,8 @@
 import {
   loadGoogleLibs,
   getGoogleLibs,
-} from "../../controller/js/googleAPI.js";
-import { lightId } from "../../controller/js/maps/styles.js";
+} from "../googleAPI.js";
+import { lightId } from "./styles.js";
 
 export class MapBuilder {
   static instance = null;
