@@ -420,6 +420,7 @@ export function createHandlers(builder, navigation, user) {
         console.log(res.message)
         alert(res.message)
       } else {
+        UI.notify("Véhicule", "Véhicule supprimer avec succès !")
         await handleCar(event);
       }
     }
