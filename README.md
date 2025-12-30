@@ -15,7 +15,7 @@ Structure :
 
 **COMMENT L'utiliser**
 
-1 - Se connecter au VPN de l'IUT
-2 - Accéder à l'URL pour tester la version web :
-  devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/
-3 - Ou, installer et télécharger l'APK (disponible dans l'espace release du REPO) sur un téléphone android
+- Se connecter au VPN de l'IUT
+- Accéder à l'URL pour tester la version web :
+[Cliquez ici](devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/)
+- Ou, installer et télécharger l'APK sur un téléphone android
