@@ -5,7 +5,7 @@ Possible de trouver le parking le plus proche en 1 clique !
 
 ---
 
-**Application**
+**INFORMATION**
 
 Structure :
 - HTML / JS / CSS => FrontEnd
@@ -13,10 +13,15 @@ Structure :
 - Cordova => Version Android
 - PHPmyAdmin => Notre BDD
 
-**COMMENT L'utiliser**
-
+**INSTALLATION**
 - Se connecter à internet 
 - Se connecter au VPN de l'IUT
 - Accéder à l'URL pour tester la version web :
 [Cliquez ici](http://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/)
 - Ou, installer et télécharger l'APK sur un téléphone android
+
+**FONCTIONS**
+- Recherche des parkings
+- Recherche du parking le plus proche
+- Gestion des véhicules
+- Création et gestion de Compte
