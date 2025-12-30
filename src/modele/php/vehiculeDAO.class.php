@@ -41,13 +41,30 @@ class VehiculeDAO
         );
     }
 
+    public function getById(string $id): ?Vehicule
+    {
+        $veh = new Vehicule();
+        $vehs = $this->loadQuery(
+            $this->bd->execSQL(
+                $this->select . ' WHERE vehicle_id = :id',
+                [':id' => intval($id)]
+            )
+        );
+
+        if (count($vehs) > 0) {
+            $veh = $vehs[0];
+            return $user;
+        }
+        return null;
+    }
+
     public function getByUserId(string $id): ?array
     {
         $veh = new Vehicule();
         $vehs = $this->loadQuery(
             $this->bd->execSQL(
                 $this->select . ' WHERE user_id = :id',
-                [':id' => $id]
+                [':id' => intval($id)]
             )
         );
 
