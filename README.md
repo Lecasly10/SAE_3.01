@@ -5,15 +5,17 @@ Possible de trouver le parking le plus proche en 1 clique !
 
 > [!WARNING]
 > Actuellement compatible avec les parkings de Londre et de Metz
+> Android et web seulement
+> VPN de l'iut OBLIGATOIRE en attendant un hebergement 
 ---
 
-**INFORMATION**
+## INFORMATION
 - HTML / JS / CSS => FrontEnd
 - PHP => BackEnd
 - Cordova => Version Android
 - PHPmyAdmin => Notre BDD
 
-**INSTALLATION**
+## INSTALLATION
 - Se connecter à internet 
 - Se connecter au VPN de l'IUT
 - Accéder à l'URL pour tester la version web :
@@ -21,7 +23,7 @@ Possible de trouver le parking le plus proche en 1 clique !
 - Ou, installer et télécharger l'APK sur un téléphone android :
 [Dernière Version](https://github.com/Lecasly10/SAE_3.01/releases/latest/)
 
-**FONCTIONS**
+## FONCTIONS
 - Recherche des parkings
 - Recherche du parking le plus proche
 - Gestion des véhicules
