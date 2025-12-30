@@ -102,7 +102,7 @@ export async function initEvent() {
 
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
-      handlers.handleCrossIcon(e);
+      handlers.handleStop();
     });
   }
 

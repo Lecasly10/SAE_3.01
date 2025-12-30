@@ -69,7 +69,7 @@ export const listvoit = document.getElementById("carTab");
 export const submitEditCar = document.getElementById("submitEditCar");
 export const closeEdit = document.getElementById("closeVoitEditButton");
 export const closeVoit = document.getElementById("closeVoitButton");
-
+export const errorV = document.getElementById("errorVoitEdit")
 //loading animation
 export const loader = document.getElementById("loader");
 

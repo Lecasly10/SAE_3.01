@@ -388,6 +388,7 @@ export function createHandlers(builder, navigation, user) {
     const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
     let b = event.target.value
     if (b == "new") {
+      listvoit.value = "none"
       editTitle.textContent = "NOUVEAU"
       plateParam.value = "";
       vHeightParam.value = "";
@@ -407,11 +408,35 @@ export function createHandlers(builder, navigation, user) {
 
   }
 
+  async function handleCarEditSubmit(event) {
+    const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
+    let id;
+    let errors = [];
+    if (listvoit.value === "none" || listvoit === "") id = null;
+    else id = JSON.parse(listvoit.value);
+
+    //Verif des champs ici
+
+    if (errors.length > 0) {
+      errorV.textContent = errors.join("\n");
+      UI.show(errorV);
+      return;
+    }
+
+    const info = {}
+    if (id) {
+      user.updateCar(info);
+    } else {
+      user.createCar(info)
+    }
+
+  }
+
   async function handleDeleteCar(event) {
     event.preventDefault();
     const { listvoit } = UI.el;
 
-    if (!listvoit.value === "none" || !listvoit === "") return;
+    if (listvoit.value === "none" || listvoit === "") return;
 
     const id = JSON.parse(listvoit.value).id;
     if (confirm("Voulez vraiment supprimer ce véhicule")) {
@@ -522,7 +547,7 @@ export function createHandlers(builder, navigation, user) {
     handleAutoSearchClick,
     handleSearchBoxSubmit,
     handleCloseButton,
-    handleCrossIcon,
+    handleStop,
     handleListButton,
     handleSettingButton,
     handleSubmit,
@@ -530,5 +555,6 @@ export function createHandlers(builder, navigation, user) {
     handleCar,
     handleCarEdit,
     handleDeleteCar,
+    handleCarEditSubmit
   };
 }
