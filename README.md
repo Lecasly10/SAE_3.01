@@ -3,6 +3,7 @@
 Application de navigations vers les différents parking de Metz disponible dans notre BDD.
 Possible de trouver le parking le plus proche en 1 clique !
 
+> **WARNING**: Actuellement compatible avec les parkings de Londre et de Metz
 ---
 
 **INFORMATION**
