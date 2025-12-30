@@ -57,17 +57,36 @@ class VehiculeDAO
         return null;
     }
 
+    function delete(Vehicule $v): bool
+    {
+        $pdo = $this->bd->getPDO();
+
+        $stmt = $pdo->prepare('
+        DELETE FROM vehicles 
+        WHERE vehicle_id = :id
+        ');
+
+        return $stmt->execute([
+            ':id' => intval($v->getId())
+        ]);
+    }
+
     function create(Vehicule $v): bool
     {
         $pdo = $this->bd->getPDO();
 
         $stmt = $pdo->prepare('
-        INSERT INTO vehicles (user_id)
-        VALUES (:id)
-    ');
+        INSERT INTO vehicles 
+        (user_id, vehicle_type, motorization, vehicle_height, license_plate)
+        VALUES (:id, :type, :motor, :height, :plate)
+        ');
 
         return $stmt->execute([
             ':id' => intval($v->getUserId()),
+            ':type' => $v->getType(),
+            ':motor' => $v->getMotor(),
+            ':height' => intval($v->getVehiculeHeight()),
+            ':plate' => $v->getPlate(),
         ]);
     }
 
@@ -88,9 +107,9 @@ class VehiculeDAO
         return $stmt->execute([
             ':type' => $v->getType(),
             ':motor' => $v->getMotor(),
-            ':height' => $v->getVehiculeHeight(),
+            ':height' => intval($v->getVehiculeHeight()),
             ':plate' => $v->getPlate(),
-            ':id' => $v->getUserId(),
+            ':id' => intval($v->getUserId()),
         ]);
     }
 }

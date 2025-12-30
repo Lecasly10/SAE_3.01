@@ -54,6 +54,7 @@ export class User {
 
         } catch (error) {
             console.error("checkAuth error: ", error);
+            alert("Erreur Serveur, vérifiez votre connexion Internet")
             return false;
         }
     }

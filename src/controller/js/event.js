@@ -1,6 +1,6 @@
-import * as element from "./htmlElement.js";
+import * as element from "./ui/htmlElement.js";
 import { MapBuilder } from "./maps/builder.js";
-import { Navigation } from "../../modele/js/navigation.js";
+import { Navigation } from "./navigation/navigation.js";
 import { User } from "./user/user.js";
 import { createHandlers } from "./eventHandler.js";
 import { UI } from "./ui/UI.js";
@@ -10,6 +10,11 @@ export async function initEvent() {
   const navigation = Navigation.getInstance();
   const user = User.getInstance();
   const handlers = createHandlers(builder, navigation, user);
+
+  document.addEventListener('offline', () => {
+    console.log("User offline !");
+    alert("La connexion à été perdu !")
+  });
 
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {

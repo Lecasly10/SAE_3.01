@@ -1,4 +1,4 @@
-import * as element from "../htmlElement.js";
+import * as element from "./htmlElement.js";
 
 export class UI {
   // HTML

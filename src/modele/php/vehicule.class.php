@@ -40,7 +40,7 @@ class Vehicule
         return $this->motor;
     }
 
-    public function getVehiculeHeight(): float
+    public function getVehiculeHeight(): int
     {
         return $this->vehiculeHeight;
     }
@@ -70,7 +70,7 @@ class Vehicule
         $this->motor = $motor;
     }
 
-    public function setVehiculeHeight(float $vehiculeHeight): void
+    public function setVehiculeHeight(int $vehiculeHeight): void
     {
         $this->vehiculeHeight = $vehiculeHeight;
     }

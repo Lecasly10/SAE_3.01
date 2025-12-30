@@ -1,14 +1,19 @@
 //===IMPORT===
-import { UI } from "../../modele/js/UI.js";
+import { UI } from "./ui/UI.js";
 import { initEvent } from "./event.js";
 
-import { Geolocation } from "../../modele/js/geolocation.js";
-import { MapBuilder } from "../../modele/js/builder.js";
-import { Navigation } from "../../modele/js/navigation.js";
-import { User } from "../../modele/js/user.js";
+import { Geolocation } from "./navigation/geolocation.js";
+import { MapBuilder } from "./maps/builder.js";
+import { Navigation } from "./navigation/navigation.js";
+import { User } from "./user/user.js";
 
 //===LOAD===
 globalThis.addEventListener("load", async () => {
+  if (!navigator.onLine) {
+    alert("Veuillez vous connecter à internet !")
+    return
+  }
+
   try {
     UI.toggleLoader(true);
     UI.setupUI();
