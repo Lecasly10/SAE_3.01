@@ -1,4 +1,4 @@
-# SAE_3.01
+# SMART PARKING
 
 Application de navigations vers les différents parking de Metz disponible dans notre BDD.
 Possible de trouver le parking le plus proche en 1 clique !
