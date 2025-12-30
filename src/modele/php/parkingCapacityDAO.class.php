@@ -9,7 +9,7 @@ class ParkingCapacityDAO
 
     public function __construct()
     {
-        require_once '../../modele/php/connexion.php';
+        require_once __DIR__ . '/connexion.php';
         $this->bd = new Connexion();
         $this->select = 'SELECT * FROM parking_capacity';
     }

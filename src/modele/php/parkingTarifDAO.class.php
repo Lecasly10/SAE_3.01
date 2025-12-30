@@ -1,7 +1,6 @@
 <?php
 
-
-require_once __DIR__ . "/parkingTarif.class.php";
+require_once __DIR__ . '/parkingTarif.class.php';
 
 class ParkingTarifDAO
 {
@@ -10,9 +9,9 @@ class ParkingTarifDAO
 
     public function __construct()
     {
-        require_once "../../modele/php/connexion.php";
+        require_once __DIR__ . '/connexion.php';
         $this->bd = new Connexion();
-        $this->select = "SELECT * FROM parking_rates";
+        $this->select = 'SELECT * FROM parking_rates';
     }
 
     private function loadQuery(array $result): array
@@ -43,12 +42,11 @@ class ParkingTarifDAO
     function getById(string $id): ParkingTarif
     {
         $unParking = new ParkingTarif();
-        $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . " WHERE
-        parking_id=:id", [':id' => $id]));
+        $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
+        parking_id=:id', [':id' => $id]));
         if (count($lesParkings) > 0) {
             $unParking = $lesParkings[0];
         }
         return $unParking;
     }
-
 }
