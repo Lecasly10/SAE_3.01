@@ -90,11 +90,16 @@ export class UI {
     show ? UI.show(settings) : UI.hide(settings);
   }
 
+  static resetCarList() {
+    const { listvoit } = UI.el;
+    listvoit.innerHTML = "";
+    listvoit.add(new Option("Sélectionner un véhicule", "none"))
+  }
+
   static toggleVoiture(show = false) {
     const { voitureDiv, listvoit } = UI.el
     if (!show) {
-      listvoit.innerHTML = "";
-      listvoit.add(new Option("Sélectionner un véhicule", "none"))
+      UI.resetCarList();
     }
     show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
   }

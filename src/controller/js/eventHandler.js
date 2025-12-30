@@ -369,6 +369,9 @@ export function createHandlers(builder, navigation, user) {
   async function handleCar(event) {
     event.preventDefault();
     const { listvoit } = UI.el;
+    UI.resetCarList();
+    listvoit.value = "none";
+
     let data = await user.load(user.userId);
     if (!data) alert("Une erreur est survenu !");
     else {
@@ -378,7 +381,6 @@ export function createHandlers(builder, navigation, user) {
         });
       }
     }
-    listvoit.value = "none";
   }
 
   async function handleCarEdit(event) {
@@ -418,7 +420,7 @@ export function createHandlers(builder, navigation, user) {
         console.log(res.message)
         alert(res.message)
       } else {
-        handleCar(event);
+        await handleCar(event);
       }
     }
   }
