@@ -17,6 +17,18 @@ export class UI {
     el.style.visibility = "hidden";
   }
 
+  static async notify(title, message, time = 5) {
+    let { notif, notifTitle, notifContent } = UI.el
+    notifTitle.textContent = title == "" ? "SmartParking" : title
+    notifContent.textContent = message
+    notif.classList.remove("hidden")
+    notif.classList.remove("hide")
+    notif.classList.add("active")
+    await new Promise(resolve => setTimeout(resolve, time * 1000));
+    notif.classList.remove("active")
+    notif.classList.add("hide")
+  }
+
   static setupUI() {
     UI.el.topnav.style.justifyContent = "space-around";
 

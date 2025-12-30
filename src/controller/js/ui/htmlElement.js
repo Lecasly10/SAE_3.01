@@ -72,3 +72,8 @@ export const closeVoit = document.getElementById("closeVoitButton");
 
 //loading animation
 export const loader = document.getElementById("loader");
+
+//notif
+export const notif = document.getElementById("notif");
+export const notifTitle = document.getElementById("notifTitle");
+export const notifContent = document.getElementById("notifContent");

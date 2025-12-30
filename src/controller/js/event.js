@@ -27,6 +27,7 @@ export async function initEvent() {
 
   //Recentrer
   element.goCenterButton.addEventListener("click", () => {
+    UI.notify("MAP", "Map recentré !");
     builder.map.panTo(builder.userMarker.position);
   });
 
@@ -89,7 +90,7 @@ export async function initEvent() {
   })
 
   element.submitEditCar.addEventListener("click", async (e) => {
-
+    return
   })
 
   element.listvoit.addEventListener("change", (e) => {

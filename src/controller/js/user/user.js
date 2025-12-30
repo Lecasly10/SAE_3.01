@@ -99,7 +99,8 @@ export class User {
         });
 
         if (data.status === "success") {
-            UI.toggleAuth(false);
+            UI.toggleAuth(false)
+            UI.notify("Compte", "Connexion réussi !")
             UI.toggleAuthIcon(true);
             this.isLogged = true;
             this.userId = data.user_id;
@@ -138,6 +139,39 @@ export class User {
         return data
     }
 
+    async deleteCar(id) {
+        try {
+            const data = await phpFetch("vehicle/delete.php", { id: id })
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
+    async createCar(info) {
+        try {
+            const data = await phpFetch("vehicle/create.php", info)
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
+    async updateCar(info) {
+        try {
+            const data = await phpFetch("vehicle/update.php", info)
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
     async auth(info) {
         try {
             const { name, surname, tel, mail, password } = info
@@ -153,9 +187,8 @@ export class User {
             }
             return data
         } catch (error) {
-            alert("Une Erreur s'est produites, Veuillez réessayer !")
-            console.log(error)
-            return null
+            alert("Une Erreur s'est produite, Veuillez réessayer !")
+            console.error("Erreur : ", error)
         }
     }
 }

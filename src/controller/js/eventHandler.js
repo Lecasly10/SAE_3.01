@@ -69,11 +69,10 @@ export function createHandlers(builder, navigation, user) {
       password: pass.value,
     })
 
-    if (res.status === "fail" && res.message) {
+    if (res.status !== "success" && res.message) {
       errorI.textContent = res.message
       UI.show(errorI);
     }
-
   }
 
   // Navigation vers une destination avec confirmation
@@ -411,9 +410,14 @@ export function createHandlers(builder, navigation, user) {
     const { listvoit } = UI.el;
 
     if (!listvoit.value === "none" || !listvoit === "") return;
-    else {
-      const id = JSON.parse(listvoit).id;
-      user.deleteCar(id);
+
+    const id = JSON.parse(listvoit).id;
+    if (confirm("Voulez vraiment supprimer ce véhicule")) {
+      let res = await user.deleteCar(id);
+      if (res.status != "success" && res.message) {
+        console.log(res.message)
+        alert(res.message)
+      }
     }
   }
 
@@ -488,7 +492,7 @@ export function createHandlers(builder, navigation, user) {
       return;
     }
 
-    const res = user.update({
+    const res = await user.update({
       id: user.userId,
       name: nameParam.value,
       surname: surnameParam.value,
