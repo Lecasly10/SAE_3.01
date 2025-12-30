@@ -15,7 +15,8 @@ Structure :
 
 **COMMENT L'utiliser**
 
+- Se connecter à internet 
 - Se connecter au VPN de l'IUT
 - Accéder à l'URL pour tester la version web :
-[Cliquez ici](devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/)
+[Cliquez ici](http://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/)
 - Ou, installer et télécharger l'APK sur un téléphone android
