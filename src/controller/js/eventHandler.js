@@ -447,8 +447,8 @@ export function createHandlers(builder, navigation, user) {
 
     if (resp.status && resp.status === "success") {
       UI.resetCarList();
-      await handleSettings(event);
       await handleCar(event);
+      await handleSettings();
       UI.toggleVoitureEdit(false);
     } else if (resp.message) {
       errorV.textContent = resp.message
