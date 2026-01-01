@@ -415,7 +415,7 @@ export function createHandlers(builder, navigation, user) {
     let id;
     let errors = [];
     if (listvoit.value === "none" || listvoit.value === "") id = null;
-    else id = JSON.parse(listvoit.value);
+    else id = JSON.parse(listvoit.value).id;
 
     if (isEmpty(plateParam.value))
       errors.push("La plaque est obligatoire");
