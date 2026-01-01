@@ -1,4 +1,5 @@
 import { UI } from "../ui/UI.js";
+import { Utils } from "../utils.js";
 
 export function initVehiculeEvent(user) {
     UI.el.carButton.addEventListener("click", async (e) => {
