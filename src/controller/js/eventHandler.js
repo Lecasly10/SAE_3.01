@@ -364,7 +364,6 @@ export function createHandlers(builder, navigation, user) {
   async function handleCar(event) {
     event.preventDefault();
     const { listvoit } = UI.el;
-    UI.resetCarList();
     listvoit.value = "none";
 
     let data = await user.load(user.userId);
@@ -447,7 +446,9 @@ export function createHandlers(builder, navigation, user) {
     }
 
     if (resp.status && resp.status === "success") {
-      handleCar(event);
+      UI.resetCarList();
+      await handleSettings(event);
+      await handleCar(event);
       UI.toggleVoitureEdit(false);
     } else if (resp.message) {
       errorV.textContent = resp.message
@@ -470,6 +471,8 @@ export function createHandlers(builder, navigation, user) {
         alert(res.message)
       } else {
         UI.notify("Véhicule", "Véhicule supprimer avec succès !")
+        UI.resetCarList();
+        await handleSettings(event);
         await handleCar(event);
       }
     }
