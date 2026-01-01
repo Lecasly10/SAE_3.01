@@ -68,6 +68,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
+
+  border-radius: 20px;
+  padding: 20px;
 }
 
 #notif.active {
