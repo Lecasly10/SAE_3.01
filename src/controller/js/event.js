@@ -123,12 +123,10 @@ export async function initEvent() {
   });
 
   element.closeVoit.addEventListener("click", async (e) => {
-    UI.resetCarList();
     UI.toggleVoiture(false);
   })
 
   element.closeEdit.addEventListener("click", async (e) => {
-    UI.resetCarList();
     UI.toggleVoitureEdit(false);
   })
 
