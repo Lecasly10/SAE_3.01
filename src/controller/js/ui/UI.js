@@ -89,13 +89,13 @@ export class UI {
   static resetCarEditList() {
     const { listvoit } = UI.el;
     listvoit.innerHTML = "";
-    listvoit.add(new Option("Sélectionner un véhicule", "none"));
+    listvoit.add(new Option("Sélectionner un véhicule", "none", true, true));
   }
 
   static resetCarSettList() {
     const { carParam } = UI.el;
     carParam.innerHTML = "";
-    carParam.add(new Option("Aucun", "none"));
+    carParam.add(new Option("Aucun", "none", true, true));
   }
 
   static toggleVoiture(show = false) {
