@@ -116,13 +116,8 @@ export function initMapEvent(user, navigation, builder) {
         try {
             const result = await phpFetch("search.php", { search: query });
             UI.setResultTitle("Résultats");
+            handleParkingList(result.parkings);
 
-            if (result.status === "not_found") {
-                console.log("Nada")
-                UI.setResultMessage("Aucun Parking(s) trouvé(s) :(")
-            } else if (result.status === "succes") {
-                handleParkingList(result.parkings);
-            }
         } catch (error) {
             console.error("Erreur handleSearchBoxSubmit :", error);
         } finally {
@@ -251,48 +246,47 @@ export function initMapEvent(user, navigation, builder) {
         if (!parkings || !parkings.length) {
             UI.setResultTitle("Aucun résultat");
             UI.setResultMessage(":(");
-            return;
+        } else {
+            parkings.forEach((parking) => {
+                const container = document.createElement("div");
+                container.className = "resultDiv";
+
+                const button = document.createElement("a");
+                button.value = parking.id;
+                button.className = "littleButton button fade";
+                button.title = "Cliquez pour voir les informations";
+
+                const icon = document.createElement("i");
+                icon.className = "fa fa-info";
+                icon.textContent = "INFO";
+                icon.ariaHidden = "true";
+                button.appendChild(icon);
+
+                const link = document.createElement("a");
+                link.className = "item parking fade";
+                link.textContent =
+                    parking.nom +
+                    (parking.places_libres > 0
+                        ? ` | ${parking.places_libres} places libres`
+                        : parking.places_libres == -1
+                            ? ""
+                            : " | complet");
+                link.title = "Cliquez pour lancer l'itinéraire";
+                link.dataset.lat = parking.lat;
+                link.dataset.lng = parking.lng;
+                link.dataset.id = parking.id;
+                link.dataset.name = parking.nom;
+
+                link.addEventListener("click", (e) => handleParkingClick(e, link));
+                button.addEventListener("click", (e) =>
+                    handleParkingInfoClick(e, button)
+                );
+
+                container.appendChild(button);
+                container.appendChild(link);
+                UI.appendResultBox(container);
+            });
         }
-
-        parkings.forEach((parking) => {
-            const container = document.createElement("div");
-            container.className = "resultDiv";
-
-            const button = document.createElement("a");
-            button.value = parking.id;
-            button.className = "littleButton button fade";
-            button.title = "Cliquez pour voir les informations";
-
-            const icon = document.createElement("i");
-            icon.className = "fa fa-info";
-            icon.textContent = "INFO";
-            icon.ariaHidden = "true";
-            button.appendChild(icon);
-
-            const link = document.createElement("a");
-            link.className = "item parking fade";
-            link.textContent =
-                parking.nom +
-                (parking.places_libres > 0
-                    ? ` | ${parking.places_libres} places libres`
-                    : parking.places_libres == -1
-                        ? ""
-                        : " | complet");
-            link.title = "Cliquez pour lancer l'itinéraire";
-            link.dataset.lat = parking.lat;
-            link.dataset.lng = parking.lng;
-            link.dataset.id = parking.id;
-            link.dataset.name = parking.nom;
-
-            link.addEventListener("click", (e) => handleParkingClick(e, link));
-            button.addEventListener("click", (e) =>
-                handleParkingInfoClick(e, button)
-            );
-
-            container.appendChild(button);
-            container.appendChild(link);
-            UI.appendResultBox(container);
-        });
 
         UI.toggleResultContainer(true);
     }
