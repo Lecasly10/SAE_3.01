@@ -63,7 +63,8 @@ body {
   position: fixed;
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  text-align: center;
+  flex-direction: column;
   top: -100px;
   left: 50%;
   transform: translateX(-50%);
