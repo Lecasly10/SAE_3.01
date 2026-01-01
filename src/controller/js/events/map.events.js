@@ -242,7 +242,7 @@ export function initMapEvent(user, navigation, builder) {
     // Gestion de la liste de parkings
     function handleParkingList(parkings) {
         UI.emptyResultBox();
-        if (!parkings || !parkings.length) {
+        if (!parkings || !parkings.length || parkings === null) {
             UI.setResultTitle("Aucun résultat");
             UI.setResultMessage(":(");
             return;

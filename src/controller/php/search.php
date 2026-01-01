@@ -46,7 +46,7 @@ try {
         $parkings = searchParkings($search);
         if (!$parkings) {
             echo json_encode([
-                'status' => 'erreur',
+                'status' => 'not_found',
                 'message' => 'Aucun parking trouvé'
             ]);
             exit;
