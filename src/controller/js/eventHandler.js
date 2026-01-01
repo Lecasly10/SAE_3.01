@@ -462,9 +462,5 @@ export function createHandlers(builder, navigation, user) {
     handleSettingButton,
     handleSubmit,
     handleUpdate,
-    handleCar,
-    handleCarEdit,
-    handleDeleteCar,
-    handleCarEditSubmit
   };
 }
