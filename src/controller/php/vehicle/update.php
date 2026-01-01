@@ -25,7 +25,7 @@ if (!$id ||
         !$plate ||
         !isset($height) ||
         !$type ||
-        !motor) {
+        !$motor) {
     echo json_encode([
         'status' => 'erreur',
         'message' => 'Paramètres manquant'
