@@ -2,36 +2,47 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initVehiculeEvent(user) {
-    UI.el.carButton.addEventListener("click", async (e) => {
+    const { carButton, editCar, addCar, deleteCar,
+        submitEditCar, listvoit, closeVoit, closeEdit } = UI.el
+
+    carButton.addEventListener("click", async (e) => {
         handleCar(e);
         UI.toggleVoiture(true);
     })
 
-    UI.el.editCar.addEventListener("click", async (e) => {
+    editCar.addEventListener("click", async (e) => {
         handleCarEdit(e);
         UI.toggleVoitureEdit(true);
     })
 
-    UI.el.addCar.addEventListener("click", async (e) => {
+    addCar.addEventListener("click", async (e) => {
         handleCarEdit(e);
         UI.toggleVoitureEdit(true);
     })
 
-    UI.el.deleteCar.addEventListener("click", async (e) => {
+    deleteCar.addEventListener("click", async (e) => {
         handleDeleteCar(e);
     })
 
-    UI.el.submitEditCar.addEventListener("click", async (e) => {
+    submitEditCar.addEventListener("click", async (e) => {
         await handleCarEditSubmit(e);
     })
 
-    UI.el.listvoit.addEventListener("change", (e) => {
-        UI.el.deleteCar.disabled = UI.el.listvoit.value === "none";
-        UI.el.editCar.disabled = UI.el.listvoit.value === "none";
+    listvoit.addEventListener("change", (e) => {
+        deleteCar.disabled = listvoit.value === "none";
+        editCar.disabled = listvoit.value === "none";
     });
 
+    closeVoit.addEventListener("click", async () => {
+        UI.toggleVoiture(false);
+    })
+
+    closeEdit.addEventListener("click", async () => {
+        UI.toggleVoitureEdit(false);
+    })
+
     async function update() {
-        const { settingsButton, carButton } = UI.el
+        const { settingsButton } = UI.el
         const e = new Event("click");
         try {
             settingsButton.dispatchEvent(e);
@@ -45,7 +56,7 @@ export function initVehiculeEvent(user) {
     async function handleCar(event) {
         event.preventDefault();
         UI.resetCarEditList();
-        const { listvoit } = UI.el;
+
         listvoit.value = "none";
 
         let data = await user.load(user.userId);
@@ -61,7 +72,7 @@ export function initVehiculeEvent(user) {
 
     async function handleCarEdit(event) {
         event.preventDefault()
-        const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
+        const { plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
         let b = event.target.value
         if (b == "new") {
             listvoit.value = "none"
@@ -85,7 +96,7 @@ export function initVehiculeEvent(user) {
     }
 
     async function handleCarEditSubmit(event) {
-        const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
+        const { plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
         const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
 
         let id;
@@ -146,7 +157,6 @@ export function initVehiculeEvent(user) {
 
     async function handleDeleteCar(event) {
         event.preventDefault();
-        const { listvoit } = UI.el;
 
         if (listvoit.value === "none" || listvoit === "") return;
 

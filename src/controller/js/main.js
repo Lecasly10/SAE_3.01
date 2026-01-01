@@ -27,10 +27,9 @@ globalThis.addEventListener("load", async () => {
     geo.startWatching();
 
     Navigation.init(builder);
-
     User.init();
-    await initEvent();
 
+    await initEvent();
 
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);

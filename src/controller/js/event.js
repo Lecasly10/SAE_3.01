@@ -5,6 +5,7 @@ import { User } from "./user/user.js";
 import { createHandlers } from "./eventHandler.js";
 import { UI } from "./ui/UI.js";
 import { initVehiculeEvent } from "./events/vehicule.events.js"
+import { initSettingsEvent } from "./events/settings.events.js";
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
   const navigation = Navigation.getInstance();
@@ -12,6 +13,7 @@ export async function initEvent() {
   const handlers = createHandlers(builder, navigation, user);
 
   initVehiculeEvent(user);
+  initSettingsEvent(user);
 
   document.addEventListener('offline', () => {
     console.warn("User offline !");
@@ -31,12 +33,6 @@ export async function initEvent() {
   element.goCenterButton.addEventListener("click", () => {
     UI.notify("MAP", "Map recentré !");
     builder.map.panTo(builder.userMarker.position);
-  });
-
-  //Settings
-  element.settingsButton.addEventListener("click", (e) => {
-    handlers.handleSettingButton(e);
-    UI.toggleSetting(true);
   });
 
   //Rechercher le parking le plus proche
@@ -67,19 +63,13 @@ export async function initEvent() {
   })
 
   //Bouton valider Param
-  element.submitSett.addEventListener("click", async (e) => {
-    handlers.handleUpdate(e)
-  })
-
-  //Gestion Voiture
-
 
 
   //Annuler ou stop
 
   if (element.crossIcon) {
     element.crossIcon.addEventListener("click", (e) => {
-      handlers.handleStop();
+      handlers.handleStop(e);
     });
   }
 
@@ -91,18 +81,6 @@ export async function initEvent() {
 
   element.closeAuthButton.addEventListener("click", (e) => {
     UI.toggleAuth(false);
-  })
-
-  element.closeSettingButton.addEventListener("click", (e) => {
-    UI.toggleSetting(false);
-  });
-
-  element.closeVoit.addEventListener("click", async (e) => {
-    UI.toggleVoiture(false);
-  })
-
-  element.closeEdit.addEventListener("click", async (e) => {
-    UI.toggleVoitureEdit(false);
   })
 
   //User Account Button
