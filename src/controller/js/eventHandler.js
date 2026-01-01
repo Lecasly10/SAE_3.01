@@ -414,7 +414,7 @@ export function createHandlers(builder, navigation, user) {
 
     let id;
     let errors = [];
-    if (listvoit.value === "none" || listvoit.value === "") id = null;
+    if (listvoit.value === "none" || listvoit.value === "") id = user.userId;
     else id = JSON.parse(listvoit.value).id;
 
     if (isEmpty(plateParam.value))
