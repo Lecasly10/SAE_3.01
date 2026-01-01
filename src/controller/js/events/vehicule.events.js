@@ -57,8 +57,6 @@ export function initVehiculeEvent(user) {
         event.preventDefault();
         UI.resetCarEditList();
 
-        listvoit.value = "none";
-
         let data = await user.load(user.userId);
         if (!data) alert("Une erreur est survenu !");
         else {
@@ -68,6 +66,8 @@ export function initVehiculeEvent(user) {
                 });
             }
         }
+
+        listvoit.value = "none";
     }
 
     async function handleCarEdit(event) {
