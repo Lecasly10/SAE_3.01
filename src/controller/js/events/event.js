@@ -15,7 +15,7 @@ export async function initEvent() {
 
   document.addEventListener('offline', () => {
     console.warn("User offline !");
-    UI.notify("La connexion a été perdu :( ")
+    alert("La connexion à été perdu :(")
   });
 
   window.addEventListener('error', (event) => {
@@ -34,5 +34,5 @@ export async function initEvent() {
   initVehiculeEvent(user);
   initSettingsEvent(user);
   initUserEvent(user);
-  initMapEvent(user, navigation, builder)
+  initMapEvent(user, navigation, builder);
 }

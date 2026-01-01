@@ -27,7 +27,7 @@ export class User {
 
     async checkAuth() {
         try {
-            const data = await phpFetch("checkAuth.php", {}, {
+            const data = await phpFetch("user/session", {}, {
                 credentials: "include"
             });
             if (!data) throw new Error("Erreur serveur !");
@@ -71,7 +71,7 @@ export class User {
                 this.data = JSON.parse(localStorage.getItem('userVeh'));
             }
 
-            const data = await phpFetch("updateUser.php", info)
+            const data = await phpFetch("user/update", info)
             if (!data) throw new Error("Erreur serveur !")
             if (data.status === "success") UI.toggleSetting(false);
             return data
@@ -83,7 +83,7 @@ export class User {
 
     async load(id) {
         try {
-            const data = await phpFetch("loadInfo.php", { id: id })
+            const data = await phpFetch("user/load", { id: id })
             if (!data) throw new Error("Erreur serveur !");
             else {
                 return data
@@ -94,7 +94,7 @@ export class User {
     }
 
     async login(mail, password) {
-        const data = await phpFetch("login.php", { mail, password }, {
+        const data = await phpFetch("user/login", { mail, password }, {
             credentials: "include",
         });
 
@@ -111,7 +111,7 @@ export class User {
     }
 
     async signin(info) {
-        const data = await phpFetch("signin.php", info, {
+        const data = await phpFetch("user/signin", info, {
             credentials: "include",
         });
 
@@ -124,7 +124,7 @@ export class User {
     }
 
     async logout() {
-        const data = await phpFetch("logout.php", {}, {
+        const data = await phpFetch("user/logout", {}, {
             credentials: "include",
         })
 
@@ -141,7 +141,7 @@ export class User {
 
     async deleteCar(id) {
         try {
-            const data = await phpFetch("vehicle/delete.php", { id: id })
+            const data = await phpFetch("vehicle/delete", { id: id })
             if (!data) throw new Error("Erreur serveur !")
             return data
         } catch (e) {
@@ -152,7 +152,7 @@ export class User {
 
     async createCar(info) {
         try {
-            const data = await phpFetch("vehicle/create.php", info)
+            const data = await phpFetch("vehicle/create", info)
             if (!data) throw new Error("Erreur serveur !")
             return data
         } catch (e) {
@@ -163,7 +163,7 @@ export class User {
 
     async updateCar(info) {
         try {
-            const data = await phpFetch("vehicle/update.php", info)
+            const data = await phpFetch("vehicle/update", info)
             if (!data) throw new Error("Erreur serveur !")
             return data
         } catch (e) {

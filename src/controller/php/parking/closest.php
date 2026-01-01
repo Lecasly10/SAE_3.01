@@ -13,11 +13,11 @@ session_start();
 
 $user_id = $_SESSION['user_id'] ?? null;
 
-require_once __DIR__ . '/../../modele/php/parkingDAO.class.php';
-require_once __DIR__ . '/../../modele/php/userDAO.class.php';
-require_once __DIR__ . '/../../modele/php/userPrefDAO.class.php';
-require_once __DIR__ . '/./distance.php';
-require_once __DIR__ . '/./dataAPI.php';
+require_once __DIR__ . '/../../../modele/php/parkingDAO.class.php';
+require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
+require_once __DIR__ . '/../../../modele/php/userPrefDAO.class.php';
+require_once __DIR__ . '/../distance.php';
+require_once __DIR__ . '/../api/dataAPI.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);

@@ -114,7 +114,7 @@ export function initMapEvent(user, navigation, builder) {
         UI.toggleLoader(true);
 
         try {
-            const result = await phpFetch("search.php", { search: query });
+            const result = await phpFetch("parking/search", { search: query });
             UI.setResultTitle("Résultats");
             handleParkingList(result.parkings);
 

@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../../modele/php/userDAO.class.php';
-require_once __DIR__ . '/../../modele/php/user.class.php';
-require_once __DIR__ . '/../../modele/php/userPrefDAO.class.php';
-require_once __DIR__ . '/../../modele/php/userPref.class.php';
+require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
+require_once __DIR__ . '/../../../modele/php/user.class.php';
+require_once __DIR__ . '/../../../modele/php/userPrefDAO.class.php';
+require_once __DIR__ . '/../../../modele/php/userPref.class.php';
 
 header('Content-Type: application/json');
 

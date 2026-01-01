@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once __DIR__ . '/../../modele/php/userDAO.class.php';
+require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
 
 session_start();
 header('Content-Type: application/json');

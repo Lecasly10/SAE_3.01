@@ -6,7 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 require_once __DIR__ . '/../../modele/php/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/../../modele/php/parkingTarifDAO.class.php';
 require_once __DIR__ . '/distance.php';
-require_once __DIR__ . '/dataAPI.php';
+require_once __DIR__ . '/api/dataAPI.php';
 
 function createTable(array $lesParkings): array
 {

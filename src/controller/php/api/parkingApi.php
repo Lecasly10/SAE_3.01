@@ -15,7 +15,6 @@ function fetch(string $url)
     if (curl_errno($ch)) {
         curl_close($ch);
         return null;
-        // die("Erreur cURL : " . curl_error($ch));
     }
 
     curl_close($ch);

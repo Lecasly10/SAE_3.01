@@ -53,7 +53,7 @@ export class Navigation {
     try {
       let position = Navigation.builder.userMarker.position;
 
-      const resultat = await phpFetch("closestParking.php", position);
+      const resultat = await phpFetch("parking/closest", position);
       if (!resultat) throw new Error("Erreur serveur !")
       if (resultat.status === "success") return resultat
       else if (resultat.message) {
@@ -169,7 +169,7 @@ export class Navigation {
     if (!this.destination) return null;
 
     try {
-      const res = await phpFetch("parkingInfo.php", {
+      const res = await phpFetch("parking/load", {
         id: this.destination.id,
       });
       return res.parking.places_libres;

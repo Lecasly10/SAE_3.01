@@ -3,7 +3,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-include __DIR__ . '/../../conf/conf.inc.php';
+include __DIR__ . '/../../../conf/conf.inc.php';
 include __DIR__ . '/metzApi.php';
 include __DIR__ . '/londreApi.php';
 
