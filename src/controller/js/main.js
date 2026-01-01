@@ -1,6 +1,6 @@
 //===IMPORT===
 import { UI } from "./ui/UI.js";
-import { initEvent } from "./event.js";
+import { initEvent } from "./events/event.js";
 
 import { Geolocation } from "./navigation/geolocation.js";
 import { MapBuilder } from "./maps/builder.js";

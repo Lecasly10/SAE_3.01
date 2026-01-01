@@ -1,12 +1,12 @@
-import { MapBuilder } from "./maps/builder.js";
-import { Navigation } from "./navigation/navigation.js";
-import { User } from "./user/user.js";
-import { UI } from "./ui/UI.js";
+import { MapBuilder } from "../maps/builder.js";
+import { Navigation } from "../navigation/navigation.js";
+import { User } from "../user/user.js";
+import { UI } from "../ui/UI.js";
 
-import { initVehiculeEvent } from "./events/vehicule.events.js"
-import { initSettingsEvent } from "./events/settings.events.js";
-import { initUserEvent } from "./events/user.events.js";
-import { initMapEvent } from "./events/map.events.js";
+import { initVehiculeEvent } from "./vehicule.events.js"
+import { initSettingsEvent } from "./settings.events.js";
+import { initUserEvent } from "./user.events.js";
+import { initMapEvent } from "./map.events.js";
 
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
@@ -15,7 +15,7 @@ export async function initEvent() {
 
   document.addEventListener('offline', () => {
     console.warn("User offline !");
-    alert("La connexion à été perdu !")
+    UI.notify("La connexion a été perdu :( ")
   });
 
   window.addEventListener('error', (event) => {

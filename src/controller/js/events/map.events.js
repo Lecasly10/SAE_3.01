@@ -1,5 +1,6 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { phpFetch } from "./api/phpInteraction.js";
 
 export function initMapEvent(user, navigation, builder) {
     const { autoSearchButton, searchBox, listButton,
