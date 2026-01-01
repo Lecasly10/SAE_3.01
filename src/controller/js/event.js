@@ -109,6 +109,10 @@ export async function initEvent() {
 
   //Fermer les box
 
+  document.querySelector(".close").addEventListener("click", (e) => {
+    UI.resetCarList();
+  })
+
   element.closeButton.addEventListener("click", (e) => {
     handlers.handleCloseButton(e);
   });
