@@ -147,7 +147,7 @@ export function initVehiculeEvent(user) {
 
         if (resp.status && resp.status === "success") {
             await update();
-            UI.notify("Voitures", msg)
+            UI.notify("Véhicules", msg)
             UI.toggleVoitureEdit(false);
         } else if (resp.message) {
             errorV.textContent = resp.message
@@ -168,7 +168,7 @@ export function initVehiculeEvent(user) {
                 console.log(res.message)
                 alert(res.message)
             } else {
-                UI.notify("Véhicule", "Véhicule supprimé avec succès !")
+                UI.notify("Véhicules", "Véhicule supprimé avec succès !")
                 await update();
             }
         }
