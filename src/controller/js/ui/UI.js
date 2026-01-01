@@ -86,10 +86,14 @@ export class UI {
     show ? UI.show(settings) : UI.hide(settings);
   }
 
-  static resetCarList() {
-    const { listvoit, carParam } = UI.el;
+  static resetCarEditList() {
+    const { listvoit } = UI.el;
     listvoit.innerHTML = "";
     listvoit.add(new Option("Sélectionner un véhicule", "none"));
+  }
+
+  static resetCarSettList() {
+    const { carParam } = UI.el;
     carParam.innerHTML = "";
     carParam.add(new Option("Aucun", "none"));
   }

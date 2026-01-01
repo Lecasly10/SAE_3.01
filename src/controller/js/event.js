@@ -118,7 +118,6 @@ export async function initEvent() {
   })
 
   element.closeSettingButton.addEventListener("click", (e) => {
-    UI.resetCarList();
     UI.toggleSetting(false);
   });
 

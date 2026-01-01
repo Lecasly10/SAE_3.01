@@ -363,6 +363,7 @@ export function createHandlers(builder, navigation, user) {
 
   async function handleCar(event) {
     event.preventDefault();
+    UI.resetCarEditList();
     const { listvoit } = UI.el;
     listvoit.value = "none";
 
@@ -450,7 +451,6 @@ export function createHandlers(builder, navigation, user) {
     }
 
     if (resp.status && resp.status === "success") {
-      UI.resetCarList();
       await handleCar(event);
       await handleSettings();
       UI.toggleVoitureEdit(false);
@@ -474,8 +474,8 @@ export function createHandlers(builder, navigation, user) {
         console.log(res.message)
         alert(res.message)
       } else {
-        UI.notify("Véhicule", "Véhicule supprimer avec succès !")
-        UI.resetCarList();
+        UI.notify("Véhicule", "Véhicule supprimé avec succès !")
+        UI.resetCarEditList();
         await handleSettings(event);
         await handleCar(event);
       }
@@ -490,6 +490,7 @@ export function createHandlers(builder, navigation, user) {
     let data = await user.load(user.userId);
     if (!data) alert("Une erreur est survenu !");
     else {
+      UI.resetCarSettList();
       nameParam.value = data.name;
       surnameParam.value = data.surname;
       mailParam.value = user.mail;
