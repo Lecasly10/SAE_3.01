@@ -508,7 +508,6 @@ export function createHandlers(builder, navigation, user) {
             carParam.add(new Option(`${veh.plate}`, veh.id))
         });
       }
-      UI.toggleSetting(true);
     }
   }
 

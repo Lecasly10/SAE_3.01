@@ -34,6 +34,7 @@ export async function initEvent() {
   //Settings
   element.settingsButton.addEventListener("click", (e) => {
     handlers.handleSettingButton(e);
+    UI.toggleSetting(true);
   });
 
   //Rechercher le parking le plus proche
