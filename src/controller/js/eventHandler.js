@@ -345,11 +345,6 @@ export function createHandlers(builder, navigation, user) {
     if (builder.userMarker) builder.map.panTo(builder.userMarker.position);
   }
 
-  // Gestion cross icon
-  async function handleCrossIcon(event) {
-    handleStop(event);
-  }
-
   // Fermer les resultbox
   function handleCloseButton(event) {
     event.preventDefault();
@@ -445,10 +440,10 @@ export function createHandlers(builder, navigation, user) {
       motor: vMotorParam.value
     }
     let resp;
-    if (id) {
-      resp = await user.updateCar(info);
-    } else {
+    if (listvoit.value === "none" || listvoit.value === "") {
       resp = await user.createCar(info);
+    } else {
+      resp = await user.updateCar(info);
     }
 
     if (resp.status && resp.status === "success") {
