@@ -61,7 +61,9 @@ body {
 
 #notif {
   position: fixed;
-  top: 30%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   right: 0;
   z-index: 999999999;
   width: auto;
@@ -84,19 +86,19 @@ body {
 
 @keyframes slideInRight {
   from {
-    transform: translateX(100%);
+    transform: translateY(100%);
   }
   to {
-    transform: translateX(0);
+    transform: translateY(10%);
   }
 }
 
 @keyframes slideOutRight {
   from {
-    transform: translateX(0);
+    transform: translateY(10%);
   }
   to {
-    transform: translateX(100%);
+    transform: translateY(100%);
   }
 }
 
