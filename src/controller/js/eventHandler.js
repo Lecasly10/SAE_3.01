@@ -444,11 +444,19 @@ export function createHandlers(builder, navigation, user) {
       type: vTypeParam.value,
       motor: vMotorParam.value
     }
-
+    let resp;
     if (id) {
-      user.updateCar(info);
+      resp = await user.updateCar(info);
     } else {
-      user.createCar(info)
+      resp = await user.createCar(info);
+    }
+
+    if (resp.status && resp.status === "success") {
+      handleCar(event);
+      UI.toggleVoitureEdit(false);
+    } else if (resp.message) {
+      errorV.textContent = resp.message
+      UI.show(errorV);
     }
 
   }
