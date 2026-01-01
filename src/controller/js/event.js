@@ -109,10 +109,6 @@ export async function initEvent() {
 
   //Fermer les box
 
-  document.querySelector(".close").addEventListener("click", (e) => {
-    UI.resetCarList();
-  })
-
   element.closeButton.addEventListener("click", (e) => {
     handlers.handleCloseButton(e);
   });
@@ -122,14 +118,17 @@ export async function initEvent() {
   })
 
   element.closeSettingButton.addEventListener("click", (e) => {
+    UI.resetCarList();
     UI.toggleSetting(false);
   });
 
   element.closeVoit.addEventListener("click", async (e) => {
+    UI.resetCarList();
     UI.toggleVoiture(false);
   })
 
   element.closeEdit.addEventListener("click", async (e) => {
+    UI.resetCarList();
     UI.toggleVoitureEdit(false);
   })
 
