@@ -116,7 +116,12 @@ export function initMapEvent(user, navigation, builder) {
         try {
             const result = await phpFetch("search.php", { search: query });
             UI.setResultTitle("Résultats");
-            handleParkingList(result.parkings);
+
+            if (result.status === "not_found") {
+                UI.setResultMessage("Aucun Parking(s) trouvé(s) :(")
+            } else if (result.status === "succes") {
+                handleParkingList(result.parkings);
+            }
         } catch (error) {
             console.error("Erreur handleSearchBoxSubmit :", error);
         } finally {
@@ -242,7 +247,7 @@ export function initMapEvent(user, navigation, builder) {
     // Gestion de la liste de parkings
     function handleParkingList(parkings) {
         UI.emptyResultBox();
-        if (!parkings || !parkings.length || parkings === null) {
+        if (!parkings || !parkings.length) {
             UI.setResultTitle("Aucun résultat");
             UI.setResultMessage(":(");
             return;
