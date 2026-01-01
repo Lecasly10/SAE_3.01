@@ -43,7 +43,7 @@ export async function initEvent() {
 
   //Rechercher parkings
   element.searchBox.addEventListener("keydown", async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Return") {
       handlers.handleSearchBoxSubmit(e);
     }
   });
@@ -90,7 +90,7 @@ export async function initEvent() {
   })
 
   element.submitEditCar.addEventListener("click", async (e) => {
-    return
+    handlers.handleCarEditSubmit(e);
   })
 
   element.listvoit.addEventListener("change", (e) => {
