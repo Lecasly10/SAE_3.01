@@ -132,7 +132,7 @@ export function initMapEvent(user, navigation, builder) {
         UI.emptySearchBox();
 
         try {
-            const result = await phpFetch("search.php", {});
+            const result = await phpFetch("parking/search", {});
             UI.setResultTitle("Tous les Parkings");
             handleParkingList(result.parkings);
         } catch (error) {
@@ -153,7 +153,7 @@ export function initMapEvent(user, navigation, builder) {
             UI.emptySearchBox();
 
             const id = button.value;
-            const result = await phpFetch("parkingInfo.php", { id });
+            const result = await phpFetch("parking/load", { id });
             const parking = result?.parking;
 
             if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
