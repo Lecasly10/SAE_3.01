@@ -83,7 +83,8 @@ body {
 }
 
 #notif.fullbg {
-  background-color: #111;
+  border: 2px solid var(--main);
+  background-color: var(--accent);
 }
 
 @keyframes slideInTop {
