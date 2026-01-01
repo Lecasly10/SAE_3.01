@@ -118,6 +118,7 @@ export function initMapEvent(user, navigation, builder) {
             UI.setResultTitle("Résultats");
 
             if (result.status === "not_found") {
+                console.log("Nada")
                 UI.setResultMessage("Aucun Parking(s) trouvé(s) :(")
             } else if (result.status === "succes") {
                 handleParkingList(result.parkings);
