@@ -116,11 +116,11 @@ class VehiculeDAO
         $stmt = $pdo->prepare('
         UPDATE vehicles
         SET 
-            vehicle_type = :type
-            motorization = :motor
-            vehicle_height = :height
+            vehicle_type = :type,
+            motorization = :motor,
+            vehicle_height = :height,
             license_plate = :plate
-        WHERE user_id = :id
+        WHERE vehicle_id = :id
     ');
 
         return $stmt->execute([
@@ -128,7 +128,7 @@ class VehiculeDAO
             ':motor' => $v->getMotor(),
             ':height' => intval($v->getVehiculeHeight()),
             ':plate' => $v->getPlate(),
-            ':id' => intval($v->getUserId()),
+            ':id' => intval($v->getId()),
         ]);
     }
 }
