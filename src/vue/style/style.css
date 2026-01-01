@@ -64,13 +64,13 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: row;
-  top: -100px; /* au-dessus de l'écran */
+  top: -100px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: 99999999;
 
   border-radius: 20px;
-  padding: 20px;
+  padding: 10px;
 }
 
 #notif.active {
@@ -86,7 +86,7 @@ body {
     top: -100px;
   }
   to {
-    top: 10vh; /* visible vers 10% du haut de l'écran */
+    top: 10vh;
   }
 }
 

@@ -3,6 +3,7 @@ import * as element from "./htmlElement.js";
 export class UI {
   // HTML
   static el = element;
+  static timeoutId = null;
 
   static show(el) {
     el.classList.remove("hidden");
@@ -18,16 +19,26 @@ export class UI {
   }
 
   static async notify(title, message, time = 5) {
-    let { notif, notifTitle, notifContent } = UI.el
-    notifTitle.textContent = title == "" ? "SmartParking" : title
-    notifContent.textContent = message
-    notif.classList.remove("hidden")
-    notif.classList.remove("hide")
-    notif.classList.add("active")
-    await new Promise(resolve => setTimeout(resolve, time * 1000));
-    notif.classList.remove("active")
-    notif.classList.add("hide")
+    let { notif, notifTitle, notifContent } = UI.el;
+
+    if (UI.timeoutId) {
+      clearTimeout(UI.timeoutId);
+      notif.classList.remove("hide");
+      notif.classList.add("active");
+    }
+
+    notifTitle.textContent = title === "" ? "SmartParking" : title;
+    notifContent.textContent = message;
+    notif.classList.remove("hidden", "hide");
+    notif.classList.add("active");
+
+    UI.timeoutId = setTimeout(() => {
+      notif.classList.remove("active");
+      notif.classList.add("hide");
+      UI.timeoutId = null;
+    }, time * 1000);
   }
+
 
   static setupUI() {
     UI.el.topnav.style.justifyContent = "space-around";
