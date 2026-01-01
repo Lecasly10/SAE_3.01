@@ -11,7 +11,7 @@ export async function initEvent() {
   const user = User.getInstance();
   const handlers = createHandlers(builder, navigation, user);
 
-  initVehiculeEvent(builder, navigation, user);
+  initVehiculeEvent(user);
 
   document.addEventListener('offline', () => {
     console.warn("User offline !");
