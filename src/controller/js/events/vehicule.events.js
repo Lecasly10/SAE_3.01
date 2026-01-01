@@ -96,6 +96,7 @@ export function initVehiculeEvent(user) {
     }
 
     async function handleCarEditSubmit(event) {
+        event.preventDefault();
         const { plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
         const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
 
