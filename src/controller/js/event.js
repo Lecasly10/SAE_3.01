@@ -90,7 +90,7 @@ export async function initEvent() {
   })
 
   element.submitEditCar.addEventListener("click", async (e) => {
-    handlers.handleCarEditSubmit(e);
+    await handlers.handleCarEditSubmit(e);
   })
 
   element.listvoit.addEventListener("change", (e) => {

@@ -411,6 +411,9 @@ export function createHandlers(builder, navigation, user) {
     if (listvoit.value === "none" || listvoit.value === "") id = user.userId;
     else id = JSON.parse(listvoit.value).id;
 
+    errorV.textContent = "";
+    UI.hide(errorV);
+
     if (isEmpty(plateParam.value))
       errors.push("La plaque est obligatoire");
     else if (!isValidPlate(plateParam.value))
@@ -430,6 +433,7 @@ export function createHandlers(builder, navigation, user) {
       UI.show(errorV);
       return;
     }
+    errorV.textContent = "";
 
     const info = {
       id: id,
