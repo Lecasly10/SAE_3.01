@@ -61,59 +61,38 @@ body {
 
 #notif {
   position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -100%); /* complètement hors écran */
-  z-index: 999999999;
-
   display: flex;
-  flex-direction: column;
-  text-align: center;
-
-  padding: 5px;
-  border-radius: 20px;
-  background: #333;
-  color: #fff;
-
-  opacity: 0;
-  pointer-events: none;
+  justify-content: center;
+  flex-direction: row;
+  top: -100px; /* au-dessus de l'écran */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
 }
 
-/* Apparition */
 #notif.active {
   animation: slideInTop 0.5s forwards;
-  opacity: 1;
-  pointer-events: auto;
 }
 
-/* Disparition */
 #notif.hide {
   animation: slideOutTop 0.5s forwards;
-  opacity: 0;
-  pointer-events: none;
 }
 
-/* Animation vers le bas */
 @keyframes slideInTop {
   from {
-    transform: translate(-50%, -100%); /* au-dessus de l’écran */
-    opacity: 0;
+    top: -100px;
   }
   to {
-    transform: translate(-50%, 10%); /* position finale */
-    opacity: 1;
+    top: 10vh; /* visible vers 10% du haut de l'écran */
   }
 }
 
-/* Animation vers le haut */
 @keyframes slideOutTop {
   from {
-    transform: translate(-50%, 10%); /* position finale */
-    opacity: 1;
+    top: 10vh;
   }
   to {
-    transform: translate(-50%, -100%); /* complètement au-dessus */
-    opacity: 0;
+    top: -100px;
   }
 }
 
