@@ -410,12 +410,24 @@ export function createHandlers(builder, navigation, user) {
 
   async function handleCarEditSubmit(event) {
     const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
+    const { isEmpty, isValidPhone, isValidString, isValidNumber, isValidPositiveNumber } = Utils
+
     let id;
     let errors = [];
-    if (listvoit.value === "none" || listvoit === "") id = null;
+    if (listvoit.value === "none" || listvoit.value === "") id = null;
     else id = JSON.parse(listvoit.value);
 
-    //Verif des champs ici
+    if (isEmpty(plateParam.value))
+      errors.push("La plaque est obligatoire");
+    if (isEmpty(vHeightParam.value))
+      errors.push("La hauteur du véhicule est obligatoire");
+    else if (!isValidPositiveNumber(vHeightParam.value))
+      errors.push("La hauteur du véhicule doit être un nombre entier positif non nul");
+    if (isEmpty(vMotorParam.value))
+      errors.push("Le type du moteur est obligatoire");
+    if (isEmpty(vTypeParam.value))
+      errors.push("Le type du véhicule est obligatoire");
+
 
     if (errors.length > 0) {
       errorV.textContent = errors.join("\n");
