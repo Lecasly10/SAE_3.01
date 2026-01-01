@@ -410,7 +410,7 @@ export function createHandlers(builder, navigation, user) {
 
   async function handleCarEditSubmit(event) {
     const { listvoit, plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
-    const { isEmpty, isValidPhone, isValidString, isValidNumber, isValidPositiveNumber } = Utils
+    const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
 
     let id;
     let errors = [];
@@ -419,6 +419,8 @@ export function createHandlers(builder, navigation, user) {
 
     if (isEmpty(plateParam.value))
       errors.push("La plaque est obligatoire");
+    else if (!isValidPlate(plateParam.value))
+      errors.push("Format de plaque incorrect");
     if (isEmpty(vHeightParam.value))
       errors.push("La hauteur du véhicule est obligatoire");
     else if (!isValidPositiveNumber(vHeightParam.value))
@@ -435,7 +437,14 @@ export function createHandlers(builder, navigation, user) {
       return;
     }
 
-    const info = {}
+    const info = {
+      id: id,
+      plate: plateParam.value,
+      height: vHeightParam.value,
+      type: vTypeParam.value,
+      motor: vMotorParam.value
+    }
+
     if (id) {
       user.updateCar(info);
     } else {

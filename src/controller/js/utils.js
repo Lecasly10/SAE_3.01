@@ -17,6 +17,9 @@ export class Utils {
     static isValidPhone = (phone) => //Format numéro de tel
         /^[0-9]{8,15}$/.test(phone);
 
+    static isValidPlate = (plate) => //Format global plaque
+        /^[A-Z0-9]{1,4}([ -]?[A-Z0-9]{1,4}){1,3}$/.test(plate);
+
     static distIcon = "https://cdn-icons-png.flaticon.com/512/4668/4668400.png" //Icon destination
     static carIcon = "https://cdn-icons-png.flaticon.com/512/5193/5193688.png"  //Icon de la voiture
 }
