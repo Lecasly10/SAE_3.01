@@ -83,9 +83,6 @@ export class UI {
 
   static toggleSetting(show = false) {
     const { settings } = UI.el
-    if (!show) {
-      UI.resetCarList();
-    }
     show ? UI.show(settings) : UI.hide(settings);
   }
 
@@ -99,9 +96,6 @@ export class UI {
 
   static toggleVoiture(show = false) {
     const { voitureDiv } = UI.el
-    if (!show) {
-      UI.resetCarList();
-    }
     show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
   }
 
