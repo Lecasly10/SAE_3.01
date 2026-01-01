@@ -139,10 +139,10 @@ export function initVehiculeEvent(user) {
         let resp; let msg = ""
         if (listvoit.value === "none" || listvoit.value === "") {
             resp = await user.createCar(info);
-            msg = "Voiture créé avec succès"
+            msg = "Véhicules créé avec succès"
         } else {
             resp = await user.updateCar(info);
-            msg = "Voiture mise à jour avec succès"
+            msg = "Véhicules mise à jour avec succès"
         }
 
         if (resp.status && resp.status === "success") {
