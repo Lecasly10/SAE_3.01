@@ -4,12 +4,14 @@ import { Navigation } from "./navigation/navigation.js";
 import { User } from "./user/user.js";
 import { createHandlers } from "./eventHandler.js";
 import { UI } from "./ui/UI.js";
-
+import { initVehiculeEvent } from "./events/vehicule.events.js"
 export async function initEvent() {
   const builder = MapBuilder.getInstance();
   const navigation = Navigation.getInstance();
   const user = User.getInstance();
   const handlers = createHandlers(builder, navigation, user);
+
+  initVehiculeEvent(builder, navigation, user);
 
   document.addEventListener('offline', () => {
     console.warn("User offline !");
@@ -71,33 +73,7 @@ export async function initEvent() {
 
   //Gestion Voiture
 
-  element.carButton.addEventListener("click", async (e) => {
-    handlers.handleCar(e);
-    UI.toggleVoiture(true);
-  })
 
-  element.editCar.addEventListener("click", async (e) => {
-    handlers.handleCarEdit(e);
-    UI.toggleVoitureEdit(true);
-  })
-
-  element.addCar.addEventListener("click", async (e) => {
-    handlers.handleCarEdit(e);
-    UI.toggleVoitureEdit(true);
-  })
-
-  element.deleteCar.addEventListener("click", async (e) => {
-    handlers.handleDeleteCar(e);
-  })
-
-  element.submitEditCar.addEventListener("click", async (e) => {
-    await handlers.handleCarEditSubmit(e);
-  })
-
-  element.listvoit.addEventListener("change", (e) => {
-    element.deleteCar.disabled = element.listvoit.value === "none";
-    element.editCar.disabled = element.listvoit.value === "none";
-  });
 
   //Annuler ou stop
 
