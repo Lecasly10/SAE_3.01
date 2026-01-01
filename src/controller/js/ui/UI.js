@@ -18,7 +18,7 @@ export class UI {
     el.style.visibility = "hidden";
   }
 
-  static async notify(title, message, time = 5) {
+  static async notify(title, message, overlay = false, time = 5) {
     let { notif, notifTitle, notifContent } = UI.el;
 
     if (UI.timeoutId) {
@@ -26,6 +26,8 @@ export class UI {
       notif.classList.remove("hide");
       notif.classList.add("active");
     }
+
+    overlay ? notif.classList.add("fullbg") : notif.classList.remove("fullbg")
 
     notifTitle.textContent = title === "" ? "SmartParking" : title;
     notifContent.textContent = message;

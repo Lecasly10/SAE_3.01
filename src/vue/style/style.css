@@ -82,6 +82,10 @@ body {
   animation: slideOutTop 0.5s forwards;
 }
 
+#notif.fullbg {
+  background-color: #111;
+}
+
 @keyframes slideInTop {
   from {
     top: -100px;
