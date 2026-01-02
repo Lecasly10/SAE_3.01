@@ -171,13 +171,17 @@ export class Navigation {
     }, 1000);
   }
 
-  stopFollowRoute() {
+  pauseFollowRoute() {
     this.followingRoute = false;
 
     if (this.followInterval) {
       clearInterval(this.followInterval);
       this.followInterval = null;
     }
+  }
+
+  stopFollowRoute() {
+    this.pauseFollowRoute();
     const builder = Navigation.builder;
 
     builder.map.moveCamera({

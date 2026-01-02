@@ -9,7 +9,7 @@ export function initMapEvent(user, navigation, builder) {
     let tId = null;
     builder.map.addListener('dragend', () => {
         if (tId) clearTimeout(tId);
-        navigation.stopFollowRoute();
+        navigation.pauseFollowRoute();
         tId = setTimeout(() => {
             navigation.startFollowRoute();
             tId = null;
