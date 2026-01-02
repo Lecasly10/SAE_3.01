@@ -55,7 +55,7 @@ export class Navigation {
     const key = "destination"
     try {
       if (localStorage.getItem(key)) localStorage.removeItem(key);
-      localStorage.setItem(key, JSON.stringify(destination));
+      localStorage.setItem(key, JSON.stringify(this.destination));
     } catch (e) {
       console.error("Erreur pendant la sauvegarde du trajet : ", e);
     }
