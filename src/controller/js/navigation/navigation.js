@@ -237,7 +237,7 @@ export class Navigation {
         lat: this.destination.lat,
         lng: this.destination.lng
       });
-      return res.parking.places_libres;
+      return res.libre;
     } catch (err) {
       console.error("Erreur checkParkingAvailability :", err);
       return null;
