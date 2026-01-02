@@ -16,7 +16,7 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true) ?: [];
 $search = $data['search'] ?? null;
 
-function searchParkings(string $search): array
+function searchParkings(string $search): ?array
 {
     $parkingDAO = new ParkingDAO();
     return $parkingDAO->getSearch($search);
