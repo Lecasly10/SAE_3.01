@@ -13,6 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+session_set_cookie_params([
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'None'
+]);
+
 session_start();
 header('Content-Type: application/json');
 
