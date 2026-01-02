@@ -16,8 +16,8 @@ function getApiData(): ?array
 {
     global $apis;
     $res = [];
-    foreach ($apis as $city) {
-        $res[$city] = $apis[$city]->fetchData();
+    foreach ($apis as $city => $obj) {
+        $res[$city] = $obj->fetchData();
     }
 
     return $res;
