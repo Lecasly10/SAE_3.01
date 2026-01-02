@@ -6,12 +6,14 @@ export function initMapEvent(user, navigation, builder) {
     const { autoSearchButton, searchBox, listButton,
         crossIcon, closeButton, goCenterButton } = UI.el
 
+    const tId = null;
     builder.map.addListener('dragend', () => {
-        console.log('L’utilisateur a bougé la carte !');
+        if (tId) clearTimeout(tId);
         navigation.stopFollowRoute();
-        setTimeout(() => {
+        tId = setTimeout(() => {
             navigation.startFollowRoute();
-        }, 10000);
+            tId = null;
+        }, 5000);
     });
 
     goCenterButton.addEventListener("click", () => {
