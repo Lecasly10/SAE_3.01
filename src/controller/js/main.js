@@ -16,7 +16,7 @@ globalThis.addEventListener("load", async () => {
 
   try {
     UI.toggleLoader(true);
-    UI.setupUI();
+    UI.setupUI(true);
 
     const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");

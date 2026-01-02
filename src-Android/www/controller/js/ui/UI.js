@@ -42,15 +42,15 @@ export class UI {
   }
 
 
-  static setupUI() {
+  static setupUI(load = false) {
     UI.el.topnav.style.justifyContent = "space-around";
 
     UI.toggleSearchInput(true);
     UI.toggleHomeCrossIcon(true);
     UI.show(UI.el.settingsButton);
-    UI.toggleLoader(false);
     UI.toggleResultContainer(false);
     UI.emptyResultBox();
+    if (!load) UI.toggleLoader(false);
   }
 
   static toggleNavigationUI(destinationName) {

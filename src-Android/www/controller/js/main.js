@@ -9,6 +9,12 @@ import { User } from "./user/user.js";
 
 //===LOAD===
 document.addEventListener("deviceready", async () => {
+  cordova.plugin.http.setDataSerializer('json');
+  cordova.plugin.http.setServerTrustMode('nocheck',
+    function () { console.log('SSL validation disabled'); },
+    function (err) { console.error('Erreur SSL trust mode', err); }
+  );
+
   if (!navigator.onLine) {
     alert("Veuillez vous connecter à internet !");
     return;
@@ -16,7 +22,7 @@ document.addEventListener("deviceready", async () => {
 
   try {
     UI.toggleLoader(true);
-    UI.setupUI();
+    UI.setupUI(true);
 
     const builder = MapBuilder.init();
     if (!builder) throw new Error("Erreur d'initialisation");
