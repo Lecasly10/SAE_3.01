@@ -75,7 +75,6 @@ export function initVehiculeEvent(user) {
         const { plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
         let b = event.target.value
         if (b == "new") {
-            listvoit.value = "none"
             editTitle.textContent = "NOUVEAU"
             plateParam.value = "";
             vHeightParam.value = "";
