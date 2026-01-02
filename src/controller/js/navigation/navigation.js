@@ -169,7 +169,7 @@ export class Navigation {
         zoom: 25,
       });
 
-    }, 1000);
+    }, 2000);
   }
 
   pauseFollowRoute() {
@@ -222,7 +222,7 @@ export class Navigation {
         }
         this.redirecting = false;
       }
-    }, 5000);
+    }, 30000);
   }
 
   stopParkingMonitor() {
