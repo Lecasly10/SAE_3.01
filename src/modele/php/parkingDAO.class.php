@@ -54,7 +54,7 @@ class ParkingDAO
 
     function getAllData(): array
     {
-        return $this->createTab($this->bd->execSQL($this->fullSelect));
+        return $this->createTab($this->bd->execSQL($this->select));
     }
 
     function getAllDataById(string $id): ?array
@@ -91,7 +91,7 @@ class ParkingDAO
         }
 
         $where = implode(' AND ', $conditions);
-        $sql = $this->fullSelect . " WHERE $where";
+        $sql = $this->select . " WHERE $where";
 
         return $this->createTab(
             $this->bd->execSQL($sql, $params)
