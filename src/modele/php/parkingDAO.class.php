@@ -7,6 +7,7 @@ require_once __DIR__ . '/parking.class.php';
 require_once __DIR__ . '/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/parkingTarifDAO.class.php';
 require_once __DIR__ . '/../../controller/php/distance.php';
+require_once __DIR__ . '/../../controller/php/api/dataAPI.php';
 
 class ParkingDAO
 {
@@ -53,7 +54,7 @@ class ParkingDAO
 
     function getAllData(): array
     {
-        return ($this->loadQuery($this->bd->execSQL($this->fullSelect)));
+        return $this->createTab($this->bd->execSQL($this->fullSelect));
     }
 
     function getById(string $id): Parking
@@ -84,7 +85,7 @@ class ParkingDAO
         $where = implode(' AND ', $conditions);
         $sql = $this->fullSelect . " WHERE $where";
 
-        return $this->loadQuery(
+        return $this->createTab(
             $this->bd->execSQL($sql, $params)
         );
     }
@@ -160,5 +161,62 @@ class ParkingDAO
         });
 
         return array_slice($parkings, 0, $limit);
+    }
+
+    function createTab(): array
+    {
+        foreach ($lesParkings as $parking) {
+            if (!$parking)
+                continue;
+
+            $id = $parking['parking_id'];
+            $lat = $parking['latitude'];
+            $lng = $parking['longitude'];
+
+            $pLibre = 0;
+            $city = detectCity($lat, $lng);
+            try {
+                if (isset($city)) {
+                    $pLibre = placeLibre($city, $lat, $lng);
+                }
+            } catch (Exception $e) {
+                $pLibre = null;
+            }
+
+            $res[] = [
+                'id' => $id,
+                'nom' => $parking['name'],
+                'lat' => $lat,
+                'lng' => $lng,
+                'address' => $parking['address'],
+                'url' => $parking['url'],
+                'insee' => $parking['insee_code'],
+                'siret' => $parking['siret_number'] ?? 0,
+                'structure' => $parking['structure_type'],
+                'info' => $parking['info'],
+                'user' => $parking['user_type'],
+                'max_height' => floatval($parking['max_height']),
+                'places' => intval($parking['total_spaces']),
+                'places_libres' => $pLibre ?? -1,
+                'pmr' => intval($parking['pmr_spaces']),
+                'e2w' => intval($parking['electric_2w_spaces']),
+                'eCar' => intval($parking['electric_car_spaces']),
+                'moto' => intval($parking['motorcycle_spaces']),
+                'carpool' => intval($parking['carpool_spaces']),
+                'bicycle' => intval($parking['bicycle_spaces']),
+                'pr' => intval($parking['pr_spaces']),
+                'free' => boolval($parking['is_free']),
+                'pmr_rate' => floatval($parking['pmr_rate']),
+                'rate_1h' => floatval($parking['rate_1h']),
+                'rate_2h' => floatval($parking['rate_2h']),
+                'rate_3h' => floatval($parking['rate_3h']),
+                'rate_4h' => floatval($parking['rate_4h']),
+                'rate_24h' => floatval($parking['rate_24h']),
+                'resident_sub' => floatval($parking['resident_subscription']),
+                'nonresident_sub' => floatval($parking['non_resident_subscription']),
+            ];
+        }
+
+        return $res;
     }
 }
