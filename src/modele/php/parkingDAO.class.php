@@ -171,7 +171,7 @@ class ParkingDAO
         return array_slice($parkings, 0, $limit);
     }
 
-    function createTab($lesParkings): array
+    function createTab($lesParkings): ?array
     {
         $data = getApiData();
         foreach ($lesParkings as $parking) {
