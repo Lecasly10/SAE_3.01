@@ -37,11 +37,11 @@ try {
         exit;
     }
 
-    $res = $parking;
+    $res = $parking[0];
     echo json_encode([
         'status' => 'ok',
         'message' => 'Parking trouvé',
-        'parking' => $res[0] ?? null
+        'parking' => $res
     ]);
 } catch (Exception $e) {
     echo json_encode([
