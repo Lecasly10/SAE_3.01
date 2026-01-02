@@ -12,12 +12,16 @@ class ParkingDAO
 {
     private $bd;
     private $select;
+    private $fullSelect;
 
     public function __construct()
     {
         require_once __DIR__ . '/connexion.php';
         $this->bd = new Connexion();
         $this->select = 'SELECT * FROM parkings';
+        $this->fullSelect = 'SELECT DISTINCT * FROM parkings
+                JOIN parking_rates ON parkings.parking_id=parking_rates.parking_id
+                JOIN parking_capacity ON parkings.parking_id=parking_capacity.parking_id';
     }
 
     private function loadQuery(array $result): array
@@ -47,6 +51,11 @@ class ParkingDAO
         return ($this->loadQuery($this->bd->execSQL($this->select)));
     }
 
+    function getAllData(): array
+    {
+        return ($this->loadQuery($this->bd->execSQL($this->fullSelect)));
+    }
+
     function getById(string $id): Parking
     {
         $unParking = new Parking();
@@ -73,7 +82,7 @@ class ParkingDAO
         }
 
         $where = implode(' AND ', $conditions);
-        $sql = $this->select . " WHERE $where";
+        $sql = $this->fullSelect . " WHERE $where";
 
         return $this->loadQuery(
             $this->bd->execSQL($sql, $params)
