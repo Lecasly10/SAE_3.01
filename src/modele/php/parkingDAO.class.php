@@ -55,11 +55,25 @@ class ParkingDAO
         return $unParking;
     }
 
-    function getSearch(string $search): array
+    function getSearch(string $search): ?array
     {
-        $r = $this->select . ' WHERE name LIKE :search';
+        $mots = array_filter(explode(' ', trim($search)));
+        if (empty($mots))
+            return null;
+
+        $conditions = [];
+        $params = [];
+
+        foreach ($mots as $index => $mot) {
+            $conditions[] = "name LIKE :mot$index";
+            $params[":mot$index"] = "%$mot%";
+        }
+
+        $where = implode(' AND ', $conditions);
+        $sql = $this->select . " WHERE $where";
+
         return $this->loadQuery(
-            $this->bd->execSQL($r, [':search' => "%$search%"])
+            $this->bd->execSQL($sql, $params)
         );
     }
 

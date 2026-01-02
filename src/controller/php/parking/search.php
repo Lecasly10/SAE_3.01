@@ -17,24 +17,16 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true) ?: [];
 $search = $data['search'] ?? null;
 
+$parkingDAO = new ParkingDAO();
+
 function searchParkings(string $search): array
 {
-    $parkingDAO = new ParkingDAO();
-    $mots = array_filter(explode(' ', trim($search)));
-    $resultats = [];
-
-    foreach ($mots as $mot) {
-        $res = $parkingDAO->getSearch($mot);
-        if (!empty($res)) {
-            $resultats = array_merge($resultats, $res);
-        }
-    }
-    return array_unique($resultats, SORT_REGULAR);
+    return $parkingDAO->getSearch($mot);
 }
 
 try {
     if (!$search) {
-        $parkings = (new ParkingDAO())->getAll();
+        $parkings = $parkingDAO->getAll();
         if (!$parkings) {
             echo json_encode([
                 'status' => 'erreur',
