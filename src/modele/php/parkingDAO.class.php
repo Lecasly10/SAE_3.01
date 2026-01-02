@@ -207,7 +207,7 @@ class ParkingDAO
                 'info' => $parking['info'],
                 'user' => $parking['user_type'],
                 'places_libres' => $pLibre ?? -1,
-            ] + $all ? [
+            ] + ($all ? [
                 'max_height' => floatval($parking['max_height']),
                 'places' => intval($parking['total_spaces']),
                 'pmr' => intval($parking['pmr_spaces']),
@@ -226,7 +226,7 @@ class ParkingDAO
                 'rate_24h' => floatval($parking['rate_24h']),
                 'resident_sub' => floatval($parking['resident_subscription']),
                 'nonresident_sub' => floatval($parking['non_resident_subscription']),
-            ] : [];
+            ] : []);
         }
 
         return $res;
