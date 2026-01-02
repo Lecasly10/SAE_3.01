@@ -3,13 +3,19 @@ import { Utils } from "../utils.js";
 
 export function initUserEvent(user) {
     const { logoutButton, submitButton, connLink,
-        inscrLink, closeAuthButton } = UI.el
+        inscrLink, closeAuthButton, auth } = UI.el
 
+    auth.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            const event = new Event("click");
+            submitButton.dispatchEvent(event);
+        }
+    })
     logoutButton.addEventListener("click", async (e) => {
         await user.logout();
     })
 
-    submitButton.addEventListener("click", async (e) => {
+    submitButton.addEventListener("click", (e) => {
         handleSubmit(e);
     })
 
