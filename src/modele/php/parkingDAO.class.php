@@ -208,7 +208,7 @@ class ParkingDAO
                 'user' => $parking['user_type'],
             ];
 
-            if (all) {
+            if ($all) {
                 $res[] = [
                     'max_height' => floatval($parking['max_height']),
                     'places' => intval($parking['total_spaces']),
