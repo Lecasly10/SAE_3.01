@@ -206,13 +206,13 @@ class ParkingDAO
                 'structure' => $parking['structure_type'],
                 'info' => $parking['info'],
                 'user' => $parking['user_type'],
+                'places_libres' => $pLibre ?? -1,
             ];
 
             if ($all) {
                 $res[] = [
                     'max_height' => floatval($parking['max_height']),
                     'places' => intval($parking['total_spaces']),
-                    'places_libres' => $pLibre ?? -1,
                     'pmr' => intval($parking['pmr_spaces']),
                     'e2w' => intval($parking['electric_2w_spaces']),
                     'eCar' => intval($parking['electric_car_spaces']),
