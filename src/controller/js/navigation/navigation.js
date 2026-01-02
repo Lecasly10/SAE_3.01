@@ -64,12 +64,6 @@ export class Navigation {
 
     confirm.addEventListener("click", (e) => {
       e.preventDefault();
-      builder.map.moveCamera({
-        center: position,
-        heading,
-        tilt: 60,
-        zoom: 25,
-      });
       this.focus = true;
       this.startFollowRoute();
       UI.toggleNavigationUI(destination.name);
