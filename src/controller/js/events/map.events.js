@@ -240,12 +240,11 @@ export function initMapEvent(user, navigation, builder) {
                 container.className = "resultDiv";
 
                 const button = document.createElement("a");
-                const data = JSON.parse(parking);
 
                 button.value = parking.id;
                 button.className = "littleButton button fade";
                 button.title = "Cliquez pour voir les informations";
-                button.dataset.data = JSON.stringify(data);
+                button.dataset.data = JSON.stringify(parking);
 
                 const icon = document.createElement("i");
                 icon.className = "fa fa-info";
