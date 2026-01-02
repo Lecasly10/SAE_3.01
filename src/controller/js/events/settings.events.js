@@ -10,7 +10,6 @@ export function initSettingsEvent(user) {
 
     settingsButton.addEventListener("click", (e) => {
         handleSettingButton(e);
-        UI.toggleSetting(true);
     });
 
     closeSettingButton.addEventListener("click", (e) => {
@@ -21,6 +20,7 @@ export function initSettingsEvent(user) {
         event.preventDefault();
         if (user.isLogged) {
             handleSettings();
+            UI.toggleSetting(true);
         } else {
             UI.toggleAuth(true);
         }
