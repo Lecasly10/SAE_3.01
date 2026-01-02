@@ -25,5 +25,5 @@ function fetch(string $url)
 interface ParkingAPI
 {
     public function fetchData(): ?array;
-    public function getFreePlaces(float $lat, float $lon): ?int;
+    public function getFreePlaces(array $data, float $lat, float $lon): ?int;
 }
