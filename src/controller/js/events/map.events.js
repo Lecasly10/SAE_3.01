@@ -13,7 +13,7 @@ export function initMapEvent(user, navigation, builder) {
         tId = setTimeout(() => {
             navigation.startFollowRoute();
             tId = null;
-        }, 5000);
+        }, 3000);
     });
 
     goCenterButton.addEventListener("click", () => {
