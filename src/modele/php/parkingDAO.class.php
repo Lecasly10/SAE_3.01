@@ -54,7 +54,7 @@ class ParkingDAO
 
     function getAllData(): array
     {
-        return $this->createTab($this->bd->execSQL($this->select));
+        return $this->createTab($this->bd->execSQL($this->select), false);
     }
 
     function getAllDataById(string $id): ?array
@@ -94,7 +94,7 @@ class ParkingDAO
         $sql = $this->select . " WHERE $where";
 
         return $this->createTab(
-            $this->bd->execSQL($sql, $params)
+            $this->bd->execSQL($sql, $params), false
         );
     }
 
@@ -171,7 +171,7 @@ class ParkingDAO
         return array_slice($parkings, 0, $limit);
     }
 
-    function createTab($lesParkings, bool $all = false): ?array
+    function createTab($lesParkings, bool $all): ?array
     {
         $res = null;
         $data = getApiData();
