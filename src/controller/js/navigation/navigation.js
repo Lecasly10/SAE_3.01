@@ -90,7 +90,8 @@ export class Navigation {
 
   async retrieveRoute(saved) {
     UI.notify("Votre trajet a été retrouvé !")
-    await this.startNavigation(saved)
+    await this.startNavigation(saved);
+    this.startPreview();
   }
 
   async stopNavigation() {
