@@ -37,7 +37,7 @@ try {
         exit;
     }
 
-    $res = createTable([$parking]);
+    $res = $parking;
     echo json_encode([
         'status' => 'ok',
         'message' => 'Parking trouvé',
