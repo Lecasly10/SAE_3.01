@@ -47,7 +47,7 @@ export function initMapEvent(user, navigation, builder) {
             e.preventDefault();
             builder.map.panTo(builder.userMarker.position);
             builder.map.setZoom(25);
-            navigation.focus = true; //Suivre le marker
+            navigation.focus = true;
             navigation.startFollowRoute();
             UI.toggleNavigationUI(destination.name);
         });

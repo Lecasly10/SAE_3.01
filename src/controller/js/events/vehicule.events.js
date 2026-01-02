@@ -41,7 +41,7 @@ export function initVehiculeEvent(user) {
         UI.toggleVoitureEdit(false);
     })
 
-    async function update() {
+    function update() {
         const { settingsButton } = UI.el
         const e = new Event("click");
         try {
@@ -70,7 +70,7 @@ export function initVehiculeEvent(user) {
         listvoit.value = "none";
     }
 
-    async function handleCarEdit(event) {
+    function handleCarEdit(event) {
         event.preventDefault()
         const { plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
         let b = event.target.value
@@ -146,7 +146,7 @@ export function initVehiculeEvent(user) {
         }
 
         if (resp.status && resp.status === "success") {
-            await update();
+            update();
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
         } else if (resp.message) {
@@ -169,7 +169,7 @@ export function initVehiculeEvent(user) {
                 alert(res.message)
             } else {
                 UI.notify("Véhicules", "Véhicule supprimé avec succès !", true)
-                await update();
+                update();
             }
         }
     }

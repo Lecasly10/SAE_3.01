@@ -3,6 +3,7 @@ import { nightMode } from "../maps/nightMode.js";
 import { MapBuilder } from "../maps/builder.js";
 import { Navigation } from "./navigation.js";
 import { Utils } from "../utils.js";
+import { getGoogleLibs } from "../api/googleAPI.js";
 
 export class Geolocation {
   static instance = null;
@@ -82,9 +83,6 @@ export class Geolocation {
           this.builder.userMarker.position = userPosition;
         }
 
-        // if (nav.focus) {
-        //   this.builder.map.panTo(userPosition)
-        // }
       },
       (error) => console.warn("Erreur watchPosition :", error),
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
@@ -99,18 +97,7 @@ export class Geolocation {
   }
 
   static distance(a, b) {
-    const R = 6371;
-    const dLat = Geolocation.deg2rad(b.lat - a.lat);
-    const dLng = Geolocation.deg2rad(b.lng - a.lng);
-    const s =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(Geolocation.deg2rad(a.lat)) *
-      Math.cos(Geolocation.deg2rad(b.lat)) *
-      Math.sin(dLng / 2) ** 2;
-    return 2 * R * Math.atan2(Math.sqrt(s), Math.sqrt(1 - s));
-  }
-
-  static deg2rad(deg) {
-    return deg * (Math.PI / 180);
+    const { spherical } = getGoogleLibs();
+    return spherical.computeDistanceBetween(a, b);
   }
 }

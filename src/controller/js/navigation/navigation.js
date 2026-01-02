@@ -9,9 +9,18 @@ export class Navigation {
   static instance = null;
   static builder = null;
 
-  static init(builder) {
+  static async init(builder) {
     if (!Navigation.instance) Navigation.instance = new Navigation();
     Navigation.builder = builder;
+
+    try {
+      const savedRoute = JSON.parse(localStorage.getItem("destination"));
+      await Navigation.instance.retrieveRoute(savedRoute);
+    } catch (e) {
+      console.error("Erreur pendant la récup du trajet : ", e);
+      UI.setupUI();
+    }
+
     return Navigation.instance;
   }
 
@@ -39,6 +48,23 @@ export class Navigation {
     this.destination = destination;
     await this.buildRoute();
     this.startParkingMonitor();
+    this.saveRoute();
+  }
+
+  saveDestination() {
+    const key = "destination"
+    try {
+      if (localStorage.getItem(key)) localStorage.removeItem(key);
+      localStorage.setItem(key, JSON.stringify(destination));
+    } catch (e) {
+      console.error("Erreur pendant la sauvegarde du trajet : ", e);
+    }
+
+  }
+
+  async retrieveRoute(saved) {
+    UI.notify("Votre trajet a été retrouvé !")
+    await this.startNavigation(saved)
   }
 
   async stopNavigation() {
