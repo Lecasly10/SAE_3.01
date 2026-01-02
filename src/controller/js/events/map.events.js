@@ -6,7 +6,7 @@ export function initMapEvent(user, navigation, builder) {
     const { autoSearchButton, searchBox, listButton,
         crossIcon, closeButton, goCenterButton } = UI.el
 
-    const tId = null;
+    let tId = null;
     builder.map.addListener('dragend', () => {
         if (tId) clearTimeout(tId);
         navigation.stopFollowRoute();
