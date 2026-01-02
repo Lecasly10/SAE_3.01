@@ -6,7 +6,7 @@ export function initUserEvent(user) {
         inscrLink, closeAuthButton } = UI.el
 
     document.querySelectorAll(".submitInfo").forEach(el => {
-        el.addEventListener("click", event => {
+        el.addEventListener("keydown", event => {
             if (event.key === "Enter") {
                 console.log("Enter pressed !")
                 const eventD = new Event("click");

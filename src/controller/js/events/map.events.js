@@ -37,24 +37,7 @@ export function initMapEvent(user, navigation, builder) {
 
     async function handleNavigation(destination) {
         await navigation.startNavigation(destination);
-
-        const { confirm, cancel } = UI.togglePreview(destination);
-        const bounds = navigation.route.bounds;
-        builder.map.fitBounds(bounds);
-        builder.map.panTo(bounds.getCenter());
-
-        confirm.addEventListener("click", (e) => {
-            e.preventDefault();
-            builder.map.panTo(builder.userMarker.position);
-            builder.map.setZoom(25);
-            navigation.focus = true;
-            navigation.startFollowRoute();
-            UI.toggleNavigationUI(destination.name);
-        });
-
-        cancel.addEventListener("click", (e) => {
-            handleStop(e);
-        });
+        navigation.startPreview();
     }
 
     // Parking le plus proche

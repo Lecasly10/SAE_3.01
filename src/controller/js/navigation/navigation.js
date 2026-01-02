@@ -51,6 +51,32 @@ export class Navigation {
     this.saveDestination();
   }
 
+  startPreview() {
+    if (!this.route) return
+    const destination = this.destination
+    const { confirm, cancel } = UI.togglePreview(destination);
+    const { crossIcon } = UI.el
+    const bounds = this.route.bounds;
+    const builder = Navigation.builder;
+
+    builder.map.fitBounds(bounds);
+    builder.map.panTo(bounds.getCenter());
+
+    confirm.addEventListener("click", (e) => {
+      e.preventDefault();
+      builder.map.panTo(builder.userMarker.position);
+      builder.map.setZoom(25);
+      this.focus = true;
+      this.startFollowRoute();
+      UI.toggleNavigationUI(destination.name);
+    });
+
+    cancel.addEventListener("click", (e) => {
+      const stopEvent = new Event("click");
+      crossIcon.dispatchEvent(stopEvent);
+    });
+  }
+
   saveDestination() {
     const key = "destination"
     try {
