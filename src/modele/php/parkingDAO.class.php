@@ -173,6 +173,7 @@ class ParkingDAO
 
     function createTab($lesParkings): ?array
     {
+        $res = null;
         $data = getApiData();
         foreach ($lesParkings as $parking) {
             if (!$parking)
