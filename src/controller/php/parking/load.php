@@ -37,7 +37,7 @@ try {
         exit;
     }
 
-    $res = $parking[0];
+    $res = $parking;
     echo json_encode([
         'status' => 'ok',
         'message' => 'Parking trouvé',
