@@ -48,7 +48,7 @@ export class Navigation {
     this.destination = destination;
     await this.buildRoute();
     this.startParkingMonitor();
-    this.saveRoute();
+    this.saveDestination();
   }
 
   saveDestination() {
