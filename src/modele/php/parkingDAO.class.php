@@ -54,7 +54,7 @@ class ParkingDAO
 
     function getAllData(): array
     {
-        return $this->createTab($this->bd->execSQL($this->select), false);
+        return $this->createTab($this->bd->execSQL($this->select));
     }
 
     function getAllDataById(string $id): ?array
@@ -94,7 +94,7 @@ class ParkingDAO
         $sql = $this->select . " WHERE $where";
 
         return $this->createTab(
-            $this->bd->execSQL($sql, $params), false
+            $this->bd->execSQL($sql, $params)
         );
     }
 
@@ -171,7 +171,7 @@ class ParkingDAO
         return array_slice($parkings, 0, $limit);
     }
 
-    function createTab($lesParkings, bool $all): ?array
+    function createTab($lesParkings, bool $all = false): ?array
     {
         $res = null;
         $data = getApiData();
@@ -207,30 +207,26 @@ class ParkingDAO
                 'info' => $parking['info'],
                 'user' => $parking['user_type'],
                 'places_libres' => $pLibre ?? -1,
-            ];
-
-            if ($all) {
-                $res[] = [
-                    'max_height' => floatval($parking['max_height']),
-                    'places' => intval($parking['total_spaces']),
-                    'pmr' => intval($parking['pmr_spaces']),
-                    'e2w' => intval($parking['electric_2w_spaces']),
-                    'eCar' => intval($parking['electric_car_spaces']),
-                    'moto' => intval($parking['motorcycle_spaces']),
-                    'carpool' => intval($parking['carpool_spaces']),
-                    'bicycle' => intval($parking['bicycle_spaces']),
-                    'pr' => intval($parking['pr_spaces']),
-                    'free' => boolval($parking['is_free']),
-                    'pmr_rate' => floatval($parking['pmr_rate']),
-                    'rate_1h' => floatval($parking['rate_1h']),
-                    'rate_2h' => floatval($parking['rate_2h']),
-                    'rate_3h' => floatval($parking['rate_3h']),
-                    'rate_4h' => floatval($parking['rate_4h']),
-                    'rate_24h' => floatval($parking['rate_24h']),
-                    'resident_sub' => floatval($parking['resident_subscription']),
-                    'nonresident_sub' => floatval($parking['non_resident_subscription']),
-                ];
-            }
+            ] + all ? [
+                'max_height' => floatval($parking['max_height']),
+                'places' => intval($parking['total_spaces']),
+                'pmr' => intval($parking['pmr_spaces']),
+                'e2w' => intval($parking['electric_2w_spaces']),
+                'eCar' => intval($parking['electric_car_spaces']),
+                'moto' => intval($parking['motorcycle_spaces']),
+                'carpool' => intval($parking['carpool_spaces']),
+                'bicycle' => intval($parking['bicycle_spaces']),
+                'pr' => intval($parking['pr_spaces']),
+                'free' => boolval($parking['is_free']),
+                'pmr_rate' => floatval($parking['pmr_rate']),
+                'rate_1h' => floatval($parking['rate_1h']),
+                'rate_2h' => floatval($parking['rate_2h']),
+                'rate_3h' => floatval($parking['rate_3h']),
+                'rate_4h' => floatval($parking['rate_4h']),
+                'rate_24h' => floatval($parking['rate_24h']),
+                'resident_sub' => floatval($parking['resident_subscription']),
+                'nonresident_sub' => floatval($parking['non_resident_subscription']),
+            ] : [];
         }
 
         return $res;
