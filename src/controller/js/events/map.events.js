@@ -7,7 +7,7 @@ export function initMapEvent(user, navigation, builder) {
         crossIcon, closeButton, goCenterButton } = UI.el
 
     let tId = null;
-    builder.map.addListener('dragend', () => {
+    builder.map.addListener('dragstart', () => {
         if (tId) clearTimeout(tId);
         navigation.pauseFollowRoute();
         tId = setTimeout(() => {
