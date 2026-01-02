@@ -65,7 +65,7 @@ body {
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  top: -100px;
+  bottom: -100px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 99999999;
@@ -89,19 +89,19 @@ body {
 
 @keyframes slideInTop {
   from {
-    top: -100px;
+    bottom: -100px;
   }
   to {
-    top: 10vh;
+    bottom: 10vh;
   }
 }
 
 @keyframes slideOutTop {
   from {
-    top: 10vh;
+    bottom: 10vh;
   }
   to {
-    top: -100px;
+    bottom: -100px;
   }
 }
 
