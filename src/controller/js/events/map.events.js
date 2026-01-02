@@ -142,7 +142,7 @@ export function initMapEvent(user, navigation, builder) {
 
             const id = button.value;
             // const result = await phpFetch("parking/load", { id });
-            const parking = button.dataset.data;
+            const parking = JSON.parse(button.dataset.data);
 
             if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
 
