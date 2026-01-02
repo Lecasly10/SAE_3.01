@@ -4,11 +4,16 @@ import { phpFetch } from "../api/phpInteraction.js";
 
 export function initMapEvent(user, navigation, builder) {
     const { autoSearchButton, searchBox, listButton,
-        crossIcon, closeButton } = UI.el
+        crossIcon, closeButton, goCenterButton } = UI.el
+
+    goCenterButton.addEventListener("click", () => {
+        UI.notify("MAP", "Map recentré !", false, 2);
+        builder.map.panTo(builder.userMarker.position);
+    });
 
     //Rechercher le parking le plus proche
     autoSearchButton.addEventListener("click", (e) => {
-        handleAutoSearchClick(e);
+        handleClosestButton(e);
     });
 
     //Rechercher parkings
@@ -20,13 +25,13 @@ export function initMapEvent(user, navigation, builder) {
 
     //Lister les parkings
     listButton.addEventListener("click", async (e) => {
-        handleListButton(e);
+        handleParkingListButton(e);
     });
 
     //Annuler ou stop
     if (crossIcon) {
         crossIcon.addEventListener("click", (e) => {
-            handleStop(e);
+            handleCrossButton(e);
         });
     }
 
@@ -41,7 +46,7 @@ export function initMapEvent(user, navigation, builder) {
     }
 
     // Parking le plus proche
-    async function handleAutoSearchClick(event) {
+    async function handleClosestButton(event) {
         event.preventDefault();
         UI.toggleLoader(true);
 
@@ -54,7 +59,7 @@ export function initMapEvent(user, navigation, builder) {
         } catch (error) {
             UI.setupUI();
             alert(error.message || error);
-            console.error("Erreur handleAutoSearchClick :", error);
+            console.error("Erreur :", error);
         } finally {
             UI.toggleLoader(false);
         }
@@ -78,8 +83,8 @@ export function initMapEvent(user, navigation, builder) {
             const destination = { id, lat, lng, name };
             handleNavigation(destination);
         } catch (error) {
-            alert(error.message || error);
-            console.error("Erreur handleParkingClick :", error);
+            alert("Une Erreur est survenue, veuillez réessayer !");
+            console.error("Erreur :", error);
         } finally {
             UI.toggleLoader(false);
         }
@@ -109,7 +114,7 @@ export function initMapEvent(user, navigation, builder) {
     }
 
     // Liste de tous les parkings
-    async function handleListButton(event) {
+    async function handleParkingListButton(event) {
         event.preventDefault();
         UI.toggleLoader(true);
         UI.emptySearchBox();
@@ -136,15 +141,15 @@ export function initMapEvent(user, navigation, builder) {
             UI.emptySearchBox();
 
             const id = button.value;
-            const result = await phpFetch("parking/load", { id });
-            const parking = result?.parking;
+            // const result = await phpFetch("parking/load", { id });
+            const parking = button.dataset.data;
 
             if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
 
             UI.setResultTitle(parking.nom);
             displayParkingInfo(parking);
         } catch (error) {
-            console.error("Erreur handleParkingInfoClick :", error);
+            console.error("Erreur :", error);
             UI.setResultTitle("Erreur");
             UI.setResultMessage("Impossible de charger les informations du parking.");
         } finally {
@@ -235,9 +240,12 @@ export function initMapEvent(user, navigation, builder) {
                 container.className = "resultDiv";
 
                 const button = document.createElement("a");
+                const data = JSON.parse(parking);
+
                 button.value = parking.id;
                 button.className = "littleButton button fade";
                 button.title = "Cliquez pour voir les informations";
+                button.dataset.data = JSON.stringify(data);
 
                 const icon = document.createElement("i");
                 icon.className = "fa fa-info";
@@ -254,6 +262,7 @@ export function initMapEvent(user, navigation, builder) {
                         : parking.places_libres == -1
                             ? ""
                             : " | complet");
+
                 link.title = "Cliquez pour lancer l'itinéraire";
                 link.dataset.lat = parking.lat;
                 link.dataset.lng = parking.lng;
@@ -282,7 +291,7 @@ export function initMapEvent(user, navigation, builder) {
         navigation.stopNavigation();
     }
 
-    async function handleStop(event) {
+    async function handleCrossButton(event) {
         event.preventDefault();
 
         navigation.stopNavigation();

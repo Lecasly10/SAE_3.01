@@ -26,11 +26,6 @@ export async function initEvent() {
     console.error("Erreur :", event.reason);
   });
 
-  UI.el.goCenterButton.addEventListener("click", () => {
-    UI.notify("MAP", "Map recentré !");
-    builder.map.panTo(builder.userMarker.position);
-  });
-
   initVehiculeEvent(user);
   initSettingsEvent(user);
   initUserEvent(user);
