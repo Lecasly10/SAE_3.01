@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/parkingApi.php';
 require_once __DIR__ . '/dataAPI.php';
+require_once __DIR__ . '/../distance.php';
 
 class LondreAPI implements ParkingAPI
 {
@@ -14,7 +15,6 @@ class LondreAPI implements ParkingAPI
     public function __construct(array $config)
     {
         $this->urlAll = $config['londreUrlAll'];
-        $this->urlPark = $config['londreUrlPark'];
         $this->urlLoc = $config['londreUrlLoc'];
         $this->key = $config['londreKey'];
         $this->radius = $config['radius'] ?? 200;
@@ -25,7 +25,6 @@ class LondreAPI implements ParkingAPI
         $data = fetch($url);
 
         if ($data === null) {
-            // die("Erreur JSON Metz");
             return null;
         }
 
@@ -37,28 +36,28 @@ class LondreAPI implements ParkingAPI
         return $this->call($this->urlAll . $this->key);
     }
 
-    private function getNearestParkingId(float $lat, float $lon): ?string
+    private function getNearestParkingId(array $data, float $lat, float $lon): ?string
     {
-        $url = $this->urlLoc
-            . "lat={$lat}&lon={$lon}&radius={$this->radius}&type=CarPark&"
-            . $this->key;
+        $res = '';
+        foreach ($data as $parking) {
+            $pLat = $parking['lat'];
+            $pLng = $parking['lon'];
 
-        $data = $this->call($url);
-
-        if (!isset($data['places']) || empty($data['places'])) {
-            return null;
+            if (distanceGPS($lat, $lon, $pLat, $pLng) < 20) {
+                $res = $parking['id'];
+            }
         }
 
-        if (isset($data['places'][0]) || !empty($data['places'][0])) {
-            return $data['places'][0]['id'];
-        } else {
+        if (!isset($res) || empty($res)) {
             return null;
+        } else {
+            return $res;
         }
     }
 
-    public function getFreePlaces(float $lat, float $lon): ?int
+    public function getFreePlaces(array $data, float $lat, float $lon): ?int
     {
-        $id = $this->getNearestParkingId($lat, $lon);
+        $id = $this->getNearestParkingId($data, $lat, $lon);
         if (!$id)
             return null;
 

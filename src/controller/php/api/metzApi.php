@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/parkingApi.php';
 require_once __DIR__ . '/dataAPI.php';
+require_once __DIR__ . '/../distance.php';
 
 class MetzAPI implements ParkingAPI
 {
@@ -23,10 +24,8 @@ class MetzAPI implements ParkingAPI
         return $data;
     }
 
-    public function getFreePlaces(float $lat, float $lon): ?int
+    public function getFreePlaces(array $data, float $lat, float $lon): ?int
     {
-        $data = $this->fetchData();
-
         if (!isset($data))
             return null;
 

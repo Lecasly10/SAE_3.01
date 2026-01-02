@@ -165,6 +165,7 @@ class ParkingDAO
 
     function createTab($lesParkings): array
     {
+        $data = getApiData();
         foreach ($lesParkings as $parking) {
             if (!$parking)
                 continue;
@@ -175,9 +176,10 @@ class ParkingDAO
 
             $pLibre = 0;
             $city = detectCity($lat, $lng);
+
             try {
                 if (isset($city)) {
-                    $pLibre = placeLibre($city, $lat, $lng);
+                    $pLibre = placeLibre($data[$city], $city, $lat, $lng);
                 }
             } catch (Exception $e) {
                 $pLibre = null;

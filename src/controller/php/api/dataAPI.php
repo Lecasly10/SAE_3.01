@@ -12,7 +12,18 @@ $apis = [
     'londre' => new LondreAPI($API)
 ];
 
-function placeLibre(string $city, float $lat, float $lon): ?int
+function getApiData(): ?array
+{
+    global $apis;
+    $res = [];
+    foreach ($apis as $city) {
+        $res[$city] = $apis[$city]->fetchData();
+    }
+
+    return $res;
+}
+
+function placeLibre(array $data, string $city, float $lat, float $lon): ?int
 {
     global $apis;
 
@@ -20,5 +31,5 @@ function placeLibre(string $city, float $lat, float $lon): ?int
         return null;
     }
 
-    return $apis[$city]->getFreePlaces($lat, $lon);
+    return $apis[$city]->getFreePlaces($data, $lat, $lon);
 }
