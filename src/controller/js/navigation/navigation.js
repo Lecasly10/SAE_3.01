@@ -80,12 +80,21 @@ export class Navigation {
   saveDestination() {
     const key = "destination"
     try {
-      if (localStorage.getItem(key)) localStorage.removeItem(key);
+      this.deleteSavedDestination;
       localStorage.setItem(key, JSON.stringify(this.destination));
     } catch (e) {
       console.error("Erreur pendant la sauvegarde du trajet : ", e);
     }
 
+  }
+
+  deleteSavedDestination() {
+    const key = "destination"
+    try {
+      if (localStorage.getItem(key)) localStorage.removeItem(key);
+    } catch (e) {
+      console.error("Erreur pendant la suppression du trajet : ", e);
+    }
   }
 
   async retrieveRoute(saved) {
@@ -96,6 +105,7 @@ export class Navigation {
 
   async stopNavigation() {
     this.stopParkingMonitor();
+    this.deleteSavedDestination();
     this.stopFollowRoute();
     this.removeRoute();
     this.destination = null;
