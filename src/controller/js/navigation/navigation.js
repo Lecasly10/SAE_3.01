@@ -15,7 +15,7 @@ export class Navigation {
 
     try {
       const savedRoute = JSON.parse(localStorage.getItem("destination"));
-      await Navigation.instance.retrieveRoute(savedRoute);
+      if (savedRoute && savedRoute.name) await Navigation.instance.retrieveRoute(savedRoute);
     } catch (e) {
       console.error("Erreur pendant la récup du trajet : ", e);
       UI.setupUI();
