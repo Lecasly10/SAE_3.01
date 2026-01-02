@@ -64,6 +64,7 @@ export class Navigation {
 
     confirm.addEventListener("click", (e) => {
       e.preventDefault();
+      this.followRoute();
       this.focus = true;
       this.startFollowRoute();
       UI.toggleNavigationUI(destination.name);
@@ -127,46 +128,49 @@ export class Navigation {
     }
   }
 
+  followRoute() {
+    if (!this.route) return;
+
+    const builder = Navigation.builder;
+    const path = this.route.polylines[0].getPath();
+    const position = builder.userMarker?.position;
+    if (!position || path.getLength() < 2) return;
+
+
+    let closestIndex = 0;
+    let minDist = Infinity;
+
+    path.forEach((p, i) => {
+      const d = google.maps.geometry.spherical.computeDistanceBetween(position, p);
+      if (d < minDist) {
+        minDist = d;
+        closestIndex = i;
+      }
+    });
+
+    if (closestIndex >= path.getLength() - 1) return;
+
+    const from = path.getAt(closestIndex);
+    const to = path.getAt(closestIndex + 1);
+
+    const heading =
+      google.maps.geometry.spherical.computeHeading(from, to);
+
+    builder.map.moveCamera({
+      center: position,
+      heading,
+      tilt: 60,
+      zoom: 25,
+    });
+  }
+
   startFollowRoute() {
     if (!this.route || this.followingRoute) return;
 
     this.followingRoute = true;
 
     this.followInterval = setInterval(() => {
-      if (!this.route) return;
-
-      const builder = Navigation.builder;
-      const path = this.route.polylines[0].getPath();
-      const position = builder.userMarker?.position;
-      if (!position || path.getLength() < 2) return;
-
-
-      let closestIndex = 0;
-      let minDist = Infinity;
-
-      path.forEach((p, i) => {
-        const d = google.maps.geometry.spherical.computeDistanceBetween(position, p);
-        if (d < minDist) {
-          minDist = d;
-          closestIndex = i;
-        }
-      });
-
-      if (closestIndex >= path.getLength() - 1) return;
-
-      const from = path.getAt(closestIndex);
-      const to = path.getAt(closestIndex + 1);
-
-      const heading =
-        google.maps.geometry.spherical.computeHeading(from, to);
-
-      builder.map.moveCamera({
-        center: position,
-        heading,
-        tilt: 60,
-        zoom: 25,
-      });
-
+      this.followRoute();
     }, 2000);
   }
 
