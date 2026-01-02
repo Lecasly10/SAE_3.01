@@ -6,6 +6,14 @@ export function initMapEvent(user, navigation, builder) {
     const { autoSearchButton, searchBox, listButton,
         crossIcon, closeButton, goCenterButton } = UI.el
 
+    builder.map.addListener('dragend', () => {
+        console.log('L’utilisateur a bougé la carte !');
+        navigation.stopFollowRoute();
+        setTimeout(() => {
+            navigation.startFollowRoute();
+        }, 10000);
+    });
+
     goCenterButton.addEventListener("click", () => {
         UI.notify("MAP", "Map recentré !", false, 2);
         builder.map.panTo(builder.userMarker.position);
