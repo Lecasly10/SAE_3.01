@@ -163,7 +163,7 @@ class ParkingDAO
         return array_slice($parkings, 0, $limit);
     }
 
-    function createTab(): array
+    function createTab($lesParkings): array
     {
         foreach ($lesParkings as $parking) {
             if (!$parking)
