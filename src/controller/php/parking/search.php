@@ -21,7 +21,7 @@ $parkingDAO = new ParkingDAO();
 
 function searchParkings(string $search): array
 {
-    return $parkingDAO->getSearch($mot);
+    return $parkingDAO->getSearch($search);
 }
 
 try {

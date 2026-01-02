@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/parking.class.php';
 require_once __DIR__ . '/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/parkingTarifDAO.class.php';
