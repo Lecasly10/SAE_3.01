@@ -10,35 +10,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../../modele/php/parkingDAO.class.php';
+require_once __DIR__ . '/../api/dataAPI.php';
+require_once __DIR__ . '/../distance.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json, true) ?: [];
 $parkingId = $data['id'] ?? null;
+$lat = $data['lat'] ?? null;
+$lng = $data['lng'] ?? null;
 
-if (!$parkingId) {
+if (!$parkingId || !$lat || !$lng) {
     echo json_encode([
         'status' => 'erreur',
-        'message' => "Paramètre 'id' manquant"
+        'message' => 'Paramètre manquant'
     ]);
     exit;
 }
 
 try {
-    $parking = (new ParkingDAO())->getAllDataById($parkingId);
-    if (!$parking) {
-        echo json_encode([
-            'status' => 'erreur',
-            'message' => 'Aucun parking trouvé'
-        ]);
-        exit;
+    $data = getApiData();
+
+    $pLibre = 0;
+    $city = detectCity($lat, $lng);
+
+    try {
+        if (isset($city)) {
+            $pLibre = placeLibre($data[$city], $city, $lat, $lng);
+        }
+    } catch (Exception $e) {
+        $pLibre = null;
     }
 
-    $res = $parking;
     echo json_encode([
         'status' => 'ok',
-        'message' => 'Parking trouvé',
-        'parking' => $res
+        'libre' => $pLibre
     ]);
 } catch (Exception $e) {
     echo json_encode([

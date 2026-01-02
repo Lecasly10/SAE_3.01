@@ -232,8 +232,10 @@ export class Navigation {
     if (!this.destination) return null;
 
     try {
-      const res = await phpFetch("parking/load", {
+      const res = await phpFetch("parking/getAvailablePlace", {
         id: this.destination.id,
+        lat: this.destination.lat,
+        lng: this.destination.lng
       });
       return res.parking.places_libres;
     } catch (err) {
