@@ -1,30 +1,40 @@
 //===IMPORT===
-import { setupUI, toggleLoader } from "./UI.js";
-import { initEvent } from "./event.js";
+import { UI } from "./ui/UI.js";
+import { initEvent } from "./events/event.js";
 
-import { Geolocation } from "../../modele/geolocation.js";
-import { MapBuilder } from "../../modele/builder.js";
-
-//===GLOBAL===
-globalThis.carIconURL =
-  "https://cdn-icons-png.flaticon.com/512/5193/5193688.png";
+import { Geolocation } from "./navigation/geolocation.js";
+import { MapBuilder } from "./maps/builder.js";
+import { Navigation } from "./navigation/navigation.js";
+import { User } from "./user/user.js";
 
 //===LOAD===
 document.addEventListener("deviceready", async () => {
+  if (!navigator.onLine) {
+    alert("Veuillez vous connecter à internet !");
+    return;
+  }
+
   try {
-    const builder = new MapBuilder();
+    UI.toggleLoader(true);
+    UI.setupUI();
+
+    const builder = MapBuilder.init();
+    if (!builder) throw new Error("Erreur d'initialisation");
     await builder.initMap();
-    setupUI();
 
-    const geo = new Geolocation(builder);
+    const geo = Geolocation.init();
     await geo.locateUser();
-
     geo.startWatching();
 
-    await initEvent(builder);
-    toggleLoader(false);
+    Navigation.init(builder);
+    User.init();
+
+    await initEvent();
+
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);
     alert("Erreur lors l'initialisation de l'application");
+  } finally {
+    UI.toggleLoader(false);
   }
 });

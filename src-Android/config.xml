@@ -2,7 +2,8 @@
 <widget id="com.sash1ro.SAE3"
         version="1.0.0"
         xmlns="http://www.w3.org/ns/widgets"
-        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+        xmlns:cdv="http://cordova.apache.org/ns/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
     <name>SmartParking Metz</name>
     <description>Une solution intelligente pour faciliter la mobilité urbaine</description>
@@ -10,29 +11,41 @@
         SmartParking Metz dev team
     </author>
 
+    
     <content src="index.html" />
-  
-    <access origin="*" />
-    <allow-navigation href="*" />
 
+    <!-- Autorisations serveur IUT -->
+    <access origin="https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/*" subdomains="true" />
+    <allow-navigation href="https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/*" />
+
+   
     <platform name="android">
-    <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
-    <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
-    <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
-    <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
-    <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+        <!-- icônes -->
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+
+      
+        <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:hardwareAccelerated="true" />
+        </edit-config>
     </platform>
 
-
-    
+    <!-- Préférences Cordova Android -->
     <preference name="Scheme" value="http" />
     <preference name="Hostname" value="localhost" />
     <preference name="AndroidInsecureFileModeEnabled" value="true" />
     <preference name="MixedContentMode" value="0" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="AllowInlineMediaPlayback" value="true" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="AndroidLaunchMode" value="singleTop" />
+    <preference name="BackupWebStorage" value="local" />
 
-
+   
     <plugin name="cordova-plugin-geolocation" source="npm" />
-
 
 </widget>

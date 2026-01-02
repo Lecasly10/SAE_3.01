@@ -1,0 +1,194 @@
+import { phpFetch } from "../api/phpInteraction.js";
+import { UI } from "../ui/UI.js";
+
+export class User {
+    static instance = null;
+
+    static async init() {
+        if (!User.instance) User.instance = new User();
+        User.instance.isLogged = await User.instance.checkAuth();
+        return User.instance;
+    }
+
+    static getInstance() {
+        if (!User.instance) throw new Error("User non init !");
+        return User.instance;
+    }
+
+    constructor() {
+        if (User.instance)
+            throw new Error("User déjà init !");
+        this.isLogged = false
+        this.createAccount = false;
+        this.userId = null;
+        this.mail = null;
+        this.data = null;
+    }
+
+    async checkAuth() {
+        try {
+            const data = await phpFetch("user/session", {}, {
+                credentials: "include"
+            });
+            if (!data) throw new Error("Erreur serveur !");
+
+            // if (!data.authenticated) UI.toggleAuth(true);
+            if (data.authenticated) {
+                UI.toggleAuthIcon(true)
+                this.userId = data.user_id;
+                this.mail = data.mail;
+                const storedData = localStorage.getItem("userVeh");
+                if (storedData) {
+                    try {
+                        this.data = JSON.parse(storedData);
+                    } catch (e) {
+                        console.warn("JSON invalide : ", e);
+                        this.data = null;
+                        localStorage.removeItem("userVeh");
+                    }
+                } else {
+                    this.data = null;
+                }
+            };
+            return data.authenticated ? data.authenticated : false;
+
+        } catch (error) {
+            console.error("checkAuth error: ", error);
+            return false;
+        }
+    }
+
+    async update(info) {
+        try {
+            if (!info.vehId) {
+                localStorage.removeItem('userVeh')
+                this.data = null
+            }
+            else {
+                localStorage.setItem('userVeh', JSON.stringify({
+                    vehId: info.vehId
+                }))
+                this.data = JSON.parse(localStorage.getItem('userVeh'));
+            }
+
+            const data = await phpFetch("user/update", info)
+            if (!data) throw new Error("Erreur serveur !")
+            if (data.status === "success") UI.toggleSetting(false);
+            return data
+        } catch (error) {
+            console.error("Update Error : ", error)
+        }
+
+    }
+
+    async load(id) {
+        try {
+            const data = await phpFetch("user/load", { id: id })
+            if (!data) throw new Error("Erreur serveur !");
+            else {
+                return data
+            }
+        } catch (error) {
+            console.error("Load info error: ", error)
+        }
+    }
+
+    async login(mail, password) {
+        const data = await phpFetch("user/login", { mail, password }, {
+            credentials: "include",
+        });
+
+        if (data.status === "success") {
+            UI.toggleAuth(false)
+            UI.notify("Compte", "Connexion réussi !")
+            UI.toggleAuthIcon(true);
+            this.isLogged = true;
+            this.userId = data.user_id;
+            this.mail = data.mail;
+        }
+
+        return data
+    }
+
+    async signin(info) {
+        const data = await phpFetch("user/signin", info, {
+            credentials: "include",
+        });
+
+        if (data.status === "success") {
+            await this.login(info.mail, info.password)
+            this.createAccount = false
+        }
+
+        return data
+    }
+
+    async logout() {
+        const data = await phpFetch("user/logout", {}, {
+            credentials: "include",
+        })
+
+        if (data.status === "success") {
+            this.isLogged = false;
+            this.mail = null;
+            this.userId = null;
+            UI.toggleAuthIcon(false);
+            UI.toggleSetting(false);
+        }
+
+        return data
+    }
+
+    async deleteCar(id) {
+        try {
+            const data = await phpFetch("vehicle/delete", { id: id })
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
+    async createCar(info) {
+        try {
+            const data = await phpFetch("vehicle/create", info)
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
+    async updateCar(info) {
+        try {
+            const data = await phpFetch("vehicle/update", info)
+            if (!data) throw new Error("Erreur serveur !")
+            return data
+        } catch (e) {
+            console.error("Erreur : ", e);
+        }
+
+    }
+
+    async auth(info) {
+        try {
+            const { name, surname, tel, mail, password } = info
+            let data;
+            if (!mail || !password) {
+                throw new Error("Password et mail requis pour la connections")
+            }
+            if (this.createAccount) {
+                if (!name || !surname || !tel) throw new Error("Des informations requises sont manquantes ! ")
+                data = await this.signin(info);
+            } else {
+                data = await this.login(mail, password);
+            }
+            return data
+        } catch (error) {
+            alert("Une Erreur s'est produite, Veuillez réessayer !")
+            console.error("Erreur : ", error)
+        }
+    }
+}

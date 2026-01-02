@@ -1,0 +1,13 @@
+{
+  "appId": "com.sash1ro.sae3",
+  "appName": "SmartParking Metz",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}

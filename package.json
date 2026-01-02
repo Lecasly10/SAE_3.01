@@ -12,12 +12,13 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "ts",
-  "main": "main.ts",
+  "type": "js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@types/google.maps": "^3.58.1"
-  }
+  },
+  "keywords": []
 }

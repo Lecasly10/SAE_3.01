@@ -3,13 +3,17 @@
   <head>
     <title>SmartParking Metz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- FONTS -->
     <link
       href="https://fonts.cdnfonts.com/css/sf-pro-display"
       rel="stylesheet"
     />
+    <!-- CSS ET JS -->
     <link rel="stylesheet" href="./vue/style/style.css" />
-    <script type="module" src="./controller/js/main.js"></script>
+    <script type="module" src="./controller/js/main.js" defer></script>
     <script src="cordova.js"></script>
+    <!-- ICONS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -17,7 +21,224 @@
   </head>
 
   <body>
-    <!-- Bar en haut -->
+    <div id="notif" class="blur-bg hidden">
+      <p id="notifTitle" class="bold">TEST</p>
+      <p id="notifContent">blabla</p>
+    </div>
+    <!-- POPUP AUTH -->
+    <div id="auth" class="popupBg blur-bg hidden">
+      <div id="auth-container" class="popup">
+        <div class="popup-header">
+          <a class="fade" id="closeAuthButton">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+          </a>
+          <p class="titleWindow">CONNEXION</p>
+        </div>
+
+        <p id="errorAuth" class="error hidden"></p>
+        <div id="preinfo" class="divContent hidden">
+          <input
+            class="inputPref"
+            type="text"
+            placeholder="Nom"
+            id="name"
+            name="name"
+            required
+          />
+          <input
+            class="inputPref"
+            type="text"
+            placeholder="Prénom"
+            id="surname"
+            name="surname"
+            required
+          />
+        </div>
+        <div id="connexion" class="divContent">
+          <input
+            class="inputPref hidden"
+            type="tel"
+            placeholder="Numéro de tel ex: 06 12 12 23 33"
+            id="tel"
+            name="tel"
+            pattern="[0-9]{10}"
+            required
+          />
+          <input
+            class="inputPref"
+            type="email"
+            placeholder="Votre email..."
+            id="mail"
+            name="mail"
+          />
+          <input
+            class="inputPref submitInfo"
+            type="password"
+            placeholder="Votre mot de passe"
+            id="password"
+            name="password"
+          />
+
+          <input
+            class="inputPref hidden submitInfo"
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            id="confirmpasswordbox"
+            name="password"
+          />
+          <div id="authbottom" class="divContent">
+            <a id="inscription" class="link">Pas de compte ? Inscription</a>
+            <a id="connexionLink" class="hidden link">Connexion</a>
+            <button id="submit" class="submit">Valider</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP SETTINGS -->
+    <div id="settings" class="popupBg blur-bg hidden">
+      <div id="settingContainer" class="popup">
+        <div class="popup-header">
+          <a id="closeSettingButton"><i class="fa fa-window-close"></i></a>
+          <p class="titleWindow">PARAMETRES</p>
+        </div>
+        <p id="errorSett" class="error hidden"></p>
+        <div id="mainContainer">
+          <div id="personnalContainer" class="divContent">
+            <p>Informations</p>
+            <label class="inputTitle">Nom</label>
+            <input class="inputPref" type="text" id="nameParam" required />
+            <label class="inputTitle">Prénom</label>
+            <input class="inputPref" type="text" id="surnameParam" required />
+            <label class="inputTitle">Mail</label>
+            <input class="inputPref" type="email" id="mailParam" disabled />
+            <label class="inputTitle">Numéro de Tel.</label>
+            <input
+              class="inputPref"
+              type="text"
+              placeholder="Numéro de tel ex: 06 12 12 23 33"
+              id="telParam"
+              pattern="[0-9]{10}"
+              required
+            />
+          </div>
+          <div id="prefContainer" class="divContent">
+            <p>Préférences</p>
+            <div class="divinput">
+              <label class="inputTitle">Parking Gratuit</label>
+              <input class="check" type="checkbox" id="freeParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Parking couvert</label>
+              <input class="check" type="checkbox" id="coverParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">PMR</label>
+              <input class="check" type="checkbox" id="pmrParam" required />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Budget Max /h</label>
+              <input
+                class="inputPref int"
+                type="number"
+                min="0"
+                step="0.01"
+                id="budgetParam"
+                required
+              />
+            </div>
+            <div class="divinput">
+              <label class="inputTitle">Max. Dist</label>
+              <input
+                class="inputPref int"
+                type="number"
+                min="0"
+                step="0.01"
+                id="distParam"
+                required
+              />
+            </div>
+
+            <label class="inputTitle" style="text-align: center"
+              >Votre Véhicule</label
+            >
+            <select class="inputPref" id="carParam">
+              <option value="none">Aucun</option>
+            </select>
+          </div>
+        </div>
+        <div id="settbottom" class="divContent">
+          <button id="logout" class="submit red">Déconnexion</button>
+          <button id="carButton" class="submit green">Véhicules</button>
+          <button id="submitSett" class="submit">Valider</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP GESTION VOITURES -->
+    <div id="voiture" class="popupBg blur-bg hidden">
+      <div id="voitureContainer" class="popup">
+        <div class="popup-header">
+          <a class="fade" id="closeVoitButton"
+            ><i class="fa fa-window-close" aria-hidden="true"></i>
+          </a>
+          <p class="titleWindow">VEHICULES</p>
+        </div>
+        <div class="mainContainer">
+          <div id="listVoit">
+            <select id="carTab" size="5">
+              <option value="none" selected>Sélectionner un véhicule</option>
+            </select>
+          </div>
+        </div>
+        <div id="voitbottom" class="divContent">
+          <button id="deleteCar" value="delete" class="submit red" disabled>
+            Supprimer
+          </button>
+          <button id="addCar" value="new" class="submit green">Nouveau</button>
+          <button id="editCar" value="edit" class="submit" disabled>
+            Modifier
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP EDIT ET AJOUT VOITURES -->
+    <div id="voitureEdit" class="popupBg blur-bg hidden">
+      <div id="voitureEditContainer" class="popup">
+        <div class="popup-header">
+          <a class="fade" id="closeVoitEditButton"
+            ><i class="fa fa-window-close" aria-hidden="true"></i>
+          </a>
+          <p class="titleWindow" id="editTitle">MODIFICATIONS</p>
+        </div>
+        <p id="errorVoitEdit" class="error hidden"></p>
+        <div class="mainContainer">
+          <div class="divContent" style="width: 100%">
+            <label class="inputTitle">Plaque</label>
+            <input class="inputPref" type="text" id="plateParam" required />
+            <label class="inputTitle">Hauteur (cm)</label>
+            <input class="inputPref" type="number" id="vHeightParam" required />
+            <label class="inputTitle">Type</label>
+            <select class="inputPref" id="vTypeParam">
+              <option value="voiture" selected>Voiture</option>
+              <option value="moto">Moto</option>
+            </select>
+            <label class="inputTitle">Moteur</label>
+            <select class="inputPref" id="vMotorParam">
+              <option value="thermique" selected>Thermique</option>
+              <option value="hybride">Hybride</option>
+              <option value="electrique">électrique</option>
+            </select>
+          </div>
+        </div>
+        <div id="voitEditBottom" class="divContent">
+          <button id="submitEditCar" class="submit">Valider</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOPBAR -->
     <div id="topnav" class="navbar blur-bg">
       <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
@@ -35,7 +256,7 @@
       </div>
     </div>
 
-    <!-- BOX contenant résulats et infos  -->
+    <!-- POPUP DES RESULTATS -->
     <div id="resultContainer" class="blur-bg box">
       <div class="titlebox">
         <p id="resultTitle" class="bold"></p>
@@ -47,16 +268,15 @@
       <div id="resultBox"></div>
     </div>
 
-    <!-- MAP -->
+    <!-- GOOGLE MAP -->
     <div id="map"></div>
 
-    <!-- Bar en bas -->
+    <!-- BOTTOM BAR -->
     <div id="bottomnav" class="navbar blur-bg">
       <div id="centerButton" class="button fade" title="Recentrer">
         <a><i class="fa fa-map-marker" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Suite de boutons -->
       <div
         id="autoSearchButton"
         class="button fade"
@@ -75,12 +295,12 @@
           <i class="fa fa-times" aria-hidden="true"></i
         ></a>
       </div>
-      <div id="settingsbutton" class="button fade" title="Paramètres">
-        <a><i class="fa fa-cog" aria-hidden="true"></i></a>
+      <div id="settingsButton" class="button fade" title="Paramètres">
+        <a><i class="fa fa-user-plus" aria-hidden="true" id="userIcon"></i></a>
       </div>
     </div>
 
-    <!-- API GOOGLE MAPS (Copié de la documentation) -->
+    <!-- API GOOGLE MAPS => VOIR DOCU GOOGLE MAPS -->
     <script>
       ((g) => {
         var h,
@@ -117,8 +337,9 @@
           ? console.warn(p + " only loads once. Ignoring:", g)
           : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
       })({
-        key: "AIzaSyChCXJQtsRQb2vHdPMbbFMWN3pPX_Q2pzw",
-        v: "weekly",
+        key: "AIzaSyCEuViMd3021ccwghkLzVt5IYesXUjnJ2o",
+        // Peut etre dans le code car sécurité setup dans le dashboard
+        v: "beta",
       });
     </script>
   </body>
