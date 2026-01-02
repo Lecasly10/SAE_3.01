@@ -59,7 +59,7 @@ class ParkingDAO
 
     function getAllDataById(string $id): ?array
     {
-        $p = $this->createTab($this->bd->execSQL($this->fullSelect . ' WHERE parking_id=:id', [':id' => $id]), true);
+        $p = $this->createTab($this->bd->execSQL($this->fullSelect . ' WHERE parkings.parking_id=:id', [':id' => $id]), true);
         if (count($p) > 0) {
             return $p[0];
         }
