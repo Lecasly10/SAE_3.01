@@ -57,15 +57,23 @@ class ParkingDAO
         return $this->createTab($this->bd->execSQL($this->fullSelect));
     }
 
-    function getById(string $id): Parking
+    function getAllDataById(string $id): ?array
     {
-        $unParking = new Parking();
+        $p = $this->createTab($this->bd->execSQL($this->fullSelect . ' WHERE parking_id=:id', [':id' => $id]));
+        if (count($p) > 0) {
+            return $p[0];
+        }
+        return null;
+    }
+
+    function getById(string $id): ?Parking
+    {
         $lesParkings = $this->loadQuery($this->bd->execSQL($this->select . ' WHERE
         parking_id=:id', [':id' => $id]));
         if (count($lesParkings) > 0) {
-            $unParking = $lesParkings[0];
+            return $lesParkings[0];
         }
-        return $unParking;
+        return null;
     }
 
     function getSearch(string $search): ?array

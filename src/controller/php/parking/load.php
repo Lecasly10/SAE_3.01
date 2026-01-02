@@ -14,7 +14,6 @@ require_once __DIR__ . '/../../../modele/php/parkingDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/parkingCapacityDAO.class.php';
 require_once __DIR__ . '/../distance.php';
 require_once __DIR__ . '/../api/dataAPI.php';
-require_once __DIR__ . '/../table.php';
 
 $json = file_get_contents('php://input');
 $data = json_decode($json, true) ?: [];
@@ -29,7 +28,7 @@ if (!$parkingId) {
 }
 
 try {
-    $parking = (new ParkingDAO())->getById($parkingId);
+    $parking = (new ParkingDAO())->getAllDataById($parkingId);
     if (!$parking) {
         echo json_encode([
             'status' => 'erreur',
