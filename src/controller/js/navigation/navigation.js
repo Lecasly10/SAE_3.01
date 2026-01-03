@@ -160,7 +160,7 @@ export class Navigation {
       center: position,
       heading,
       tilt: 60,
-      zoom: 25,
+      zoom: 18,
     });
   }
 

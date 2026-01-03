@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="cordova.js"></script>
     <title>SmartParking Metz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -9,11 +10,10 @@
       href="https://fonts.cdnfonts.com/css/sf-pro-display"
       rel="stylesheet"
     />
-    <script src="cordova.js"></script>
-
     <!-- CSS ET JS -->
     <link rel="stylesheet" href="./vue/style/style.css" />
     <script type="module" src="./controller/js/main.js" defer></script>
+
     <!-- ICONS -->
     <link
       rel="stylesheet"
@@ -241,7 +241,6 @@
 
     <!-- TOPBAR -->
     <div id="topnav" class="navbar blur-bg">
-      <div id="loader" class="loader"></div>
       <p id="itiniraireTitle" class="bold"></p>
       <div class="search-bar" id="search-bar">
         <i class="fa fa-search" aria-hidden="true"></i>
@@ -255,6 +254,7 @@
       <div class="button littleButton fade" id="listButton">
         <a><i class="fa fa-list-ol" aria-hidden="true"></i></a>
       </div>
+      <div id="loader" class="loader"></div>
     </div>
 
     <!-- POPUP DES RESULTATS -->
