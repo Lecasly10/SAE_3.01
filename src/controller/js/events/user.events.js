@@ -2,7 +2,7 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initUserEvent(services) {
-    const user = services.user
+    const userService = services.userService;
     const { logoutButton, submitButton, connLink,
         inscrLink, closeAuthButton } = UI.el
 
@@ -15,7 +15,7 @@ export function initUserEvent(services) {
     });
 
     logoutButton.addEventListener("click", async (e) => {
-        await user.logout();
+        await userService.logout();
     })
 
     submitButton.addEventListener("click", (e) => {
@@ -40,7 +40,7 @@ export function initUserEvent(services) {
 
     async function handleSubmit(event) {
         const { isEmpty, isValidEmail, isValidPhone, isValidString } = Utils
-        user.createAccount = false;
+        userService.createAccount = false;
         event.preventDefault();
         const {
             mail,
@@ -68,7 +68,7 @@ export function initUserEvent(services) {
             errors.push("Le mot de passe doit contenir au moins 8 caractères.");
 
         if (!confPass.classList.contains("hidden")) {
-            user.createAccount = true;
+            userService.createAccount = true;
 
             if (isEmpty(confPass.value))
                 errors.push("La confirmation du mot de passe est obligatoire.");
@@ -89,13 +89,13 @@ export function initUserEvent(services) {
         }
 
         if (errors.length > 0) {
-            user.createAccount = false;
+            userService.createAccount = false;
             errorI.textContent = errors.join("\n");
             UI.show(errorI);
             return;
         }
 
-        const res = await user.auth({
+        const res = await userService.auth({
             name: nameI.value,
             surname: surnameI.value,
             tel: telI.value,

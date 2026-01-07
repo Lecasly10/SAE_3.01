@@ -2,7 +2,7 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initVehiculeEvent(services) {
-    const user = services.user
+    const vehiculeService = services.vehiculeService;
     const { carButton, editCar, addCar, deleteCar,
         submitEditCar, listvoit, closeVoit, closeEdit } = UI.el
 
@@ -57,7 +57,7 @@ export function initVehiculeEvent(services) {
         event.preventDefault();
         UI.resetCarEditList();
 
-        let data = await user.load(user.userId);
+        let data = await vehiculeService.load();
         if (!data) alert("Une erreur est survenu !");
         else {
             if (data.vehicules) {
@@ -137,10 +137,10 @@ export function initVehiculeEvent(services) {
         }
         let resp; let msg = ""
         if (listvoit.value === "none" || listvoit.value === "") {
-            resp = await user.createCar(info);
+            resp = await vehiculeService.createVehicule(info);
             msg = "Véhicules créé avec succès"
         } else {
-            resp = await user.updateCar(info);
+            resp = await vehiculeService.updateVehicule(info);
             msg = "Véhicules mise à jour avec succès"
         }
 
@@ -162,7 +162,7 @@ export function initVehiculeEvent(services) {
 
         const id = JSON.parse(listvoit.value).id;
         if (confirm("Voulez vraiment supprimer ce véhicule")) {
-            let res = await user.deleteCar(id);
+            let res = await vehiculeService.deleteVehicule(id);
             if (res.status != "success" && res.message) {
                 console.log(res.message)
                 alert(res.message)

@@ -2,7 +2,9 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initSettingsEvent(services) {
-    const user = services.user
+    const user = services.user;
+    const userService = services.userService;
+    const vehiculeService = services.vehiculeService;
     const { submitSett, settingsButton, closeSettingButton } = UI.el;
 
     submitSett.addEventListener("click", async (e) => {
@@ -32,7 +34,7 @@ export function initSettingsEvent(services) {
             nameParam, mailParam, telParam,
             surnameParam, maxDistParam, maxHBudgetParam,
             pmrParam, coverParam, freeParam, carParam } = UI.el;
-        let data = await user.load(user.userId);
+        let data = await userService.load(user.userId);
         if (!data) alert("Une erreur est survenu !");
         else {
             UI.resetCarSettList();
@@ -48,9 +50,9 @@ export function initSettingsEvent(services) {
 
             if (data.vehicules) {
                 data.vehicules.forEach(veh => {
-                    if (user.data && user.data.vehId == veh.id) {
+                    if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
                         carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
-                    } else
+                    else
                         carParam.add(new Option(`${veh.plate}`, veh.id))
                 });
             }
@@ -98,7 +100,7 @@ export function initSettingsEvent(services) {
             return;
         }
 
-        const res = await user.update({
+        const res = await userService.update({
             id: user.userId,
             name: nameParam.value,
             surname: surnameParam.value,
@@ -108,8 +110,9 @@ export function initSettingsEvent(services) {
             covered: coverParam.checked,
             maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
             maxDist: maxDistParam.value ? maxDistParam.value : 0,
-            vehId: carParam.value
         })
+
+        vehiculeService.addToStorage({ vehId: carParam.value })
 
         if (res.status && res.status === "success") {
             UI.notify("Compte", "Paramètres mise à jour avec succès")

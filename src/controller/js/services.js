@@ -1,8 +1,11 @@
 import { MapService } from "./maps/mapService.js";
 import { GeolocationService } from "./navigation/geolocationService.js";
 import { NavigationService } from "./navigation/navigationService.js";
-import { User } from "./user/user.js";
+import { UserService } from "./user/userService.js";
+import { VehiculeService } from "./vehicule/vehiculeService.js";
+import { StorageService } from "./storage/storageService.js";
 
+//APP SERVICES
 export class Services {
     constructor() {
         this.mapService = null;
@@ -15,17 +18,27 @@ export class Services {
     }
 
     async init() {
+        this.storageService = StorageService;
+
+        //MAP
         this.mapService = new MapService();
         await this.mapService.init();
 
+        //GEOLOCATION
         this.geolocationService = new GeolocationService(this.mapService);
         await this.geolocationService.init();
 
+        //NAVIGATION
         this.navigationService = new NavigationService(this.mapService);
         await this.navigationService.init();
 
+        //USER
+        this.userService = new UserService();
+        this.user = this.userService.user;
+        await this.userService.init();
 
-        this.user = new User();
-        await this.user.init();
+        //VEHICULE
+        this.vehiculeService = new VehiculeService(this.user);
+        this.vehiculeService.init();
     }
 }
