@@ -16,6 +16,7 @@ globalThis.addEventListener("load", async () => {
     UI.setupUI(true);
 
     const services = new Services();
+    await services.init();
 
     await initEvent(services);
   } catch (e) {
