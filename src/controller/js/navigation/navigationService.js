@@ -1,7 +1,7 @@
 import { addMarker } from "../maps/addMarkers.js";
 import { getGoogleLibs } from "../api/googleAPI.js";
 import { phpFetch } from "../api/phpInteraction.js";
-import { Geolocation } from "./geolocationService.js";
+import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
@@ -189,7 +189,7 @@ export class NavigationService {
       const builder = this.builder;
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = Geolocation.distance(builder.userMarker.position, coord);
+      const dist = GeolocationService.distance(builder.userMarker.position, coord);
 
       if (dist < 0.05) {
         await this.stopNavigation();
