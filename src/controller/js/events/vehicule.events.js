@@ -2,6 +2,7 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initVehiculeEvent(services) {
+    const user = services.user
     const vehiculeService = services.vehiculeService;
     const { carButton, editCar, addCar, deleteCar,
         submitEditCar, listvoit, closeVoit, closeEdit } = UI.el
