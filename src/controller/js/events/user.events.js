@@ -9,9 +9,7 @@ export function initUserEvent(services) {
     document.querySelectorAll(".submitInfo").forEach(el => {
         el.addEventListener("keydown", event => {
             if (event.key === "Enter") {
-                console.log("Enter pressed !")
-                const eventD = new Event("click");
-                submitButton.dispatchEvent(eventD);
+                submitButton.click();
             }
         });
     });

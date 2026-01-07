@@ -1,6 +1,5 @@
 import { addMarker } from "../maps/addMarkers.js";
 import { nightMode } from "../maps/nightMode.js";
-import { Navigation } from "./navigation.js";
 import { Utils } from "../utils.js";
 import { getGoogleLibs } from "../api/googleAPI.js";
 
@@ -61,7 +60,6 @@ export class GeolocationService {
       async ({ coords }) => {
         nightMode(this.builder);
         const userPosition = { lat: coords.latitude, lng: coords.longitude };
-        const nav = Navigation.getInstance();
 
         if (!this.builder.userMarker) {
           this.builder.userMarker = await addMarker(

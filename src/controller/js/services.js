@@ -1,6 +1,6 @@
 import { MapService } from "./maps/mapService.js";
 import { GeolocationService } from "./navigation/geolocationService.js";
-import { NavigationService } from "./navigation/navigation.js";
+import { NavigationService } from "./navigation/navigationService.js";
 import { User } from "./user/user.js";
 
 export class Services {

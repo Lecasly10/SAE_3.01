@@ -44,10 +44,9 @@ export function initVehiculeEvent(services) {
 
     function update() {
         const { settingsButton } = UI.el
-        const e = new Event("click");
         try {
-            settingsButton.dispatchEvent(e);
-            carButton.dispatchEvent(e);
+            settingsButton.click();
+            carButton.click();
         } catch (e) {
             console.error("Erreur : ", e);
         }

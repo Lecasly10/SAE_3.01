@@ -5,7 +5,7 @@ import { phpFetch } from "../api/phpInteraction.js";
 export function initMapEvent(services) {
     const builder = services.mapService
     const navigation = services.navigationService
-    
+
     const { autoSearchButton, searchBox, listButton,
         crossIcon, closeButton, goCenterButton } = UI.el
 
