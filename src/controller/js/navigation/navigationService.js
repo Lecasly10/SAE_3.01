@@ -183,15 +183,15 @@ export class NavigationService {
       }
 
       const placesLibres = await this.checkParkingAvailability();
+      if (placesLibres == null) return;
 
-      if (placesLibres == -1 || placesLibres == null) return;
       if (placesLibres < 1 && !this.redirecting) {
-        console.log("Redirection car pLibre = ", placesLibres)
         this.redirecting = true;
-        UI.toggleNavigationUI("CHARGEMENT...");
-        await this.stopNavigation();
         const newDest = await this.closestParking();
         if (newDest) {
+          UI.notify("REDIRECTION", "Direction vers le parking le plus proche disponible")
+          UI.toggleNavigationUI("CHARGEMENT...");
+          await this.stopNavigation();
           await this.startNavigation(newDest);
           this.followRoute();
           this.startFollowRoute();
@@ -218,7 +218,7 @@ export class NavigationService {
         lat: this.destination.lat,
         lng: this.destination.lng
       });
-      return res.libre;
+      return res.libre == -1 || res.libre == null ? null : res.libre;
     } catch (err) {
       console.error("Erreur checkParkingAvailability :", err);
       return null;
