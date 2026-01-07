@@ -1,4 +1,5 @@
 import { StorageService } from "../storage/storageService.js";
+import { phpFetch } from "../api/phpInteraction.js";
 
 export class VehiculeService {
     constructor(user) {
