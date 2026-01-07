@@ -193,8 +193,9 @@ export class NavigationService {
         const newDest = await this.closestParking();
         if (newDest) {
           await this.startNavigation(newDest);
-          UI.toggleNavigationUI(newDest.name);
-          this.focus = true;
+          this.followRoute();
+          this.startFollowRoute();
+          UI.toggleNavigationUI(destination.name);
         }
         this.redirecting = false;
       }
