@@ -5,14 +5,20 @@ import { User } from "./user/user.js";
 
 export class Services {
     constructor() {
-        async () => {
-            this.mapService = new MapService();
-            // this.storageService = new StorageService();
-            this.navigationService = new NavigationService(this.mapService);
-            this.geolocationService = new GeolocationService(this.mapService);
-            this.user = new User();
-            // this.userService = new UserService();
-            // this.vehiculeService = new VehiculeService();
-        }
+        this.mapService = null;
+        this.geolocationService = null;
+        this.navigationService = null;
+        this.user = null;
+        async () => await this.init();
+    }
+
+    async init() {
+        this.mapService = new MapService();
+        // this.storageService = new StorageService();
+        this.navigationService = new NavigationService(this.mapService);
+        this.geolocationService = new GeolocationService(this.mapService);
+        this.user = new User();
+        // this.userService = new UserService();
+        // this.vehiculeService = new VehiculeService();
     }
 }
