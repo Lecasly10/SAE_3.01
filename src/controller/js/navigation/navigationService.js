@@ -184,8 +184,7 @@ export class NavigationService {
 
       const placesLibres = await this.checkParkingAvailability();
 
-      console.log("TEST : ", placesLibres)
-      if (!placesLibres || placesLibres == -1) return;
+      if (placesLibres == -1 || placesLibres == null) return;
       if (placesLibres < 1 && !this.redirecting) {
         console.log("Redirection car pLibre = ", placesLibres)
         this.redirecting = true;
