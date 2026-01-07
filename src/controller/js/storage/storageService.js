@@ -22,7 +22,7 @@ export class StorageService {
 
     static getToJson(key) {
         const data = localStorage.getItem(key);
-        const res = null;
+        let res = null;
         try {
             if (data) {
                 res = JSON.parse(data);
