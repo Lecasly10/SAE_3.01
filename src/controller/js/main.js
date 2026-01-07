@@ -17,10 +17,6 @@ globalThis.addEventListener("load", async () => {
 
     const services = new Services();
 
-    const geo = services.geo;
-    await geo.locateUser();
-    geo.startWatching();
-
     await initEvent(services);
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);
