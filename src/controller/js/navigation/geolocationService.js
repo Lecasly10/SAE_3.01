@@ -8,10 +8,12 @@ export class GeolocationService {
     this.builder = mapService;
     this.watchId = null;
 
-    async () => {
-      await this.locateUser();
-      this.startWatching();
-    }
+  }
+
+  async init() {
+    await this.locateUser();
+    this.startWatching();
+    return this;
   }
 
   async locateUser() {

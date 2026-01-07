@@ -11,11 +11,11 @@ export class User {
         this.mail = null;
         this.data = null;
 
-        async () => await this.init();
     }
 
     async init() {
         this.isLogged = await this.checkAuth();
+        return this
     }
 
     async checkAuth() {

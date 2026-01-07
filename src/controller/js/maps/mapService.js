@@ -12,11 +12,9 @@ export class MapService {
     this.userMarker = null;
     this.nightMode = false;
     this.debug = true;
-
-    async () => await this.initMap();
   }
 
-  async initMap() {
+  async init() {
     try {
       await loadGoogleLibs();
       const { Map } = getGoogleLibs();
@@ -30,6 +28,8 @@ export class MapService {
         mapTypeId: "roadmap",
         disableDefaultUI: true,
       });
+
+      return this
     } catch (err) {
       alert("Erreur lors de l'initialisation de la carte")
       console.error("Erreur lors de l'initialisation de la carte :", err);

@@ -6,7 +6,6 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export class NavigationService {
-  Navigation
   constructor(mapService) {
     this.builder = mapService;
     this.parkMonitor = null;
@@ -16,13 +15,13 @@ export class NavigationService {
     this.focus = false;
     this.redirecting = false;
 
-    async () => await this.init();
   }
 
-  async init() {
+  static async init() {
     try {
       const savedRoute = JSON.parse(localStorage.getItem("destination"));
       if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
+      return this;
     } catch (e) {
       console.error("Erreur pendant la récup du trajet : ", e);
       UI.setupUI();
