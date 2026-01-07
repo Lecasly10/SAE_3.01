@@ -15,14 +15,15 @@ export class Services {
     }
 
     async init() {
+        this.geolocationService = new GeolocationService(this.mapService);
+        await this.geolocationService.init();
+
         this.mapService = new MapService();
         await this.mapService.init();
 
         this.navigationService = new NavigationService(this.mapService);
         await this.navigationService.init();
 
-        this.geolocationService = new GeolocationService(this.mapService);
-        await this.geolocationService.init();
 
         this.user = new User();
         await this.user.init();
