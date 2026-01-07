@@ -13,7 +13,6 @@ export class GeolocationService {
   async init() {
     await this.locateUser();
     this.startWatching();
-    return this;
   }
 
   async locateUser() {

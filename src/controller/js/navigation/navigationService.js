@@ -12,7 +12,6 @@ export class NavigationService {
     this.destination = null;
     this.route = null;
     this.followingRoute = null;
-    this.focus = false;
     this.redirecting = false;
 
   }
@@ -21,7 +20,6 @@ export class NavigationService {
     try {
       const savedRoute = JSON.parse(localStorage.getItem("destination"));
       if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
-      return this;
     } catch (e) {
       console.error("Erreur pendant la récup du trajet : ", e);
       UI.setupUI();
@@ -94,7 +92,6 @@ export class NavigationService {
     this.stopFollowRoute();
     this.removeRoute();
     this.destination = null;
-    this.focus = false;
   }
 
   async closestParking() {

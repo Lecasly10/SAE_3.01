@@ -11,12 +11,14 @@ export function initMapEvent(services) {
 
     let tId = null;
     builder.map.addListener('dragstart', () => {
-        if (tId) clearTimeout(tId);
-        navigation.pauseFollowRoute();
-        tId = setTimeout(() => {
-            navigation.startFollowRoute();
-            tId = null;
-        }, 3000);
+        if (navigation.followingRoute) {
+            if (tId) clearTimeout(tId);
+            navigation.pauseFollowRoute();
+            tId = setTimeout(() => {
+                navigation.startFollowRoute();
+                tId = null;
+            }, 3000);
+        }
     });
 
     goCenterButton.addEventListener("click", () => {
