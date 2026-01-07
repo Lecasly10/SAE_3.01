@@ -195,7 +195,7 @@ export class NavigationService {
           await this.startNavigation(newDest);
           this.followRoute();
           this.startFollowRoute();
-          UI.toggleNavigationUI(destination.name);
+          UI.toggleNavigationUI(this.destination.name);
         }
         this.redirecting = false;
       }
