@@ -5,11 +5,11 @@ import { User } from "./user/user.js";
 
 export class Services {
     constructor() {
-        this.mapService = new MapService().init();
+        this.mapService = (new MapService()).init();
         // this.storageService = new StorageService();
-        this.navigationService = new NavigationService(this.mapService).init();
-        this.geolocationService = new GeolocationService(this.mapService).init();
-        this.user = new User().init();
+        this.navigationService = (new NavigationService(this.mapService)).init();
+        this.geolocationService = (new GeolocationService(this.mapService)).init();
+        this.user = (new User()).init();
         // this.userService = new UserService();
         // this.vehiculeService = new VehiculeService();
     }
