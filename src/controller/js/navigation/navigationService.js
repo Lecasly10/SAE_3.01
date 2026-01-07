@@ -17,7 +17,7 @@ export class NavigationService {
 
   }
 
-  static async init() {
+  async init() {
     try {
       const savedRoute = JSON.parse(localStorage.getItem("destination"));
       if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
