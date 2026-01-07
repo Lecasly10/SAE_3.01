@@ -6,9 +6,11 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 import { StorageService } from "../storage/storageService.js";
 
+const DESTINATION_RADIUS_KM = 0.05;
+focus
 export class NavigationService {
   constructor(mapService) {
-    this.builder = mapService;
+    this.mapService = mapService;
     this.parkMonitor = null;
     this.destination = null;
     this.route = null;
@@ -42,15 +44,14 @@ export class NavigationService {
     const { confirm, cancel } = UI.togglePreview(destination);
     const { crossIcon } = UI.el
     const bounds = this.route.bounds;
-    const builder = this.builder;
+    const mapService = this.mapService;
 
-    builder.map.fitBounds(bounds);
-    builder.map.panTo(bounds.getCenter());
+    mapService.map.fitBounds(bounds);
+    mapService.map.panTo(bounds.getCenter());
 
     confirm.addEventListener("click", (e) => {
       e.preventDefault();
       this.followRoute();
-      this.focus = true;
       this.startFollowRoute();
       UI.toggleNavigationUI(destination.name);
     });
@@ -85,7 +86,7 @@ export class NavigationService {
 
   async closestParking() {
     try {
-      let position = this.builder.userMarker.position;
+      let position = this.mapService.userMarker.position;
 
       const resultat = await phpFetch("parking/closest", position);
       if (!resultat) throw new Error("Erreur serveur !")
@@ -103,9 +104,9 @@ export class NavigationService {
   followRoute() {
     if (!this.route) return;
 
-    const builder = this.builder;
+    const mapService = this.mapService;
     const path = this.route.polylines[0].getPath();
-    const position = builder.userMarker?.position;
+    const position = mapService.userMarker?.position;
     if (!position || path.getLength() < 2) return;
 
 
@@ -128,7 +129,7 @@ export class NavigationService {
     const heading =
       google.maps.geometry.spherical.computeHeading(from, to);
 
-    builder.map.moveCamera({
+    mapService.map.moveCamera({
       center: position,
       heading,
       tilt: 60,
@@ -157,11 +158,11 @@ export class NavigationService {
 
   stopFollowRoute() {
     this.pauseFollowRoute();
-    const builder = this.builder;
+    const mapService = this.mapService;
 
-    builder.map.moveCamera({
+    mapService.map.moveCamera({
       heading: 0,
-      tilt: 0
+      tilt: mapService.defaultAngle
     });
   }
 
@@ -171,12 +172,12 @@ export class NavigationService {
 
     this.parkMonitor = setInterval(async () => {
 
-      const builder = this.builder;
+      const mapService = this.mapService;
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = GeolocationService.distance(builder.userMarker.position, coord);
+      const dist = GeolocationService.distance(mapService.userMarker.position, coord);
 
-      if (dist < 0.05) {
+      if (dist < DESTINATION_RADIUS_KM) {
         await this.stopNavigation();
         return;
       }
@@ -223,19 +224,19 @@ export class NavigationService {
   }
 
   async buildRoute() {
-    const builder = this.builder;
-    if (!this.destination || !builder?.userMarker) return;
+    const mapService = this.mapService;
+    if (!this.destination || !mapService?.userMarker) return;
     if (this.route) return;
 
     const { Route } = getGoogleLibs();
-    const origin = builder.userMarker.position;
+    const origin = mapService.userMarker.position;
     const destination = {
       lat: this.destination.lat,
       lng: this.destination.lng,
     };
 
     const marker = await addMarker(
-      builder,
+      mapService,
       destination,
       `Votre destination : ${this.destination.name}`,
       Utils.distIcon
@@ -253,7 +254,7 @@ export class NavigationService {
 
     const route = routes[0];
     const polylines = route.createPolylines();
-    polylines.forEach((p) => p.setMap(builder.map));
+    polylines.forEach((p) => p.setMap(mapService.map));
 
     const bounds = new google.maps.LatLngBounds();
     polylines.forEach((p) =>

@@ -8,6 +8,7 @@ export class MapService {
   constructor() {
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 20;
+    this.defaultAngle = 0;
     this.map = null;
     this.userMarker = null;
     this.nightMode = false;

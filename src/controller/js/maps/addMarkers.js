@@ -1,7 +1,7 @@
 import { getGoogleLibs } from "../api/googleAPI.js";
 
 //Créer un marqueur sur la map
-export async function addMarker(builder, pos, message, iconURL) {
+export function addMarker(builder, pos, message, iconURL) {
   const { AdvancedMarkerElement } = getGoogleLibs();
 
   if (!builder.map) {
