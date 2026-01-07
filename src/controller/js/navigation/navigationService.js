@@ -4,6 +4,7 @@ import { phpFetch } from "../api/phpInteraction.js";
 import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { StorageService } from "../storage/storageService.js";
 
 export class NavigationService {
   constructor(mapService) {
@@ -13,12 +14,12 @@ export class NavigationService {
     this.route = null;
     this.followingRoute = null;
     this.redirecting = false;
-
+    this.storageKey = "destination"
   }
 
   async init() {
     try {
-      const savedRoute = JSON.parse(localStorage.getItem("destination"));
+      const savedRoute = StorageService.getToJson(this.storageKey);
       if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
     } catch (e) {
       console.error("Erreur pendant la récup du trajet : ", e);
@@ -61,23 +62,11 @@ export class NavigationService {
   }
 
   saveDestination() {
-    const key = "destination"
-    try {
-      this.deleteSavedDestination;
-      localStorage.setItem(key, JSON.stringify(this.destination));
-    } catch (e) {
-      console.error("Erreur pendant la sauvegarde du trajet : ", e);
-    }
-
+    StorageService.set(this.storageKey, this.destination)
   }
 
   deleteSavedDestination() {
-    const key = "destination"
-    try {
-      if (localStorage.getItem(key)) localStorage.removeItem(key);
-    } catch (e) {
-      console.error("Erreur pendant la suppression du trajet : ", e);
-    }
+    StorageService.remove(this.storageKey)
   }
 
   async retrieveRoute(saved) {
