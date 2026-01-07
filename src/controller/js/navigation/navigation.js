@@ -1,45 +1,32 @@
 import { addMarker } from "../maps/addMarkers.js";
 import { getGoogleLibs } from "../api/googleAPI.js";
 import { phpFetch } from "../api/phpInteraction.js";
-import { Geolocation } from "./geolocation.js";
+import { Geolocation } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
-export class Navigation {
-  static instance = null;
-  static builder = null;
-
-  static async init(builder) {
-    if (!Navigation.instance) Navigation.instance = new Navigation();
-    Navigation.builder = builder;
-
-    try {
-      const savedRoute = JSON.parse(localStorage.getItem("destination"));
-      if (savedRoute && savedRoute.name) await Navigation.instance.retrieveRoute(savedRoute);
-    } catch (e) {
-      console.error("Erreur pendant la récup du trajet : ", e);
-      UI.setupUI();
-    }
-
-    return Navigation.instance;
-  }
-
-  static getInstance() {
-    if (!Navigation.instance)
-      throw new Error("Navigation non init !");
-    return Navigation.instance;
-  }
-
-  constructor() {
-    if (Navigation.instance)
-      throw new Error("Navigation déjà init");
-
+export class NavigationService {
+  Navigation
+  constructor(mapService) {
+    this.builder = mapService;
     this.parkMonitor = null;
     this.destination = null;
     this.route = null;
     this.followingRoute = null;
     this.focus = false;
     this.redirecting = false;
+
+    async () => await this.init();
+  }
+
+  async init() {
+    try {
+      const savedRoute = JSON.parse(localStorage.getItem("destination"));
+      if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
+    } catch (e) {
+      console.error("Erreur pendant la récup du trajet : ", e);
+      UI.setupUI();
+    }
   }
 
   async startNavigation(destination) {
@@ -57,7 +44,7 @@ export class Navigation {
     const { confirm, cancel } = UI.togglePreview(destination);
     const { crossIcon } = UI.el
     const bounds = this.route.bounds;
-    const builder = Navigation.builder;
+    const builder = this.builder;
 
     builder.map.fitBounds(bounds);
     builder.map.panTo(bounds.getCenter());
@@ -113,7 +100,7 @@ export class Navigation {
 
   async closestParking() {
     try {
-      let position = Navigation.builder.userMarker.position;
+      let position = this.builder.userMarker.position;
 
       const resultat = await phpFetch("parking/closest", position);
       if (!resultat) throw new Error("Erreur serveur !")
@@ -131,7 +118,7 @@ export class Navigation {
   followRoute() {
     if (!this.route) return;
 
-    const builder = Navigation.builder;
+    const builder = this.builder;
     const path = this.route.polylines[0].getPath();
     const position = builder.userMarker?.position;
     if (!position || path.getLength() < 2) return;
@@ -185,7 +172,7 @@ export class Navigation {
 
   stopFollowRoute() {
     this.pauseFollowRoute();
-    const builder = Navigation.builder;
+    const builder = this.builder;
 
     builder.map.moveCamera({
       heading: 0,
@@ -199,7 +186,7 @@ export class Navigation {
 
     this.parkMonitor = setInterval(async () => {
 
-      const builder = Navigation.builder;
+      const builder = this.builder;
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = Geolocation.distance(builder.userMarker.position, coord);
@@ -251,7 +238,7 @@ export class Navigation {
   }
 
   async buildRoute() {
-    const builder = Navigation.builder;
+    const builder = this.builder;
     if (!this.destination || !builder?.userMarker) return;
     if (this.route) return;
 

@@ -4,28 +4,16 @@ import {
 } from "../api/googleAPI.js";
 import { lightId } from "./styles.js";
 
-export class MapBuilder {
-  static instance = null;
-
-  static init() {
-    if (!MapBuilder.instance) MapBuilder.instance = new MapBuilder();
-    return MapBuilder.instance;
-  }
-
-  static getInstance() {
-    if (!MapBuilder.instance)
-      throw new Error("MapBuilder non initialisé.");
-    return MapBuilder.instance;
-  }
-
+export class MapService {
   constructor() {
-    if (MapBuilder.instance) throw new Error("Builder déjà init !");
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 20;
     this.map = null;
     this.userMarker = null;
     this.nightMode = false;
     this.debug = true;
+
+    async () => await this.initMap();
   }
 
   async initMap() {
@@ -43,6 +31,7 @@ export class MapBuilder {
         disableDefaultUI: true,
       });
     } catch (err) {
+      alert("Erreur lors de l'initialisation de la carte")
       console.error("Erreur lors de l'initialisation de la carte :", err);
     }
   }

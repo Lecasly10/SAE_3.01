@@ -1,7 +1,8 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
-export function initSettingsEvent(user) {
+export function initSettingsEvent(services) {
+    const user = services.user
     const { submitSett, settingsButton, closeSettingButton } = UI.el;
 
     submitSett.addEventListener("click", async (e) => {

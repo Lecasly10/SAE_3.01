@@ -1,27 +1,18 @@
 import { addMarker } from "../maps/addMarkers.js";
 import { nightMode } from "../maps/nightMode.js";
-import { MapBuilder } from "../maps/builder.js";
 import { Navigation } from "./navigation.js";
 import { Utils } from "../utils.js";
 import { getGoogleLibs } from "../api/googleAPI.js";
 
-export class Geolocation {
-  static instance = null;
-
-  static init() {
-    if (!Geolocation.instance) Geolocation.instance = new Geolocation();
-    return Geolocation.instance;
-  }
-
-  static getInstance() {
-    if (!Geolocation.instance) throw new Error("Geolocation non init.");
-    return Geolocation.instance;
-  }
-
-  constructor() {
-    if (Geolocation.instance) throw new Error("Geolocation déjà init");
-    this.builder = MapBuilder.getInstance();
+export class GeolocationService {
+  constructor(mapService) {
+    this.builder = mapService;
     this.watchId = null;
+
+    async () => {
+      await this.locateUser();
+      this.startWatching();
+    }
   }
 
   async locateUser() {

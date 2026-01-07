@@ -1,21 +1,17 @@
-import { MapBuilder } from "../maps/builder.js";
-import { Navigation } from "../navigation/navigation.js";
-import { User } from "../user/user.js";
-import { UI } from "../ui/UI.js";
-
 import { initVehiculeEvent } from "./vehicule.events.js"
 import { initSettingsEvent } from "./settings.events.js";
 import { initUserEvent } from "./user.events.js";
 import { initMapEvent } from "./map.events.js";
 
-export async function initEvent() {
-  const builder = MapBuilder.getInstance();
-  const navigation = Navigation.getInstance();
-  const user = User.getInstance();
-
-  document.addEventListener('offline', () => {
+export async function initEvent(services) {
+  window.addEventListener('offline', () => {
     console.warn("User offline !");
     alert("La connexion à été perdu :(")
+  });
+
+  window.addEventListener('online', () => {
+    console.warn("User online !");
+    alert("La connexion à été retrouvée :)")
   });
 
   window.addEventListener('error', (event) => {
@@ -26,8 +22,13 @@ export async function initEvent() {
     console.error("Erreur :", event.reason);
   });
 
-  initVehiculeEvent(user);
-  initSettingsEvent(user);
-  initUserEvent(user);
-  initMapEvent(user, navigation, builder);
+  try {
+    initVehiculeEvent(services);
+    initSettingsEvent(services);
+    initUserEvent(services);
+    initMapEvent(services);
+  } catch (error) {
+    console.error("Erreur : ", error);
+    alert('Une erreur est survenue !')
+  }
 }

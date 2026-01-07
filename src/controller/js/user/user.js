@@ -2,19 +2,6 @@ import { phpFetch } from "../api/phpInteraction.js";
 import { UI } from "../ui/UI.js";
 
 export class User {
-    static instance = null;
-
-    static async init() {
-        if (!User.instance) User.instance = new User();
-        User.instance.isLogged = await User.instance.checkAuth();
-        return User.instance;
-    }
-
-    static getInstance() {
-        if (!User.instance) throw new Error("User non init !");
-        return User.instance;
-    }
-
     constructor() {
         if (User.instance)
             throw new Error("User déjà init !");
@@ -23,6 +10,12 @@ export class User {
         this.userId = null;
         this.mail = null;
         this.data = null;
+
+        async () => await this.init();
+    }
+
+    async init() {
+        this.isLogged = await this.checkAuth();
     }
 
     async checkAuth() {
@@ -32,7 +25,6 @@ export class User {
             });
             if (!data) throw new Error("Erreur serveur !");
 
-            // if (!data.authenticated) UI.toggleAuth(true);
             if (data.authenticated) {
                 UI.toggleAuthIcon(true)
                 this.userId = data.user_id;

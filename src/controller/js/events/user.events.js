@@ -1,7 +1,8 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
-export function initUserEvent(user) {
+export function initUserEvent(services) {
+    const user = services.user
     const { logoutButton, submitButton, connLink,
         inscrLink, closeAuthButton } = UI.el
 

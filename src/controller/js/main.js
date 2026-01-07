@@ -2,10 +2,7 @@
 import { UI } from "./ui/UI.js";
 import { initEvent } from "./events/event.js";
 
-import { Geolocation } from "./navigation/geolocation.js";
-import { MapBuilder } from "./maps/builder.js";
-import { Navigation } from "./navigation/navigation.js";
-import { User } from "./user/user.js";
+import { Services } from "./services.js";
 
 //===LOAD===
 globalThis.addEventListener("load", async () => {
@@ -18,19 +15,13 @@ globalThis.addEventListener("load", async () => {
     UI.toggleLoader(true);
     UI.setupUI(true);
 
-    const builder = MapBuilder.init();
-    if (!builder) throw new Error("Erreur d'initialisation");
-    await builder.initMap();
+    const services = new Services();
 
-    const geo = Geolocation.init();
+    const geo = services.geo;
     await geo.locateUser();
     geo.startWatching();
 
-    Navigation.init(builder);
-    User.init();
-
-    await initEvent();
-
+    await initEvent(services);
   } catch (e) {
     console.error("Erreur lors de l'initialisation de l'app :", e);
     alert("Erreur lors l'initialisation de l'application");
