@@ -15,6 +15,7 @@ export class MapService {
 
   async init() {
     try {
+      this.apiService.loadGoogleLibs();
       const { Map } = this.apiService.googleLibs;
       const mapElement = document.getElementById("map");
       if (!mapElement) throw new Error("Élément #map introuvable.");

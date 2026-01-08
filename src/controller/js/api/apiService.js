@@ -10,10 +10,6 @@ export class ApiService {
         }
     }
 
-    async init() {
-        await this.loadGoogleLibs();
-    }
-
     async loadGoogleLibs() {
         const { Map } = await google.maps.importLibrary("maps");
         await google.maps.importLibrary("geometry");

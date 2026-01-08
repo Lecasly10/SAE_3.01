@@ -22,7 +22,6 @@ export class Services {
     async init() {
         this.storageService = StorageService;
         this.apiService = new ApiService();
-        await this.apiService.init();
 
         //MAP
         this.mapService = new MapService(this.apiService);
