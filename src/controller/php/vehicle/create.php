@@ -7,8 +7,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -34,7 +32,7 @@ if (!$id ||
         !$type ||
         !$motor) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Paramètres manquant'
     ]);
     exit;
@@ -45,7 +43,7 @@ try {
     $veh = new Vehicule();
     if (!$veh) {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'fail',
             'message' => 'La création du véhicule à échoué'
         ]);
         exit;
@@ -60,7 +58,7 @@ try {
 
         if (!$req) {
             echo json_encode([
-                'status' => 'erreur',
+                'status' => 'fail',
                 'message' => 'Erreur serveur'
             ]);
             exit;
@@ -71,7 +69,7 @@ try {
     }
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

@@ -7,8 +7,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -25,7 +23,7 @@ $parkingId = $data['id'] ?? null;
 
 if (!$parkingId) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => "Paramètre 'id' manquant"
     ]);
     exit;
@@ -35,7 +33,7 @@ try {
     $parking = (new ParkingDAO())->getAllDataById($parkingId);
     if (!$parking) {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'not_found',
             'message' => 'Aucun parking trouvé'
         ]);
         exit;
@@ -43,13 +41,13 @@ try {
 
     $res = $parking;
     echo json_encode([
-        'status' => 'ok',
+        'status' => 'success',
         'message' => 'Parking trouvé',
         'parking' => $res
     ]);
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

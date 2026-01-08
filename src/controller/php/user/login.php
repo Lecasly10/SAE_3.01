@@ -36,7 +36,7 @@ try {
 
     if (!$user) {
         echo json_encode([
-            'status' => 'fail',
+            'status' => 'not_found',
             'message' => 'Ce mail ne correspond a aucun compte'
         ]);
         exit;

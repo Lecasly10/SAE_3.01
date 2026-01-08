@@ -1,5 +1,5 @@
 import { addMarker } from "../maps/addMarkers.js";
-import { getGoogleLibs } from "../api/googleAPI.js";
+import { ApiService } from "../api/apiService.js";
 import { phpFetch } from "../api/phpInteraction.js";
 import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
@@ -230,7 +230,7 @@ export class NavigationService {
     if (!this.destination || !mapService?.userMarker) return;
     if (this.route) return;
 
-    const { Route } = getGoogleLibs();
+    const { Route } = ApiService.googleLibs;
     const origin = mapService.userMarker.position;
     const destination = {
       lat: this.destination.lat,

@@ -7,8 +7,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -29,7 +27,7 @@ try {
         $parkings = $parkingDAO->getAllData();
         if (!$parkings) {
             echo json_encode([
-                'status' => 'erreur',
+                'status' => 'not_found',
                 'message' => 'Aucun parking trouvé'
             ]);
             exit;
@@ -47,13 +45,13 @@ try {
 
     $res = $parkings;
     echo json_encode([
-        'status' => !empty($res) ? 'ok' : 'erreur',
+        'status' => !empty($res) ? 'success' : 'not_found',
         'message' => !empty($res) ? ($search ? 'Recherche effectuée' : 'Tous les parkings envoyés') : 'Parkings non trouvés',
         'parkings' => $res ?? false
     ]);
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

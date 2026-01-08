@@ -7,8 +7,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -28,7 +26,7 @@ $lng = $data['lng'] ?? null;
 
 if (!$parkingId || !$lat || !$lng) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Paramètre manquant'
     ]);
     exit;
@@ -49,12 +47,12 @@ try {
     }
 
     echo json_encode([
-        'status' => 'ok',
+        'status' => 'success',
         'libre' => $pLibre
     ]);
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

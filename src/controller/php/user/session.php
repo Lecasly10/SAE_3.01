@@ -13,23 +13,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-session_set_cookie_params([
-    'secure' => true,
-    'httponly' => true,
-    'samesite' => 'None'
-]);
-
-session_start();
-header('Content-Type: application/json');
-
-if (isset($_SESSION['user_id'])) {
-    echo json_encode([
-        'authenticated' => true,
-        'user_id' => $_SESSION['user_id'],
-        'mail' => $_SESSION['mail']
+try {
+    session_set_cookie_params([
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'None'
     ]);
-} else {
+
+    session_start();
+    header('Content-Type: application/json');
+
+    if (isset($_SESSION['user_id'])) {
+        echo json_encode([
+            'status' => 'success',
+            'authenticated' => true,
+            'user_id' => $_SESSION['user_id'],
+            'mail' => $_SESSION['mail']
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'success',
+            'authenticated' => false,
+        ]);
+    }
+} catch (Exception $e) {
     echo json_encode([
+        'status' => 'fail',
         'authenticated' => false,
+        'message' => 'Erreur Serveur : ' . $e
     ]);
 }

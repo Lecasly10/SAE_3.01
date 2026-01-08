@@ -14,7 +14,7 @@ export class VehiculeService {
 
     async load() {
         try {
-            const data = await phpFetch("user/load", { id: this.user.userId })
+            const data = await phpFetch("vehicle/loadAll", { id: this.user.userId })
             if (!data) throw new Error("Erreur serveur !");
             else {
                 return data

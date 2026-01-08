@@ -4,11 +4,13 @@ import { NavigationService } from "./navigation/navigationService.js";
 import { UserService } from "./user/userService.js";
 import { VehiculeService } from "./vehicule/vehiculeService.js";
 import { StorageService } from "./storage/storageService.js";
+import { ApiService } from "./api/apiService.js";
 
 //APP SERVICES
 export class Services {
     constructor() {
         this.mapService = null;
+        this.apiService = null;
         this.storageService = null;
         this.navigationService = null;
         this.geolocationService = null;
@@ -19,7 +21,9 @@ export class Services {
 
     async init() {
         this.storageService = StorageService;
+        this.apiService = ApiService;
 
+        await this.apiService.loadGoogleLibs();
         //MAP
         this.mapService = new MapService();
         await this.mapService.init();

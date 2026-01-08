@@ -7,8 +7,6 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -25,7 +23,7 @@ $userId = $data['id'] ?? null;
 
 if (!$userId) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => "Paramètre 'id' manquant"
     ]);
     exit;
@@ -59,7 +57,7 @@ try {
     ]);
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

@@ -25,7 +25,7 @@ $userId = $data['id'] ?? null;
 
 if (!$userId) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => "Paramètre 'id' manquant"
     ]);
     exit;
@@ -37,7 +37,7 @@ try {
     $vehDAO = new VehiculeDAO();
     if (!$user) {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'not_found',
             'message' => 'Aucun user trouvé'
         ]);
         exit;
@@ -96,7 +96,7 @@ try {
     }
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

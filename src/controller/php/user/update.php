@@ -42,7 +42,7 @@ if (!$userId ||
         !isset($maxd) ||
         !isset($maxh)) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Paramètres manquant'
     ]);
     exit;
@@ -54,7 +54,7 @@ try {
     $prefDAO = new UserPrefDAO();
     if (!$user) {
         echo json_encode([
-            'status' => 'erreur',
+            'status' => 'not_found',
             'message' => 'Aucun user trouvé'
         ]);
         exit;
@@ -62,7 +62,7 @@ try {
         $userPref = $prefDAO->getById($userId);
         if (!$userPref) {
             echo json_encode([
-                'status' => 'fail',
+                'status' => 'not_found',
                 'message' => 'Aucun Param trouvé pour cette User'
             ]);
             exit;
@@ -93,7 +93,7 @@ try {
     }
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'erreur',
+        'status' => 'fail',
         'message' => 'Erreur serveur: ' . $e->getMessage()
     ]);
 }

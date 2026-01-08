@@ -1,7 +1,4 @@
-import {
-  loadGoogleLibs,
-  getGoogleLibs,
-} from "../api/googleAPI.js";
+import { ApiService } from "../api/apiService.js";
 import { lightId } from "./styles.js";
 
 export class MapService {
@@ -17,8 +14,7 @@ export class MapService {
 
   async init() {
     try {
-      await loadGoogleLibs();
-      const { Map } = getGoogleLibs();
+      const { Map } = ApiService.googleLibs;
       const mapElement = document.getElementById("map");
       if (!mapElement) throw new Error("Élément #map introuvable.");
 
