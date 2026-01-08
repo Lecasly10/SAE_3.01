@@ -1,5 +1,4 @@
 import { addMarker } from "../maps/addMarkers.js";
-import { phpFetch } from "../api/phpInteraction.js";
 import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
@@ -118,7 +117,7 @@ export class NavigationService {
     let minDist = Infinity;
 
     path.forEach((p, i) => {
-      const d = google.maps.geometry.spherical.computeDistanceBetween(position, p);
+      const d = GeolocationService.distance(position, p, this.apiService);
       if (d < minDist) {
         minDist = d;
         closestIndex = i;
@@ -179,7 +178,7 @@ export class NavigationService {
       const mapService = this.mapService;
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = GeolocationService.distance(mapService.userMarker.position, coord);
+      const dist = GeolocationService.distance(mapService.userMarker.position, coord, this.apiService);
 
       if (dist < DESTINATION_RADIUS_KM) {
         await this.stopNavigation();

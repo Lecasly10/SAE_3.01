@@ -85,8 +85,8 @@ export class GeolocationService {
     }
   }
 
-  static distance(a, b) {
-    const { spherical } = this.apiService.googleLibs;
+  static distance(a, b, apiService) {
+    const { spherical } = apiService.googleLibs;
     return spherical.computeDistanceBetween(a, b);
   }
 }
