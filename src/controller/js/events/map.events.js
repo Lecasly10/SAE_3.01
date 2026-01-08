@@ -67,12 +67,13 @@ export function initMapEvent(services) {
             UI.toggleNavigationUI("CHARGEMENT...");
             const closest = await navigation.closestParking();
             if (closest) {
-                handleNavigation(closest);
+                handleNavigation(closest.data);
             }
         } catch (error) {
             UI.setupUI();
-            alert(error.message || error);
-            console.error("Erreur :", error);
+            if (error instanceof Error)
+                console.error("[ERREUR] map.events - handleClosestButton :", error);
+            alert("Une erreur s'est produite, veuillez réesseyez !")
         } finally {
             UI.toggleLoader(false);
         }
@@ -96,8 +97,9 @@ export function initMapEvent(services) {
             const destination = { id, lat, lng, name };
             handleNavigation(destination);
         } catch (error) {
-            alert("Une Erreur est survenue, veuillez réessayer !");
-            console.error("Erreur :", error);
+            if (error instanceof Error)
+                console.error("[ERREUR] map.events - handleParkingClick :", error);
+            alert("Une erreur s'est produite, veuillez réesseyez !")
         } finally {
             UI.toggleLoader(false);
         }
@@ -117,10 +119,12 @@ export function initMapEvent(services) {
         try {
             const result = await services.apiService.phpFetch("parking/search", { search: query });
             UI.setResultTitle("Résultats");
-            handleParkingList(result.parkings);
+            handleParkingList(result.data);
 
         } catch (error) {
-            console.error("Erreur handleSearchBoxSubmit :", error);
+            if (error instanceof Error)
+                console.error("[ERREUR] map.events - handleSearchBoxSubmit :", error);
+            alert("Une erreur s'est produite, veuillez réesseyez !");
         } finally {
             UI.toggleLoader(false);
         }
@@ -165,7 +169,7 @@ export function initMapEvent(services) {
             displayParkingInfo(parking);
         } catch (error) {
             if (error instanceof Error)
-                console.error("[ERROR] map.events - handleParkingInfoClick : ", error);
+                console.error("[ERREURR] map.events - handleParkingInfoClick : ", error);
             UI.setResultTitle("Erreur");
             UI.setResultMessage("Impossible de charger les informations du parking.");
         } finally {
