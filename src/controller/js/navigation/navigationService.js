@@ -88,16 +88,20 @@ export class NavigationService {
     try {
       let position = this.mapService.userMarker.position;
 
-      const resultat = await phpFetch("parking/closest", position);
-      if (!resultat) throw new Error("Erreur serveur !")
-      if (resultat.status === "success") return resultat
-      else if (resultat.message) {
-        alert(resultat.message)
-        UI.setupUI();
+      const resultat = await this.apiService.phpFetch("parking/closest", position);
+      if (resultat.success) return resultat
+      else if (resultat.error.code === "NOT_FOUND") {
+        alert("Parking le plus proche non trouvé")
       }
+      else {
+        throw new Error(resultat.error.message)
+      }
+
     } catch (error) {
       UI.setupUI();
-      console.error("Erreur : ", error);
+      if (error instanceof Error)
+        console.error("[ERREUR] NavigationService - closestParking : ", error);
+      alert("Une erreur est survenue, veuillez réesseyez !")
     }
   }
 
@@ -192,7 +196,7 @@ export class NavigationService {
           UI.notify("REDIRECTION", "Direction vers le parking le plus proche disponible")
           UI.toggleNavigationUI("CHARGEMENT...");
           await this.stopNavigation();
-          await this.startNavigation(newDest);
+          await this.startNavigation(newDest.data);
           this.followRoute();
           this.startFollowRoute();
           UI.toggleNavigationUI(this.destination.name);
@@ -213,14 +217,15 @@ export class NavigationService {
     if (!this.destination) return null;
 
     try {
-      const res = await phpFetch("parking/getAvailablePlace", {
+      const res = await this.apiService.phpFetch("parking/getAvailablePlace", {
         id: this.destination.id,
         lat: this.destination.lat,
         lng: this.destination.lng
       });
-      return res.libre == -1 || res.libre == null ? null : res.libre;
+      return res.data.libre == -1 || res.data.libre == null ? null : res.libre;
     } catch (err) {
-      console.error("Erreur checkParkingAvailability :", err);
+      if (err instanceof Error)
+        console.error("[ERREUR] NavigationService - checkParkingAvailability : ", err);
       return null;
     }
   }
