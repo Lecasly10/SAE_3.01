@@ -1,13 +1,12 @@
 import { addMarker } from "../maps/addMarkers.js";
 import { nightMode } from "../maps/nightMode.js";
 import { Utils } from "../utils.js";
-import { ApiService } from "../api/apiService.js";
 
 export class GeolocationService {
-  constructor(mapService) {
+  constructor(mapService, apiService) {
     this.builder = mapService;
+    this.apiService = apiService;
     this.watchId = null;
-
   }
 
   async init() {
@@ -87,7 +86,7 @@ export class GeolocationService {
   }
 
   static distance(a, b) {
-    const { spherical } = ApiService.googleLibs;
+    const { spherical } = this.apiService.googleLibs;
     return spherical.computeDistanceBetween(a, b);
   }
 }

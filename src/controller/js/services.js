@@ -21,27 +21,28 @@ export class Services {
 
     async init() {
         this.storageService = StorageService;
-        this.apiService = ApiService;
+        this.apiService = new ApiService();
+        await this.apiService.init();
 
         //MAP
-        this.mapService = new MapService();
+        this.mapService = new MapService(this.apiService);
         await this.mapService.init();
 
         //GEOLOCATION
-        this.geolocationService = new GeolocationService(this.mapService);
+        this.geolocationService = new GeolocationService(this.mapService, this.apiService);
         await this.geolocationService.init();
 
         //NAVIGATION
-        this.navigationService = new NavigationService(this.mapService);
+        this.navigationService = new NavigationService(this.mapService, this.apiService);
         await this.navigationService.init();
 
         //USER
-        this.userService = new UserService();
+        this.userService = new UserService(this.apiService);
         this.user = this.userService.user;
         await this.userService.init();
 
         //VEHICULE
-        this.vehiculeService = new VehiculeService(this.user);
+        this.vehiculeService = new VehiculeService(this.user, this.apiService);
         this.vehiculeService.init();
     }
 }

@@ -4,7 +4,8 @@ import { User } from "./user.js";
 
 
 export class UserService {
-    constructor() {
+    constructor(api) {
+        this.apiService = api;
         this.user = new User();
         this.createAccount = false;
     }

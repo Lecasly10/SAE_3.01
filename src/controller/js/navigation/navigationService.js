@@ -1,5 +1,4 @@
 import { addMarker } from "../maps/addMarkers.js";
-import { ApiService } from "../api/apiService.js";
 import { phpFetch } from "../api/phpInteraction.js";
 import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
@@ -7,10 +6,11 @@ import { Utils } from "../utils.js";
 import { StorageService } from "../storage/storageService.js";
 
 const DESTINATION_RADIUS_KM = 0.05;
-focus
+
 export class NavigationService {
-  constructor(mapService) {
+  constructor(mapService, apiService) {
     this.mapService = mapService;
+    this.apiService = apiService;
     this.parkMonitor = null;
     this.destination = null;
     this.route = null;
@@ -230,7 +230,7 @@ export class NavigationService {
     if (!this.destination || !mapService?.userMarker) return;
     if (this.route) return;
 
-    const { Route } = ApiService.googleLibs;
+    const { Route } = this.apiService.googleLibs;
     const origin = mapService.userMarker.position;
     const destination = {
       lat: this.destination.lat,

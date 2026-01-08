@@ -2,8 +2,9 @@ import { StorageService } from "../storage/storageService.js";
 import { phpFetch } from "../api/phpInteraction.js";
 
 export class VehiculeService {
-    constructor(user) {
-        this.user = user
+    constructor(user, api) {
+        this.user = user;
+        this.apiService = api;
         this.selectedVehicule = null;
         this.storageKey = "selected_vehicule"
     }

@@ -1,14 +1,26 @@
 export class ApiService {
-    static googleLibs = {};
-    static server = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
-    static defaultFetchOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+    constructor() {
+        googleLibs = {};
+        server = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
+        defaultFetchOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
     }
 
-    static async loadGoogleLibs() {
+    async init() {
+        try {
+            await this.loadGoogleLibs();
+        } catch (e) {
+            if (e instanceof Error) {
+                console.log(e)
+            }
+        }
+    }
+
+    async loadGoogleLibs() {
         const { Map } = await google.maps.importLibrary("maps");
         await google.maps.importLibrary("geometry");
         const { spherical } = await google.maps.importLibrary("geometry");
@@ -19,7 +31,7 @@ export class ApiService {
         this.googleLibs = { Map, AdvancedMarkerElement, ColorScheme, Route, spherical };
     }
 
-    static async phpFetch(php, object, options = null) {
+    async phpFetch(php, object, options = null) {
         let data = null;
         try {
             options = {

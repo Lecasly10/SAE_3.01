@@ -2,7 +2,8 @@ import { ApiService } from "../api/apiService.js";
 import { lightId } from "./styles.js";
 
 export class MapService {
-  constructor() {
+  constructor(api) {
+    this.apiService = api
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 20;
     this.defaultAngle = 0;
@@ -14,7 +15,7 @@ export class MapService {
 
   async init() {
     try {
-      const { Map } = ApiService.googleLibs;
+      const { Map } = this.apiService.googleLibs;
       const mapElement = document.getElementById("map");
       if (!mapElement) throw new Error("Élément #map introuvable.");
 
@@ -26,7 +27,6 @@ export class MapService {
         disableDefaultUI: true,
       });
 
-      return this
     } catch (err) {
       alert("Erreur lors de l'initialisation de la carte")
       console.error("Erreur lors de l'initialisation de la carte :", err);
