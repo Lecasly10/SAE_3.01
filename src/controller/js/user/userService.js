@@ -98,8 +98,8 @@ export class UserService {
                 UI.notify("Compte", "Connexion réussi !")
                 UI.toggleAuthIcon(true);
                 this.user.isLogged = true;
-                this.user.userId = loginData.user_id;
-                this.user.mail = loginData.mail;
+                this.user.userId = loginData.data.user_id;
+                this.user.mail = loginData.data.mail;
             }
 
             return loginData
