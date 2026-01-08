@@ -145,12 +145,12 @@ export function initVehiculeEvent(services) {
             msg = "Véhicules mise à jour avec succès"
         }
 
-        if (resp.status && resp.status === "success") {
+        if (resp.success) {
             update();
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
-        } else if (resp.message) {
-            errorV.textContent = resp.message
+        } else {
+            errorV.textContent = resp.error.message
             UI.show(errorV);
         }
 
@@ -164,12 +164,12 @@ export function initVehiculeEvent(services) {
         const id = JSON.parse(listvoit.value).id;
         if (confirm("Voulez vraiment supprimer ce véhicule")) {
             let res = await vehiculeService.deleteVehicule(id);
-            if (res.status != "success" && res.message) {
-                console.log(res.message)
-                alert(res.message)
-            } else {
+            if (res.success) {
                 UI.notify("Véhicules", "Véhicule supprimé avec succès !", true)
                 update();
+            } else {
+                console.error(res.error.message)
+                alert("Une erreur est survenu !")
             }
         }
     }
