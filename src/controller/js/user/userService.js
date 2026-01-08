@@ -36,21 +36,23 @@ export class UserService {
 
     async checkAuth() {
         try {
-            const data = await phpFetch("user/session", {}, {
+            const sessionData = await this.apiService.phpFetch("user/session", {}, {
                 credentials: "include"
             });
-            if (!data) throw new Error("Erreur serveur !");
 
-            if (data.authenticated) {
+            if (!sessionData.success) return false
+            if (sessionData.data.authenticated) {
+                data = sessionData.data
                 UI.toggleAuthIcon(true)
                 this.user.userId = data.user_id;
                 this.user.mail = data.mail;
+
+                return data.authenticated;
             };
 
-            return data.authenticated ? data.authenticated : false;
-
         } catch (error) {
-            console.error("checkAuth error: ", error);
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - checkAuth : ", error);
             return false;
         }
     }

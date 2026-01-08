@@ -117,7 +117,7 @@ export function initMapEvent(services) {
         UI.toggleLoader(true);
 
         try {
-            const result = await phpFetch("parking/search", { search: query });
+            const result = await services.apiService.phpFetch("parking/search", { search: query });
             UI.setResultTitle("Résultats");
             handleParkingList(result.parkings);
 

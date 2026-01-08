@@ -36,9 +36,15 @@ export class ApiService {
             data = await resp.json();
             if (!data) throw new Error(`JSON Vide`)
 
-        } catch (erreur) {
-            if (erreur instanceof Error) {
-                console.log("[ERREUR] ApiService : ", erreur);
+            if (!data.success && data.error.code === "INTERNAL_SERVER_ERROR"
+                || data.error.code === "MISSING_ARGUMENTS") {
+                throw new Error(data.error.message);
+            }
+
+        } catch (e) {
+            alert("Une erreur s'est produite sur notre serveur\nil est possible que le serveur soit injoignable")
+            if (e instanceof Error) {
+                console.log("[ERREUR] ApiService : ", e);
             }
         } finally {
             return data;
