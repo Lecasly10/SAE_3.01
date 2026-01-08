@@ -156,7 +156,7 @@ export function initMapEvent(services) {
             UI.emptySearchBox();
 
             const id = button.value;
-            const result = await this.apiService.phpFetch("parking/load", { id });
+            const result = await services.apiService.phpFetch("parking/load", { id });
             const parking = result.data;
 
             if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
