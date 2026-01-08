@@ -1,8 +1,8 @@
 export class ApiService {
     constructor() {
-        googleLibs = {};
-        server = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
-        defaultFetchOptions = {
+        this.googleLibs = {};
+        this.server = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
+        this.defaultFetchOptions = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -11,13 +11,7 @@ export class ApiService {
     }
 
     async init() {
-        try {
-            await this.loadGoogleLibs();
-        } catch (e) {
-            if (e instanceof Error) {
-                console.log(e)
-            }
-        }
+        await this.loadGoogleLibs();
     }
 
     async loadGoogleLibs() {
