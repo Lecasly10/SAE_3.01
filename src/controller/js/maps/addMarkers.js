@@ -1,8 +1,6 @@
-import { ApiService } from "../api/apiService";
-
 //Créer un marqueur sur la map
 export function addMarker(builder, pos, message, iconURL) {
-  const { AdvancedMarkerElement } = ApiService.googleLibs;
+  const { AdvancedMarkerElement } = builder.apiService.googleLibs;
 
   if (!builder.map) {
     throw new Error("La carte n'est pas initialisée !");
