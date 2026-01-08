@@ -23,7 +23,6 @@ export class Services {
         this.storageService = StorageService;
         this.apiService = ApiService;
 
-        await this.apiService.loadGoogleLibs();
         //MAP
         this.mapService = new MapService();
         await this.mapService.init();

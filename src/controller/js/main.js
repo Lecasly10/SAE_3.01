@@ -2,6 +2,7 @@
 import { UI } from "./ui/UI.js";
 import { initEvent } from "./events/event.js";
 
+import { ApiService } from "./api/apiService.js";
 import { Services } from "./services.js";
 
 //===LOAD===
@@ -15,8 +16,11 @@ globalThis.addEventListener("load", async () => {
     UI.toggleLoader(true);
     UI.setupUI(true);
 
+    await ApiService.loadGoogleLibs();
+
     const services = new Services();
     await services.init();
+
 
     await initEvent(services);
   } catch (e) {
