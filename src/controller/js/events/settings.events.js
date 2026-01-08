@@ -49,8 +49,8 @@ export function initSettingsEvent(services) {
         maxDistParam.value = userData.data.maxDistance;
         maxHBudgetParam.value = userData.data.maxHourly;
 
-        if (vehData.data.vehicules.length > 0) {
-            vehData.data.vehicules.forEach(veh => {
+        if (vehData.data.length > 0) {
+            vehData.data.forEach(veh => {
                 if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
                     carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
                 else
