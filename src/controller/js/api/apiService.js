@@ -43,11 +43,13 @@ export class ApiService {
                 }
             }
 
+            if (!data.data) throw new Error(`Les données ne sont pas arrivées`)
+
         } catch (e) {
             if (e instanceof Error) {
-                console.log("[ERREUR] ApiService : ", e);
+                console.log("[ERREUR] ApiService - phpFetch : ", e);
             }
-            alert("Une erreur s'est produite sur notre serveur\nil est possible que le serveur soit injoignable")
+            alert("Une erreur s'est produite sur notre serveur, il est possible que le serveur soit injoignable")
         } finally {
             return data;
         }

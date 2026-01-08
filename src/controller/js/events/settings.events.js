@@ -34,31 +34,30 @@ export function initSettingsEvent(services) {
             nameParam, mailParam, telParam,
             surnameParam, maxDistParam, maxHBudgetParam,
             pmrParam, coverParam, freeParam, carParam } = UI.el;
-        let data = await userService.load();
-        let vehData = await vehiculeService.load();
-        if (!data) alert("Une erreur est survenu !");
-        else if (!vehData) alert("Une erreur est survenu !");
-        else {
-            UI.resetCarSettList();
-            nameParam.value = data.name;
-            surnameParam.value = data.surname;
-            mailParam.value = user.mail;
-            telParam.value = data.tel;
-            pmrParam.checked = data.pmr == true;
-            coverParam.checked = data.covered == true;
-            freeParam.checked = data.free == true;
-            maxDistParam.value = data.maxDistance;
-            maxHBudgetParam.value = data.maxHourly;
 
-            if (vehData.vehicules) {
-                data.vehicules.forEach(veh => {
-                    if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
-                        carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
-                    else
-                        carParam.add(new Option(`${veh.plate}`, veh.id))
-                });
-            }
+        let userData = await userService.load();
+        let vehData = await vehiculeService.load();
+
+        UI.resetCarSettList();
+        nameParam.value = userData.data.name;
+        surnameParam.value = userData.data.surname;
+        mailParam.value = user.data.mail;
+        telParam.value = userData.data.tel;
+        pmrParam.checked = userData.data.pmr == true;
+        coverParam.checked = userData.data.covered == true;
+        freeParam.checked = userData.data.free == true;
+        maxDistParam.value = userData.data.maxDistance;
+        maxHBudgetParam.value = userData.data.maxHourly;
+
+        if (vehData.data.vehicules.length > 0) {
+            vehData.data.vehicules.forEach(veh => {
+                if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
+                    carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
+                else
+                    carParam.add(new Option(`${veh.plate}`, veh.id))
+            });
         }
+
     }
 
     async function handleUpdate(e) {
@@ -116,11 +115,10 @@ export function initSettingsEvent(services) {
 
         vehiculeService.addToStorage({ vehId: carParam.value })
 
-        if (res.status && res.status === "success") {
+        if (res.success) {
             UI.notify("Compte", "Paramètres mise à jour avec succès")
-        }
-        else if (res.message) {
-            errorS.textContent = res.message
+        } else {
+            errorS.textContent = res.error.message
             UI.show(errorS);
         }
 

@@ -1,4 +1,3 @@
-import { phpFetch } from "../api/phpInteraction.js";
 import { UI } from "../ui/UI.js";
 import { User } from "./user.js";
 
@@ -29,8 +28,9 @@ export class UserService {
             }
             return data
         } catch (error) {
-            alert("Une Erreur s'est produite, Veuillez réessayer !")
-            console.error("Erreur : ", error)
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - auth : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
     }
 
@@ -53,75 +53,99 @@ export class UserService {
         } catch (error) {
             if (error instanceof Error)
                 console.error("[ERREUR] UserService - checkAuth : ", error);
+            alert("Une Erreur s'est produite !");
             return false;
         }
     }
 
     async update(info) {
         try {
-            const data = await phpFetch("user/update", info)
-            if (!data) throw new Error("Erreur serveur !")
-            if (data.status === "success") UI.toggleSetting(false);
-            return data
+            const updateData = await this.apiService.phpFetch("user/update", info)
+            return updateData;
         } catch (error) {
-            console.error("Update Error : ", error)
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - update : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
 
     }
 
     async load() {
         try {
-            const data = await phpFetch("user/load", { id: this.user.userId })
-            if (!data) throw new Error("Erreur serveur !");
-            else {
-                return data
+            const loadData = await this.apiService.phpFetch("user/load", { id: this.user.userId })
+            if (!loadData.success) {
+                if (loadData.error.code === "USER_NOT_FOUND") {
+                    throw new Error("L'utilisateur n'a pas été retrouvé !");
+                }
             }
+            return loadData
+
         } catch (error) {
-            console.error("Load info error: ", error)
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - load : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
     }
 
     async login(mail, password) {
-        const data = await phpFetch("user/login", { mail, password }, {
-            credentials: "include",
-        });
+        try {
+            const loginData = await this.apiService.phpFetch("user/login", { mail, password }, {
+                credentials: "include",
+            });
 
-        if (data.status === "success") {
-            UI.toggleAuth(false)
-            UI.notify("Compte", "Connexion réussi !")
-            UI.toggleAuthIcon(true);
-            this.user.isLogged = true;
-            this.user.userId = data.user_id;
-            this.user.mail = data.mail;
+            if (loginData.success) {
+                UI.toggleAuth(false)
+                UI.notify("Compte", "Connexion réussi !")
+                UI.toggleAuthIcon(true);
+                this.user.isLogged = true;
+                this.user.userId = loginData.user_id;
+                this.user.mail = loginData.mail;
+            }
+
+            return loginData
+        } catch (error) {
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - login : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
-
-        return data
     }
 
     async signin(info) {
-        const data = await phpFetch("user/signin", info, {
-            credentials: "include",
-        });
+        try {
+            const signinData = await this.apiService.phpFetch("user/signin", info, {
+                credentials: "include",
+            });
 
-        if (data.status === "success") {
-            await this.login(info.mail, info.password)
-            this.createAccount = false
+            if (signinData.success) {
+                await this.login(info.mail, info.password)
+                this.createAccount = false
+            }
+
+            return signinData
+        } catch (error) {
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - signin : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
-
-        return data
     }
 
     async logout() {
-        const data = await phpFetch("user/logout", {}, {
-            credentials: "include",
-        })
+        try {
+            const logoutData = await this.apiService.phpFetch("user/logout", {}, {
+                credentials: "include",
+            })
 
-        if (data.status === "success") {
-            this.user.reset();
-            UI.toggleAuthIcon(false);
-            UI.toggleSetting(false);
+            if (logoutData.success) {
+                this.user.reset();
+                UI.toggleAuthIcon(false);
+                UI.toggleSetting(false);
+            }
+
+            return logoutData
+        } catch (error) {
+            if (error instanceof Error)
+                console.error("[ERREUR] UserService - logout : ", error);
+            alert("Une Erreur s'est produite, Veuillez réessayer !");
         }
-
-        return data
     }
 }

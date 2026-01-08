@@ -103,8 +103,8 @@ export function initUserEvent(services) {
             password: pass.value,
         })
 
-        if (res.status !== "success" && res.message) {
-            errorI.textContent = res.message
+        if (!res.success) {
+            errorI.textContent = res.error.message
             UI.show(errorI);
         }
     }

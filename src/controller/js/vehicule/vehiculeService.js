@@ -1,5 +1,4 @@
 import { StorageService } from "../storage/storageService.js";
-import { phpFetch } from "../api/phpInteraction.js";
 
 export class VehiculeService {
     constructor(user, api) {
@@ -15,19 +14,18 @@ export class VehiculeService {
 
     async load() {
         try {
-            const data = await phpFetch("vehicle/loadAll", { id: this.user.userId })
-            if (!data) throw new Error("Erreur serveur !");
-            else {
-                return data
-            }
+            const vehData = await this.apiService.phpFetch("vehicle/loadAll", { id: this.user.userId });
+            return vehData
         } catch (error) {
-            console.error("Load info error: ", error)
+            if (error instanceof Error)
+                console.error("[ERREUR] VehiculeService - load : ", error);
+            alert("Une erreur s'est produite !");
         }
     }
 
     async deleteVehicule(id) {
         const deleteResponse = await this.deleteFromDb(id);
-        if (deleteResponse.status === "success") {
+        if (deleteResponse.success) {
             if (this.selectedVehicule && id == this.selectedVehicule.vehId)
                 StorageService.remove(this.storageKey);
         }
@@ -46,33 +44,36 @@ export class VehiculeService {
 
     async deleteFromDb(id) {
         try {
-            const deleteResponse = await phpFetch("vehicle/delete", { id: id })
-            if (!deleteResponse) throw new Error("Erreur serveur !")
+            const deleteResponse = await this.apiService.phpFetch("vehicle/delete", { id: id })
             return deleteResponse
         } catch (e) {
-            console.error("Erreur : ", e);
+            if (error instanceof Error)
+                console.error("[ERREUR] VehiculeService - deleteFromDb : ", error);
+            alert("Une erreur s'est produite, veuillez réesseyer !");
         }
 
     }
 
     async createVehicule(info) {
         try {
-            const data = await phpFetch("vehicle/create", info)
-            if (!data) throw new Error("Erreur serveur !")
+            const data = await this.apiService.phpFetch("vehicle/create", info)
             return data
         } catch (e) {
-            console.error("Erreur : ", e);
+            if (error instanceof Error)
+                console.error("[ERREUR] VehiculeService - createVehicule : ", error);
+            alert("Une erreur s'est produite, veuillez réesseyer !");
         }
 
     }
 
     async updateVehicule(info) {
         try {
-            const data = await phpFetch("vehicle/update", info)
-            if (!data) throw new Error("Erreur serveur !")
+            const data = await this.apiService.phpFetch("vehicle/update", info)
             return data
         } catch (e) {
-            console.error("Erreur : ", e);
+            if (error instanceof Error)
+                console.error("[ERREUR] VehiculeService - updateVehicule : ", error);
+            alert("Une erreur s'est produite, veuillez réesseyer !");
         }
 
     }
