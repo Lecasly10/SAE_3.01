@@ -58,15 +58,14 @@ export function initVehiculeEvent(services) {
         event.preventDefault();
         UI.resetCarEditList();
 
-        let data = await vehiculeService.load();
-        if (!data) alert("Une erreur est survenu !");
-        else {
-            if (data.vehicules) {
-                data.vehicules.forEach(veh => {
-                    listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
-                });
-            }
+        let vehData = await vehiculeService.load();
+
+        if (vehData.data) {
+            vehData.data.forEach(veh => {
+                listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
+            });
         }
+
 
         listvoit.value = "none";
     }

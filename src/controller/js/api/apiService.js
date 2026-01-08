@@ -31,8 +31,7 @@ export class ApiService {
             }
 
             const resp = await fetch(`${this.server}${php}.php`, options);
-            if (!resp.ok) throw new Error(`HTTP : (${resp.status})`);
-
+            if (!resp.ok && (resp.status !== 401 || resp.status !== 400)) throw new Error(`HTTP : (${resp.status})`);
             data = await resp.json();
             if (!data) throw new Error(`JSON Vide`)
 
