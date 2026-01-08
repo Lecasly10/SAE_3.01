@@ -1,20 +1,5 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-header('Content-Type: application/json');
-
+require_once __DIR__ . '/../utils/response.php';
 require_once __DIR__ . '/../../../modele/php/vehiculeDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/vehicule.class.php';
 
@@ -31,22 +16,14 @@ if (!$id ||
         !isset($height) ||
         !$type ||
         !$motor) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Paramètres manquant'
-    ]);
-    exit;
+    sendError('Paramètre manquant', ErrorCode::MISSING_ARGUMENTS);
 }
 
 try {
     $vehDAO = new VehiculeDAO();
     $veh = new Vehicule();
     if (!$veh) {
-        echo json_encode([
-            'status' => 'fail',
-            'message' => 'La création du véhicule à échoué'
-        ]);
-        exit;
+        sendError('La création du véhicule à échoué');
     } else {
         $veh->setUserId($id);
         $veh->setPlate($plate);
@@ -57,19 +34,11 @@ try {
         $req = $vehDAO->create($veh);
 
         if (!$req) {
-            echo json_encode([
-                'status' => 'fail',
-                'message' => 'Erreur serveur'
-            ]);
-            exit;
+            sendError('La création du véhicule à échoué');
         }
-        echo json_encode([
-            'status' => 'success',
-        ]);
+
+        sendSuccess();
     }
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur: ' . $e->getMessage()
-    ]);
+    sendError($e->getMessage());
 }

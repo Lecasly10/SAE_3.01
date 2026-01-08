@@ -1,22 +1,8 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
+require_once __DIR__ . '/../utils/response.php';
 require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
 
 session_start();
-header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -24,22 +10,14 @@ $mail = $data['mail'] ?? null;
 $password = $data['password'] ?? null;
 
 if (!$mail || !$password) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Paramètre manquants !'
-    ]);
-    exit;
+    sendError('Paramètre manquant', ErrorCode::MISSING_ARGUMENTS);
 }
 
 try {
     $user = (new userDAO())->getByMail($mail);
 
     if (!$user) {
-        echo json_encode([
-            'status' => 'not_found',
-            'message' => 'Ce mail ne correspond a aucun compte'
-        ]);
-        exit;
+        sendError('Cette email ne correspond à aucun compte ', ErrorCode::USER_NOT_FOUND, 401);
     }
 
     if ($user && password_verify($password, $user->getPasswordHash())) {
@@ -47,21 +25,16 @@ try {
 
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['mail'] = $mail;
-        echo json_encode([
-            'status' => 'success',
+
+        $resp = [
             'user_id' => $_SESSION['user_id'],
             'mail' => $_SESSION['mail']
-        ]);
+        ];
+
+        sendSuccess($resp);
     } else {
-        echo json_encode([
-            'status' => 'fail',
-            'message' => 'Identifants incorrect !'
-        ]);
-        exit;
+        sendError('Identifiants incorrect !', ErrorCode::INVALID_CREDENTIALS, 401);
     }
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur: ' . $e->getMessage()
-    ]);
+    sendError($e->getMessage());
 }

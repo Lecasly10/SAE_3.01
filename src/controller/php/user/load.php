@@ -1,20 +1,5 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-header('Content-Type: application/json');
-
+require_once __DIR__ . '/../utils/response.php';
 require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/userPrefDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/vehiculeDAO.class.php';
@@ -24,11 +9,7 @@ $data = json_decode($json, true) ?: [];
 $userId = $data['id'] ?? null;
 
 if (!$userId) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => "Paramètre 'id' manquant"
-    ]);
-    exit;
+    sendError('Paramètre(s) manquant', ErrorCode::MISSING_ARGUMENTS);
 }
 
 try {
@@ -36,11 +17,7 @@ try {
     $prefDAO = new UserPrefDAO();
     $vehDAO = new VehiculeDAO();
     if (!$user) {
-        echo json_encode([
-            'status' => 'not_found',
-            'message' => 'Aucun user trouvé'
-        ]);
-        exit;
+        sendError('Utilisateur introuvable', ErrorCode::USER_NOT_FOUND, 401);
     } else {
         $pref = $prefDAO->getById(intval($userId));
         $veh = $vehDAO->getByUserId(intval($userId));
@@ -55,11 +32,6 @@ try {
         $free = null;
         $covered = null;
 
-        $type = null;
-        $motor = null;
-        $plate = null;
-        $height = null;
-
         if ($pref) {
             $pmr = $pref->getIsPmr();
             $maxDistance = $pref->getMaxDistance();
@@ -68,21 +40,7 @@ try {
             $covered = $pref->getPreferCovered();
         }
 
-        $vehicules = [];
-        if ($veh) {
-            foreach ($veh as $v) {
-                $vehicules[] = [
-                    'id' => $v->getId(),
-                    'type' => $v->getType(),
-                    'motor' => $v->getMotor(),
-                    'height' => $v->getVehiculeHeight(),
-                    'plate' => $v->getPlate()
-                ];
-            }
-        }
-
-        echo json_encode([
-            'status' => 'success',
+        $resp = [
             'name' => $name,
             'surname' => $surname,
             'tel' => $tel,
@@ -91,12 +49,10 @@ try {
             'maxHourly' => $maxHourly,
             'free' => $free,
             'covered' => $covered,
-            'vehicules' => empty($vehicules) ? null : $vehicules,
-        ]);
+        ];
+
+        sendSuccess($resp);
     }
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur: ' . $e->getMessage()
-    ]);
+    sendError($e->getMessage());
 }

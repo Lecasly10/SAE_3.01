@@ -1,19 +1,5 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-header('Content-Type: application/json');
+require_once __DIR__ . '/../utils/response.php';
 
 session_start();
 try {
@@ -27,14 +13,7 @@ try {
     }
 
     session_destroy();
-    echo json_encode([
-        'status' => 'success',
-    ]);
-    exit;
+    sendSuccess();
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur : ' . $e
-    ]);
-    exit;
+    sendError($e->getMessage());
 }

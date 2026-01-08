@@ -1,20 +1,5 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-header('Content-Type: application/json');
-
+require_once __DIR__ . '/../utils/response.php';
 require_once __DIR__ . '/../api/dataAPI.php';
 require_once __DIR__ . '/../distance.php';
 
@@ -25,11 +10,7 @@ $lat = $data['lat'] ?? null;
 $lng = $data['lng'] ?? null;
 
 if (!$parkingId || !$lat || !$lng) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Paramètre manquant'
-    ]);
-    exit;
+    sendError('Paramètre manquant', ErrorCode::MISSING_ARGUMENTS);
 }
 
 try {
@@ -46,13 +27,9 @@ try {
         $pLibre = null;
     }
 
-    echo json_encode([
-        'status' => 'success',
+    sendSuccess([
         'libre' => $pLibre
     ]);
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur: ' . $e->getMessage()
-    ]);
+    sendError($e->getMessage());
 }

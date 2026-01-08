@@ -1,42 +1,22 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-header('Content-Type: application/json');
-session_start();
-
-$user_id = $_SESSION['user_id'] ?? null;
-
+require_once __DIR__ . '/../utils/response.php';
 require_once __DIR__ . '/../../../modele/php/parkingDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/userDAO.class.php';
 require_once __DIR__ . '/../../../modele/php/userPrefDAO.class.php';
 require_once __DIR__ . '/../distance.php';
 require_once __DIR__ . '/../api/dataAPI.php';
 
+session_start();
+$user_id = $_SESSION['user_id'] ?? null;
+
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 $lat = isset($data['lat']) ? floatval($data['lat']) : null;
 $lng = isset($data['lng']) ? floatval($data['lng']) : null;
-$test = 0;
 
 if ($lat === null || $lng === null) {
-    echo json_encode([
-        'status' => 'erreur',
-        'message' => 'Paramètres manquants'
-    ]);
-    exit;
+    sendError('Paramètre manquant', ErrorCode::MISSING_ARGUMENTS);
 }
 
 try {
@@ -59,23 +39,17 @@ try {
 
     if (count($closestParkings) > 0) {
         $parking = $closestParkings[0];
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Parking le plus proche trouvé',
+        $resp = [
             'id' => $parking->getId(),
             'lat' => $parking->getLat(),
             'lng' => $parking->getLong(),
             'name' => $parking->getName()
-        ]);
+        ];
+
+        sendSuccess($resp);
     } else {
-        echo json_encode([
-            'status' => 'not_found',
-            'message' => 'Aucun parking disponible à proximité'
-        ]);
+        sendError('Parking introuvable', ErrorCode::NOT_FOUND);
     }
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'message' => 'Erreur serveur: ' . $e->getMessage()
-    ]);
+    sendError($e->getMessage());
 }

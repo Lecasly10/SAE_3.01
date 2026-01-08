@@ -34,8 +34,10 @@ export function initSettingsEvent(services) {
             nameParam, mailParam, telParam,
             surnameParam, maxDistParam, maxHBudgetParam,
             pmrParam, coverParam, freeParam, carParam } = UI.el;
-        let data = await userService.load(user.userId);
+        let data = await userService.load();
+        let vehData = await vehiculeService.load();
         if (!data) alert("Une erreur est survenu !");
+        else if (!vehData) alert("Une erreur est survenu !");
         else {
             UI.resetCarSettList();
             nameParam.value = data.name;
@@ -48,7 +50,7 @@ export function initSettingsEvent(services) {
             maxDistParam.value = data.maxDistance;
             maxHBudgetParam.value = data.maxHourly;
 
-            if (data.vehicules) {
+            if (vehData.vehicules) {
                 data.vehicules.forEach(veh => {
                     if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
                         carParam.add(new Option(`${veh.plate}`, veh.id, true, true))

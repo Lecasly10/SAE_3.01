@@ -1,17 +1,5 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-} else {
-    header('Access-Control-Allow-Origin: *');
-}
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+require_once __DIR__ . '/../utils/response.php';
 
 try {
     session_set_cookie_params([
@@ -21,25 +9,20 @@ try {
     ]);
 
     session_start();
-    header('Content-Type: application/json');
 
     if (isset($_SESSION['user_id'])) {
-        echo json_encode([
-            'status' => 'success',
+        $resp = [
             'authenticated' => true,
             'user_id' => $_SESSION['user_id'],
             'mail' => $_SESSION['mail']
-        ]);
+        ];
+        sendSuccess($resp);
     } else {
-        echo json_encode([
-            'status' => 'success',
+        $resp = [
             'authenticated' => false,
-        ]);
+        ];
+        sendSucces($resp);
     }
 } catch (Exception $e) {
-    echo json_encode([
-        'status' => 'fail',
-        'authenticated' => false,
-        'message' => 'Erreur Serveur : ' . $e
-    ]);
+    sendError($e->getMessage());
 }

@@ -19,25 +19,27 @@ export class ApiService {
         this.googleLibs = { Map, AdvancedMarkerElement, ColorScheme, Route, spherical };
     }
 
-    static async phpFetch(php, data, options = null) {
+    static async phpFetch(php, object, options = null) {
+        let data = null;
         try {
             options = {
-                body: JSON.stringify(data),
+                body: JSON.stringify(object),
                 ...this.defaultFetchOptions,
                 ...options
             }
 
             const resp = await fetch(`${this.server}${php}.php`, options);
+            if (!resp.ok) throw new Error(`HTTP : (${resp.status})`);
 
-            if (!resp.ok) {
-                throw new Error(`Erreur serveur (${resp.status})`);
-            }
+            data = await resp.json();
+            if (!data) throw new Error(`JSON Vide`)
 
-            const json = await resp.json();
-            return json;
         } catch (erreur) {
-            console.log("Erreur Serveur : ", erreur);
-            return null;
+            if (erreur instanceof Error) {
+                console.log("[ERREUR] ApiService : ", erreur);
+            }
+        } finally {
+            return data;
         }
     }
 }
