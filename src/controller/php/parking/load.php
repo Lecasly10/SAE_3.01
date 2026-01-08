@@ -17,7 +17,7 @@ try {
     }
 
     $res = $parking;
-    sendSucces($res);
+    sendSuccess($res);
 } catch (Exception $e) {
     sendError($e->getMessage());
 }

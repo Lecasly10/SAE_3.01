@@ -21,7 +21,7 @@ try {
         $resp = [
             'authenticated' => false,
         ];
-        sendSucces($resp);
+        sendSuccess($resp);
     }
 } catch (Exception $e) {
     sendError($e->getMessage());

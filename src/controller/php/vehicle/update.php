@@ -35,7 +35,7 @@ try {
         if (!$req) {
             sendError('Erreur dans la suppression du véhicule');
         }
-        sendSucces();
+        sendSuccess();
     }
 } catch (Exception $e) {
     sendError($e->getMessage());

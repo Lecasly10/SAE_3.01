@@ -35,7 +35,7 @@ try {
         sendError('Véhicules introuvables', ErrorCode::NOT_FOUND);
     }
 
-    sendSucces($vehicules);
+    sendSuccess($vehicules);
 } catch (Exception $e) {
     sendError($e->getMessage());
 }
