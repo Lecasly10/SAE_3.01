@@ -41,7 +41,7 @@ export function initSettingsEvent(services) {
         UI.resetCarSettList();
         nameParam.value = userData.data.name;
         surnameParam.value = userData.data.surname;
-        mailParam.value = user.data.mail;
+        mailParam.value = user.mail;
         telParam.value = userData.data.tel;
         pmrParam.checked = userData.data.pmr == true;
         coverParam.checked = userData.data.covered == true;
