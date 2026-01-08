@@ -17,7 +17,7 @@ try {
     $user = (new userDAO())->getByMail($mail);
 
     if (!$user) {
-        sendError('Cette email ne correspond à aucun compte ', ErrorCode::USER_NOT_FOUND, 401);
+        sendError('Cette email ne correspond à aucun compte ', ErrorCode::USER_NOT_FOUND);
     }
 
     if ($user && password_verify($password, $user->getPasswordHash())) {
@@ -33,7 +33,7 @@ try {
 
         sendSuccess($resp);
     } else {
-        sendError('Identifiants incorrect !', ErrorCode::INVALID_CREDENTIALS, 401);
+        sendError('Identifiants incorrect !', ErrorCode::INVALID_CREDENTIALS);
     }
 } catch (Exception $e) {
     sendError($e->getMessage());

@@ -17,7 +17,7 @@ try {
     $prefDAO = new UserPrefDAO();
     $vehDAO = new VehiculeDAO();
     if (!$user) {
-        sendError('Utilisateur introuvable', ErrorCode::USER_NOT_FOUND, 401);
+        sendError('Utilisateur introuvable', ErrorCode::USER_NOT_FOUND);
     } else {
         $pref = $prefDAO->getById(intval($userId));
         $veh = $vehDAO->getByUserId(intval($userId));
