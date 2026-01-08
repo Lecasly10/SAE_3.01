@@ -221,7 +221,7 @@ export class NavigationService {
         lat: this.destination.lat,
         lng: this.destination.lng
       });
-      return res.data.libre == -1 || res.data.libre == null ? null : res.libre;
+      return res.data.libre == -1 || res.data.libre == null ? null : res.data.libre;
     } catch (err) {
       if (err instanceof Error)
         console.error("[ERREUR] NavigationService - checkParkingAvailability : ", err);
