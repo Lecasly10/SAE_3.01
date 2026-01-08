@@ -16,8 +16,6 @@ globalThis.addEventListener("load", async () => {
     UI.toggleLoader(true);
     UI.setupUI(true);
 
-    await ApiService.loadGoogleLibs();
-
     const services = new Services();
     await services.init();
 
