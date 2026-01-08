@@ -21,9 +21,7 @@ try {
     }
 
     $res = $parkings;
-    sendSuccess([
-        'parkings' => $res
-    ]);
+    sendSuccess($res);
 } catch (Exception $e) {
     sendError($e->getMessage());
 }

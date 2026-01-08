@@ -1,6 +1,4 @@
 import { UI } from "../ui/UI.js";
-import { Utils } from "../utils.js";
-import { phpFetch } from "../api/phpInteraction.js";
 
 export function initMapEvent(services) {
     const builder = services.mapService
@@ -135,11 +133,13 @@ export function initMapEvent(services) {
         UI.emptySearchBox();
 
         try {
-            const result = await phpFetch("parking/search", {});
+            const result = await services.apiService.phpFetch("parking/search", {});
             UI.setResultTitle("Tous les Parkings");
-            handleParkingList(result.parkings);
+            handleParkingList(result.data);
         } catch (error) {
-            console.error("Erreur handleListButton :", error);
+            if (error instanceof Error)
+                console.error("[ERREUR] map.events - handleListButton :", error);
+            alert("Une erreur s'est produite, veuillez réesseyez !")
         } finally {
             UI.toggleLoader(false);
         }
@@ -156,15 +156,16 @@ export function initMapEvent(services) {
             UI.emptySearchBox();
 
             const id = button.value;
-            const result = await phpFetch("parking/load", { id });
-            const parking = result.parking;
+            const result = await this.apiService.phpFetch("parking/load", { id });
+            const parking = result.data;
 
             if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
 
             UI.setResultTitle(parking.nom);
             displayParkingInfo(parking);
         } catch (error) {
-            console.error("Erreur :", error);
+            if (error instanceof Error)
+                console.error("[ERROR] map.events - handleParkingInfoClick : ", error);
             UI.setResultTitle("Erreur");
             UI.setResultMessage("Impossible de charger les informations du parking.");
         } finally {
