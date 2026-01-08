@@ -42,7 +42,7 @@ export class UserService {
 
             if (!sessionData.success) return false
             if (sessionData.data.authenticated) {
-                data = sessionData.data
+                let data = sessionData.data
                 UI.toggleAuthIcon(true)
                 this.user.userId = data.user_id;
                 this.user.mail = data.mail;
