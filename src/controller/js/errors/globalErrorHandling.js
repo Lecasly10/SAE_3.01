@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from "./errors";
+import { ERROR_MESSAGES, AppError } from "./errors";
 
 export function handleError(error, context = "") {
     console.error(`[${context}]`, error);
