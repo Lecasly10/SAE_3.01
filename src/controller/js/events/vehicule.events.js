@@ -156,7 +156,8 @@ export function initVehiculeEvent(services) {
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
         } catch (error) {
-            errorV.textContent = error.message
+            errorV.textContent = ERROR_MESSAGES[error.code]
+                ?? ERROR_MESSAGES.DEFAULT;
             UI.show(errorV);
             console.error(error)
         }
