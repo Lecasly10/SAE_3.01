@@ -95,16 +95,18 @@ export function initUserEvent(services) {
             return;
         }
 
-        const res = await userService.auth({
+        let userData = {
             name: nameI.value,
             surname: surnameI.value,
             tel: telI.value,
             mail: mail.value,
             password: pass.value,
-        })
+        };
 
-        if (!res.success) {
-            errorI.textContent = res.error.message
+        try {
+            await userService.auth(userData);
+        } catch (error) {
+            errorI.textContent = error.message
             UI.show(errorI);
         }
     }

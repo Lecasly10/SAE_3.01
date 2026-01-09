@@ -5,7 +5,7 @@ export function initSettingsEvent(services) {
     const user = services.user;
     const userService = services.userService;
     const vehiculeService = services.vehiculeService;
-    const { submitSett, settingsButton, closeSettingButton } = UI.el;
+    const { submitSett, settingsButton, closeSettingButton, settings } = UI.el;
 
     submitSett.addEventListener("click", async (e) => {
         handleUpdate(e)
@@ -35,8 +35,16 @@ export function initSettingsEvent(services) {
             surnameParam, maxDistParam, maxHBudgetParam,
             pmrParam, coverParam, freeParam, carParam } = UI.el;
 
-        let userData = await userService.load();
-        let vehData = await vehiculeService.load();
+        let userData;
+        let vehData;
+
+        try {
+            userData = await userService.load();
+            vehData = await vehiculeService.load();
+        } catch (error) {
+            UI.notify("Paramètres", error.message);
+            return;
+        }
 
         UI.resetCarSettList();
         nameParam.value = userData.data.name;
@@ -117,18 +125,15 @@ export function initSettingsEvent(services) {
             let resp = await userService.update(formData);
 
             if (resp.success) {
-                UI.notify("Compte", "Paramètres mise à jour avec succès")
+                UI.notify("Compte", "Paramètres mise à jour avec succès");
+                UI.hide(settings);
+
+                vehiculeService.addToStorage({ vehId: carParam.value })
             };
 
         } catch (error) {
-            if (error.code === "EMAIL_ALREADY_USED") {
-                errorS.textContent = error.message
-                UI.show(errorS);
-            } else {
-                UI.notify("Authentification", error.message);
-            }
+            UI.notify("Authentification", error.message);
         }
 
-        vehiculeService.addToStorage({ vehId: carParam.value })
     }
 }
