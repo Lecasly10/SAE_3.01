@@ -35,9 +35,8 @@ export class ApiService {
         }
 
         if (!response.ok) {
-            if (response.status === 401 || response.status === 403) {
+            if (response.status === 401 || response.status === 403)
                 throw new AuthError("Session expirée ou accès refusé");
-            }
 
             throw new ApiError(
                 `Erreur HTTP ${response.status}`,

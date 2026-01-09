@@ -6,7 +6,7 @@ import { ERROR_MESSAGES } from "../errors/errors.js";
 export function initUserEvent(services) {
     const userService = services.userService;
     const { logoutButton, submitButton, connLink,
-        inscrLink, closeAuthButton } = UI.el
+        inscrLink, closeAuthButton, settings } = UI.el
 
     document.querySelectorAll(".submitInfo").forEach(el => {
         el.addEventListener("keydown", event => {
@@ -17,7 +17,14 @@ export function initUserEvent(services) {
     });
 
     logoutButton.addEventListener("click", async (e) => {
-        await userService.logout();
+        try {
+            await userService.logout();
+            UI.hide(settings);
+            UI.toggleAuthIcon(false);
+        } catch (error) {
+            console.error(error);
+            UI.notify("Déconnexion", ERROR_MESSAGES["DEFAULT"]);
+        }
     })
 
     submitButton.addEventListener("click", (e) => {
@@ -25,18 +32,18 @@ export function initUserEvent(services) {
     })
 
     closeAuthButton.addEventListener("click", (e) => {
-        UI.toggleAuth(false);
+        UI.hide(UI.el.auth);
     })
 
     if (inscrLink) {
         inscrLink.addEventListener("click", () => {
-            UI.toggleInsc(true)
+            UI.toggleInsc(true);
         })
     }
 
     if (connLink) {
         connLink.addEventListener("click", () => {
-            UI.toggleInsc(false)
+            UI.toggleInsc(false);
         })
     }
 
@@ -110,9 +117,10 @@ export function initUserEvent(services) {
             UI.toggleAuthIcon(true);
             UI.hide(auth);
         } catch (error) {
+            console.error(error);
             errorI.textContent =
                 ERROR_MESSAGES[error.code] ??
-                "Une erreur est survenue. Veuillez réessayer.";
+                ERROR_MESSAGES["DEFAULT"]
 
             UI.show(errorI);
         }

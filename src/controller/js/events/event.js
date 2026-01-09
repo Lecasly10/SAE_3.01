@@ -2,16 +2,16 @@ import { initVehiculeEvent } from "./vehicule.events.js"
 import { initSettingsEvent } from "./settings.events.js";
 import { initUserEvent } from "./user.events.js";
 import { initMapEvent } from "./map.events.js";
+import { UI } from "../ui/UI.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
 
 export async function initEvent(services) {
   window.addEventListener('offline', () => {
-    console.warn("User offline !");
-    alert("La connexion à été perdu :(")
+    UI.notify("Connexion", "Connexion perdu !");
   });
 
   window.addEventListener('online', () => {
-    console.warn("User online !");
-    alert("La connexion à été retrouvée :)")
+    UI.notify("Connexion", "Connexion retouvée !");
   });
 
   window.addEventListener('error', (event) => {
@@ -28,7 +28,7 @@ export async function initEvent(services) {
     initUserEvent(services);
     initMapEvent(services);
   } catch (error) {
-    console.error("Erreur : ", error);
-    alert('Une erreur est survenue !')
+    console.error(error);
+    UI.notify("App", ERROR_MESSAGES["DEFAULT"]);
   }
 }

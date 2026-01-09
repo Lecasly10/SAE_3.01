@@ -129,7 +129,10 @@ export function initSettingsEvent(services) {
             vehiculeService.addToStorage({ vehId: carParam.value })
 
         } catch (error) {
-            UI.notify("Authentification", error.message);
+            console.error(error);
+            UI.notify("Utilisateur",
+                ERROR_MESSAGES[error.code] ??
+                ERROR_MESSAGES["DEFAULT"])
         }
 
     }
