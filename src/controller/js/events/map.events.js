@@ -1,6 +1,7 @@
 import { AppError } from "../errors/errors.js";
 import { handleError } from "../errors/globalErrorHandling.js";
 import { UI } from "../ui/UI.js";
+import { Utils } from "../utils.js";
 
 export function initMapEvent(services) {
     const builder = services.mapService
@@ -24,7 +25,7 @@ export function initMapEvent(services) {
     });
 
     goCenterButton.addEventListener("click", async () => {
-        if (builder.userMarker.position == builder.defaultPosition) {
+        if (Utils.objectEqual(builder.userMarker.position, builder.defaultPosition)) {
             try {
                 await services.geolocationService.locateUser();
             } catch (err) {
