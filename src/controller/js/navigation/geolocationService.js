@@ -66,6 +66,8 @@ export class GeolocationService {
   startWatching() {
     if (this.watchId) return;
 
+    let notified = false;
+
     this.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {
         const userPosition = { lat: coords.latitude, lng: coords.longitude };
@@ -83,8 +85,12 @@ export class GeolocationService {
 
       },
       (err) => {
-        const e = new AppError("Géolocalisation impossible !", "GEOLOC_ERROR")
-        console.warn(e);
+        if (!notified) {
+          notified = true;
+          const e = new AppError("Géolocalisation impossible !", "GEOLOC_ERROR")
+          console.warn(e);
+        }
+
       },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
