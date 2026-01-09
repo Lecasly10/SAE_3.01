@@ -1,13 +1,7 @@
 export class ApiService {
     constructor() {
         this.googleLibs = {};
-        this.server = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
-        this.defaultFetchOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
+        this.baseUrl = `https://devweb.iutmetz.univ-lorraine.fr/~e58632u/sae3/src/controller/php/`
     }
 
     async loadGoogleLibs() {
@@ -21,34 +15,53 @@ export class ApiService {
         this.googleLibs = { Map, AdvancedMarkerElement, ColorScheme, Route, spherical };
     }
 
-    async phpFetch(php, object, options = null) {
-        let data = null;
+    async phpFetch(endpoint, data = {}, options = {}) {
+        let response;
+
         try {
-            options = {
-                body: JSON.stringify(object),
-                ...this.defaultFetchOptions,
-                ...options
-            }
-
-            const resp = await fetch(`${this.server}${php}.php`, options);
-            if (!resp.ok && resp.status !== 400) throw new Error(`HTTP : (${resp.status})`);
-            data = await resp.json();
-            if (!data) throw new Error(`JSON Vide`)
-
-            if (!data.success) {
-                if (data.error.code === "INTERNAL_SERVER_ERROR"
-                    || data.error.code === "MISSING_ARGUMENTS") {
-                    throw new Error(data.error.message);
-                }
-            } else if (!data.data) throw new Error(`Les données ne sont pas arrivées`)
-
-        } catch (e) {
-            if (e instanceof Error) {
-                console.log("[ERREUR] ApiService - phpFetch : ", e);
-            }
-            alert("Une erreur s'est produite sur notre serveur, il est possible que le serveur soit injoignable")
-        } finally {
-            return data;
+            response = await fetch(this.baseUrl + endpoint + '.php', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                ...options,
+            });
+        } catch (networkError) {
+            console.error("[ApiService][Network]", networkError);
+            throw new ApiError("Impossible de contacter le serveur");
         }
+
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                throw new AuthError("Session expirée ou accès refusé");
+            }
+
+            throw new ApiError(
+                `Erreur HTTP ${response.status}`,
+                response.status
+            );
+        }
+
+        let json;
+        try {
+            json = await response.json();
+        } catch {
+            throw new ApiError("Réponse serveur invalide");
+        }
+
+
+        if (!json.success) {
+            if (json.error?.code === "UNAUTHORIZED") {
+                throw new AuthError(json.error.message);
+            }
+
+            throw new AppError(
+                json.error?.message || "Erreur serveur",
+                json.error?.code
+            );
+        }
+
+        return json;
     }
 }

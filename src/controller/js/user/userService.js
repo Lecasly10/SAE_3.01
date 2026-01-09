@@ -1,6 +1,5 @@
-import { UI } from "../ui/UI.js";
 import { User } from "./user.js";
-
+import { AuthError } from "../errors/errors.js";
 
 export class UserService {
     constructor(api) {
@@ -14,138 +13,94 @@ export class UserService {
     }
 
     async auth(info) {
-        try {
-            const { name, surname, tel, mail, password } = info
-            let data;
-            if (!mail || !password) {
-                throw new Error("Password et mail requis pour la connections")
-            }
-            if (this.createAccount) {
-                if (!name || !surname || !tel) throw new Error("Des informations requises sont manquantes ! ")
-                data = await this.signin(info);
-            } else {
-                data = await this.login(mail, password);
-            }
-            return data
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - auth : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
+        const { name, surname, tel, mail, password } = info;
+
+        if (!mail || !password) {
+            throw new AuthError("Mail et mot de passe requis");
         }
+
+        if (this.createAccount) {
+            if (!name || !surname || !tel) {
+                throw new AuthError("Informations manquantes pour la création du compte");
+            }
+            return this.signin(info);
+        }
+
+        return this.login(mail, password);
     }
 
     async checkAuth() {
         try {
-            const sessionData = await this.apiService.phpFetch("user/session", {}, {
-                credentials: "include"
-            });
+            const sessionData = await this.apiService.phpFetch(
+                "user/session",
+                {},
+                { credentials: "include" }
+            );
 
-            if (!sessionData.success) return false
             if (sessionData.data.authenticated) {
-                let data = sessionData.data
-                UI.toggleAuthIcon(true)
-                this.user.userId = data.user_id;
-                this.user.mail = data.mail;
+                this.user.userId = sessionData.data.user_id;
+                this.user.mail = sessionData.data.mail;
+                return true;
+            }
 
-                return data.authenticated;
-            };
-
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - checkAuth : ", error);
-            alert("Une Erreur s'est produite !");
+            return false;
+        } catch {
             return false;
         }
     }
 
-    async update(info) {
-        try {
-            const updateData = await this.apiService.phpFetch("user/update", info)
-            return updateData;
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - update : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
-        }
+    async load() {
+        const loadData = await this.apiService.phpFetch(
+            "user/load",
+            { id: this.user.userId }
+        );
 
+        return loadData;
     }
 
-    async load() {
-        try {
-            const loadData = await this.apiService.phpFetch("user/load", { id: this.user.userId })
-            if (!loadData.success) {
-                if (loadData.error.code === "USER_NOT_FOUND") {
-                    throw new Error("L'utilisateur n'a pas été retrouvé !");
-                }
-            }
-            return loadData
-
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - load : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
-        }
+    async update(info) {
+        return this.apiService.phpFetch(
+            "user/update",
+            info
+        );
     }
 
     async login(mail, password) {
-        try {
-            const loginData = await this.apiService.phpFetch("user/login", { mail, password }, {
-                credentials: "include",
-            });
+        const loginData = await this.apiService.phpFetch(
+            "user/login",
+            { mail, password },
+            { credentials: "include" }
+        );
 
-            if (loginData.success) {
-                UI.toggleAuth(false)
-                UI.notify("Compte", "Connexion réussi !")
-                UI.toggleAuthIcon(true);
-                this.user.isLogged = true;
-                this.user.userId = loginData.data.user_id;
-                this.user.mail = loginData.data.mail;
-            }
+        this.user.isLogged = true;
+        this.user.userId = loginData.data.user_id;
+        this.user.mail = loginData.data.mail;
 
-            return loginData
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - login : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
-        }
+        return loginData;
     }
 
     async signin(info) {
-        try {
-            const signinData = await this.apiService.phpFetch("user/signin", info, {
-                credentials: "include",
-            });
+        const signinData = await this.apiService.phpFetch(
+            "user/signin",
+            info,
+            { credentials: "include" }
+        );
 
-            if (signinData.success) {
-                await this.login(info.mail, info.password)
-                this.createAccount = false
-            }
+        await this.login(info.mail, info.password);
+        this.createAccount = false;
 
-            return signinData
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - signin : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
-        }
+        return signinData;
     }
 
     async logout() {
-        try {
-            const logoutData = await this.apiService.phpFetch("user/logout", {}, {
-                credentials: "include",
-            })
+        const logoutData = await this.apiService.phpFetch(
+            "user/logout",
+            {},
+            { credentials: "include" }
+        );
 
-            if (logoutData.success) {
-                this.user.reset();
-                UI.toggleAuthIcon(false);
-                UI.toggleSetting(false);
-            }
+        this.user.reset();
 
-            return logoutData
-        } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] UserService - logout : ", error);
-            alert("Une Erreur s'est produite, Veuillez réessayer !");
-        }
+        return logoutData;
     }
 }

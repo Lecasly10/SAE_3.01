@@ -101,7 +101,7 @@ export function initSettingsEvent(services) {
             return;
         }
 
-        const res = await userService.update({
+        const formData = {
             id: user.userId,
             name: nameParam.value,
             surname: surnameParam.value,
@@ -111,16 +111,24 @@ export function initSettingsEvent(services) {
             covered: coverParam.checked,
             maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
             maxDist: maxDistParam.value ? maxDistParam.value : 0,
-        })
+        };
 
-        vehiculeService.addToStorage({ vehId: carParam.value })
+        try {
+            let resp = await userService.update(formData);
 
-        if (res.success) {
-            UI.notify("Compte", "Paramètres mise à jour avec succès")
-        } else {
-            errorS.textContent = res.error.message
-            UI.show(errorS);
+            if (resp.success) {
+                UI.notify("Compte", "Paramètres mise à jour avec succès")
+            };
+
+        } catch (error) {
+            if (error.code === "EMAIL_ALREADY_USED") {
+                errorS.textContent = error.message
+                UI.show(errorS);
+            } else {
+                UI.notify("Authentification", error.message);
+            }
         }
 
+        vehiculeService.addToStorage({ vehId: carParam.value })
     }
 }
