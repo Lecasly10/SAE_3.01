@@ -23,9 +23,16 @@ export function initMapEvent(services) {
         }
     });
 
-    goCenterButton.addEventListener("click", () => {
-        UI.notify("MAP", "Map recentré !", false, 2);
+    goCenterButton.addEventListener("click", async () => {
+        if (builder.map.userMarker.position == builder.map.defaultPosition) {
+            try {
+                await services.geolocationService.locateUser();
+            } catch (err) {
+                handleError(err, "Géolocalisation")
+            }
+        }
         builder.map.panTo(builder.userMarker.position);
+        UI.notify("MAP", "Map recentré !", false, 2);
     });
 
     //Rechercher le parking le plus proche
