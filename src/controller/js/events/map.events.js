@@ -27,8 +27,9 @@ export function initMapEvent(services) {
     goCenterButton.addEventListener("click", async () => {
         if (Utils.coordEqual(builder.userMarker.position, builder.defaultPosition)) {
             try {
-                UI.notify("MAP", "Localisation...")
+                UI.notify("MAP", "Localisation...", false, Infinity)
                 await services.geolocationService.locateUser();
+                UI.notify("MAP", "Géolocalisation réussi !");
             } catch (err) {
                 handleError(err, "Géolocalisation")
             }
