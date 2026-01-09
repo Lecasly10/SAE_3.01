@@ -146,10 +146,11 @@ export function initVehiculeEvent(services) {
         try {
             if (listvoit.value === "none" || listvoit.value === "") {
                 msg = "Véhicule créé avec succès"
-                await vehiculeService.updateVehicule(info);
+                await vehiculeService.createVehicule(info);
+
             } else {
                 msg = "Véhicule mise à jour avec succès"
-                await vehiculeService.createVehicule(info);
+                await vehiculeService.updateVehicule(info);
             }
             update();
             UI.notify("Véhicules", msg, true)
