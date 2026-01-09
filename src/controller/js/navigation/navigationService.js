@@ -21,7 +21,8 @@ export class NavigationService {
 
   async init() {
     const savedRoute = StorageService.getToJson(this.storageKey);
-    await this.retrieveRoute(savedRoute);
+    if (savedRoute)
+      await this.retrieveRoute(savedRoute);
   }
 
   async startNavigation(destination) {

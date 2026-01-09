@@ -14,7 +14,7 @@ export function initMapEvent(services) {
         if (navigation.followingRoute) {
             if (tId) clearTimeout(tId);
             navigation.pauseFollowRoute();
-            builder.map.addEventListener('dragend', () => {
+            builder.map.addListener('dragend', () => {
                 tId = setTimeout(() => {
                     navigation.startFollowRoute();
                     tId = null;

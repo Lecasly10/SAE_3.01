@@ -21,7 +21,7 @@ export class GeolocationService {
         Utils.carIcon
       );
 
-      throw error;
+      //throw error;
     }
 
   }
