@@ -27,13 +27,15 @@ export function initMapEvent(services) {
     goCenterButton.addEventListener("click", async () => {
         if (Utils.coordEqual(builder.userMarker.position, builder.defaultPosition)) {
             try {
+                UI.notify("MAP", "Localisation...")
                 await services.geolocationService.locateUser();
             } catch (err) {
                 handleError(err, "Géolocalisation")
             }
+        } else {
+            UI.notify("MAP", "Map recentré !", false, 2);
         }
         builder.map.panTo(builder.userMarker.position);
-        UI.notify("MAP", "Map recentré !", false, 2);
     });
 
     //Rechercher le parking le plus proche
