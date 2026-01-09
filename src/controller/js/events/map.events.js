@@ -24,7 +24,7 @@ export function initMapEvent(services) {
     });
 
     goCenterButton.addEventListener("click", async () => {
-        if (builder.map.userMarker.position == builder.map.defaultPosition) {
+        if (builder.userMarker.position == builder.defaultPosition) {
             try {
                 await services.geolocationService.locateUser();
             } catch (err) {
