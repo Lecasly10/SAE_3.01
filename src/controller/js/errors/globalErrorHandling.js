@@ -1,4 +1,5 @@
-import { ERROR_MESSAGES, AppError } from "./errors";
+import { ERROR_MESSAGES, AppError } from "./errors.js";
+import { UI } from "../ui/UI.js";
 
 export function handleError(error, context = "") {
     console.error(`[${context}]`, error);
