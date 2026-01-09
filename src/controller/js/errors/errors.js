@@ -1,3 +1,5 @@
+import { UI } from "../ui/UI";
+
 export const ERROR_MESSAGES = {
     EMAIL_ALREADY_EXISTS: "Cette adresse email est déjà utilisée !",
     NETWORK_ERROR: "Connexion internet indisponible !",

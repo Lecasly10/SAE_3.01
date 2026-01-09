@@ -98,7 +98,6 @@ export class UserService {
             {},
             { credentials: "include" }
         );
-
         this.user.reset();
 
         return logoutData;

@@ -1,3 +1,5 @@
+import { AppError, ERROR_MESSAGES } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
@@ -9,7 +11,7 @@ export function initVehiculeEvent(services) {
 
     carButton.addEventListener("click", async (e) => {
         handleCar(e);
-        UI.toggleVoiture(true);
+        UI.show(UI.el.voitureDiv);
     })
 
     editCar.addEventListener("click", async (e) => {
@@ -31,12 +33,13 @@ export function initVehiculeEvent(services) {
     })
 
     listvoit.addEventListener("change", (e) => {
+        e.preventDefault();
         deleteCar.disabled = listvoit.value === "none";
         editCar.disabled = listvoit.value === "none";
     });
 
     closeVoit.addEventListener("click", async () => {
-        UI.toggleVoiture(false);
+        UI.hide(UI.el.voitureDiv);
     })
 
     closeEdit.addEventListener("click", async () => {
@@ -49,7 +52,7 @@ export function initVehiculeEvent(services) {
             settingsButton.click();
             carButton.click();
         } catch (e) {
-            console.error("Erreur : ", e);
+            handleError(e);
         }
 
     }
@@ -58,21 +61,23 @@ export function initVehiculeEvent(services) {
         event.preventDefault();
         UI.resetCarEditList();
 
-        let vehData = await vehiculeService.load();
-
-        if (vehData.data) {
+        try {
+            let vehData = await vehiculeService.load();
             vehData.data.forEach(veh => {
                 listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
             });
+        } catch (error) {
+            handleError(error, "Véhicules");
         }
-
 
         listvoit.value = "none";
     }
 
     function handleCarEdit(event) {
         event.preventDefault()
-        const { plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
+        const { plateParam, vHeightParam,
+            vMotorParam, vTypeParam, editTitle } = UI.el;
+
         let b = event.target.value
         if (b == "new") {
             listvoit.value = "none"
@@ -87,9 +92,8 @@ export function initVehiculeEvent(services) {
                 vHeightParam.value = data.height;
                 vMotorParam.value = data.motor;
                 vTypeParam.value = data.type;
-            } catch (e) {
-                console.error("Erreur : ", e)
-                alert("Une erreur est survenue")
+            } catch (error) {
+                handleError(error, "Véhicules")
             }
         }
 
@@ -136,22 +140,23 @@ export function initVehiculeEvent(services) {
             type: vTypeParam.value,
             motor: vMotorParam.value
         }
-        let resp; let msg = ""
+
+        let msg;
         if (listvoit.value === "none" || listvoit.value === "") {
-            resp = await vehiculeService.createVehicule(info);
-            msg = "Véhicules créé avec succès"
+            msg = "Véhicule créé avec succès"
         } else {
-            resp = await vehiculeService.updateVehicule(info);
-            msg = "Véhicules mise à jour avec succès"
+            msg = "Véhicule mise à jour avec succès"
         }
 
-        if (resp.success) {
+        try {
+            await vehiculeService.updateVehicule(info);
             update();
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
-        } else {
+        } catch (error) {
             errorV.textContent = resp.error.message
             UI.show(errorV);
+            console.error(error)
         }
 
     }
@@ -161,17 +166,17 @@ export function initVehiculeEvent(services) {
 
         if (listvoit.value === "none" || listvoit === "") return;
 
-        const id = JSON.parse(listvoit.value).id;
-        if (confirm("Voulez vraiment supprimer ce véhicule")) {
-            let res = await vehiculeService.deleteVehicule(id);
-            if (res.success) {
+        try {
+            let id = JSON.parse(listvoit.value).id;
+
+            if (confirm("Voulez vraiment supprimer ce véhicule")) {
+                await vehiculeService.deleteVehicule(id);
                 UI.notify("Véhicules", "Véhicule supprimé avec succès !", true)
                 update();
-            } else {
-                console.error(res.error.message)
-                alert("Une erreur est survenu !")
             }
+        } catch (error) {
+            handleError(error, "Véhicule");
         }
-    }
 
+    }
 }
