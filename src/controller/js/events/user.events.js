@@ -21,6 +21,7 @@ export function initUserEvent(services) {
             await userService.logout();
             UI.hide(settings);
             UI.toggleAuthIcon(false);
+            UI.notify("Connexion", "Déconnexion réussi !")
         } catch (error) {
             console.error(error);
             UI.notify("Déconnexion", ERROR_MESSAGES["DEFAULT"]);
@@ -116,6 +117,7 @@ export function initUserEvent(services) {
             await userService.auth(userData);
             UI.toggleAuthIcon(true);
             UI.hide(auth);
+            UI.notify("Connexion", "Connexion réussi !")
         } catch (error) {
             console.error(error);
             errorI.textContent =

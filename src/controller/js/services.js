@@ -5,6 +5,7 @@ import { UserService } from "./user/userService.js";
 import { VehiculeService } from "./vehicule/vehiculeService.js";
 import { StorageService } from "./storage/storageService.js";
 import { ApiService } from "./api/apiService.js";
+import { AppError } from "./errors/errors.js";
 
 //APP SERVICES
 export class Services {
@@ -23,10 +24,6 @@ export class Services {
         this.storageService = StorageService;
         this.apiService = new ApiService();
         await this.apiService.loadGoogleLibs();
-
-        if (Object.entries(this.apiService.googleLibs).length == 0) {
-            throw new Error("L'importation de Google Map à échoué !")
-        }
 
         //MAP
         this.mapService = new MapService(this.apiService);

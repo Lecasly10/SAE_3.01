@@ -15,6 +15,8 @@ export class ApiService {
         const { Route } = await google.maps.importLibrary("routes");
 
         this.googleLibs = { Map, AdvancedMarkerElement, ColorScheme, Route, spherical };
+
+        if (!Object.entries(this.googleLibs).length) throw new ApiError("Le chargement des librairies google map à échoué");
     }
 
     async phpFetch(endpoint, data = {}, options = {}) {

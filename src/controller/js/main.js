@@ -2,28 +2,29 @@
 import { UI } from "./ui/UI.js";
 import { initEvent } from "./events/event.js";
 
-import { ApiService } from "./api/apiService.js";
 import { Services } from "./services.js";
+import { AppError, ERROR_MESSAGES, NetworkError } from "./errors/errors.js";
 
 //===LOAD===
 globalThis.addEventListener("load", async () => {
-  if (!navigator.onLine) {
-    alert("Veuillez vous connecter à internet !");
-    return;
-  }
-
   try {
     UI.toggleLoader(true);
     UI.setupUI(true);
 
+    if (!navigator.onLine) {
+      throw new NetworkError("Aucune connexion internet !");
+    }
+
     const services = new Services();
     await services.init();
 
-
     await initEvent(services);
-  } catch (e) {
-    console.error("Erreur lors de l'initialisation de l'app :", e);
-    alert("Erreur lors l'initialisation de l'application");
+  } catch (error) {
+    console.error(error);
+    UI.notify(
+      ERROR_MESSAGES[error.code] ??
+      ERROR_MESSAGES["DEFAULT"]
+    );
   } finally {
     UI.toggleLoader(false);
   }
