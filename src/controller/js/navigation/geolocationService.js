@@ -79,7 +79,10 @@ export class GeolocationService {
         }
 
       },
-      (err) => { throw new AppError("Géolocalisation impossible !", "GEOLOC_ERROR") },
+      (err) => {
+        const e = new AppError("Géolocalisation impossible !", "GEOLOC_ERROR")
+        console.warn(e);
+      },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
   }
