@@ -1,5 +1,7 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
+
 
 export function initUserEvent(services) {
     const userService = services.userService;
@@ -105,8 +107,13 @@ export function initUserEvent(services) {
 
         try {
             await userService.auth(userData);
+            UI.toggleAuthIcon(true);
+            UI.hide(auth);
         } catch (error) {
-            errorI.textContent = error.message
+            errorI.textContent =
+                ERROR_MESSAGES[error.code] ??
+                "Une erreur est survenue. Veuillez réessayer.";
+
             UI.show(errorI);
         }
     }

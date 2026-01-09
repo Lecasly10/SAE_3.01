@@ -1,3 +1,9 @@
+export const ERROR_MESSAGES = {
+    EMAIL_ALREADY_EXISTS: "Cette adresse email est déjà utilisée !",
+    AUTH_ERROR: "Erreur d’authentification !",
+    INVALID_CREDENTIALS: "Adresse mail ou mot de passe incorrect !",
+};
+
 export class AppError extends Error {
     constructor(message, code = "APP_ERROR") {
         super(message);
