@@ -142,19 +142,20 @@ export function initVehiculeEvent(services) {
         }
 
         let msg;
-        if (listvoit.value === "none" || listvoit.value === "") {
-            msg = "Véhicule créé avec succès"
-        } else {
-            msg = "Véhicule mise à jour avec succès"
-        }
 
         try {
-            await vehiculeService.updateVehicule(info);
+            if (listvoit.value === "none" || listvoit.value === "") {
+                msg = "Véhicule créé avec succès"
+                await vehiculeService.updateVehicule(info);
+            } else {
+                msg = "Véhicule mise à jour avec succès"
+                await vehiculeService.createVehicule(info);
+            }
             update();
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
         } catch (error) {
-            errorV.textContent = resp.error.message
+            errorV.textContent = error.message
             UI.show(errorV);
             console.error(error)
         }
