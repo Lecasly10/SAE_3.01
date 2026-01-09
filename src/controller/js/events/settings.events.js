@@ -122,14 +122,11 @@ export function initSettingsEvent(services) {
         };
 
         try {
-            let resp = await userService.update(formData);
+            await userService.update(formData);
+            UI.notify("Compte", "Paramètres mise à jour avec succès");
+            UI.hide(settings);
 
-            if (resp.success) {
-                UI.notify("Compte", "Paramètres mise à jour avec succès");
-                UI.hide(settings);
-
-                vehiculeService.addToStorage({ vehId: carParam.value })
-            };
+            vehiculeService.addToStorage({ vehId: carParam.value })
 
         } catch (error) {
             UI.notify("Authentification", error.message);

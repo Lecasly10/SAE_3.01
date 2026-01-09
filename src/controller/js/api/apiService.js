@@ -1,3 +1,5 @@
+import { AppError, ApiError, AuthError } from "../errors/errors";
+
 export class ApiService {
     constructor() {
         this.googleLibs = {};
