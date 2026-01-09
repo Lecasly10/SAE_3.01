@@ -35,16 +35,19 @@ export class GeolocationService {
 
 
   async locateUser() {
-    const userPosition = await new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) =>
-          resolve({ lat: coords.latitude, lng: coords.longitude }),
-        (err) => reject(err),
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-      );
-    });
-
-    if (!userPosition) throw new AppError("Géolocalisation impossible", "GEOLOC_ERROR")
+    let userPosition;
+    try {
+      userPosition = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          ({ coords }) =>
+            resolve({ lat: coords.latitude, lng: coords.longitude }),
+          (err) => reject(err),
+          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+      });
+    } catch {
+      throw new AppError("Géolocalisation impossible", "GEOLOC_ERROR")
+    }
 
     if (!this.builder.userMarker) {
       this.builder.userMarker = await addMarker(
