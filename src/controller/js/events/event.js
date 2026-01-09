@@ -4,6 +4,7 @@ import { initUserEvent } from "./user.events.js";
 import { initMapEvent } from "./map.events.js";
 import { UI } from "../ui/UI.js";
 import { ERROR_MESSAGES } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 
 export async function initEvent(services) {
   window.addEventListener('offline', () => {
@@ -28,7 +29,6 @@ export async function initEvent(services) {
     initUserEvent(services);
     initMapEvent(services);
   } catch (error) {
-    console.error(error);
-    UI.notify("App", ERROR_MESSAGES["DEFAULT"]);
+    throw new error;
   }
 }

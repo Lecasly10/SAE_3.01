@@ -1,4 +1,4 @@
-import { AppError, ERROR_MESSAGES } from "../errors/errors.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
 import { handleError } from "../errors/globalErrorHandling.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
@@ -52,7 +52,7 @@ export function initVehiculeEvent(services) {
             settingsButton.click();
             carButton.click();
         } catch (e) {
-            handleError(e);
+            handleError(e, "Véhicules");
         }
 
     }

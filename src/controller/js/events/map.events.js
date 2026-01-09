@@ -1,3 +1,5 @@
+import { AppError } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 import { UI } from "../ui/UI.js";
 
 export function initMapEvent(services) {
@@ -12,10 +14,12 @@ export function initMapEvent(services) {
         if (navigation.followingRoute) {
             if (tId) clearTimeout(tId);
             navigation.pauseFollowRoute();
-            tId = setTimeout(() => {
-                navigation.startFollowRoute();
-                tId = null;
-            }, 3000);
+            builder.map.addEventListener('dragend', () => {
+                tId = setTimeout(() => {
+                    navigation.startFollowRoute();
+                    tId = null;
+                }, 3000);
+            })
         }
     });
 
@@ -62,18 +66,14 @@ export function initMapEvent(services) {
     async function handleClosestButton(event) {
         event.preventDefault();
         UI.toggleLoader(true);
+        UI.toggleNavigationUI("CHARGEMENT...");
 
         try {
-            UI.toggleNavigationUI("CHARGEMENT...");
             const closest = await navigation.closestParking();
-            if (closest) {
-                handleNavigation(closest.data);
-            }
+            handleNavigation(closest.data);
         } catch (error) {
             UI.setupUI();
-            if (error instanceof Error)
-                console.error("[ERREUR] map.events - handleClosestButton :", error);
-            alert("Une erreur s'est produite, veuillez réesseyez !")
+            handleError(error, "Navigation");
         } finally {
             UI.toggleLoader(false);
         }
@@ -83,6 +83,7 @@ export function initMapEvent(services) {
     async function handleParkingClick(event, link) {
         event.preventDefault();
         UI.toggleLoader(true);
+        UI.toggleNavigationUI("CHARGEMENT...");
 
         try {
             const lat = parseFloat(link.dataset.lat);
@@ -90,16 +91,14 @@ export function initMapEvent(services) {
             const name = link.dataset.name;
             const id = link.dataset.id;
 
-            if (!id || isNaN(lat) || isNaN(lng)) {
-                throw new Error("Coordonnées ou identifiant invalides");
+            if (!id || isNaN(lat) || isNaN(lng) || !name) {
+                throw new AppError("Données invalides");
             }
 
             const destination = { id, lat, lng, name };
             handleNavigation(destination);
         } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] map.events - handleParkingClick :", error);
-            alert("Une erreur s'est produite, veuillez réesseyez !")
+            handleError(error, "Navigation")
         } finally {
             UI.toggleLoader(false);
         }
@@ -109,22 +108,18 @@ export function initMapEvent(services) {
     async function handleSearchBoxSubmit(event) {
         event.preventDefault();
         const query = UI.getSearchQuery().trim();
+
         if (!query) {
             UI.toggleResultContainer(false);
             return;
         }
-
         UI.toggleLoader(true);
-
         try {
             const result = await services.apiService.phpFetch("parking/search", { search: query });
             UI.setResultTitle("Résultats");
             handleParkingList(result.data);
-
         } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] map.events - handleSearchBoxSubmit :", error);
-            alert("Une erreur s'est produite, veuillez réesseyez !");
+            handleError(error, "Parkings")
         } finally {
             UI.toggleLoader(false);
         }
@@ -141,12 +136,11 @@ export function initMapEvent(services) {
             UI.setResultTitle("Tous les Parkings");
             handleParkingList(result.data);
         } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREUR] map.events - handleListButton :", error);
-            alert("Une erreur s'est produite, veuillez réesseyez !")
+            handleError(error, "Parkings")
         } finally {
-            UI.toggleLoader(false);
+            UI.toggleLoader(false)
         }
+
     }
 
     // Détails d’un parking
@@ -163,15 +157,10 @@ export function initMapEvent(services) {
             const result = await services.apiService.phpFetch("parking/load", { id });
             const parking = result.data;
 
-            if (!parking) throw new Error("Aucune donnée de stationnement trouvée.");
-
             UI.setResultTitle(parking.nom);
             displayParkingInfo(parking);
         } catch (error) {
-            if (error instanceof Error)
-                console.error("[ERREURR] map.events - handleParkingInfoClick : ", error);
-            UI.setResultTitle("Erreur");
-            UI.setResultMessage("Impossible de charger les informations du parking.");
+            handleError(error, "Informations")
         } finally {
             UI.toggleLoader(false);
         }

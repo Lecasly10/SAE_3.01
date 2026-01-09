@@ -3,7 +3,8 @@ import { UI } from "./ui/UI.js";
 import { initEvent } from "./events/event.js";
 
 import { Services } from "./services.js";
-import { AppError, ERROR_MESSAGES, NetworkError } from "./errors/errors.js";
+import { NetworkError } from "./errors/errors.js";
+import { handleError } from "./errors/globalErrorHandling.js";
 
 //===LOAD===
 globalThis.addEventListener("load", async () => {
@@ -19,12 +20,9 @@ globalThis.addEventListener("load", async () => {
     await services.init();
 
     await initEvent(services);
+
   } catch (error) {
-    console.error(error);
-    UI.notify(
-      ERROR_MESSAGES[error.code] ??
-      ERROR_MESSAGES["DEFAULT"]
-    );
+    handleError(error, "APP");
   } finally {
     UI.toggleLoader(false);
   }

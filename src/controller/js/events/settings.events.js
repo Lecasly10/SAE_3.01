@@ -1,11 +1,12 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 
 export function initSettingsEvent(services) {
     const user = services.user;
     const userService = services.userService;
     const vehiculeService = services.vehiculeService;
-    const { submitSett, settingsButton, closeSettingButton, settings } = UI.el;
+    const { submitSett, settingsButton, closeSettingButton } = UI.el;
 
     submitSett.addEventListener("click", async (e) => {
         handleUpdate(e)
@@ -16,14 +17,14 @@ export function initSettingsEvent(services) {
     });
 
     closeSettingButton.addEventListener("click", (e) => {
-        UI.toggleSetting(false);
+        UI.hide(UI.el.settings);
     });
 
     function handleSettingButton(event) {
         event.preventDefault();
         if (user.isLogged) {
             handleSettings();
-            UI.toggleSetting(true);
+            UI.show(UI.el.settings);
         } else {
             UI.toggleAuth(true);
         }
@@ -42,7 +43,7 @@ export function initSettingsEvent(services) {
             userData = await userService.load();
             vehData = await vehiculeService.load();
         } catch (error) {
-            UI.notify("Paramètres", error.message);
+            handleError(e, "Paramètres");
             return;
         }
 
@@ -124,15 +125,12 @@ export function initSettingsEvent(services) {
         try {
             await userService.update(formData);
             UI.notify("Compte", "Paramètres mise à jour avec succès");
-            UI.hide(settings);
+            UI.hide(UI.el.settings);
 
             vehiculeService.addToStorage({ vehId: carParam.value })
 
         } catch (error) {
-            console.error(error);
-            UI.notify("Utilisateur",
-                ERROR_MESSAGES[error.code] ??
-                ERROR_MESSAGES["DEFAULT"])
+            handleError(e, "Paramètres");
         }
 
     }

@@ -3,6 +3,7 @@ import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 import { StorageService } from "../storage/storageService.js";
+import { AppError } from "../errors/errors.js";
 
 const DESTINATION_RADIUS_KM = 0.05;
 
@@ -21,10 +22,9 @@ export class NavigationService {
   async init() {
     try {
       const savedRoute = StorageService.getToJson(this.storageKey);
-      if (savedRoute && savedRoute.name) await this.retrieveRoute(savedRoute);
+      await this.retrieveRoute(savedRoute);
     } catch (e) {
-      console.error("Erreur pendant la récup du trajet : ", e);
-      UI.setupUI();
+      throw new error
     }
   }
 
@@ -41,7 +41,6 @@ export class NavigationService {
     if (!this.route) return
     const destination = this.destination
     const { confirm, cancel } = UI.togglePreview(destination);
-    const { crossIcon } = UI.el
     const bounds = this.route.bounds;
     const mapService = this.mapService;
 
@@ -56,8 +55,7 @@ export class NavigationService {
     });
 
     cancel.addEventListener("click", (e) => {
-      const stopEvent = new Event("click");
-      crossIcon.dispatchEvent(stopEvent);
+      UI.el.crossIcon.click();
     });
   }
 
@@ -70,9 +68,13 @@ export class NavigationService {
   }
 
   async retrieveRoute(saved) {
-    UI.notify("Votre trajet a été retrouvé !")
-    await this.startNavigation(saved);
-    this.startPreview();
+    try {
+      await this.startNavigation(saved);
+      UI.notify("Votre trajet a été retrouvé !")
+      this.startPreview();
+    } catch (error) {
+      throw new error
+    }
   }
 
   async stopNavigation() {
@@ -84,24 +86,11 @@ export class NavigationService {
   }
 
   async closestParking() {
-    try {
-      let position = this.mapService.userMarker.position;
+    let position = this.mapService.userMarker?.position;
 
-      const resultat = await this.apiService.phpFetch("parking/closest", position);
-      if (resultat.success) return resultat
-      else if (resultat.error.code === "NOT_FOUND") {
-        alert("Parking le plus proche non trouvé")
-      }
-      else {
-        throw new Error(resultat.error.message)
-      }
-
-    } catch (error) {
-      UI.setupUI();
-      if (error instanceof Error)
-        console.error("[ERREUR] NavigationService - closestParking : ", error);
-      alert("Une erreur est survenue, veuillez réesseyez !")
-    }
+    const resultat = await this.apiService.phpFetch(
+      "parking/closest", position);
+    return resultat
   }
 
   followRoute() {
@@ -215,24 +204,20 @@ export class NavigationService {
   async checkParkingAvailability() {
     if (!this.destination) return null;
 
-    try {
-      const res = await this.apiService.phpFetch("parking/getAvailablePlace", {
-        id: this.destination.id,
-        lat: this.destination.lat,
-        lng: this.destination.lng
-      });
-      return res.data.libre == -1 || res.data.libre == null ? null : res.data.libre;
-    } catch (err) {
-      if (err instanceof Error)
-        console.error("[ERREUR] NavigationService - checkParkingAvailability : ", err);
-      return null;
-    }
+    const res = await this.apiService.phpFetch("parking/getAvailablePlace", {
+      id: this.destination.id,
+      lat: this.destination.lat,
+      lng: this.destination.lng
+    });
+
+    return res.data?.libre == -1 || res.data?.libre == null ? null : res.data.libre;
   }
 
   async buildRoute() {
     const mapService = this.mapService;
-    if (!this.destination || !mapService?.userMarker) return;
-    if (this.route) return;
+    if (!this.destination
+      || !mapService.userMarker
+      || this.route) return;
 
     const { Route } = this.apiService.googleLibs;
     const origin = mapService.userMarker.position;
@@ -256,7 +241,7 @@ export class NavigationService {
       fields: ["path"],
     });
 
-    if (!routes?.length) return alert("Aucun itinéraire trouvé");
+    if (!routes?.length) throw new AppError("Aucun itinéraires trouvé")
 
     const route = routes[0];
     const polylines = route.createPolylines();
@@ -273,7 +258,7 @@ export class NavigationService {
   removeRoute() {
     if (!this.route) return;
     this.route.polylines.forEach((p) => p.setMap(null));
-    this.route.marker?.setMap(null);
+    this.route.marker.setMap(null);
     this.route = null;
   }
 }

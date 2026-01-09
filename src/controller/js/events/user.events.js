@@ -1,7 +1,7 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 import { ERROR_MESSAGES } from "../errors/errors.js";
-
+import { handleError } from "../errors/globalErrorHandling.js";
 
 export function initUserEvent(services) {
     const userService = services.userService;
@@ -21,10 +21,9 @@ export function initUserEvent(services) {
             await userService.logout();
             UI.hide(settings);
             UI.toggleAuthIcon(false);
-            UI.notify("Connexion", "Déconnexion réussi !")
+            UI.notify("Compte", "Déconnexion réussi !")
         } catch (error) {
-            console.error(error);
-            UI.notify("Déconnexion", ERROR_MESSAGES["DEFAULT"]);
+            handleError(e, "Compte");
         }
     })
 
@@ -117,7 +116,7 @@ export function initUserEvent(services) {
             await userService.auth(userData);
             UI.toggleAuthIcon(true);
             UI.hide(auth);
-            UI.notify("Connexion", "Connexion réussi !")
+            UI.notify("Compte", "Connexion réussi !")
         } catch (error) {
             console.error(error);
             errorI.textContent =
