@@ -18,14 +18,13 @@ export class GeolocationService {
     } catch (error) {
       userPosition = this.builder.defaultPosition;
 
-      if (this.builder.debug) {
-        this.builder.userMarker = await addMarker(
-          this.builder,
-          userPosition,
-          "Votre Position",
-          Utils.carIcon
-        );
-      }
+      this.builder.userMarker = await addMarker(
+        this.builder,
+        userPosition,
+        "Votre Position",
+        Utils.carIcon
+      );
+
 
       handleError(error, "Géolocalisation");
     }
@@ -58,12 +57,11 @@ export class GeolocationService {
       this.builder.userMarker.position = userPosition;
     }
 
-    this.builder.map.setCenter(userPosition);
     return userPosition;
   }
 
   startWatching() {
-    if (this.watchId || this.builder.debug) return;
+    if (this.watchId) return;
 
     this.watchId = navigator.geolocation.watchPosition(
       async ({ coords }) => {

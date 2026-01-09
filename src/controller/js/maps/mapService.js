@@ -10,7 +10,6 @@ export class MapService {
     this.map = null;
     this.userMarker = null;
     this.nightMode = false;
-    this.debug = true;
   }
 
   async init() {
