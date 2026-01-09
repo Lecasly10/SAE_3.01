@@ -1,5 +1,5 @@
 import { AppError } from "../errors/errors.js";
-import { handleError } from "../errors/globalErrorHandling.js";
+import { AppError } from "../errors/globalErrorHandling.js";
 import { addMarker } from "../maps/addMarkers.js";
 import { Utils } from "../utils.js";
 
@@ -21,7 +21,8 @@ export class GeolocationService {
         "Votre Position",
         Utils.carIcon
       );
-      throw new error
+
+      throw error;
     }
 
   }

@@ -20,12 +20,8 @@ export class NavigationService {
   }
 
   async init() {
-    try {
-      const savedRoute = StorageService.getToJson(this.storageKey);
-      await this.retrieveRoute(savedRoute);
-    } catch (e) {
-      throw new error
-    }
+    const savedRoute = StorageService.getToJson(this.storageKey);
+    await this.retrieveRoute(savedRoute);
   }
 
   async startNavigation(destination) {
