@@ -1,5 +1,4 @@
 import { AppError } from "../errors/errors.js";
-import { AppError } from "../errors/globalErrorHandling.js";
 import { addMarker } from "../maps/addMarkers.js";
 import { Utils } from "../utils.js";
 
