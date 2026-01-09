@@ -1,10 +1,9 @@
-import { UI } from "../ui/UI";
-
 export const ERROR_MESSAGES = {
     EMAIL_ALREADY_EXISTS: "Cette adresse email est déjà utilisée !",
     NETWORK_ERROR: "Connexion internet indisponible !",
     AUTH_ERROR: "Erreur d’authentification !",
     INVALID_CREDENTIALS: "Adresse mail ou mot de passe incorrect !",
+    GEOLOC_ERROR: "Géolocalisation indisponible !",
     DEFAULT: "Une erreur est survenue. Veuillez réessayer !",
 };
 

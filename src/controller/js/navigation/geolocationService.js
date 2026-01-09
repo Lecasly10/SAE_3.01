@@ -1,4 +1,5 @@
 import { AppError } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 import { addMarker } from "../maps/addMarkers.js";
 import { Utils } from "../utils.js";
 
@@ -10,21 +11,29 @@ export class GeolocationService {
   }
 
   async init() {
-    try {
-      await this.locateUser();
-      this.startWatching();
-    } catch (error) {
-      if (this.builder.debug) this.builder.userMarker = await addMarker(
-        this.builder,
-        { lat: 49.119178, lng: 6.168469 },
-        "Votre Position",
-        Utils.carIcon
-      );
+    let userPosition = this.builder.defaultPosition;
 
-      //throw error;
+    try {
+      userPosition = await this.locateUser();
+    } catch (error) {
+      userPosition = this.builder.defaultPosition;
+
+      if (this.builder.debug) {
+        this.builder.userMarker = await addMarker(
+          this.builder,
+          userPosition,
+          "Votre Position",
+          Utils.carIcon
+        );
+      }
+
+      handleError(error, "Géolocalisation");
     }
 
+    this.builder.map.setCenter(userPosition);
+    this.startWatching();
   }
+
 
   async locateUser() {
     const userPosition = await new Promise((resolve, reject) => {
@@ -36,7 +45,7 @@ export class GeolocationService {
       );
     });
 
-    if (!userPosition) throw new AppError("Géolocalisation impossible")
+    if (!userPosition) throw new AppError("Géolocalisation impossible", "GEOLOC_ERROR")
 
     if (!this.builder.userMarker) {
       this.builder.userMarker = await addMarker(
@@ -72,7 +81,7 @@ export class GeolocationService {
         }
 
       },
-      (err) => { throw new AppError("Géolocalisation impossible !") },
+      (err) => { throw new AppError("Géolocalisation impossible !", "GEOLOC_ERROR") },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
   }
