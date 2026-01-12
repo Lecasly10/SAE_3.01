@@ -28,26 +28,27 @@ export class MapService {
     });
 
     if (!this.map) throw new AppError("La création de la map à échoué !")
-    this.nightMode();
+    this.setNightMode();
     this.startMapMonitor();
   }
 
   setNightMode() {
-    const now = new Date();
-    const hour = now.getHours();
-    const isNight = hour >= 20 || hour < 6;
-
-    if (isNight && !this.nightMode) {
-      this.nightMode = true;
+    this.nightMode = this.detectNight();
+    if (this.nightMode)
       this.map.setOptions({
         mapId: darkId,
       });
-    } else if (!isNight && this.nightMode) {
-      this.nightMode = false;
+    else
       this.map.setOptions({
         mapId: lightId,
       });
-    }
+  }
+
+  detectNight() {
+    const now = new Date();
+    const hour = now.getHours();
+
+    return hour >= 20 || hour < 6;
   }
 
   startMapMonitor() {

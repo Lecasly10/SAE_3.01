@@ -22,7 +22,7 @@ globalThis.addEventListener("load", async () => {
     await initEvent(services);
 
   } catch (error) {
-    handleError(error, "APP");
+    handleError(error, "Initialisation");
   } finally {
     UI.toggleLoader(false);
   }
