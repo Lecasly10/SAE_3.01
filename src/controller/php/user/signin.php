@@ -50,7 +50,7 @@ try {
                 sendError('Compte créé mais erreur dans la création des préférences');
             }
         }
-        sendSucces();
+        sendSuccess();
     }
 } catch (Exception $e) {
     sendError($e->getMessage());
