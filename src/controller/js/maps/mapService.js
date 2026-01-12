@@ -72,7 +72,7 @@ export class MapService {
   }
 
   setCenter(pos = null) {
-    this.map.setCenter(pos ?? this.userMarker.position);
+    this.map.panTo(pos ?? this.userMarker.position);
   }
 
   setZoom(zoom = null) {

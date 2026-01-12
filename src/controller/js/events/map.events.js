@@ -25,7 +25,7 @@ export function initMapEvent(services) {
     });
 
     goCenterButton.addEventListener("click", async () => {
-        if (Utils.coordEqual(builder.userMarker.position, builder.defaultPosition)) {
+        if (Utils.isCoordObjectEqual(builder.userMarker.position, builder.defaultPosition)) {
             try {
                 UI.notify("MAP", "Localisation...", false, 10);
                 await services.geolocationService.locateUser();
@@ -36,7 +36,7 @@ export function initMapEvent(services) {
         } else {
             UI.notify("MAP", "Map recentré !", false, 2);
         }
-        builder.map.panTo(builder.userMarker.position);
+        builder.setCenter();
     });
 
     //Rechercher le parking le plus proche
