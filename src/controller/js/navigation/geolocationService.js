@@ -1,35 +1,27 @@
 import { AppError } from "../errors/errors.js";
 import { handleError } from "../errors/globalErrorHandling.js";
-import { addMarker } from "../maps/addMarkers.js";
-import { Utils } from "../utils.js";
 
 export class GeolocationService {
   constructor(mapService, apiService) {
-    this.builder = mapService;
+    this.mapService = mapService;
     this.apiService = apiService;
     this.watchId = null;
   }
 
   async init() {
-    let userPosition = this.builder.defaultPosition;
+    let userPosition = this.mapService.defaultPosition;
 
     try {
       userPosition = await this.locateUser();
     } catch (error) {
-      userPosition = this.builder.defaultPosition;
+      userPosition = this.mapService.defaultPosition;
 
-      this.builder.userMarker = await addMarker(
-        this.builder,
-        userPosition,
-        "Votre Position",
-        Utils.carIcon
-      );
-
+      await this.mapService.setUserMarker(userPosition, "Votre position")
 
       handleError(error, "Géolocalisation");
     }
 
-    this.builder.map.setCenter(userPosition);
+    this.mapService.map.setCenter(userPosition);
     this.startWatching();
   }
 
@@ -49,16 +41,7 @@ export class GeolocationService {
       throw new AppError("Géolocalisation impossible", "GEOLOC_ERROR")
     }
 
-    if (!this.builder.userMarker) {
-      this.builder.userMarker = await addMarker(
-        this.builder,
-        userPosition,
-        "Votre Position",
-        Utils.carIcon
-      );
-    } else {
-      this.builder.userMarker.position = userPosition;
-    }
+    await this.mapService.setUserMarker(userPosition, "Votre position");
 
     return userPosition;
   }
@@ -72,17 +55,7 @@ export class GeolocationService {
       async ({ coords }) => {
         const userPosition = { lat: coords.latitude, lng: coords.longitude };
 
-        if (!this.builder.userMarker) {
-          this.builder.userMarker = await addMarker(
-            this.builder,
-            userPosition,
-            "Votre Position",
-            Utils.carIcon
-          );
-        } else {
-          this.builder.userMarker.position = userPosition;
-        }
-
+        await this.mapService.setUserMarker(userPosition, "Votre position")
       },
       (err) => {
         if (!notified) {

@@ -1,5 +1,6 @@
 export const ERROR_MESSAGES = {
     EMAIL_ALREADY_EXISTS: "Cette adresse email est déjà utilisée !",
+    ROUTE_NOT_FOUND: "Aucun trajet trouvé !",
     NETWORK_ERROR: "Connexion internet indisponible !",
     AUTH_ERROR: "Erreur d’authentification !",
     INVALID_CREDENTIALS: "Adresse mail ou mot de passe incorrect !",

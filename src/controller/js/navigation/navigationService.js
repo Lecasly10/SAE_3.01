@@ -1,9 +1,9 @@
-import { addMarker } from "../maps/addMarkers.js";
 import { GeolocationService } from "./geolocationService.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 import { StorageService } from "../storage/storageService.js";
 import { AppError } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 
 const DESTINATION_RADIUS_KM = 0.05;
 
@@ -70,7 +70,7 @@ export class NavigationService {
       UI.notify("Votre trajet a été retrouvé !")
       this.startPreview();
     } catch (error) {
-      throw new error
+      handleError(error, "Navigation");
     }
   }
 
@@ -223,7 +223,7 @@ export class NavigationService {
       lng: this.destination.lng,
     };
 
-    const marker = await addMarker(
+    const marker = await mapService.addMarker(
       mapService,
       destination,
       `Votre destination : ${this.destination.name}`,
@@ -238,7 +238,7 @@ export class NavigationService {
       fields: ["path"],
     });
 
-    if (!routes?.length) throw new AppError("Aucun itinéraires trouvé")
+    if (!routes?.length) throw new AppError("Aucun itinéraires trouvé", "ROUTE_NOT_FOUND")
 
     const route = routes[0];
     const polylines = route.createPolylines();

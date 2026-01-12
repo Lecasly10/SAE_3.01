@@ -1,9 +1,11 @@
+import { AppError } from "../errors/errors.js";
+
 //Créer un marqueur sur la map
 export function addMarker(builder, pos, message, iconURL) {
   const { AdvancedMarkerElement } = builder.apiService.googleLibs;
 
   if (!builder.map) {
-    throw new Error("La carte n'est pas initialisée !");
+    throw new AppError("La carte n'est pas initialisée !");
   }
 
   const icon = document.createElement("img");
