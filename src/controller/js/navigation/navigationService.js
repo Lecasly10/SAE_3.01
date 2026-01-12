@@ -6,6 +6,7 @@ import { AppError } from "../errors/errors.js";
 import { handleError } from "../errors/globalErrorHandling.js";
 
 const DESTINATION_RADIUS_KM = 0.05;
+const MIN_FREE_PLACE = 1;
 
 export class NavigationService {
   constructor(mapService, apiService) {
@@ -118,12 +119,10 @@ export class NavigationService {
     const heading =
       google.maps.geometry.spherical.computeHeading(from, to);
 
-    mapService.map.moveCamera({
-      center: position,
-      heading,
-      tilt: 60,
-      zoom: 22,
-    });
+    mapService.setCamera(heading, mapService.navigationTilt);
+    mapService.setCenter();
+    mapService.setZoom(mapService.navigationZoom);
+
   }
 
   startFollowRoute() {
@@ -149,10 +148,7 @@ export class NavigationService {
     this.pauseFollowRoute();
     const mapService = this.mapService;
 
-    mapService.map.moveCamera({
-      heading: 0,
-      tilt: mapService.defaultAngle
-    });
+    mapService.setCamera(0, mapService.defaultTilt);
   }
 
 
@@ -171,24 +167,28 @@ export class NavigationService {
         return;
       }
 
-      const placesLibres = await this.checkParkingAvailability();
-      if (placesLibres == null) return;
+      const placesCheck = await this.checkParkingAvailability();
 
-      if (placesLibres < 1 && !this.redirecting) {
-        this.redirecting = true;
-        const newDest = await this.closestParking();
-        if (newDest) {
-          UI.notify("REDIRECTION", "Direction vers le parking le plus proche disponible")
-          UI.toggleNavigationUI("CHARGEMENT...");
-          await this.stopNavigation();
-          await this.startNavigation(newDest.data);
-          this.followRoute();
-          this.startFollowRoute();
-          UI.toggleNavigationUI(this.destination.name);
-        }
-        this.redirecting = false;
-      }
+      if (placesCheck == null) return;
+      if (!placesCheck && !this.redirecting)
+        this.startRedirection();
+
     }, 30000);
+  }
+
+  async startRedirection() {
+    this.redirecting = true;
+    const newDest = await this.closestParking();
+    if (newDest) {
+      UI.notify("REDIRECTION", "Direction vers le parking le plus proche disponible")
+      UI.toggleNavigationUI("CHARGEMENT...");
+      await this.stopNavigation();
+      await this.startNavigation(newDest.data);
+      this.followRoute();
+      this.startFollowRoute();
+      UI.toggleNavigationUI(this.destination.name);
+    }
+    this.redirecting = false;
   }
 
   stopParkingMonitor() {
@@ -207,7 +207,11 @@ export class NavigationService {
       lng: this.destination.lng
     });
 
-    return res.data?.libre == -1 || res.data?.libre == null ? null : res.data.libre;
+    if (res.data?.libre == -1 || res.data?.libre == null)
+      return null //parking non smart ou api cassée
+    else
+      return res.data?.libre < MIN_FREE_PLACE;
+
   }
 
   async buildRoute() {

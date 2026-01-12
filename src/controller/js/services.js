@@ -10,7 +10,6 @@ import { UI } from "./ui/UI.js";
 //APP SERVICES
 export class Services {
     constructor() {
-        this.areLoaded = false;
         this.mapService = null;
         this.apiService = null;
         this.storageService = null;
@@ -49,6 +48,5 @@ export class Services {
         this.vehiculeService = new VehiculeService(this.user, this.apiService);
         this.vehiculeService.init();
 
-        this.areLoaded = true;
     }
 }

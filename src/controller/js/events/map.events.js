@@ -4,18 +4,18 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initMapEvent(services) {
-    const builder = services.mapService
+    const mapService = services.mapService
     const navigation = services.navigationService
 
     const { autoSearchButton, searchBox, listButton,
         crossIcon, closeButton, goCenterButton } = UI.el
 
     let tId = null;
-    builder.map.addListener('dragstart', () => {
+    mapService.map.addListener('dragstart', () => {
         if (navigation.followingRoute) {
             if (tId) clearTimeout(tId);
             navigation.pauseFollowRoute();
-            builder.map.addListener('dragend', () => {
+            mapService.map.addListener('dragend', () => {
                 tId = setTimeout(() => {
                     navigation.startFollowRoute();
                     tId = null;
@@ -25,7 +25,7 @@ export function initMapEvent(services) {
     });
 
     goCenterButton.addEventListener("click", async () => {
-        if (Utils.isCoordObjectEqual(builder.userMarker.position, builder.defaultPosition)) {
+        if (Utils.isCoordObjectEqual(mapService.userMarker.position, mapService.defaultPosition)) {
             try {
                 UI.notify("MAP", "Localisation...", false, 10);
                 await services.geolocationService.locateUser();
@@ -36,7 +36,7 @@ export function initMapEvent(services) {
         } else {
             UI.notify("MAP", "Map recentré !", false, 2);
         }
-        builder.setCenter();
+        mapService.setCenter();
     });
 
     //Rechercher le parking le plus proche
@@ -317,7 +317,7 @@ export function initMapEvent(services) {
         UI.setupUI();
         UI.emptySearchBox();
 
-        builder.map.setZoom(builder.defaultZoom);
-        if (builder.userMarker) builder.map.panTo(builder.userMarker.position);
+        mapService.setZoom();
+        mapService.setCenter();
     }
 }

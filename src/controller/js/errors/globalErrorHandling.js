@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES, AppError } from "./errors.js";
 import { UI } from "../ui/UI.js";
 
-export function handleError(error, context = "") {
+export function handleError(error, context = null) {
     console.error(`[${context}]`, error);
 
     let message = ERROR_MESSAGES.DEFAULT;

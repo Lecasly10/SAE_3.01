@@ -5,10 +5,12 @@ import { Utils } from "../utils.js";
 export class MapService {
   constructor(api) {
     this.apiService = api
+    this.map = null;
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 20;
-    this.defaultAngle = 0;
-    this.map = null;
+    this.navigationZoom = 22;
+    this.navigationTilt = 60;
+    this.defaultTilt = 0;
     this.userMarker = null;
     this.nightMode = false;
     this.mapMonitor = null;
@@ -60,8 +62,10 @@ export class MapService {
   }
 
   stopMapMonitor() {
-    clearInterval(this.mapMonitor);
-    this.mapMonitor = null;
+    if (this.mapMonitor) {
+      clearInterval(this.mapMonitor);
+      this.mapMonitor = null;
+    }
   }
 
   setCamera(heading, tilt) {
