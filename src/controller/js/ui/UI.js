@@ -63,7 +63,7 @@ export class UI {
     UI.el.topBar.barTitle.textContent = destinationName;
   }
 
-  static togglePreview(destination) {
+  static startDestinationPreview(destination) {
     UI.setupUI();
     UI.emptyResultBox();
 
@@ -100,16 +100,18 @@ export class UI {
     settingsVehiculesList.add(new Option("Aucun", "none", true, true));
   }
 
-  static toggleAuthIcon(show = false) {
+  static switchToLoggedIcon() {
     const { userIcon } = UI.el.bottomBar
-    if (show) {
-      userIcon.classList.add("fa-user-circle-o")
-      userIcon.classList.remove("fa-user-plus")
-    } else {
-      userIcon.classList.remove("fa-user-circle-o")
-      userIcon.classList.add("fa-user-plus")
-    }
 
+    userIcon.classList.add("fa-user-circle-o")
+    userIcon.classList.remove("fa-user-plus")
+  }
+
+  static switchToLoginIcon() {
+    const { userIcon } = UI.el.bottomBar
+
+    userIcon.classList.remove("fa-user-circle-o")
+    userIcon.classList.add("fa-user-plus")
   }
 
   static toggleInsc(show = false) {

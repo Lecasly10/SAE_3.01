@@ -71,9 +71,9 @@ const settingsPopup = {
 const vehiculePopup = {
     vehiculeContainer: get("voiture"),
     vehiculeList: get("carTab"),
-    deleteCarButton: get("deleteCar"),
-    addCarButton: get("addCar"),
-    editCarButton: get("editCar"),
+    deleteVehiculeButton: get("deleteCar"),
+    addVehiculeButton: get("addCar"),
+    editVehiculeButton: get("editCar"),
     closeVehiculeButton: get("closeVoitButton"),
 }
 

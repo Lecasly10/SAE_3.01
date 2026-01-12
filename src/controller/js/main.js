@@ -9,7 +9,8 @@ import { handleError } from "./errors/globalErrorHandling.js";
 //===LOAD===
 globalThis.addEventListener("load", async () => {
   try {
-    UI.toggleLoader(true);
+    const { loader } = UI.el.topBar;
+    UI.show(loader);
     UI.setupUI(true);
 
     if (!navigator.onLine) {
@@ -24,6 +25,6 @@ globalThis.addEventListener("load", async () => {
   } catch (error) {
     handleError(error, "Initialisation");
   } finally {
-    UI.toggleLoader(false);
+    UI.hide(loader);
   }
 });

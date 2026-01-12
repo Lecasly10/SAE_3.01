@@ -6,48 +6,59 @@ import { Utils } from "../utils.js";
 export function initVehiculeEvent(services) {
     const user = services.user
     const vehiculeService = services.vehiculeService;
-    const { carButton, editCar, addCar, deleteCar,
-        submitEditCar, listvoit, closeVoit, closeEdit } = UI.el
 
-    carButton.addEventListener("click", async (e) => {
+    const { settingsButton } = UI.el.bottomBar
+
+    const { vehiculeList, vehiculeContainer,
+        editVehiculeButton, addVehiculeButton,
+        deleteVehiculeButton, closeVehiculeButton
+    } = UI.el.vehiculePopup;
+
+    const {
+        vehiculeEditContainer, vehiculeEditContainerTitle,
+        submitVehiculeButton, closeVehiculeEditButton,
+        vehiculePlateInput, vehiculeHeightInput,
+        vehiculeMotorInput, vehiculeTypeInput, errorTextVehicule
+    } = UI.el.vehiculeEditPopup;
+
+    settingsPopup.vehiculeButton.addEventListener("click", async (e) => {
         handleCar(e);
-        UI.show(UI.el.voitureDiv);
+        UI.show(vehiculeContainer);
     })
 
-    editCar.addEventListener("click", async (e) => {
+    editVehiculeButton.addEventListener("click", async (e) => {
         handleCarEdit(e);
-        UI.toggleVoitureEdit(true);
+        UI.show(vehiculeEditContainer);
     })
 
-    addCar.addEventListener("click", async (e) => {
+    addVehiculeButton.addEventListener("click", async (e) => {
         handleCarEdit(e);
-        UI.toggleVoitureEdit(true);
+        UI.show(vehiculeEditContainer);
     })
 
-    deleteCar.addEventListener("click", async (e) => {
+    deleteVehiculeButton.addEventListener("click", async (e) => {
         handleDeleteCar(e);
     })
 
-    submitEditCar.addEventListener("click", async (e) => {
+    submitVehiculeButton.addEventListener("click", async (e) => {
         await handleCarEditSubmit(e);
     })
 
-    listvoit.addEventListener("change", (e) => {
+    vehiculeList.addEventListener("change", (e) => {
         e.preventDefault();
-        deleteCar.disabled = listvoit.value === "none";
-        editCar.disabled = listvoit.value === "none";
+        deleteVehiculeButton.disabled = vehiculeList.value === "none" || vehiculeList.value === "";
+        editVehiculeButton.disabled = vehiculeList.value === "none" || vehiculeList.value === "";
     });
 
-    closeVoit.addEventListener("click", async () => {
-        UI.hide(UI.el.voitureDiv);
+    closeVehiculeButton.addEventListener("click", async () => {
+        UI.hide(vehiculeContainer);
     })
 
-    closeEdit.addEventListener("click", async () => {
-        UI.toggleVoitureEdit(false);
+    closeVehiculeEditButton.addEventListener("click", async () => {
+        UI.hide(UI.el.vehiculeEditPopup.vehiculeEditContainer);
     })
 
     function update() {
-        const { settingsButton } = UI.el
         try {
             settingsButton.click();
             carButton.click();
@@ -64,35 +75,33 @@ export function initVehiculeEvent(services) {
         try {
             let vehData = await vehiculeService.load();
             vehData.data.forEach(veh => {
-                listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
+                vehiculeList.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
             });
         } catch (error) {
             if (error?.code !== "NOT_FOUND")
                 handleError(error, "Véhicules");
         }
 
-        listvoit.value = "none";
+        vehiculeList.value = "none";
     }
 
     function handleCarEdit(event) {
-        event.preventDefault()
-        const { plateParam, vHeightParam,
-            vMotorParam, vTypeParam, editTitle } = UI.el;
+        event.preventDefault();
 
-        let b = event.target.value
+        let b = event.target.value;
         if (b == "new") {
-            listvoit.value = "none"
-            editTitle.textContent = "NOUVEAU"
-            plateParam.value = "";
-            vHeightParam.value = "";
+            vehiculeList.value = "none"
+            vehiculeEditContainerTitle.textContent = "NOUVEAU"
+            vehiculePlateInput.value = "";
+            vehiculeHeightInput.value = "";
         } else {
             try {
-                let data = JSON.parse(listvoit.value)
-                editTitle.textContent = "MODIFICATION"
-                plateParam.value = data.plate;
-                vHeightParam.value = data.height;
-                vMotorParam.value = data.motor;
-                vTypeParam.value = data.type;
+                let data = JSON.parse(UI.el.vehiculePopup.vehiculeList.value)
+                vehiculeEditContainerTitle.textContent = "MODIFICATION"
+                vehiculePlateInput.value = data.plate;
+                vehiculeHeightInput.value = data.height;
+                vehiculeMotorInput.value = data.motor;
+                vehiculeTypeInput.value = data.type;
             } catch (error) {
                 handleError(error, "Véhicules")
             }
@@ -102,50 +111,49 @@ export function initVehiculeEvent(services) {
 
     async function handleCarEditSubmit(event) {
         event.preventDefault();
-        const { plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
         const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
 
         let id;
         let errors = [];
-        if (listvoit.value === "none" || listvoit.value === "") id = user.userId;
-        else id = JSON.parse(listvoit.value).id;
+        if (vehiculeList.value === "none" || vehiculeList.value === "") id = user.userId;
+        else id = JSON.parse(vehiculeList.value).id;
 
-        errorV.textContent = "";
-        UI.hide(errorV);
+        errorTextVehicule.textContent = "";
+        UI.hide(errorTextVehicule);
 
-        if (isEmpty(plateParam.value))
+        if (isEmpty(vehiculePlateInput.value))
             errors.push("La plaque est obligatoire");
-        else if (!isValidPlate(plateParam.value))
+        else if (!isValidPlate(vehiculePlateInput.value))
             errors.push("Format de plaque incorrect");
-        if (isEmpty(vHeightParam.value))
+        if (isEmpty(vehiculeHeightInput.value))
             errors.push("La hauteur du véhicule est obligatoire");
-        else if (!isValidPositiveNumber(vHeightParam.value))
+        else if (!isValidPositiveNumber(vehiculeHeightInput.value))
             errors.push("La hauteur du véhicule doit être un nombre entier positif non nul");
-        if (isEmpty(vMotorParam.value))
+        if (isEmpty(vehiculeMotorInput.value))
             errors.push("Le type du moteur est obligatoire");
-        if (isEmpty(vTypeParam.value))
+        if (isEmpty(vehiculeTypeInput.value))
             errors.push("Le type du véhicule est obligatoire");
 
 
         if (errors.length > 0) {
-            errorV.textContent = errors.join("\n");
-            UI.show(errorV);
+            errorTextVehicule.textContent = errors.join("\n");
+            UI.show(errorTextVehicule);
             return;
         }
-        errorV.textContent = "";
+        errorTextVehicule.textContent = "";
 
         const info = {
             id: id,
-            plate: plateParam.value,
-            height: vHeightParam.value,
-            type: vTypeParam.value,
-            motor: vMotorParam.value
+            plate: vehiculePlateInput.value,
+            height: vehiculeHeightInput.value,
+            type: vehiculeTypeInput.value,
+            motor: vehiculeMotorInput.value
         }
 
         let msg;
 
         try {
-            if (listvoit.value === "none" || listvoit.value === "") {
+            if (vehiculeList.value === "none" || vehiculeList.value === "") {
                 msg = "Véhicule créé avec succès"
                 await vehiculeService.createVehicule(info);
 
@@ -157,9 +165,9 @@ export function initVehiculeEvent(services) {
             UI.notify("Véhicules", msg, true)
             UI.toggleVoitureEdit(false);
         } catch (error) {
-            errorV.textContent = ERROR_MESSAGES[error.code]
+            errorTextVehicule.textContent = ERROR_MESSAGES[error.code]
                 ?? ERROR_MESSAGES.DEFAULT;
-            UI.show(errorV);
+            UI.show(errorTextVehicule);
             console.error(error)
         }
 
@@ -168,10 +176,10 @@ export function initVehiculeEvent(services) {
     async function handleDeleteCar(event) {
         event.preventDefault();
 
-        if (listvoit.value === "none" || listvoit.value === "") return;
+        if (vehiculeList.value === "none" || vehiculeList.value === "") return;
 
         try {
-            let id = JSON.parse(listvoit.value).id;
+            let id = JSON.parse(vehiculeList.value).id;
 
             if (confirm("Voulez vraiment supprimer ce véhicule")) {
                 await vehiculeService.deleteVehicule(id);

@@ -42,7 +42,7 @@ export class Services {
         this.user = this.userService.user;
         await this.userService.init();
 
-        if (this.user.isLogged) UI.toggleAuthIcon(true);
+        if (this.user.isLogged) UI.switchToLoggedIcon(true);
 
         //VEHICULE
         this.vehiculeService = new VehiculeService(this.user, this.apiService);

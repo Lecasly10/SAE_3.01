@@ -38,7 +38,7 @@ export class NavigationService {
   startPreview() {
     if (!this.route) return
     const destination = this.destination
-    const { confirm, cancel } = UI.togglePreview(destination);
+    const { confirm, cancel } = UI.startDestinationPreview(destination);
     const bounds = this.route.bounds;
     const mapService = this.mapService;
 
@@ -53,7 +53,7 @@ export class NavigationService {
     });
 
     cancel.addEventListener("click", (e) => {
-      UI.el.crossIcon.click();
+      UI.el.bottomBar.stopButton.click();
     });
   }
 
