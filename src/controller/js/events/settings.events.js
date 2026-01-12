@@ -41,10 +41,20 @@ export function initSettingsEvent(services) {
 
         try {
             userData = await userService.load();
+        } catch (error) {
+            handleError(error, "Paramètres");
+            UI.hide(UI.el.settings);
+            return;
+        }
+
+        try {
             vehData = await vehiculeService.load();
         } catch (error) {
-            handleError(e, "Paramètres");
-            return;
+            if (error.code !== "NOT_FOUND") {
+                handleError(error, "Paramètres");
+                UI.hide(UI.el.settings)
+                return;
+            }
         }
 
         UI.resetCarSettList();
