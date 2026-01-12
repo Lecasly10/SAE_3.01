@@ -1,25 +1,25 @@
-import * as element from "./htmlElement.js";
+import { elements, loader } from "./htmlElement.js"
 
 export class UI {
   // HTML
-  static el = element;
+  static el = elements;
   static timeoutId = null;
 
-  static show(el) {
-    el.classList.remove("hidden");
+  static show(element) {
+    element.classList.remove("hidden");
   }
-  static hide(el) {
-    el.classList.add("hidden");
+  static hide(element) {
+    element.classList.add("hidden");
   }
-  static visible(el) {
-    el.style.visibility = "visible";
+  static visible(element) {
+    element.style.visibility = "visible";
   }
-  static invisible(el) {
-    el.style.visibility = "hidden";
+  static invisible(element) {
+    element.style.visibility = "hidden";
   }
 
   static async notify(title, message, overlay = false, time = 5) {
-    let { notif, notifTitle, notifContent } = UI.el;
+    let { notif, notifTitle, notifContent } = UI.el.notification;
 
     if (UI.timeoutId) {
       clearTimeout(UI.timeoutId);
@@ -43,24 +43,24 @@ export class UI {
 
 
   static setupUI(load = false) {
-    UI.el.topnav.style.justifyContent = "space-around";
+    UI.el.topBar.topBarContainer.style.justifyContent = "space-around";
 
     UI.toggleSearchInput(true);
     UI.toggleHomeCrossIcon(true);
-    UI.show(UI.el.settingsButton);
+    UI.show(UI.el.bottomBar.settingsButton);
     UI.toggleResultContainer(false);
     UI.emptyResultBox();
-    if (!load) UI.toggleLoader(false);
+    if (!load) UI.hide(UI.el.topBar.loader);
   }
 
   static toggleNavigationUI(destinationName) {
     UI.toggleHomeCrossIcon(false);
-    UI.hide(UI.el.settingsButton);
-    UI.toggleResultContainer(false);
+    UI.hide(UI.el.bottomBar.settingsButton);
+    UI.hide(UI.el.resultsPopup.resultContainer);
     UI.toggleSearchInput(false);
 
-    UI.el.topnav.style.justifyContent = "center";
-    UI.el.itiniraireTitle.textContent = destinationName;
+    UI.el.topBar.topBarContainer.style.justifyContent = "center";
+    UI.el.topBar.barTitle.textContent = destinationName;
   }
 
   static togglePreview(destination) {
@@ -152,16 +152,17 @@ export class UI {
   }
 
   static toggleSearchInput(showInput = false) {
-    const { itiniraireTitle, autoSearchButton, searchBar, listButton } = UI.el;
+    const { barTitle, searchContainer, listButton } = UI.el.topBar;
+    const { closestParkingButton } = UI.el.bottomBar;
     if (showInput) {
-      UI.hide(itiniraireTitle);
-      UI.show(autoSearchButton);
-      UI.show(searchBar);
+      UI.hide(barTitle);
+      UI.show(closestParkingButton);
+      UI.show(searchContainer);
       UI.show(listButton);
     } else {
-      UI.show(itiniraireTitle);
-      UI.hide(autoSearchButton);
-      UI.hide(searchBar);
+      UI.show(barTitle);
+      UI.hide(closestParkingButton);
+      UI.hide(searchContainer);
       UI.hide(listButton);
     }
   }
