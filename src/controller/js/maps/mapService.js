@@ -7,8 +7,8 @@ export class MapService {
     this.apiService = api
     this.map = null;
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
-    this.defaultZoom = 20;
-    this.navigationZoom = 22;
+    this.defaultZoom = 18;
+    this.navigationZoom = 20;
     this.navigationTilt = 60;
     this.defaultTilt = 0;
     this.userMarker = null;
