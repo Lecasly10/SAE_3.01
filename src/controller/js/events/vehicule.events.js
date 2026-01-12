@@ -67,7 +67,8 @@ export function initVehiculeEvent(services) {
                 listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
             });
         } catch (error) {
-            handleError(error, "Véhicules");
+            if (error?.code !== "NOT_FOUND")
+                handleError(error, "Véhicules");
         }
 
         listvoit.value = "none";
