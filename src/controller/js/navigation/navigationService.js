@@ -224,7 +224,6 @@ export class NavigationService {
     };
 
     const marker = await mapService.addMarker(
-      mapService,
       destination,
       `Votre destination : ${this.destination.name}`,
       Utils.distIcon
