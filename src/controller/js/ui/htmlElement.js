@@ -39,6 +39,7 @@ const authPopup = {
     signInLink: get("inscription"),
     logInLink: get("connexionLink"),
     nameInput: get("name"),
+    telInput: get("tel"),
     surnameInput: get("surname"),
     passwordInput: get("password"),
     confirmPasswordInput: get("confirmpasswordbox"),
