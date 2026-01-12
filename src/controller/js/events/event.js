@@ -10,6 +10,9 @@ export async function initEvent(services) {
   });
 
   window.addEventListener('online', () => {
+    if (!services.areLoaded) {
+      location.reload();
+    }
     UI.notify("Connexion", "Connexion retouvée !");
   });
 

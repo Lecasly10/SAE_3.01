@@ -6,7 +6,7 @@ export class User {
     }
 
     reset() {
-        this.email = null;
+        this.mail = null;
         this.userId = null;
         this.isLogged = false;
     }

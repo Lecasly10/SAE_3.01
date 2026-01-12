@@ -150,7 +150,7 @@ export function initVehiculeEvent(services) {
                 await vehiculeService.createVehicule(info);
 
             } else {
-                msg = "Véhicule mise à jour avec succès"
+                msg = "Véhicule mis à jour avec succès"
                 await vehiculeService.updateVehicule(info);
             }
             update();
@@ -168,7 +168,7 @@ export function initVehiculeEvent(services) {
     async function handleDeleteCar(event) {
         event.preventDefault();
 
-        if (listvoit.value === "none" || listvoit === "") return;
+        if (listvoit.value === "none" || listvoit.value === "") return;
 
         try {
             let id = JSON.parse(listvoit.value).id;
