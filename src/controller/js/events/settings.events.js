@@ -47,8 +47,18 @@ export function initSettingsEvent(services) {
             return;
         }
 
+        UI.resetCarSettList();
         try {
             vehData = await vehiculeService.load();
+
+            if (vehData.data?.length > 0) {
+                vehData.data.forEach(veh => {
+                    if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
+                        carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
+                    else
+                        carParam.add(new Option(`${veh.plate}`, veh.id))
+                });
+            }
         } catch (error) {
             if (error.code !== "NOT_FOUND") {
                 handleError(error, "Paramètres");
@@ -57,7 +67,6 @@ export function initSettingsEvent(services) {
             }
         }
 
-        UI.resetCarSettList();
         nameParam.value = userData.data.name;
         surnameParam.value = userData.data.surname;
         mailParam.value = user.mail;
@@ -67,15 +76,6 @@ export function initSettingsEvent(services) {
         freeParam.checked = userData.data.free == true;
         maxDistParam.value = userData.data.maxDistance;
         maxHBudgetParam.value = userData.data.maxHourly;
-
-        if (vehData.data.length > 0) {
-            vehData.data.forEach(veh => {
-                if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
-                    carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
-                else
-                    carParam.add(new Option(`${veh.plate}`, veh.id))
-            });
-        }
 
     }
 
