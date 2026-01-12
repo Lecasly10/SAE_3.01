@@ -170,7 +170,7 @@ export class NavigationService {
       const placesCheck = await this.checkParkingAvailability();
 
       if (placesCheck == null) return;
-      if (placesCheck == false && !this.redirecting)
+      if (!placesCheck && !this.redirecting)
         this.startRedirection();
 
     }, 30000);
@@ -210,8 +210,7 @@ export class NavigationService {
     if (res.data?.libre == -1 || res.data?.libre == null)
       return null //parking non smart ou api cassée
 
-    console.log(res.data?.libre < MIN_FREE_PLACE)
-    return res.data?.libre < MIN_FREE_PLACE;
+    return res.data?.libre >= MIN_FREE_PLACE;
 
   }
 
