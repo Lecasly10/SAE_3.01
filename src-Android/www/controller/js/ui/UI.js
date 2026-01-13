@@ -1,30 +1,24 @@
-import * as element from "./htmlElement.js";
+import { elements } from "./htmlElement.js"
 
 export class UI {
   // HTML
-  static el = element;
+  static el = elements;
   static timeoutId = null;
 
-  static show(el) {
-    el.classList.remove("hidden");
+  static show(element) {
+    element.classList.remove("hidden");
   }
-  static hide(el) {
-    el.classList.add("hidden");
-  }
-  static visible(el) {
-    el.style.visibility = "visible";
-  }
-  static invisible(el) {
-    el.style.visibility = "hidden";
+  static hide(element) {
+    element.classList.add("hidden");
   }
 
   static async notify(title, message, overlay = false, time = 5) {
-    let { notif, notifTitle, notifContent } = UI.el;
+    let { notifContainer, notifTitle, notifContent } = UI.el.notification;
 
     if (UI.timeoutId) {
       clearTimeout(UI.timeoutId);
-      notif.classList.remove("hide");
-      notif.classList.add("active");
+      notifContainer.classList.remove("hide");
+      notifContainer.classList.add("active");
     }
 
     overlay ? notif.classList.add("fullbg") : notif.classList.remove("fullbg")
@@ -43,157 +37,127 @@ export class UI {
 
 
   static setupUI(load = false) {
-    UI.el.topnav.style.justifyContent = "space-around";
+    UI.el.topBar.topBarContainer.style.justifyContent = "space-around";
 
     UI.toggleSearchInput(true);
-    UI.toggleHomeCrossIcon(true);
-    UI.show(UI.el.settingsButton);
-    UI.toggleResultContainer(false);
+    UI.switchHomeCrossIcon(true);
+    UI.show(UI.el.bottomBar.settingsButton);
+    UI.hide(UI.el.resultsPopup.resultContainer);
     UI.emptyResultBox();
-    if (!load) UI.toggleLoader(false);
+    if (!load) UI.hide(UI.el.topBar.loader);
   }
 
-  static toggleNavigationUI(destinationName) {
-    UI.toggleHomeCrossIcon(false);
-    UI.hide(UI.el.settingsButton);
-    UI.toggleResultContainer(false);
+  static setupNavigationUI(destinationName) {
+    UI.switchHomeCrossIcon(false);
+    UI.hide(UI.el.bottomBar.settingsButton);
+    UI.hide(UI.el.resultsPopup.resultContainer);
     UI.toggleSearchInput(false);
 
-    UI.el.topnav.style.justifyContent = "center";
-    UI.el.itiniraireTitle.textContent = destinationName;
+    UI.el.topBar.topBarContainer.style.justifyContent = "center";
+    UI.el.topBar.barTitle.textContent = destinationName;
   }
 
-  static togglePreview(destination) {
+  static startDestinationPreview(destination) {
     UI.setupUI();
     UI.emptyResultBox();
 
-    UI.setResultTitle(destination.name);
+    UI.setResultTitle(`${destination.name} - ${destination.distance} km`);
     UI.setResultMessage("Voulez vous aller à ce parking ?");
 
     const container = document.createElement("div");
     container.className = "dialog";
 
-    const confirm = document.createElement("a");
-    confirm.className = "button fade";
-    confirm.textContent = "Confirmer";
-
-    const cancel = document.createElement("a");
-    cancel.className = "button";
-    cancel.textContent = "Annuler";
+    const confirm = UI.createButton("Confirmer", "button fade");
+    const cancel = UI.createButton("Annuler", "button fade");
 
     container.append(confirm, cancel);
     UI.appendResultBox(container);
-    UI.toggleResultContainer(true);
+    UI.show(UI.el.resultsPopup.resultContainer);
 
     return { confirm, cancel };
   }
 
-  static toggleAuth(show = false) {
-    const { auth } = UI.el
-
-    show ? UI.show(auth) : UI.hide(auth)
-  }
-
-  static toggleSetting(show = false) {
-    const { settings } = UI.el
-    show ? UI.show(settings) : UI.hide(settings);
-  }
-
   static resetCarEditList() {
-    const { listvoit } = UI.el;
-    listvoit.innerHTML = "";
-    listvoit.add(new Option("Sélectionner un véhicule", "none", true, true));
+    const { vehiculeList } = UI.el.vehiculePopup;
+    vehiculeList.innerHTML = "";
+    vehiculeList.add(new Option("Sélectionner un véhicule", "", true, true));
   }
 
   static resetCarSettList() {
-    const { carParam } = UI.el;
-    carParam.innerHTML = "";
-    carParam.add(new Option("Aucun", "none", true, true));
+    const { settingsVehiculesList } = UI.el.settingsPopup;
+    settingsVehiculesList.innerHTML = "";
+    settingsVehiculesList.add(new Option("Aucun", "", true, true));
   }
 
-  static toggleVoiture(show = false) {
-    const { voitureDiv } = UI.el
-    show ? UI.show(voitureDiv) : UI.hide(voitureDiv)
+  static switchToLoggedIcon() {
+    const { userIcon } = UI.el.bottomBar
+
+    userIcon.classList.add("fa-user-circle-o")
+    userIcon.classList.remove("fa-user-plus")
   }
 
-  static toggleVoitureEdit(show = false) {
-    const { voitureEditDiv } = UI.el
-    show ? UI.show(voitureEditDiv) : UI.hide(voitureEditDiv)
+  static switchToLoginIcon() {
+    const { userIcon } = UI.el.bottomBar
+
+    userIcon.classList.remove("fa-user-circle-o")
+    userIcon.classList.add("fa-user-plus")
   }
 
-  static toggleAuthIcon(show = false) {
-    const { userIcon } = UI.el
-    if (show) {
-      userIcon.classList.add("fa-user-circle-o")
-      userIcon.classList.remove("fa-user-plus")
-    } else {
-      userIcon.classList.remove("fa-user-circle-o")
-      userIcon.classList.add("fa-user-plus")
-    }
-
+  static switchToSignIn() {
+    const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
+    UI.hide(errorTextAuth);
+    UI.show(additionalInfo);
+    UI.show(telInput);
+    UI.show(logInLink);
+    UI.show(confirmPasswordInput);
+    UI.hide(signInLink);
   }
 
-  static toggleInsc(show = false) {
-    const { preInfo, telI, inscrLink, connLink, confPass, errorI } = UI.el
-    UI.hide(errorI)
-    if (show) {
-      UI.show(preInfo);
-      UI.show(telI);
-      UI.show(connLink);
-      UI.show(confPass);
-      UI.hide(inscrLink);
-    } else {
-      UI.hide(preInfo);
-      UI.hide(telI);
-      UI.hide(connLink);
-      UI.hide(confPass);
-      UI.show(inscrLink);
-    }
+  static switchToLogIn() {
+    const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
+    UI.hide(errorTextAuth);
+    UI.hide(additionalInfo);
+    UI.hide(telInput);
+    UI.hide(logInLink);
+    UI.hide(confirmPasswordInput);
+    UI.show(signInLink);
+
   }
 
   static toggleSearchInput(showInput = false) {
-    const { itiniraireTitle, autoSearchButton, searchBar, listButton } = UI.el;
+    const { barTitle, searchContainer, parkingListButton } = UI.el.topBar;
+    const { closestParkingButton } = UI.el.bottomBar;
     if (showInput) {
-      UI.hide(itiniraireTitle);
-      UI.show(autoSearchButton);
-      UI.show(searchBar);
-      UI.show(listButton);
+      UI.hide(barTitle);
+      UI.show(closestParkingButton);
+      UI.show(searchContainer);
+      UI.show(parkingListButton);
     } else {
-      UI.show(itiniraireTitle);
-      UI.hide(autoSearchButton);
-      UI.hide(searchBar);
-      UI.hide(listButton);
+      UI.show(barTitle);
+      UI.hide(closestParkingButton);
+      UI.hide(searchContainer);
+      UI.hide(parkingListButton);
     }
   }
 
-  static toggleHomeCrossIcon(showHome = false) {
-    const { homeIcon, crossIcon } = UI.el;
+  static switchHomeCrossIcon(showHome = false) {
+    const { homeButton, stopButton } = UI.el.bottomBar;
 
     if (showHome) {
-      UI.show(homeIcon);
-      UI.hide(crossIcon);
+      UI.show(homeButton);
+      UI.hide(stopButton);
     } else {
-      UI.hide(homeIcon);
-      UI.show(crossIcon);
+      UI.hide(homeButton);
+      UI.show(stopButton);
     }
-  }
-
-  static toggleResultContainer(showContainer = false) {
-    showContainer
-      ? UI.visible(UI.el.resultContainer)
-      : UI.invisible(UI.el.resultContainer);
-  }
-
-  static toggleLoader(showLoader = false) {
-    showLoader ? UI.show(UI.el.loader) : UI.hide(UI.el.loader);
   }
 
   static emptyResultBox() {
-    UI.el.resultBox.innerHTML = "";
+    UI.el.resultsPopup.resultBox.innerHTML = "";
   }
 
   static appendResultBox(htmlElement) {
-    UI.el.resultBox.appendChild(htmlElement);
+    UI.el.resultsPopup.resultBox.appendChild(htmlElement);
   }
 
   static setResultMessage(message) {
@@ -203,15 +167,15 @@ export class UI {
   }
 
   static setResultTitle(title) {
-    UI.el.resultTitle.textContent = title;
+    UI.el.resultsPopup.resultTitle.textContent = title;
   }
 
   static getSearchQuery() {
-    return UI.el.searchBox.value;
+    return UI.el.topBar.searchBox.value;
   }
 
   static emptySearchBox() {
-    UI.el.searchBox.value = "";
+    UI.el.topBar.searchBox.value = "";
   }
 
   static createText(title, text) {
@@ -235,5 +199,13 @@ export class UI {
       container.append(UI.createText(`${label} :`, value));
     });
     container.append(document.createElement("hr"));
+  }
+
+  static createButton(text, className = "", onClick) {
+    const btn = document.createElement("a");
+    btn.textContent = text;
+    btn.className = className;
+    if (onClick) btn.addEventListener("click", onClick);
+    return btn;
   }
 }

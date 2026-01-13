@@ -2,10 +2,9 @@
 import { UI } from "./ui/UI.js";
 import { initEvent } from "./events/event.js";
 
-import { Geolocation } from "./navigation/geolocation.js";
-import { MapBuilder } from "./maps/builder.js";
-import { Navigation } from "./navigation/navigation.js";
-import { User } from "./user/user.js";
+import { Services } from "./services.js";
+import { NetworkError } from "./errors/errors.js";
+import { handleError } from "./errors/globalErrorHandling.js";
 
 //===LOAD===
 document.addEventListener("deviceready", async () => {
@@ -14,33 +13,25 @@ document.addEventListener("deviceready", async () => {
     function () { console.log('SSL validation disabled'); },
     function (err) { console.error('Erreur SSL trust mode', err); }
   );
-
-  if (!navigator.onLine) {
-    alert("Veuillez vous connecter à internet !");
-    return;
-  }
-
   try {
-    UI.toggleLoader(true);
+
+
+    const { loader } = UI.el.topBar;
+    UI.show(loader);
     UI.setupUI(true);
 
-    const builder = MapBuilder.init();
-    if (!builder) throw new Error("Erreur d'initialisation");
-    await builder.initMap();
+    if (!navigator.onLine) {
+      throw new NetworkError("Aucune connexion internet !");
+    }
 
-    const geo = Geolocation.init();
-    await geo.locateUser();
-    geo.startWatching();
+    const services = new Services();
+    await services.init();
 
-    Navigation.init(builder);
-    User.init();
+    await initEvent(services);
 
-    await initEvent();
-
-  } catch (e) {
-    console.error("Erreur lors de l'initialisation de l'app :", e);
-    alert("Erreur lors l'initialisation de l'application");
+  } catch (error) {
+    handleError(error, "Initialisation");
   } finally {
-    UI.toggleLoader(false);
+    UI.hide(loader);
   }
 });

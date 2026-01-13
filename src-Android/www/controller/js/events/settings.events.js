@@ -1,122 +1,191 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { handleError } from "../errors/globalErrorHandling.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
 
-export function initSettingsEvent(user) {
-    const { submitSett, settingsButton, closeSettingButton } = UI.el;
+export function initSettingsEvent(services) {
+    const {
+        user,
+        userService,
+        vehiculeService,
+    } = services;
 
-    submitSett.addEventListener("click", async (e) => {
-        handleUpdate(e)
-    })
+    const {
+        submitSettingsButton,
+        closeSettingsButton,
+        settingsContainer,
+        settingsNameInput,
+        settingsSurnameInput,
+        settingsTelInput,
+        settingsMailInput,
+        maxDistanceInput,
+        maxHourlyBudgetInput,
+        pmrParkCheck,
+        coveredParkCheck,
+        freeParkingCheck,
+        settingsVehiculesList,
+        errorTextSettings,
+    } = UI.el.settingsPopup;
 
-    settingsButton.addEventListener("click", (e) => {
-        handleSettingButton(e);
-    });
 
-    closeSettingButton.addEventListener("click", (e) => {
-        UI.toggleSetting(false);
-    });
+    submitSettingsButton.addEventListener("click", handleUpdate);
+    UI.el.bottomBar.settingsButton.addEventListener("click", handleSettingsButton);
+    closeSettingsButton.addEventListener("click", () => UI.hide(settingsContainer));
 
-    function handleSettingButton(event) {
-        event.preventDefault();
-        if (user.isLogged) {
-            handleSettings();
-            UI.toggleSetting(true);
-        } else {
-            UI.toggleAuth(true);
-        }
+    function showSettingsError(message) {
+        errorTextSettings.textContent = message;
+        UI.show(errorTextSettings);
     }
 
-    async function handleSettings() {
-        const {
-            nameParam, mailParam, telParam,
-            surnameParam, maxDistParam, maxHBudgetParam,
-            pmrParam, coverParam, freeParam, carParam } = UI.el;
-        let data = await user.load(user.userId);
-        if (!data) alert("Une erreur est survenu !");
-        else {
-            UI.resetCarSettList();
-            nameParam.value = data.name;
-            surnameParam.value = data.surname;
-            mailParam.value = user.mail;
-            telParam.value = data.tel;
-            pmrParam.checked = data.pmr == true;
-            coverParam.checked = data.covered == true;
-            freeParam.checked = data.free == true;
-            maxDistParam.value = data.maxDistance;
-            maxHBudgetParam.value = data.maxHourly;
+    function clearSettingsError() {
+        errorTextSettings.textContent = "";
+        UI.hide(errorTextSettings);
+    }
 
-            if (data.vehicules) {
-                data.vehicules.forEach(veh => {
-                    if (user.data && user.data.vehId == veh.id) {
-                        carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
-                    } else
-                        carParam.add(new Option(`${veh.plate}`, veh.id))
-                });
+    function isLoggedOrAuth() {
+        if (!user.isLogged) {
+            UI.show(UI.el.authPopup.authContainer);
+            return false;
+        }
+        return true;
+    }
+
+
+    async function handleSettingsButton(event) {
+        event.preventDefault();
+        if (!isLoggedOrAuth()) return;
+
+        await loadSettings();
+        UI.show(settingsContainer);
+    }
+
+    async function loadSettings() {
+        clearSettingsError();
+        UI.resetCarSettList();
+
+        let userData;
+
+        try {
+            userData = await userService.load();
+        } catch (error) {
+            handleError(error, "Paramètres");
+            UI.hide(settingsContainer);
+            return;
+        }
+
+        await loadVehicules();
+        fillUserForm(userData.data);
+    }
+
+    async function loadVehicules() {
+        try {
+            const vehData = await vehiculeService.load();
+            vehData.data?.forEach(addVehiculeOption);
+        } catch (error) {
+            if (error.code !== "NOT_FOUND") {
+                handleError(error, "Paramètres");
+                UI.hide(settingsContainer);
             }
         }
     }
 
-    async function handleUpdate(e) {
-        e.preventDefault()
-        const { isEmpty, isValidPhone, isValidString, isValidNumber } = Utils
-        const {
-            nameParam, telParam,
-            surnameParam, maxDistParam, maxHBudgetParam,
-            pmrParam, coverParam, freeParam, errorS, carParam } = UI.el;
+    function addVehiculeOption(veh) {
+        const isSelected =
+            vehiculeService.selectedVehicule?.vehId == veh.id;
 
-        let errors = [];
+        settingsVehiculesList.add(
+            new Option(veh.plate, veh.id, isSelected, isSelected)
+        );
+    }
 
-        errorS.textContent = "";
-        UI.hide(errorS);
+    function fillUserForm(data) {
+        settingsNameInput.value = data.name;
+        settingsSurnameInput.value = data.surname;
+        settingsMailInput.value = user.mail;
+        settingsTelInput.value = data.tel;
 
-        if (isEmpty(nameParam.value))
-            errors.push("Le prénom est obligatoire.");
-        else if (!isValidString(nameParam.value))
-            errors.push("Prénom invalide !")
-        if (isEmpty(surnameParam.value))
-            errors.push("Le nom est obligatoire.");
-        else if (!isValidString(surnameParam.value))
-            errors.push("nom invalide !")
-        if (isEmpty(telParam.value))
-            errors.push("Le téléphone est obligatoire.");
-        else if (!isValidPhone(telParam.value))
-            errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
-        if (isEmpty(maxDistParam.value))
-            errors.push("La distance maximal est obligatoire")
-        else if (!isValidNumber(maxDistParam.value))
-            errors.push("La distance maximal doit etre un nombre positif")
-        if (isEmpty(maxHBudgetParam.value))
-            errors.push("Le budget maximal par heure est obligatoire")
-        else if (!isValidNumber(maxHBudgetParam.value))
-            errors.push("Le budget maximal par heure doit etre un nombre positif")
+        pmrParkCheck.checked = !!data.pmr;
+        coveredParkCheck.checked = !!data.covered;
+        freeParkingCheck.checked = !!data.free;
 
+        maxDistanceInput.value = data.maxDistance;
+        maxHourlyBudgetInput.value = data.maxHourly;
+    }
 
-        if (errors.length > 0) {
-            errorS.textContent = errors.join("\n");
-            UI.show(errorS);
+    async function handleUpdate(event) {
+        event.preventDefault();
+        clearSettingsError();
+
+        const errors = validateForm();
+        if (errors.length) {
+            showSettingsError(errors.join("\n"));
             return;
         }
 
-        const res = await user.update({
+        const payload = buildData();
+
+        try {
+            await userService.update(payload);
+            vehiculeService.addToStorage({ vehId: settingsVehiculesList.value });
+
+            UI.notify("Compte", "Paramètres mis à jour avec succès");
+            UI.hide(settingsContainer);
+        } catch (error) {
+            showSettingsError(
+                ERROR_MESSAGES[error.code] ?? ERROR_MESSAGES.DEFAULT
+            );
+        }
+    }
+
+    function validateForm() {
+        const {
+            isEmpty,
+            isValidPhone,
+            isValidString,
+            isValidNumber,
+        } = Utils;
+
+        const errors = [];
+
+        if (isEmpty(settingsNameInput.value))
+            errors.push("Le prénom est obligatoire.");
+        else if (!isValidString(settingsNameInput.value))
+            errors.push("Prénom invalide.");
+
+        if (isEmpty(settingsSurnameInput.value))
+            errors.push("Le nom est obligatoire.");
+        else if (!isValidString(settingsSurnameInput.value))
+            errors.push("Nom invalide.");
+
+        if (isEmpty(settingsTelInput.value))
+            errors.push("Le téléphone est obligatoire.");
+        else if (!isValidPhone(settingsTelInput.value))
+            errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
+
+        if (isEmpty(maxDistanceInput.value))
+            errors.push("La distance maximale est obligatoire.");
+        else if (!isValidNumber(maxDistanceInput.value))
+            errors.push("La distance maximale doit être un nombre positif.");
+
+        if (isEmpty(maxHourlyBudgetInput.value))
+            errors.push("Le budget maximal par heure est obligatoire.");
+        else if (!isValidNumber(maxHourlyBudgetInput.value))
+            errors.push("Le budget maximal par heure doit être un nombre positif.");
+
+        return errors;
+    }
+
+    function buildData() {
+        return {
             id: user.userId,
-            name: nameParam.value,
-            surname: surnameParam.value,
-            tel: telParam.value,
-            free: freeParam.checked,
-            pmr: pmrParam.checked,
-            covered: coverParam.checked,
-            maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
-            maxDist: maxDistParam.value ? maxDistParam.value : 0,
-            vehId: carParam.value
-        })
-
-        if (res.status && res.status === "success") {
-            UI.notify("Compte", "Paramètres mise à jour avec succès")
-        }
-        else if (res.message) {
-            errorS.textContent = res.message
-            UI.show(errorS);
-        }
-
+            name: settingsNameInput.value.trim(),
+            surname: settingsSurnameInput.value.trim(),
+            tel: settingsTelInput.value.trim(),
+            free: freeParkingCheck.checked,
+            pmr: pmrParkCheck.checked,
+            covered: coveredParkCheck.checked,
+            maxHourly: Number(maxHourlyBudgetInput.value) || 0,
+            maxDist: Number(maxDistanceInput.value) || 0,
+        };
     }
 }

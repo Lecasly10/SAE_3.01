@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="cordova.js"></script>
     <title>SmartParking Metz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <!-- FONTS -->
     <link
       href="https://fonts.cdnfonts.com/css/sf-pro-display"
       rel="stylesheet"
     />
+    <script type="text/javascript" src="cordova.js"></script>
     <!-- CSS ET JS -->
     <link rel="stylesheet" href="./vue/style/style.css" />
-    <script type="module" src="./controller/js/main.js" defer></script>
 
     <!-- ICONS -->
     <link
@@ -188,7 +186,7 @@
         <div class="mainContainer">
           <div id="listVoit">
             <select id="carTab" size="5">
-              <option value="none" selected>Sélectionner un véhicule</option>
+              <option selected>Sélectionner un véhicule</option>
             </select>
           </div>
         </div>
@@ -301,6 +299,8 @@
       </div>
     </div>
 
+    <script type="module" src="./controller/js/main.js"></script>
+
     <!-- API GOOGLE MAPS => VOIR DOCU GOOGLE MAPS -->
     <script>
       ((g) => {
@@ -339,7 +339,7 @@
           : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
       })({
         key: "AIzaSyCEuViMd3021ccwghkLzVt5IYesXUjnJ2o",
-        // Peut etre dans le code car sécurité setup dans le dashboard
+        // secu dans le dashboard autorise que notre site web et Cordova
         v: "beta",
       });
     </script>

@@ -1,112 +1,163 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 
-export function initUserEvent(user) {
-    const { logoutButton, submitButton, connLink,
-        inscrLink, closeAuthButton } = UI.el
+export function initUserEvent(services) {
+    const { userService } = services;
 
-    document.querySelectorAll(".submitInfo").forEach(el => {
-        el.addEventListener("keydown", event => {
-            if (event.key === "Enter") {
-                console.log("Enter pressed !")
-                const eventD = new Event("click");
-                submitButton.dispatchEvent(eventD);
-            }
+    const {
+        authContainer,
+        submitAuthButton,
+        signInLink,
+        logInLink,
+        closeAuthButton,
+        errorTextAuth,
+        mailInput,
+        nameInput,
+        surnameInput,
+        telInput,
+        passwordInput,
+        confirmPasswordInput,
+    } = UI.el.authPopup;
+
+    const {
+        logoutButton,
+        settingsContainer,
+    } = UI.el.settingsPopup;
+
+    bindSubmitOnEnter();
+    submitAuthButton.addEventListener("click", handleSubmit);
+    closeAuthButton.addEventListener("click", () => UI.hide(authContainer));
+
+    logoutButton.addEventListener("click", handleLogout);
+
+    signInLink?.addEventListener("click", UI.switchToSignIn);
+    logInLink?.addEventListener("click", UI.switchToLogIn);
+
+
+    function bindSubmitOnEnter() {
+        document.querySelectorAll(".submitInfo").forEach((el) => {
+            el.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    submitAuthButton.click();
+                }
+            });
         });
-    });
-
-    logoutButton.addEventListener("click", async (e) => {
-        await user.logout();
-    })
-
-    submitButton.addEventListener("click", (e) => {
-        handleSubmit(e);
-    })
-
-    closeAuthButton.addEventListener("click", (e) => {
-        UI.toggleAuth(false);
-    })
-
-    if (inscrLink) {
-        inscrLink.addEventListener("click", () => {
-            UI.toggleInsc(true)
-        })
     }
 
-    if (connLink) {
-        connLink.addEventListener("click", () => {
-            UI.toggleInsc(false)
-        })
+    function showAuthError(message) {
+        errorTextAuth.textContent = message;
+        UI.show(errorTextAuth);
+    }
+
+    function clearAuthError() {
+        errorTextAuth.textContent = "";
+        UI.hide(errorTextAuth);
+    }
+
+    function isSignup() {
+        return !confirmPasswordInput.classList.contains("hidden");
+    }
+
+    async function handleLogout(event) {
+        event.preventDefault();
+
+        try {
+            await userService.logout();
+            UI.hide(settingsContainer);
+            UI.switchToLoginIcon();
+            UI.notify("Compte", "Déconnexion réussie !");
+        } catch (error) {
+            UI.hide(settingsContainer);
+            handleError(error, "Compte");
+        }
     }
 
     async function handleSubmit(event) {
-        const { isEmpty, isValidEmail, isValidPhone, isValidString } = Utils
-        user.createAccount = false;
         event.preventDefault();
-        const {
-            mail,
-            pass,
-            confPass,
-            nameI,
-            surnameI,
-            telI,
-            errorI
-        } = UI.el;
+        clearAuthError();
 
-        let errors = [];
+        const signup = isSignup();
+        const errors = validateForm(signup);
 
-        errorI.textContent = "";
-        UI.hide(errorI);
-
-        if (isEmpty(mail.value))
-            errors.push("L’email est obligatoire.");
-        else if (!isValidEmail(mail.value))
-            errors.push("Email invalide.");
-
-        if (isEmpty(pass.value))
-            errors.push("Le mot de passe est obligatoire.");
-        else if (pass.value.length < 8)
-            errors.push("Le mot de passe doit contenir au moins 8 caractères.");
-
-        if (!confPass.classList.contains("hidden")) {
-            user.createAccount = true;
-
-            if (isEmpty(confPass.value))
-                errors.push("La confirmation du mot de passe est obligatoire.");
-            else if (pass.value !== confPass.value)
-                errors.push("Les mots de passe ne correspondent pas.");
-            if (isEmpty(nameI.value))
-                errors.push("Le prénom est obligatoire.");
-            else if (!isValidString(nameI.value))
-                errors.push("Nom invalide !")
-            if (isEmpty(surnameI.value))
-                errors.push("Le nom est obligatoire.");
-            else if (!isValidString(surnameI.value))
-                errors.push("Prénom invalide !")
-            if (isEmpty(telI.value))
-                errors.push("Le téléphone est obligatoire.");
-            else if (!isValidPhone(telI.value))
-                errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
-        }
-
-        if (errors.length > 0) {
-            user.createAccount = false;
-            errorI.textContent = errors.join("\n");
-            UI.show(errorI);
+        if (errors.length) {
+            showAuthError(errors.join("\n"));
             return;
         }
 
-        const res = await user.auth({
-            name: nameI.value,
-            surname: surnameI.value,
-            tel: telI.value,
-            mail: mail.value,
-            password: pass.value,
-        })
+        const payload = buildData(signup);
+        userService.createAccount = signup;
 
-        if (res.status !== "success" && res.message) {
-            errorI.textContent = res.message
-            UI.show(errorI);
+        try {
+            await userService.auth(payload);
+            UI.switchToLoggedIcon();
+            UI.hide(authContainer);
+            UI.notify("Compte", signup ? "Compte créé avec succès !" : "Connexion réussie !");
+        } catch (error) {
+            showAuthError(
+                ERROR_MESSAGES[error.code] ?? ERROR_MESSAGES.DEFAULT
+            );
+        } finally {
+            userService.createAccount = false;
         }
+    }
+
+    function validateForm(signup) {
+        const {
+            isEmpty,
+            isValidEmail,
+            isValidPhone,
+            isValidString,
+        } = Utils;
+
+        const errors = [];
+
+        if (isEmpty(mailInput.value))
+            errors.push("L’email est obligatoire.");
+        else if (!isValidEmail(mailInput.value))
+            errors.push("Email invalide.");
+
+        if (isEmpty(passwordInput.value))
+            errors.push("Le mot de passe est obligatoire.");
+        else if (passwordInput.value.length < 8)
+            errors.push("Le mot de passe doit contenir au moins 8 caractères.");
+
+        if (!signup) return errors;
+
+        if (isEmpty(confirmPasswordInput.value))
+            errors.push("La confirmation du mot de passe est obligatoire.");
+        else if (passwordInput.value !== confirmPasswordInput.value)
+            errors.push("Les mots de passe ne correspondent pas.");
+
+        if (isEmpty(nameInput.value))
+            errors.push("Le prénom est obligatoire.");
+        else if (!isValidString(nameInput.value))
+            errors.push("Prénom invalide.");
+
+        if (isEmpty(surnameInput.value))
+            errors.push("Le nom est obligatoire.");
+        else if (!isValidString(surnameInput.value))
+            errors.push("Nom invalide.");
+
+        if (isEmpty(telInput.value))
+            errors.push("Le téléphone est obligatoire.");
+        else if (!isValidPhone(telInput.value))
+            errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
+
+        return errors;
+    }
+
+
+    function buildData(signup) {
+        return {
+            mail: mailInput.value.trim(),
+            password: passwordInput.value,
+            ...(signup && {
+                name: nameInput.value.trim(),
+                surname: surnameInput.value.trim(),
+                tel: telInput.value.trim(),
+            }),
+        };
     }
 }

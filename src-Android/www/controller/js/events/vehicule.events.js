@@ -1,176 +1,216 @@
+import { ERROR_MESSAGES } from "../errors/errors.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
-export function initVehiculeEvent(user) {
-    const { carButton, editCar, addCar, deleteCar,
-        submitEditCar, listvoit, closeVoit, closeEdit } = UI.el
+export function initVehiculeEvent(services) {
+    const { user, vehiculeService } = services;
 
-    carButton.addEventListener("click", async (e) => {
-        handleCar(e);
-        UI.toggleVoiture(true);
-    })
+    const { settingsButton } = UI.el.bottomBar;
 
-    editCar.addEventListener("click", async (e) => {
-        handleCarEdit(e);
-        UI.toggleVoitureEdit(true);
-    })
+    const {
+        vehiculeList,
+        vehiculeContainer,
+        editVehiculeButton,
+        addVehiculeButton,
+        deleteVehiculeButton,
+        closeVehiculeButton,
+    } = UI.el.vehiculePopup;
 
-    addCar.addEventListener("click", async (e) => {
-        handleCarEdit(e);
-        UI.toggleVoitureEdit(true);
-    })
+    const {
+        vehiculeEditContainer,
+        vehiculeEditContainerTitle,
+        submitVehiculeButton,
+        closeVehiculeEditButton,
+        vehiculePlateInput,
+        vehiculeHeightInput,
+        vehiculeMotorInput,
+        vehiculeTypeInput,
+        errorTextVehicule,
+    } = UI.el.vehiculeEditPopup;
 
-    deleteCar.addEventListener("click", async (e) => {
-        handleDeleteCar(e);
-    })
+    UI.el.settingsPopup.vehiculeButton.addEventListener("click", openVehicules);
 
-    submitEditCar.addEventListener("click", async (e) => {
-        await handleCarEditSubmit(e);
-    })
+    editVehiculeButton.addEventListener("click", () => openVehiculeEdit(false));
+    addVehiculeButton.addEventListener("click", () => openVehiculeEdit(true));
+    deleteVehiculeButton.addEventListener("click", deleteVehicule);
 
-    listvoit.addEventListener("change", (e) => {
-        deleteCar.disabled = listvoit.value === "none";
-        editCar.disabled = listvoit.value === "none";
-    });
+    submitVehiculeButton.addEventListener("click", submitVehicule);
+    closeVehiculeButton.addEventListener("click", () => UI.hide(vehiculeContainer));
+    closeVehiculeEditButton.addEventListener("click", () => UI.hide(vehiculeEditContainer));
 
-    closeVoit.addEventListener("click", async () => {
-        UI.toggleVoiture(false);
-    })
+    vehiculeList.addEventListener("change", updateActionButtons);
 
-    closeEdit.addEventListener("click", async () => {
-        UI.toggleVoitureEdit(false);
-    })
-
-    function update() {
-        const { settingsButton } = UI.el
-        const e = new Event("click");
+    function refreshSettings() {
         try {
-            settingsButton.dispatchEvent(e);
-            carButton.dispatchEvent(e);
+            settingsButton.click();
+            UI.el.settingsPopup.vehiculeButton.click();
         } catch (e) {
-            console.error("Erreur : ", e);
+            handleError(e, "Véhicules");
         }
-
     }
 
-    async function handleCar(event) {
-        event.preventDefault();
+
+    function getSelectedVehicule() {
+        const id = vehiculeList.value;
+        if (!id) return null;
+        return vehiculeService.cache?.find((v) => v.id == id) ?? null;
+    }
+
+    function clearVehiculeError() {
+        errorTextVehicule.textContent = "";
+        UI.hide(errorTextVehicule);
+    }
+
+    function showVehiculeError(message) {
+        errorTextVehicule.textContent = message;
+        UI.show(errorTextVehicule);
+    }
+
+    async function openVehicules(event) {
+        event?.preventDefault();
         UI.resetCarEditList();
 
-        let data = await user.load(user.userId);
-        if (!data) alert("Une erreur est survenu !");
-        else {
-            if (data.vehicules) {
-                data.vehicules.forEach(veh => {
-                    listvoit.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
-                });
+        try {
+            const vehData = await vehiculeService.load();
+            vehiculeService.cache = vehData.data || [];
+            renderVehiculeList(vehiculeService.cache);
+        } catch (error) {
+            if (error?.code !== "NOT_FOUND") {
+                handleError(error, "Véhicules");
             }
         }
 
-        listvoit.value = "none";
+        vehiculeList.value = "";
+        updateActionButtons();
+        UI.show(vehiculeContainer);
     }
 
-    function handleCarEdit(event) {
-        event.preventDefault()
-        const { plateParam, vHeightParam, vMotorParam, vTypeParam, editTitle } = UI.el;
-        let b = event.target.value
-        if (b == "new") {
-            editTitle.textContent = "NOUVEAU"
-            plateParam.value = "";
-            vHeightParam.value = "";
+    function renderVehiculeList(list) {
+        vehiculeList.innerHTML = "";
+        vehiculeList.add(new Option("Sélectionner un véhicule", ""));
+
+        list.forEach((veh) => {
+            vehiculeList.add(new Option(veh.plate, veh.id));
+        });
+    }
+
+    function updateActionButtons() {
+        const hasSelection = !!vehiculeList.value;
+        editVehiculeButton.disabled = !hasSelection;
+        deleteVehiculeButton.disabled = !hasSelection;
+    }
+
+    function openVehiculeEdit(isNew) {
+        clearVehiculeError();
+
+        if (isNew) {
+            vehiculeEditContainerTitle.textContent = "NOUVEAU VÉHICULE";
+            resetVehiculeForm();
         } else {
-            try {
-                let data = JSON.parse(listvoit.value)
-                editTitle.textContent = "MODIFICATION"
-                plateParam.value = data.plate;
-                vHeightParam.value = data.height;
-                vMotorParam.value = data.motor;
-                vTypeParam.value = data.type;
-            } catch (e) {
-                console.error("Erreur : ", e)
-                alert("Une erreur est survenue")
-            }
+            const veh = getSelectedVehicule();
+            if (!veh) return;
+
+            vehiculeEditContainerTitle.textContent = "MODIFICATION";
+            fillVehiculeForm(veh);
         }
 
+        UI.show(vehiculeEditContainer);
     }
 
-    async function handleCarEditSubmit(event) {
+    function resetVehiculeForm() {
+        vehiculePlateInput.value = "";
+        vehiculeHeightInput.value = "";
+        vehiculeMotorInput.value = "";
+        vehiculeTypeInput.value = "";
+    }
+
+    function fillVehiculeForm(veh) {
+        vehiculePlateInput.value = veh.plate;
+        vehiculeHeightInput.value = veh.height;
+        vehiculeMotorInput.value = veh.motor;
+        vehiculeTypeInput.value = veh.type;
+    }
+
+    async function submitVehicule(event) {
         event.preventDefault();
-        const { plateParam, vHeightParam, vMotorParam, vTypeParam, errorV } = UI.el;
-        const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
+        clearVehiculeError();
 
-        let id;
-        let errors = [];
-        if (listvoit.value === "none" || listvoit.value === "") id = user.userId;
-        else id = JSON.parse(listvoit.value).id;
-
-        errorV.textContent = "";
-        UI.hide(errorV);
-
-        if (isEmpty(plateParam.value))
-            errors.push("La plaque est obligatoire");
-        else if (!isValidPlate(plateParam.value))
-            errors.push("Format de plaque incorrect");
-        if (isEmpty(vHeightParam.value))
-            errors.push("La hauteur du véhicule est obligatoire");
-        else if (!isValidPositiveNumber(vHeightParam.value))
-            errors.push("La hauteur du véhicule doit être un nombre entier positif non nul");
-        if (isEmpty(vMotorParam.value))
-            errors.push("Le type du moteur est obligatoire");
-        if (isEmpty(vTypeParam.value))
-            errors.push("Le type du véhicule est obligatoire");
-
-
-        if (errors.length > 0) {
-            errorV.textContent = errors.join("\n");
-            UI.show(errorV);
+        const errors = validateVehiculeForm();
+        if (errors.length) {
+            showVehiculeError(errors.join("\n"));
             return;
         }
-        errorV.textContent = "";
 
-        const info = {
-            id: id,
-            plate: plateParam.value,
-            height: vHeightParam.value,
-            type: vTypeParam.value,
-            motor: vMotorParam.value
-        }
-        let resp; let msg = ""
-        if (listvoit.value === "none" || listvoit.value === "") {
-            resp = await user.createCar(info);
-            msg = "Véhicules créé avec succès"
-        } else {
-            resp = await user.updateCar(info);
-            msg = "Véhicules mise à jour avec succès"
-        }
+        const veh = getSelectedVehicule();
+        const payload = buildVehiculeData(veh);
 
-        if (resp.status && resp.status === "success") {
-            update();
-            UI.notify("Véhicules", msg, true)
-            UI.toggleVoitureEdit(false);
-        } else if (resp.message) {
-            errorV.textContent = resp.message
-            UI.show(errorV);
-        }
-
-    }
-
-    async function handleDeleteCar(event) {
-        event.preventDefault();
-
-        if (listvoit.value === "none" || listvoit === "") return;
-
-        const id = JSON.parse(listvoit.value).id;
-        if (confirm("Voulez vraiment supprimer ce véhicule")) {
-            let res = await user.deleteCar(id);
-            if (res.status != "success" && res.message) {
-                console.log(res.message)
-                alert(res.message)
+        try {
+            if (veh) {
+                await vehiculeService.updateVehicule(payload);
+                UI.notify("Véhicules", "Véhicule mis à jour avec succès", true);
             } else {
-                UI.notify("Véhicules", "Véhicule supprimé avec succès !", true)
-                update();
+                await vehiculeService.createVehicule(payload);
+                UI.notify("Véhicules", "Véhicule créé avec succès", true);
             }
+
+            UI.hide(vehiculeEditContainer);
+            refreshSettings();
+        } catch (error) {
+            showVehiculeError(
+                ERROR_MESSAGES[error.code] ?? ERROR_MESSAGES.DEFAULT
+            );
         }
     }
 
+    async function deleteVehicule(event) {
+        event.preventDefault();
+        const veh = getSelectedVehicule();
+        if (!veh) return;
+
+        if (!confirm("Voulez-vous vraiment supprimer ce véhicule ?")) return;
+
+        try {
+            await vehiculeService.deleteVehicule(veh.id);
+            UI.notify("Véhicules", "Véhicule supprimé avec succès", true);
+            refreshSettings();
+        } catch (error) {
+            handleError(error, "Véhicules");
+        }
+    }
+
+
+    function validateVehiculeForm() {
+        const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils;
+        const errors = [];
+
+        if (isEmpty(vehiculePlateInput.value))
+            errors.push("La plaque est obligatoire.");
+        else if (!isValidPlate(vehiculePlateInput.value))
+            errors.push("Format de plaque incorrect.");
+
+        if (isEmpty(vehiculeHeightInput.value))
+            errors.push("La hauteur du véhicule est obligatoire.");
+        else if (!isValidPositiveNumber(vehiculeHeightInput.value))
+            errors.push("La hauteur doit être un nombre positif.");
+
+        if (isEmpty(vehiculeMotorInput.value))
+            errors.push("Le type de moteur est obligatoire.");
+
+        if (isEmpty(vehiculeTypeInput.value))
+            errors.push("Le type de véhicule est obligatoire.");
+
+        return errors;
+    }
+
+
+    function buildVehiculeData(veh) {
+        return {
+            id: veh?.id ?? user.userId,
+            plate: vehiculePlateInput.value.trim(),
+            height: Number(vehiculeHeightInput.value),
+            motor: vehiculeMotorInput.value,
+            type: vehiculeTypeInput.value,
+        };
+    }
 }

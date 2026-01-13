@@ -65,7 +65,7 @@ body {
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  bottom: -100px;
+  bottom: -150px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 99999999;
@@ -89,7 +89,7 @@ body {
 
 @keyframes slideInTop {
   from {
-    bottom: -100px;
+    bottom: -150px;
   }
   to {
     bottom: 10vh;
@@ -101,7 +101,7 @@ body {
     bottom: 10vh;
   }
   to {
-    bottom: -100px;
+    bottom: -150px;
   }
 }
 
@@ -512,15 +512,13 @@ select:focus {
 }
 
 .item {
-  margin: 10px;
+  margin: 2px;
   cursor: pointer;
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
-}
-
-.parking:hover {
-  color: var(--accent);
+  background: transparent;
+  border: none;
 }
 
 /*PARKING INFO*/
