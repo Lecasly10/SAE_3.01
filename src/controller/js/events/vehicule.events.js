@@ -50,9 +50,11 @@ export function initVehiculeEvent(services) {
         }
     }
 
+
     function getSelectedVehicule() {
         const id = vehiculeList.value;
-        return id ?? null;
+        if (!id) return null;
+        return vehiculeService.cache?.find((v) => v.id == id) ?? null;
     }
 
     function clearVehiculeError() {
@@ -71,7 +73,8 @@ export function initVehiculeEvent(services) {
 
         try {
             const vehData = await vehiculeService.load();
-            renderVehiculeList(vehData.data);
+            vehiculeService.cache = vehData.data || [];
+            renderVehiculeList(vehiculeService.cache);
         } catch (error) {
             if (error?.code !== "NOT_FOUND") {
                 handleError(error, "Véhicules");
