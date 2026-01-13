@@ -219,6 +219,7 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ### Tests
 
 - Chargement initial
+
   > Préconditions : navigateur avec JS activé  
   > Étapes :
   > Charger la page
@@ -228,3 +229,221 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
   > - UI initialisée
   > - Carte affichée
   > - Aucun message d’erreur
+
+- Démarrage hors ligne
+
+  > Préconditions : couper Internet avant chargement  
+  > Résultat attendu :
+  >
+  > - Notification : Connexion internet indisponible
+  > - Application ne plante pas
+  > - Loader désactivé
+
+- Perte / retour réseau
+  > Étapes :  
+  > Lancer l’app  
+  > Désactiver Internet
+  > Réactiver Internet
+  > Résultat attendu :
+  >
+  > - Notification “Connexion perdue”
+  > - Notification “Connexion retrouvée”
+
+2️⃣ Tests Utilisateur (auth / compte)
+T4 – Connexion valide
+Données : email + mot de passe valides
+Résultat attendu :
+Icône utilisateur changée
+
+Menu paramètres accessible
+
+Notification succès
+
+T5 – Connexion invalide
+Données : mauvais mot de passe
+Résultat attendu :
+Message d’erreur (INVALID_CREDENTIALS)
+
+Aucun changement d’état utilisateur
+
+T6 – Champs manquants
+Cas
+Résultat
+Email vide
+Erreur affichée
+Mot de passe < 8
+Erreur affichée
+Email invalide
+Erreur affichée
+
+T7 – Création de compte
+Données : formulaire complet
+Résultat attendu :
+Compte créé
+
+Connexion automatique
+
+Notification succès
+
+T8 – Logout
+Résultat attendu :
+User reset
+
+Icône redevenue “inscription”
+
+Paramètres fermés
+
+3️⃣ Tests Paramètres utilisateur
+T9 – Chargement paramètres
+Résultat attendu :
+Infos utilisateur remplies
+
+Véhicules listés
+
+Véhicule sélectionné restauré depuis storage
+
+T10 – Modification valide
+Résultat attendu :
+Données mises à jour en BDD
+
+Notification succès
+
+Storage véhicule mis à jour
+
+T11 – Modification invalide
+Champ
+Erreur
+Téléphone invalide
+Message erreur
+Distance non numérique
+Message erreur
+
+4️⃣ Tests Véhicules
+T12 – Liste des véhicules
+Résultat attendu :
+Liste remplie depuis API
+
+Boutons edit/supprimer désactivés si aucun véhicule
+
+T13 – Création véhicule
+Résultat attendu :
+Véhicule ajouté
+
+Liste rafraîchie
+
+Notification succès
+
+T14 – Modification véhicule
+Résultat attendu :
+Données mises à jour
+
+Message “mis à jour avec succès”
+
+T15 – Suppression véhicule sélectionné
+Résultat attendu :
+Véhicule supprimé
+
+Storage vidé si sélectionné
+
+Liste mise à jour
+
+5️⃣ Tests Carte & Géolocalisation
+T16 – Géolocalisation acceptée
+Résultat attendu :
+Marker utilisateur affiché
+
+Carte centrée
+
+T17 – Géolocalisation refusée
+Résultat attendu :
+Position par défaut utilisée
+
+Notification erreur GEOLOC
+
+App fonctionnelle
+
+T18 – Bouton recentrage
+Résultat attendu :
+Carte centrée sur l’utilisateur
+
+Notification adaptée
+
+T19 – Mode nuit
+Conditions :
+Heure ≥ 20h ou < 6h
+Résultat attendu :
+
+MapId sombre appliqué
+
+6️⃣ Tests Parkings & Navigation
+T20 – Recherche parking
+Données : texte valide
+Résultat attendu :
+Liste affichée
+
+Aucun crash si résultat vide
+
+T21 – Liste complète
+Résultat attendu :
+Tous les parkings affichés
+
+Boutons info & navigation actifs
+
+T22 – Détails parking
+Résultat attendu :
+Infos complètes affichées
+
+Tarifs conditionnels (gratuit / payant)
+
+T23 – Navigation vers parking
+Résultat attendu :
+Preview affichée
+
+Itinéraire tracé
+
+Camera orientée
+
+T24 – Annulation navigation
+Résultat attendu :
+Route supprimée
+
+UI réinitialisée
+
+Storage destination supprimé
+
+T25 – Redirection automatique
+Condition : parking plein
+Résultat attendu :
+Recherche parking proche
+
+Notification redirection
+
+Nouvelle navigation lancée
+
+7️⃣ Tests Storage & persistance
+T26 – Reload page en navigation
+Résultat attendu :
+Destination restaurée
+
+Notification “trajet retrouvé”
+
+Preview affichée
+
+T27 – Storage corrompu
+Résultat attendu :
+Erreur gérée
+
+App continue à fonctionner
+
+8️⃣ Tests erreurs globales
+T28 – API indisponible
+Résultat attendu :
+Notification générique
+
+Aucun crash
+
+T29 – Données invalides (lat/lng)
+Résultat attendu :
+AppError levée
+
+Message utilisateur
