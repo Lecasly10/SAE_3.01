@@ -4,191 +4,210 @@ import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 
 export function initVehiculeEvent(services) {
-    const user = services.user
-    const vehiculeService = services.vehiculeService;
+    const { user, vehiculeService } = services;
 
-    const { settingsButton } = UI.el.bottomBar
+    const { settingsButton } = UI.el.bottomBar;
 
-    const { vehiculeList, vehiculeContainer,
-        editVehiculeButton, addVehiculeButton,
-        deleteVehiculeButton, closeVehiculeButton
+    const {
+        vehiculeList,
+        vehiculeContainer,
+        editVehiculeButton,
+        addVehiculeButton,
+        deleteVehiculeButton,
+        closeVehiculeButton,
     } = UI.el.vehiculePopup;
 
     const {
-        vehiculeEditContainer, vehiculeEditContainerTitle,
-        submitVehiculeButton, closeVehiculeEditButton,
-        vehiculePlateInput, vehiculeHeightInput,
-        vehiculeMotorInput, vehiculeTypeInput, errorTextVehicule
+        vehiculeEditContainer,
+        vehiculeEditContainerTitle,
+        submitVehiculeButton,
+        closeVehiculeEditButton,
+        vehiculePlateInput,
+        vehiculeHeightInput,
+        vehiculeMotorInput,
+        vehiculeTypeInput,
+        errorTextVehicule,
     } = UI.el.vehiculeEditPopup;
 
-    UI.el.settingsPopup.vehiculeButton.addEventListener("click", async (e) => {
-        handleCar(e);
-        UI.show(vehiculeContainer);
-    })
+    UI.el.settingsPopup.vehiculeButton.addEventListener("click", openVehicules);
 
-    editVehiculeButton.addEventListener("click", async (e) => {
-        handleCarEdit(e);
-        UI.show(vehiculeEditContainer);
-    })
+    editVehiculeButton.addEventListener("click", () => openVehiculeEdit(false));
+    addVehiculeButton.addEventListener("click", () => openVehiculeEdit(true));
+    deleteVehiculeButton.addEventListener("click", deleteVehicule);
 
-    addVehiculeButton.addEventListener("click", async (e) => {
-        handleCarEdit(e);
-        UI.show(vehiculeEditContainer);
-    })
+    submitVehiculeButton.addEventListener("click", submitVehicule);
+    closeVehiculeButton.addEventListener("click", () => UI.hide(vehiculeContainer));
+    closeVehiculeEditButton.addEventListener("click", () => UI.hide(vehiculeEditContainer));
 
-    deleteVehiculeButton.addEventListener("click", async (e) => {
-        handleDeleteCar(e);
-    })
+    vehiculeList.addEventListener("change", updateActionButtons);
 
-    submitVehiculeButton.addEventListener("click", async (e) => {
-        await handleCarEditSubmit(e);
-    })
-
-    vehiculeList.addEventListener("change", (e) => {
-        e.preventDefault();
-        deleteVehiculeButton.disabled = vehiculeList.value === "none" || vehiculeList.value === "";
-        editVehiculeButton.disabled = vehiculeList.value === "none" || vehiculeList.value === "";
-    });
-
-    closeVehiculeButton.addEventListener("click", async () => {
-        UI.hide(vehiculeContainer);
-    })
-
-    closeVehiculeEditButton.addEventListener("click", async () => {
-        UI.hide(UI.el.vehiculeEditPopup.vehiculeEditContainer);
-    })
-
-    function update() {
+    function refreshSettings() {
         try {
             settingsButton.click();
-            carButton.click();
+            UI.el.settingsPopup.vehiculeButton.click();
         } catch (e) {
             handleError(e, "Véhicules");
         }
-
     }
 
-    async function handleCar(event) {
-        event.preventDefault();
+    function getSelectedVehicule() {
+        const id = vehiculeList.value;
+        return id ?? null;
+    }
+
+    function clearVehiculeError() {
+        errorTextVehicule.textContent = "";
+        UI.hide(errorTextVehicule);
+    }
+
+    function showVehiculeError(message) {
+        errorTextVehicule.textContent = message;
+        UI.show(errorTextVehicule);
+    }
+
+    async function openVehicules(event) {
+        event?.preventDefault();
         UI.resetCarEditList();
 
         try {
-            let vehData = await vehiculeService.load();
-            vehData.data.forEach(veh => {
-                vehiculeList.add(new Option(`${veh.plate}`, JSON.stringify(veh)));
-            });
+            const vehData = await vehiculeService.load();
+            renderVehiculeList(vehData);
         } catch (error) {
-            if (error?.code !== "NOT_FOUND")
+            if (error?.code !== "NOT_FOUND") {
                 handleError(error, "Véhicules");
-        }
-
-        vehiculeList.value = "none";
-    }
-
-    function handleCarEdit(event) {
-        event.preventDefault();
-
-        let b = event.target.value;
-        if (b == "new") {
-            vehiculeList.value = "none"
-            vehiculeEditContainerTitle.textContent = "NOUVEAU"
-            vehiculePlateInput.value = "";
-            vehiculeHeightInput.value = "";
-        } else {
-            try {
-                let data = JSON.parse(UI.el.vehiculePopup.vehiculeList.value)
-                vehiculeEditContainerTitle.textContent = "MODIFICATION"
-                vehiculePlateInput.value = data.plate;
-                vehiculeHeightInput.value = data.height;
-                vehiculeMotorInput.value = data.motor;
-                vehiculeTypeInput.value = data.type;
-            } catch (error) {
-                handleError(error, "Véhicules")
             }
         }
 
+        vehiculeList.value = "";
+        updateActionButtons();
+        UI.show(vehiculeContainer);
     }
 
-    async function handleCarEditSubmit(event) {
+    function renderVehiculeList(list) {
+        vehiculeList.innerHTML = "";
+        vehiculeList.add(new Option("-- Sélectionner --", ""));
+
+        list.forEach((veh) => {
+            vehiculeList.add(new Option(veh.plate, veh.id));
+        });
+    }
+
+    function updateActionButtons() {
+        const hasSelection = !!vehiculeList.value;
+        editVehiculeButton.disabled = !hasSelection;
+        deleteVehiculeButton.disabled = !hasSelection;
+    }
+
+    function openVehiculeEdit(isNew) {
+        clearVehiculeError();
+
+        if (isNew) {
+            vehiculeEditContainerTitle.textContent = "NOUVEAU VÉHICULE";
+            resetVehiculeForm();
+        } else {
+            const veh = getSelectedVehicule();
+            if (!veh) return;
+
+            vehiculeEditContainerTitle.textContent = "MODIFICATION";
+            fillVehiculeForm(veh);
+        }
+
+        UI.show(vehiculeEditContainer);
+    }
+
+    function resetVehiculeForm() {
+        vehiculePlateInput.value = "";
+        vehiculeHeightInput.value = "";
+        vehiculeMotorInput.value = "";
+        vehiculeTypeInput.value = "";
+    }
+
+    function fillVehiculeForm(veh) {
+        vehiculePlateInput.value = veh.plate;
+        vehiculeHeightInput.value = veh.height;
+        vehiculeMotorInput.value = veh.motor;
+        vehiculeTypeInput.value = veh.type;
+    }
+
+    async function submitVehicule(event) {
         event.preventDefault();
-        const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils
+        clearVehiculeError();
 
-        let id;
-        let errors = [];
-        if (vehiculeList.value === "none" || vehiculeList.value === "") id = user.userId;
-        else id = JSON.parse(vehiculeList.value).id;
-
-        errorTextVehicule.textContent = "";
-        UI.hide(errorTextVehicule);
-
-        if (isEmpty(vehiculePlateInput.value))
-            errors.push("La plaque est obligatoire");
-        else if (!isValidPlate(vehiculePlateInput.value))
-            errors.push("Format de plaque incorrect");
-        if (isEmpty(vehiculeHeightInput.value))
-            errors.push("La hauteur du véhicule est obligatoire");
-        else if (!isValidPositiveNumber(vehiculeHeightInput.value))
-            errors.push("La hauteur du véhicule doit être un nombre entier positif non nul");
-        if (isEmpty(vehiculeMotorInput.value))
-            errors.push("Le type du moteur est obligatoire");
-        if (isEmpty(vehiculeTypeInput.value))
-            errors.push("Le type du véhicule est obligatoire");
-
-
-        if (errors.length > 0) {
-            errorTextVehicule.textContent = errors.join("\n");
-            UI.show(errorTextVehicule);
+        const errors = validateVehiculeForm();
+        if (errors.length) {
+            showVehiculeError(errors.join("\n"));
             return;
         }
-        errorTextVehicule.textContent = "";
 
-        const info = {
-            id: id,
-            plate: vehiculePlateInput.value,
-            height: vehiculeHeightInput.value,
-            type: vehiculeTypeInput.value,
-            motor: vehiculeMotorInput.value
-        }
-
-        let msg;
+        const veh = getSelectedVehicule();
+        const payload = buildVehiculeData(veh);
 
         try {
-            if (vehiculeList.value === "none" || vehiculeList.value === "") {
-                msg = "Véhicule créé avec succès"
-                await vehiculeService.createVehicule(info);
-
+            if (veh) {
+                await vehiculeService.updateVehicule(payload);
+                UI.notify("Véhicules", "Véhicule mis à jour avec succès", true);
             } else {
-                msg = "Véhicule mis à jour avec succès"
-                await vehiculeService.updateVehicule(info);
+                await vehiculeService.createVehicule(payload);
+                UI.notify("Véhicules", "Véhicule créé avec succès", true);
             }
-            update();
-            UI.notify("Véhicules", msg, true)
-            UI.hide(vehiculeEditContainer);
-        } catch (error) {
-            errorTextVehicule.textContent = ERROR_MESSAGES[error.code]
-                ?? ERROR_MESSAGES.DEFAULT;
-            UI.show(errorTextVehicule);
-            console.error(error)
-        }
 
+            UI.hide(vehiculeEditContainer);
+            refreshSettings();
+        } catch (error) {
+            showVehiculeError(
+                ERROR_MESSAGES[error.code] ?? ERROR_MESSAGES.DEFAULT
+            );
+        }
     }
 
-    async function handleDeleteCar(event) {
+    async function deleteVehicule(event) {
         event.preventDefault();
+        const veh = getSelectedVehicule();
+        if (!veh) return;
 
-        if (vehiculeList.value === "none" || vehiculeList.value === "") return;
+        if (!confirm("Voulez-vous vraiment supprimer ce véhicule ?")) return;
 
         try {
-            let id = JSON.parse(vehiculeList.value).id;
-
-            if (confirm("Voulez vraiment supprimer ce véhicule")) {
-                await vehiculeService.deleteVehicule(id);
-                UI.notify("Véhicules", "Véhicule supprimé avec succès !", true)
-                update();
-            }
+            await vehiculeService.deleteVehicule(veh.id);
+            UI.notify("Véhicules", "Véhicule supprimé avec succès", true);
+            refreshSettings();
         } catch (error) {
-            handleError(error, "Véhicule");
+            handleError(error, "Véhicules");
         }
+    }
 
+
+    function validateVehiculeForm() {
+        const { isEmpty, isValidPlate, isValidPositiveNumber } = Utils;
+        const errors = [];
+
+        if (isEmpty(vehiculePlateInput.value))
+            errors.push("La plaque est obligatoire.");
+        else if (!isValidPlate(vehiculePlateInput.value))
+            errors.push("Format de plaque incorrect.");
+
+        if (isEmpty(vehiculeHeightInput.value))
+            errors.push("La hauteur du véhicule est obligatoire.");
+        else if (!isValidPositiveNumber(vehiculeHeightInput.value))
+            errors.push("La hauteur doit être un nombre positif.");
+
+        if (isEmpty(vehiculeMotorInput.value))
+            errors.push("Le type de moteur est obligatoire.");
+
+        if (isEmpty(vehiculeTypeInput.value))
+            errors.push("Le type de véhicule est obligatoire.");
+
+        return errors;
+    }
+
+
+    function buildVehiculeData(veh) {
+        return {
+            id: veh?.id ?? user.userId,
+            plate: vehiculePlateInput.value.trim(),
+            height: Number(vehiculeHeightInput.value),
+            motor: vehiculeMotorInput.value,
+            type: vehiculeTypeInput.value,
+        };
     }
 }

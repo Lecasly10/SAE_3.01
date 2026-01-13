@@ -126,7 +126,7 @@ export function initSettingsEvent(services) {
             return;
         }
 
-        const payload = buildPayload();
+        const payload = buildData();
 
         try {
             await userService.update(payload);
@@ -179,7 +179,7 @@ export function initSettingsEvent(services) {
         return errors;
     }
 
-    function buildPayload() {
+    function buildData() {
         return {
             id: user.userId,
             name: settingsNameInput.value.trim(),
