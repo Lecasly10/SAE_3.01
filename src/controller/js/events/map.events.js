@@ -70,6 +70,21 @@ export function initMapEvent(services) {
         handleParkingListButton(e);
     });
 
+    resultContainer.addEventListener("click", (event) => {
+        const infoButton = event.target.closest(".parking-info");
+        const routeButton = event.target.closest(".parking-route");
+
+        if (infoButton) {
+            handleParkingInfoClick(event, infoButton);
+            return;
+        }
+
+        if (routeButton) {
+            handleParkingClick(event, routeButton);
+        }
+    });
+
+
     //Annuler ou stop
     if (stopButton) {
         stopButton.addEventListener("click", (e) => {
@@ -271,6 +286,7 @@ export function initMapEvent(services) {
     // Gestion de la liste de parkings
     function handleParkingList(parkings) {
         UI.emptyResultBox();
+
         if (!parkings || !parkings.length) {
             UI.setResultTitle("Aucun résultat");
             UI.setResultMessage(":(");
@@ -279,22 +295,19 @@ export function initMapEvent(services) {
                 const container = document.createElement("div");
                 container.className = "resultDiv";
 
-                const button = document.createElement("a");
-
-                button.value = parking.id;
-                button.className = "littleButton button fade";
-                button.title = "Cliquez pour voir les informations";
-                button.dataset.data = JSON.stringify(parking);
+                const infoButton = document.createElement("button");
+                infoButton.className = "littleButton button fade parking-info";
+                infoButton.title = "Cliquez pour voir les informations";
+                infoButton.dataset.id = parking.id;
 
                 const icon = document.createElement("i");
                 icon.className = "fa fa-info";
                 icon.textContent = "INFO";
-                icon.ariaHidden = "true";
-                button.appendChild(icon);
+                infoButton.appendChild(icon);
 
-                const link = document.createElement("a");
-                link.className = "item parking fade";
-                link.textContent =
+                const routeLink = document.createElement("button");
+                routeLink.className = "item parking fade parking-route";
+                routeLink.textContent =
                     parking.nom +
                     (parking.places_libres > 0
                         ? ` | ${parking.places_libres} places libres`
@@ -302,25 +315,20 @@ export function initMapEvent(services) {
                             ? ""
                             : " | complet");
 
-                link.title = "Cliquez pour lancer l'itinéraire";
-                link.dataset.lat = parking.lat;
-                link.dataset.lng = parking.lng;
-                link.dataset.id = parking.id;
-                link.dataset.name = parking.nom;
+                routeLink.dataset.lat = parking.lat;
+                routeLink.dataset.lng = parking.lng;
+                routeLink.dataset.id = parking.id;
+                routeLink.dataset.name = parking.nom;
 
-                link.addEventListener("click", (e) => handleParkingClick(e, link));
-                button.addEventListener("click", (e) =>
-                    handleParkingInfoClick(e, button)
-                );
-
-                container.appendChild(button);
-                container.appendChild(link);
+                container.appendChild(infoButton);
+                container.appendChild(routeLink);
                 UI.appendResultBox(container);
             });
         }
 
         UI.show(resultContainer);
     }
+
 
 
     // Fermer les resultbox
