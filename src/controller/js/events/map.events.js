@@ -25,17 +25,20 @@ export function initMapEvent(services) {
     } = UI.el.resultsPopup
 
     let tId = null;
+    const onDragEnd = () => {
+        tId = setTimeout(() => {
+            navigation.startFollowRoute();
+            tId = null;
+        }, 3000);
+    };
+
     mapService.map.addListener('dragstart', () => {
-        if (navigation.followingRoute) {
-            if (tId) clearTimeout(tId);
-            navigation.pauseFollowRoute();
-            mapService.map.addListener('dragend', () => {
-                tId = setTimeout(() => {
-                    navigation.startFollowRoute();
-                    tId = null;
-                }, 3000);
-            })
-        }
+        if (!navigation.followingRoute) return;
+
+        if (tId) clearTimeout(tId);
+        navigation.pauseFollowRoute();
+
+        google.maps.event.addListenerOnce(mapService.map, 'dragend', onDragEnd);
     });
 
     centerButton.addEventListener("click", async () => {
@@ -138,6 +141,7 @@ export function initMapEvent(services) {
             const destination = { id, lat, lng, name };
             handleNavigation(destination);
         } catch (error) {
+            UI.setupUI();
             handleError(error, "Navigation")
         } finally {
             UI.hide(loader);
