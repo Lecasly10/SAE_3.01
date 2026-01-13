@@ -48,7 +48,6 @@ export class NavigationService {
   startPreview() {
     if (!this.route) return
     const destination = this.destination
-    console.log(destination)
     const { confirm, cancel } = UI.startDestinationPreview(destination);
     const bounds = this.route.bounds;
     const mapService = this.mapService;

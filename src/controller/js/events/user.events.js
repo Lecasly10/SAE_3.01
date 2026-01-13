@@ -32,8 +32,8 @@ export function initUserEvent(services) {
 
     logoutButton.addEventListener("click", handleLogout);
 
-    signInLink?.addEventListener("click", UI.switchToSigin);
-    logInLink?.addEventListener("click", UI.switchToLogin);
+    signInLink?.addEventListener("click", UI.switchToSignIn);
+    logInLink?.addEventListener("click", UI.switchToLogIn);
 
 
     function bindSubmitOnEnter() {

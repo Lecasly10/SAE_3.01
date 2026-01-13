@@ -11,12 +11,6 @@ export class UI {
   static hide(element) {
     element.classList.add("hidden");
   }
-  static visible(element) {
-    element.style.visibility = "visible";
-  }
-  static invisible(element) {
-    element.style.visibility = "hidden";
-  }
 
   static async notify(title, message, overlay = false, time = 5) {
     let { notifContainer, notifTitle, notifContent } = UI.el.notification;
@@ -73,13 +67,8 @@ export class UI {
     const container = document.createElement("div");
     container.className = "dialog";
 
-    const confirm = document.createElement("a");
-    confirm.className = "button fade";
-    confirm.textContent = "Confirmer";
-
-    const cancel = document.createElement("a");
-    cancel.className = "button";
-    cancel.textContent = "Annuler";
+    const confirm = UI.createButton("Confirmer", "button fade");
+    const cancel = UI.createButton("Annuler", "button fade");
 
     container.append(confirm, cancel);
     UI.appendResultBox(container);
@@ -91,13 +80,13 @@ export class UI {
   static resetCarEditList() {
     const { vehiculeList } = UI.el.vehiculePopup;
     vehiculeList.innerHTML = "";
-    vehiculeList.add(new Option("Sélectionner un véhicule", "none", true, true));
+    vehiculeList.add(new Option("Sélectionner un véhicule", "", true, true));
   }
 
   static resetCarSettList() {
     const { settingsVehiculesList } = UI.el.settingsPopup;
     settingsVehiculesList.innerHTML = "";
-    settingsVehiculesList.add(new Option("Aucun", "none", true, true));
+    settingsVehiculesList.add(new Option("Aucun", "", true, true));
   }
 
   static switchToLoggedIcon() {
@@ -114,7 +103,7 @@ export class UI {
     userIcon.classList.add("fa-user-plus")
   }
 
-  static switchToSigin() {
+  static switchToSignIn() {
     const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
     UI.hide(errorTextAuth);
     UI.show(additionalInfo);
@@ -124,7 +113,7 @@ export class UI {
     UI.hide(signInLink);
   }
 
-  static switchToLogin() {
+  static switchToLogIn() {
     const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
     UI.hide(errorTextAuth);
     UI.hide(additionalInfo);
@@ -210,5 +199,13 @@ export class UI {
       container.append(UI.createText(`${label} :`, value));
     });
     container.append(document.createElement("hr"));
+  }
+
+  static createButton(text, className = "", onClick) {
+    const btn = document.createElement("a");
+    btn.textContent = text;
+    btn.className = className;
+    if (onClick) btn.addEventListener("click", onClick);
+    return btn;
   }
 }
