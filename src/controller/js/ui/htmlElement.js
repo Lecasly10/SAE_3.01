@@ -64,7 +64,7 @@ const settingsPopup = {
     maxHourlyBudgetInput: get("budgetParam"),
     logoutButton: get("logout"),
     errorTextSettings: get("errorSett"),
-    submitSettingsButton: get("submitsett"),
+    submitSettingsButton: get("submitSett"),
     vehiculeButton: get("carButton"),
 }
 
