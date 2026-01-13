@@ -215,3 +215,17 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 - Infos importantes à savoir
   - Les infos de disponibilité peuvent être approximatives
   - L’app aide à trouver un parking, mais ne promet pas une place libre
+
+### Tests
+
+#### Chargement initial
+
+> - Préconditions : navigateur avec JS activé
+>   Étapes :
+>   Charger la page
+>   Résultat attendu :
+>   - Loader visible
+>   - UI initialisée
+>   - Carte affichée
+>   - Aucun message d’erreur
+
