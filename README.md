@@ -372,104 +372,110 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ### Tests Carte & Géolocalisation
 
 - Géolocalisation acceptée
-  Résultat attendu :
-  Marker utilisateur affiché
 
-Carte centrée
+  > Résultat attendu :
+  >
+  > - Marker utilisateur affiché
+  > - Carte centrée
 
 - Géolocalisation refusée
-  Résultat attendu :
-  Position par défaut utilisée
 
-Notification erreur GEOLOC
-
-App fonctionnelle
+  > Résultat attendu :
+  >
+  > - Position par défaut utilisée
+  > - Message d'erreur
+  > - App fonctionnelle
 
 - Bouton recentrage
-  Résultat attendu :
-  Carte centrée sur l’utilisateur
 
-Notification adaptée
+  > Résultat attendu :
+  >
+  > - Carte centrée sur l’utilisateur
+  > - notification
 
 - Mode nuit
-  Conditions :
-  Heure ≥ 20h ou < 6h
-  Résultat attendu :
-
-MapId sombre appliqué
+  > Conditions : Heure >= 20h ou < 6h
+  > Résultat attendu :
+  >
+  > - MapId sombre appliqué
 
 ### Tests Parkings & Navigation
 
 - Recherche parking
-  Données : texte valide
-  Résultat attendu :
-  Liste affichée
 
-Aucun crash si résultat vide
+  > Données : texte valide
+  > Résultat attendu :
+  >
+  > - Liste affichée
+  > - Aucun crash si résultat vide
+  > - Boutons info & navigation actifs
 
 - Liste complète
-  Résultat attendu :
-  Tous les parkings affichés
 
-Boutons info & navigation actifs
+  > Résultat attendu :
+  >
+  > - Tous les parkings affichés
+  > - Boutons info & navigation actifs
 
 - Détails parking
-  Résultat attendu :
-  Infos complètes affichées
 
-Tarifs conditionnels (gratuit / payant)
+  > Résultat attendu :
+  >
+  > - Infos complètes affichées
+  > - Tarifs conditionnels (gratuit / payant)
 
 - Navigation vers parking
-  Résultat attendu :
-  Preview affichée
 
-Itinéraire tracé
-
-Camera orientée
+  > Résultat attendu :
+  >
+  > - Preview affichée
+  > - Itinéraire tracé
+  > - Camera orientée
+  > - Storage destination mise a jour
 
 - Annulation navigation
-  Résultat attendu :
-  Route supprimée
 
-UI réinitialisée
-
-Storage destination supprimé
+  > Résultat attendu :
+  >
+  > - Route supprimée
+  > - UI réinitialisée
+  > - Storage destination supprimé
 
 - Redirection automatique
-  Condition : parking plein
-  Résultat attendu :
-  Recherche parking proche
-
-Notification redirection
-
-Nouvelle navigation lancée
+  > Condition : parking plein
+  > Résultat attendu :
+  >
+  > - Recherche parking proche
+  > - Notification redirection
+  > - Nouvelle navigation lancée
 
 ### Tests Storage & persistance
 
 - Reload page en navigation
-  Résultat attendu :
-  Destination restaurée
 
-Notification “trajet retrouvé”
-
-Preview affichée
+  > Résultat attendu :
+  >
+  > - Destination restaurée
+  > - notification
+  > - Preview affichée
 
 - Storage corrompu
-  Résultat attendu :
-  Erreur gérée
-
-App continue à fonctionner
+  > Résultat attendu :
+  >
+  > - Erreur gérée
+  > - App continue à fonctionner
 
 ### Tests erreurs globales
 
 - API indisponible
-  Résultat attendu :
-  Notification générique
 
-Aucun crash
+  > Résultat attendu :
+  >
+  > - Notification générique
+  > - Aucun crash
 
 - Données invalides (lat/lng)
-  Résultat attendu :
-  AppError levée
-
-Message utilisateur
+  > Résultat attendu :
+  >
+  > - AppError levée
+  > - Message utilisateur
