@@ -47,7 +47,7 @@ npm install
 cordova platform add android
 ```
 
-- Si la Android est déjà ajouté :
+- Si Android est déjà ajouté :
 
 ```
 cordova plateform update android
