@@ -187,6 +187,7 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
   - Avec filtres (prix, distance, dispo)
   - Voir les parkings sur la carte
   - Consulter un parking
+  - Sauvegarde et récup. du trajet
 
 - Quand je clique sur un parking, je vois :
 
@@ -206,9 +207,9 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 
 - Cas particuliers
 
-  - GPS désactivé → message d’erreur mais app utilisable
-  - Pas de connexion → message d'erreur
-  - Aucune dispo connue → pris en compte
+  - GPS désactivé : message d’erreur mais app utilisable
+  - Pas de connexion : message d'erreur
+  - Aucune dispo connue : pris en compte
 
 - Infos importantes à savoir
   - Les infos de disponibilité peuvent être approximatives
