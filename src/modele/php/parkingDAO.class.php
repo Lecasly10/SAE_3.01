@@ -114,7 +114,7 @@ class ParkingDAO
 
         if (!empty($options['preferCovered'])) {
             $where .= ' AND structure_type = :structure';
-            $params[':structure'] = 'enclos_en_surface';
+            $params[':structure'] = 'ouvrage';
         }
 
         $results = $this->bd->execSQL($sql . $where, $params);
