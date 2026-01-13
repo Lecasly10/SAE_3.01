@@ -218,14 +218,13 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 
 ### Tests
 
-#### Chargement initial
-
-> - Préconditions : navigateur avec JS activé
->   Étapes :
->   Charger la page
->   Résultat attendu :
->   - Loader visible
->   - UI initialisée
->   - Carte affichée
->   - Aucun message d’erreur
-
+- Chargement initial
+  > Préconditions : navigateur avec JS activé
+  > Étapes :
+  > Charger la page
+  > Résultat attendu :
+  >
+  > - Loader visible
+  > - UI initialisée
+  > - Carte affichée
+  > - Aucun message d’erreur
