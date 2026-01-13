@@ -223,6 +223,24 @@ export function initMapEvent(services) {
             ],
         ];
 
+        if (!parking.free) {
+            const rates = {
+                "Prix PMR": parking.pmr_rate,
+                "Prix 1h": parking.rate_1h,
+                "Prix 2h": parking.rate_2h,
+                "Prix 3h": parking.rate_3h,
+                "Prix 4h": parking.rate_4h,
+                "Prix 24h": parking.rate_24h,
+            };
+            const tarifList = Object.entries(rates)
+                .map(([label, value]) => [label, value > 0 ? `${value}€` : "Gratuit",]);
+            tarifList.push(
+                ["Abonnement résident", `${parking.resident_sub}€ /an`],
+                ["Abonnement non résident", `${parking.nonresident_sub}€ /an`]
+            );
+            sections.push(tarifList);
+        }
+
         sections.forEach((list) => {
             const div = document.createElement("div");
             UI.appendTextElements(div, list);
