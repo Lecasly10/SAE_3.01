@@ -512,19 +512,13 @@ select:focus {
 }
 
 .item {
-  padding: 0;
-  margin: 0;
+  margin: 2px;
   cursor: pointer;
   font-size: 16px;
   color: var(--main);
   text-decoration: none;
   background: transparent;
   border: none;
-}
-
-.parking:hover {
-  border: none;
-  color: var(--accent);
 }
 
 /*PARKING INFO*/
