@@ -40,7 +40,7 @@ export function initUserEvent(services) {
             UI.switchToLoginIcon();
             UI.notify("Compte", "Déconnexion réussi !")
         } catch (error) {
-            handleError(e, "Compte");
+            handleError(error, "Compte");
         }
     })
 
