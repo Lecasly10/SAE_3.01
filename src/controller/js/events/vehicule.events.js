@@ -71,7 +71,7 @@ export function initVehiculeEvent(services) {
 
         try {
             const vehData = await vehiculeService.load();
-            renderVehiculeList(vehData);
+            renderVehiculeList(vehData.data);
         } catch (error) {
             if (error?.code !== "NOT_FOUND") {
                 handleError(error, "Véhicules");
@@ -85,7 +85,7 @@ export function initVehiculeEvent(services) {
 
     function renderVehiculeList(list) {
         vehiculeList.innerHTML = "";
-        vehiculeList.add(new Option("-- Sélectionner --", ""));
+        vehiculeList.add(new Option("Sélectionner un véhicule", ""));
 
         list.forEach((veh) => {
             vehiculeList.add(new Option(veh.plate, veh.id));
