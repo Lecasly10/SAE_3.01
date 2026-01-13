@@ -1,4 +1,4 @@
-import { elements, loader } from "./htmlElement.js"
+import { elements } from "./htmlElement.js"
 
 export class UI {
   // HTML
