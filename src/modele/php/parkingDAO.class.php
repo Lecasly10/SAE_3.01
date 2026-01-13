@@ -164,8 +164,9 @@ class ParkingDAO
             return true;
         });
 
-        usort($parkings, function ($a) use ($userLat, $userLng) {
-            return distanceGPS($a->getLat(), $a->getLong(), $userLat, $userLng) <=> distanceGPS($a->getLat(), $a->getLong(), $userLat, $userLng);
+        usort($parkings, function ($a, $b) use ($userLat, $userLng) {
+            return distanceGPS($a->getLat(), $a->getLong(), $userLat, $userLng)
+            <=> distanceGPS($b->getLat(), $b->getLong(), $userLat, $userLng);
         });
 
         return array_slice($parkings, 0, $limit);
