@@ -146,6 +146,7 @@ export function initMapEvent(services) {
 
     // Soumission de la recherche
     async function handleSearchBoxSubmit(event) {
+        UI.emptyResultBox();
         event.preventDefault();
         const query = UI.getSearchQuery().trim();
 
@@ -296,7 +297,7 @@ export function initMapEvent(services) {
                 container.className = "resultDiv";
 
                 const infoButton = document.createElement("button");
-                infoButton.className = "littleButton button fade parking-info";
+                infoButton.className = "item parking-info";
                 infoButton.title = "Cliquez pour voir les informations";
                 infoButton.dataset.id = parking.id;
 
@@ -306,7 +307,7 @@ export function initMapEvent(services) {
                 infoButton.appendChild(icon);
 
                 const routeLink = document.createElement("button");
-                routeLink.className = "item parking fade parking-route";
+                routeLink.className = "item parking parking-route";
                 routeLink.textContent =
                     parking.nom +
                     (parking.places_libres > 0

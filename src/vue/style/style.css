@@ -521,6 +521,11 @@ select:focus {
   border: none;
 }
 
+.parking {
+  margin: 0;
+  padding: 0;
+}
+
 .parking:hover {
   border: none;
   color: var(--accent);
