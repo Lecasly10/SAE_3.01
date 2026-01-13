@@ -112,10 +112,6 @@ export function initSettingsEvent(services) {
         maxHourlyBudgetInput.value = data.maxHourly;
     }
 
-    /* =========================
-       UPDATE SETTINGS
-    ========================== */
-
     async function handleUpdate(event) {
         event.preventDefault();
         clearSettingsError();
