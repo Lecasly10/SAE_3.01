@@ -163,7 +163,7 @@ export function initVehiculeEvent(services) {
             }
             update();
             UI.notify("Véhicules", msg, true)
-            UI.toggleVoitureEdit(false);
+            UI.hide(vehiculeEditContainer);
         } catch (error) {
             errorTextVehicule.textContent = ERROR_MESSAGES[error.code]
                 ?? ERROR_MESSAGES.DEFAULT;
