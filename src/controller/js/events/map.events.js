@@ -133,7 +133,10 @@ export function initMapEvent(services) {
 
 
     async function navigateToParking(button) {
-        const { lat, lng, id, name } = button.dataset.info;
+        const lat = button.dataset.lat;
+        const lng = button.dataset.lng;
+        const id = button.dataset.id;
+        const name = button.dataset.name;
 
         if (!id || !lat || !lng || !name) {
             return handleError(new AppError("Données invalides"), "Navigation");
@@ -181,12 +184,10 @@ export function initMapEvent(services) {
 
                 const routeBtn = document.createElement("button");
                 routeBtn.className = "item parking parking-route";
-                routeBtn.dataset.info = {
-                    id: parking.id,
-                    lat: parking.lat,
-                    lng: parking.lng,
-                    name: parking.nom,
-                };
+                routeBtn.dataset.lat = parking.lat;
+                routeBtn.dataset.lng = parking.lng;
+                routeBtn.dataset.name = parking.name;
+                routeBtn.dataset.id = parking.id;
 
                 routeBtn.textContent =
                     parking.nom +
