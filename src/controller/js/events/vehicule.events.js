@@ -21,7 +21,7 @@ export function initVehiculeEvent(services) {
         vehiculeMotorInput, vehiculeTypeInput, errorTextVehicule
     } = UI.el.vehiculeEditPopup;
 
-    settingsPopup.vehiculeButton.addEventListener("click", async (e) => {
+    UI.el.settingsPopup.vehiculeButton.addEventListener("click", async (e) => {
         handleCar(e);
         UI.show(vehiculeContainer);
     })
