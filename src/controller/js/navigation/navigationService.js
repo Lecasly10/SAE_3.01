@@ -28,13 +28,12 @@ export class NavigationService {
   }
 
   async calDistForDest(destination) {
-    let dist = await GeolocationService.distance(this.mapService.userMarker.position,
+    let dist = GeolocationService.distance(this.mapService.userMarker.position,
       { lat: destination.lat, lng: destination.lng }, this.apiService)
-    destination = {
+    return {
       ...destination,
       distance: dist,
     };
-    return destination
   }
 
   async startNavigation(destination) {
@@ -49,6 +48,7 @@ export class NavigationService {
   startPreview() {
     if (!this.route) return
     const destination = this.destination
+    console.log(destination)
     const { confirm, cancel } = UI.startDestinationPreview(destination);
     const bounds = this.route.bounds;
     const mapService = this.mapService;
