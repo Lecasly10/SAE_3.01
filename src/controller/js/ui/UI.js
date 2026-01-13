@@ -67,7 +67,7 @@ export class UI {
     UI.setupUI();
     UI.emptyResultBox();
 
-    UI.setResultTitle(destination.name);
+    UI.setResultTitle(`${destination.name} - ${destination.distance} km`);
     UI.setResultMessage("Voulez vous aller à ce parking ?");
 
     const container = document.createElement("div");

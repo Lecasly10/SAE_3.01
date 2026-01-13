@@ -27,9 +27,18 @@ export class NavigationService {
       await this.retrieveRoute(savedRoute);
   }
 
+  async calDistForDest(destination) {
+    destination = {
+      ...destination,
+      distance: GeolocationService.distance(this.mapService.userMarker.position,
+        { lat: destination.lat, lng: destination.lng })
+    };
+    return destination
+  }
+
   async startNavigation(destination) {
     if (this.route) return;
-
+    this.calDistForDest(destination);
     this.destination = destination;
     await this.buildRoute();
     this.startParkingMonitor();
