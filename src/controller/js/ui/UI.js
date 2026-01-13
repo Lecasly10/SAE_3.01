@@ -133,18 +133,18 @@ export class UI {
   }
 
   static toggleSearchInput(showInput = false) {
-    const { barTitle, searchContainer, listButton } = UI.el.topBar;
+    const { barTitle, searchContainer, parkingListButton } = UI.el.topBar;
     const { closestParkingButton } = UI.el.bottomBar;
     if (showInput) {
       UI.hide(barTitle);
       UI.show(closestParkingButton);
       UI.show(searchContainer);
-      UI.show(listButton);
+      UI.show(parkingListButton);
     } else {
       UI.show(barTitle);
       UI.hide(closestParkingButton);
       UI.hide(searchContainer);
-      UI.hide(listButton);
+      UI.hide(parkingListButton);
     }
   }
 
