@@ -219,7 +219,7 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ### Tests
 
 - Chargement initial
-  > Préconditions : navigateur avec JS activé
+  > Préconditions : navigateur avec JS activé  
   > Étapes :
   > Charger la page
   > Résultat attendu :
