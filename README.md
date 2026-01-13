@@ -216,7 +216,7 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
   - Les infos de disponibilité peuvent être approximatives
   - L’app aide à trouver un parking, mais ne promet pas une place libre
 
-### Tests
+### Tests App
 
 - Chargement initial
 
@@ -249,58 +249,59 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
   > - Notification “Connexion perdue”
   > - Notification “Connexion retrouvée”
 
-2️⃣ Tests Utilisateur (auth / compte)
-T4 – Connexion valide
-Données : email + mot de passe valides
-Résultat attendu :
-Icône utilisateur changée
+### Tests Utilisateurs
 
-Menu paramètres accessible
+- Connexion valide
 
-Notification succès
+  > Données : email + mot de passe valides
+  > Résultat attendu :
+  >
+  > - Icône utilisateur changée
+  > - Menu paramètres accessible
+  > - Notification succès
 
-T5 – Connexion invalide
-Données : mauvais mot de passe
-Résultat attendu :
-Message d’erreur (INVALID_CREDENTIALS)
+- Connexion invalide
 
-Aucun changement d’état utilisateur
+  > Données : mauvais mot de passe
+  > Résultat attendu :
+  >
+  > - Message d’erreur
+  > - Aucun changement d’état utilisateur
 
-T6 – Champs manquants
-Cas
-Résultat
-Email vide
-Erreur affichée
-Mot de passe < 8
-Erreur affichée
-Email invalide
-Erreur affichée
+- Champs manquants
 
-T7 – Création de compte
-Données : formulaire complet
-Résultat attendu :
-Compte créé
+  > Données : manquante
+  > Résultat attendu :
+  >
+  > - Message d'erreur
+  > - Aucun changement d'état utilisateur
 
-Connexion automatique
+- Création de compte
 
-Notification succès
+  > Données : formulaire complet
+  > Résultat attendu :
+  >
+  > - Compte créé
+  > - Connexion automatique
+  > - Notification succès
 
-T8 – Logout
-Résultat attendu :
-User reset
+- Logout
+  > Résultat attendu :
+  >
+  > - User reset
+  > - Notification de succès
+  > - Icône redevenue “inscription”
+  > - Paramètres fermés
 
-Icône redevenue “inscription”
+### Tests Paramètres utilisateur
 
-Paramètres fermés
-
-3️⃣ Tests Paramètres utilisateur
-T9 – Chargement paramètres
-Résultat attendu :
-Infos utilisateur remplies
-
-Véhicules listés
-
-Véhicule sélectionné restauré depuis storage
+- Chargement paramètres
+  > Données : formulaire complet
+  > Résultat attendu :
+  >
+  > - Infos utilisateur remplies
+  > - Véhicules listés
+  > - Véhicule sélectionné restauré depuis storage
 
 T10 – Modification valide
 Résultat attendu :
