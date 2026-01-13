@@ -27,7 +27,7 @@ Possible de trouver le parking le plus proche en 1 clique !
 - Ou, installer et télécharger l'APK sur un téléphone android :
   [Dernière Version](https://github.com/Lecasly10/SAE_3.01/releases/latest/)
 
-Si l'apk ne fonctionne pas, suivre les étapes suivantes (nécessite cordova d'installé globalement):
+Si l'apk ne fonctionne pas, suivre les étapes suivantes (nécessite node/npm et cordova d'installé globalement):
 
 - Cloner ce repo
 
@@ -35,64 +35,32 @@ Si l'apk ne fonctionne pas, suivre les étapes suivantes (nécessite cordova d'i
 git clone https://github.com/Lecasly10/SAE_3.01.git
 ```
 
-- Créer le projet :
+- Ce rendre dans le dossier /src-Android et init le projet :
 
 ```
-cordova create monApp com.exemple.monapp MonApp cd monApp
+npm install
 ```
 
-- Copier les fichiers dans monApp/www
-
-```
-.
-├── controller
-│   └── js
-│       ├── api
-│       │   └── apiService.js
-│       ├── errors
-│       │   ├── errors.js
-│       │   └── globalErrorHandling.js
-│       ├── events
-│       │   ├── event.js
-│       │   ├── map.events.js
-│       │   ├── settings.events.js
-│       │   ├── user.events.js
-│       │   └── vehicule.events.js
-│       ├── maps
-│       │   ├── mapService.js
-│       │   └── styles.js
-│       ├── navigation
-│       │   ├── geolocationService.js
-│       │   └── navigationService.js
-│       ├── storage
-│       │   └── storageService.js
-│       ├── ui
-│       │   ├── htmlElement.js
-│       │   └── UI.js
-│       ├── user
-│       │   ├── user.js
-│       │   └── userService.js
-│       ├── vehicule
-│       │   └── vehiculeService.js
-│       ├── main.js
-│       ├── services.js
-│       └── utils.js
-├── vue
-│   └── style
-│       ├── images
-│       │   └── vehicule.png
-│       └── style.css
-└── index.html
-```
-
-- Ajouter android et générer l'apk
+- Ajouter android :
 
 ```
 cordova platform add android
-cordova build android
 ```
 
-- le fichier ce trouve ici :
+- Si la Android est déjà ajouté :
+
+```
+cordova plateform update android
+```
+
+- Générer l'Apk :
+
+```
+cordova build android
+
+```
+
+- Le fichier ce trouve ici :
 
 ```
 monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
