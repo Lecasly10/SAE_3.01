@@ -199,7 +199,7 @@ export function initMapEvent(services) {
             UI.emptyResultBox();
             UI.emptySearchBox();
 
-            const id = button.value;
+            const id = button.dataset.id;
             const result = await services.apiService.phpFetch("parking/load", { id });
             const parking = result.data;
 
