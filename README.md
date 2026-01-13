@@ -156,7 +156,60 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 
 ## FONCTIONS
 
-- Recherche des parkings
-- Recherche du parking le plus proche
-- Gestion des véhicules
-- Création et gestion de Compte
+### Doc fonctionnelle :
+
+- À quoi sert l’app ?
+  L’application aide les conducteurs à trouver un parking rapidement, à voir s’il reste des places et à être guidés jusqu’au parking choisi.
+
+- Qui utilise l’app ?
+
+  - Conducteurs : cherchent un parking et s’y rendent
+  - Admin : met à jour ou ajoute les infos des parkings
+
+- Ce que fait l’app
+
+  - Trouver des parkings autour de moi, ou par une recherche
+  - Afficher l'itiniraire du parking sur une carte
+  - Indiquer s’il reste des places
+  - Donner les infos utiles (prix, horaires, hauteur max…)
+  - Lancer la navigation GPS
+
+- Ce que l’app ne fait pas
+
+  - Ne réserve pas de place
+  - Ne garantit pas une place libre à l’arrivée (Certaines API sont variable)
+  - Ne gère pas le paiement
+
+- Fonctionnalités principales
+
+  - Rechercher un parking
+  - Autour de ma position actuelle
+  - Avec filtres (prix, distance, dispo)
+  - Voir les parkings sur la carte
+  - Consulter un parking
+
+- Quand je clique sur un parking, je vois :
+
+  - le nom et l’adresse
+  - le nombre de places dispo
+  - les tarifs
+  - les horaires
+  - la hauteur maximale
+  - les services (PMR, bornes électriques…)
+
+- Aller au parking
+
+  - Je choisis un parking
+  - Je lance la navigation
+  - L’app me guide jusqu’au parking
+  - Si le parking devient complet, l’app me prévient et en propose un autre
+
+- Cas particuliers
+
+  - GPS désactivé → message d’erreur mais app utilisable
+  - Pas de connexion → message d'erreur
+  - Aucune dispo connue → pris en compte
+
+- Infos importantes à savoir
+  - Les infos de disponibilité peuvent être approximatives
+  - L’app aide à trouver un parking, mais ne promet pas une place libre
