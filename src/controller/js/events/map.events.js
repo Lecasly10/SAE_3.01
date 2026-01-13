@@ -133,7 +133,7 @@ export function initMapEvent(services) {
 
 
     async function navigateToParking(button) {
-        const { lat, lng, id, name } = button.dataset;
+        const { lat, lng, id, name } = button.dataset.info;
 
         if (!id || !lat || !lng || !name) {
             return handleError(new AppError("Données invalides"), "Navigation");
@@ -181,7 +181,7 @@ export function initMapEvent(services) {
 
                 const routeBtn = document.createElement("button");
                 routeBtn.className = "item parking parking-route";
-                routeBtn.dataset = {
+                routeBtn.dataset.info = {
                     id: parking.id,
                     lat: parking.lat,
                     lng: parking.lng,
