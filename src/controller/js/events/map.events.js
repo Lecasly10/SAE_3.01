@@ -186,7 +186,7 @@ export function initMapEvent(services) {
                 routeBtn.className = "item parking parking-route";
                 routeBtn.dataset.lat = parking.lat;
                 routeBtn.dataset.lng = parking.lng;
-                routeBtn.dataset.name = parking.name;
+                routeBtn.dataset.name = parking.nom;
                 routeBtn.dataset.id = parking.id;
 
                 routeBtn.textContent =
