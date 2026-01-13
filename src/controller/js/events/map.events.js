@@ -321,7 +321,12 @@ export function initMapEvent(services) {
     function handleCloseButton(event) {
         event.preventDefault();
         UI.hide(resultContainer);
-        navigation.stopNavigation();
+
+        if (navigation.route) {
+            navigation.stopNavigation();
+            mapService.setZoom();
+            mapService.setCenter();
+        }
     }
 
     async function handleCrossButton(event) {
