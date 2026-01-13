@@ -19,12 +19,12 @@ export class UI {
   }
 
   static async notify(title, message, overlay = false, time = 5) {
-    let { notif, notifTitle, notifContent } = UI.el.notification;
+    let { notifContainer, notifTitle, notifContent } = UI.el.notification;
 
     if (UI.timeoutId) {
       clearTimeout(UI.timeoutId);
-      notif.classList.remove("hide");
-      notif.classList.add("active");
+      notifContainer.classList.remove("hide");
+      notifContainer.classList.add("active");
     }
 
     overlay ? notif.classList.add("fullbg") : notif.classList.remove("fullbg")
