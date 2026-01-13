@@ -159,7 +159,8 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ### Doc fonctionnelle :
 
 - À quoi sert l’app ?
-  L’application aide les conducteurs à trouver un parking rapidement, à voir s’il reste des places et à être guidés jusqu’au parking choisi.
+
+  - L’application aide les conducteurs à trouver un parking rapidement, à voir s’il reste des places et à être guidés jusqu’au parking choisi.
 
 - Qui utilise l’app ?
 
