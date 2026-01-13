@@ -66,6 +66,94 @@ cordova build android
 monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+## Structure
+
+```
+.
+├── conf
+│   └── conf.inc.php
+├── controller
+│   ├── js
+│   │   ├── api
+│   │   │   └── apiService.js
+│   │   ├── errors
+│   │   │   ├── errors.js
+│   │   │   └── globalErrorHandling.js
+│   │   ├── events
+│   │   │   ├── event.js
+│   │   │   ├── map.events.js
+│   │   │   ├── settings.events.js
+│   │   │   ├── user.events.js
+│   │   │   └── vehicule.events.js
+│   │   ├── maps
+│   │   │   ├── mapService.js
+│   │   │   └── styles.js
+│   │   ├── navigation
+│   │   │   ├── geolocationService.js
+│   │   │   └── navigationService.js
+│   │   ├── storage
+│   │   │   └── storageService.js
+│   │   ├── ui
+│   │   │   ├── htmlElement.js
+│   │   │   └── UI.js
+│   │   ├── user
+│   │   │   ├── user.js
+│   │   │   └── userService.js
+│   │   ├── vehicule
+│   │   │   └── vehiculeService.js
+│   │   ├── main.js
+│   │   ├── services.js
+│   │   └── utils.js
+│   └── php
+│       ├── api
+│       │   ├── dataAPI.php
+│       │   ├── londreApi.php
+│       │   ├── metzApi.php
+│       │   └── parkingApi.php
+│       ├── parking
+│       │   ├── closest.php
+│       │   ├── getAvailablePlace.php
+│       │   ├── load.php
+│       │   └── search.php
+│       ├── user
+│       │   ├── load.php
+│       │   ├── login.php
+│       │   ├── logout.php
+│       │   ├── session.php
+│       │   ├── signin.php
+│       │   └── update.php
+│       ├── utils
+│       │   └── response.php
+│       ├── vehicle
+│       │   ├── create.php
+│       │   ├── delete.php
+│       │   ├── load.php
+│       │   ├── loadAll.php
+│       │   └── update.php
+│       └── distance.php
+├── modele
+│   └── php
+│       ├── connexion.php
+│       ├── parking.class.php
+│       ├── parkingCapacity.class.php
+│       ├── parkingCapacityDAO.class.php
+│       ├── parkingDAO.class.php
+│       ├── parkingTarif.class.php
+│       ├── parkingTarifDAO.class.php
+│       ├── user.class.php
+│       ├── userDAO.class.php
+│       ├── userPref.class.php
+│       ├── userPrefDAO.class.php
+│       ├── vehicule.class.php
+│       └── vehiculeDAO.class.php
+├── vue
+│   └── style
+│       ├── images
+│       │   └── vehicule.png
+│       └── style.css
+└── index.html
+```
+
 ## FONCTIONS
 
 - Recherche des parkings
