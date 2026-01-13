@@ -54,13 +54,13 @@ export function initUserEvent(services) {
 
     if (signInLink) {
         signInLink.addEventListener("click", () => {
-            UI.toggleInsc(true);
+            UI.switchToSigin();
         })
     }
 
     if (logInLink) {
         logInLink.addEventListener("click", () => {
-            UI.toggleInsc(false);
+            UI.switchToSigin();
         })
     }
 

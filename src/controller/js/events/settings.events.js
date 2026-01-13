@@ -16,7 +16,7 @@ export function initSettingsEvent(services) {
     } = UI.el.settingsPopup;
 
     submitSettingsButton.addEventListener("click", async (e) => {
-        handleUpdate(e)
+        handleUpdate(e);
     })
 
     UI.el.bottomBar.settingsButton.addEventListener("click", (e) => {

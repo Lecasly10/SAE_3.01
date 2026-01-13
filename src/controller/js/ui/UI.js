@@ -53,7 +53,7 @@ export class UI {
     if (!load) UI.hide(UI.el.topBar.loader);
   }
 
-  static toggleNavigationUI(destinationName) {
+  static setupNavigationUI(destinationName) {
     UI.switchHomeCrossIcon(false);
     UI.hide(UI.el.bottomBar.settingsButton);
     UI.hide(UI.el.resultsPopup.resultContainer);
@@ -114,22 +114,25 @@ export class UI {
     userIcon.classList.add("fa-user-plus")
   }
 
-  static toggleInsc(show = false) {
+  static switchToSigin() {
     const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
     UI.hide(errorTextAuth);
-    if (show) {
-      UI.show(additionalInfo);
-      UI.show(telInput);
-      UI.show(logInLink);
-      UI.show(confirmPasswordInput);
-      UI.hide(signInLink);
-    } else {
-      UI.hide(additionalInfo);
-      UI.hide(telInput);
-      UI.hide(logInLink);
-      UI.hide(confirmPasswordInput);
-      UI.show(signInLink);
-    }
+    UI.show(additionalInfo);
+    UI.show(telInput);
+    UI.show(logInLink);
+    UI.show(confirmPasswordInput);
+    UI.hide(signInLink);
+  }
+
+  static switchToLogin() {
+    const { additionalInfo, logInLink, signInLink, confirmPasswordInput, errorTextAuth, telInput } = UI.el.authPopup
+    UI.hide(errorTextAuth);
+    UI.hide(additionalInfo);
+    UI.hide(telInput);
+    UI.hide(logInLink);
+    UI.hide(confirmPasswordInput);
+    UI.show(signInLink);
+
   }
 
   static toggleSearchInput(showInput = false) {
@@ -158,10 +161,6 @@ export class UI {
       UI.hide(homeButton);
       UI.show(stopButton);
     }
-  }
-
-  static toggleLoader(showLoader = false) {
-    showLoader ? UI.show(UI.el.topBar.loader) : UI.hide(UI.el.topBar.loader);
   }
 
   static emptyResultBox() {

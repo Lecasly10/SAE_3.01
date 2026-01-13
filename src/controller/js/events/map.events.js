@@ -78,7 +78,7 @@ export function initMapEvent(services) {
     }
 
     //Fermer les box
-    closeButton.addEventListener("click", (e) => {
+    closeResultButton.addEventListener("click", (e) => {
         handleCloseButton(e);
     });
 
@@ -91,7 +91,7 @@ export function initMapEvent(services) {
     async function handleClosestButton(event) {
         event.preventDefault();
         UI.show(loader);
-        UI.toggleNavigationUI("CHARGEMENT...");
+        UI.setupNavigationUI("CHARGEMENT...");
 
         try {
             const closest = await navigation.closestParking();
@@ -108,7 +108,7 @@ export function initMapEvent(services) {
     async function handleParkingClick(event, link) {
         event.preventDefault();
         UI.show(loader);
-        UI.toggleNavigationUI("CHARGEMENT...");
+        UI.setupNavigationUI("CHARGEMENT...");
 
         try {
             const lat = parseFloat(link.dataset.lat);
@@ -144,6 +144,12 @@ export function initMapEvent(services) {
             UI.setResultTitle("Résultats");
             handleParkingList(result.data);
         } catch (error) {
+            if (error?.code === "NOT_FOUND") {
+                UI.setResultTitle("Aucun résultat");
+                UI.setResultMessage(":(");
+                UI.show(resultContainer);
+                return;
+            }
             handleError(error, "Parkings")
         } finally {
             UI.hide(loader);

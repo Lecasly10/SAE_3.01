@@ -20,6 +20,7 @@ export class NavigationService {
     this.storageKey = "destination"
   }
 
+
   async init() {
     const savedRoute = StorageService.getToJson(this.storageKey);
     if (savedRoute)
@@ -49,7 +50,7 @@ export class NavigationService {
       e.preventDefault();
       this.followRoute();
       this.startFollowRoute();
-      UI.toggleNavigationUI(destination.name);
+      UI.setupNavigationUI(destination.name);
     });
 
     cancel.addEventListener("click", (e) => {
@@ -181,12 +182,12 @@ export class NavigationService {
     const newDest = await this.closestParking();
     if (newDest) {
       UI.notify("REDIRECTION", "Direction vers le parking le plus proche disponible")
-      UI.toggleNavigationUI("CHARGEMENT...");
+      UI.setupNavigationUI("CHARGEMENT...");
       await this.stopNavigation();
       await this.startNavigation(newDest.data);
       this.followRoute();
       this.startFollowRoute();
-      UI.toggleNavigationUI(this.destination.name);
+      UI.setupNavigationUI(this.destination.name);
     }
     this.redirecting = false;
   }
