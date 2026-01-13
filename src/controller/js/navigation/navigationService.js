@@ -31,7 +31,7 @@ export class NavigationService {
     destination = {
       ...destination,
       distance: GeolocationService.distance(this.mapService.userMarker.position,
-        { lat: destination.lat, lng: destination.lng })
+        { lat: destination.lat, lng: destination.lng }, this.apiService)
     };
     return destination
   }
