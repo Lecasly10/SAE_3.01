@@ -5,13 +5,30 @@ import { handleError } from "../errors/globalErrorHandling.js";
 
 export function initUserEvent(services) {
     const userService = services.userService;
-    const { logoutButton, submitButton, connLink,
-        inscrLink, closeAuthButton, settings } = UI.el
+    const {
+        authContainer,
+        submitAuthButton,
+        signInLink,
+        logInLink,
+        closeAuthButton,
+        errorTextAuth,
+        mailInput,
+        nameInput,
+        surnameInput,
+        telInput,
+        passwordInput,
+        confirmPasswordInput,
+    } = UI.el.authPopup
+
+    const {
+        logoutButton,
+        settingContainer
+    } = UI.el.settingsPopup
 
     document.querySelectorAll(".submitInfo").forEach(el => {
         el.addEventListener("keydown", event => {
             if (event.key === "Enter") {
-                submitButton.click();
+                submitAuthButton.click();
             }
         });
     });
@@ -19,7 +36,7 @@ export function initUserEvent(services) {
     logoutButton.addEventListener("click", async (e) => {
         try {
             await userService.logout();
-            UI.hide(settings);
+            UI.hide(settingContainer);
             UI.toggleAuthIcon(false);
             UI.notify("Compte", "Déconnexion réussi !")
         } catch (error) {
@@ -27,7 +44,7 @@ export function initUserEvent(services) {
         }
     })
 
-    submitButton.addEventListener("click", (e) => {
+    submitAuthButton.addEventListener("click", (e) => {
         handleSubmit(e);
     })
 
@@ -35,14 +52,14 @@ export function initUserEvent(services) {
         UI.hide(UI.el.auth);
     })
 
-    if (inscrLink) {
-        inscrLink.addEventListener("click", () => {
+    if (signInLink) {
+        signInLink.addEventListener("click", () => {
             UI.toggleInsc(true);
         })
     }
 
-    if (connLink) {
-        connLink.addEventListener("click", () => {
+    if (logInLink) {
+        logInLink.addEventListener("click", () => {
             UI.toggleInsc(false);
         })
     }
@@ -51,79 +68,70 @@ export function initUserEvent(services) {
         const { isEmpty, isValidEmail, isValidPhone, isValidString } = Utils
         userService.createAccount = false;
         event.preventDefault();
-        const {
-            mail,
-            pass,
-            confPass,
-            nameI,
-            surnameI,
-            telI,
-            errorI
-        } = UI.el;
 
         let errors = [];
 
-        errorI.textContent = "";
-        UI.hide(errorI);
+        errorTextAuth.textContent = "";
+        UI.hide(errorTextAuth);
 
-        if (isEmpty(mail.value))
+        if (isEmpty(mailInput.value))
             errors.push("L’email est obligatoire.");
-        else if (!isValidEmail(mail.value))
+        else if (!isValidEmail(mailInput.value))
             errors.push("Email invalide.");
 
-        if (isEmpty(pass.value))
+        if (isEmpty(passwordInput.value))
             errors.push("Le mot de passe est obligatoire.");
-        else if (pass.value.length < 8)
+        else if (passwordInput.value.length < 8)
             errors.push("Le mot de passe doit contenir au moins 8 caractères.");
 
-        if (!confPass.classList.contains("hidden")) {
+        if (!confirmPasswordInput.classList.contains("hidden")) {
             userService.createAccount = true;
 
-            if (isEmpty(confPass.value))
+            if (isEmpty(confirmPasswordInput.value))
                 errors.push("La confirmation du mot de passe est obligatoire.");
-            else if (pass.value !== confPass.value)
+            else if (passwordInput.value !== confirmPasswordInput.value)
                 errors.push("Les mots de passe ne correspondent pas.");
-            if (isEmpty(nameI.value))
+            if (isEmpty(nameInput.value))
                 errors.push("Le prénom est obligatoire.");
-            else if (!isValidString(nameI.value))
+            else if (!isValidString(nameInput.value))
                 errors.push("Nom invalide !")
-            if (isEmpty(surnameI.value))
+            if (isEmpty(surnameInput.value))
                 errors.push("Le nom est obligatoire.");
-            else if (!isValidString(surnameI.value))
+            else if (!isValidString(surnameInput.value))
                 errors.push("Prénom invalide !")
-            if (isEmpty(telI.value))
+            if (isEmpty(telInput.value))
                 errors.push("Le téléphone est obligatoire.");
-            else if (!isValidPhone(telI.value))
+            else if (!isValidPhone(telInput.value))
                 errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
         }
 
         if (errors.length > 0) {
             userService.createAccount = false;
-            errorI.textContent = errors.join("\n");
-            UI.show(errorI);
+            errorTextAuth.textContent = errors.join("\n");
+            UI.show(errorTextAuth);
             return;
         }
 
         let userData = {
-            name: nameI.value,
-            surname: surnameI.value,
-            tel: telI.value,
-            mail: mail.value,
-            password: pass.value,
+            name: nameInput.value,
+            surname: surnameInput.value,
+            tel: telInput.value,
+            mail: mailInput.value,
+            password: passwordInput.value,
         };
 
         try {
             await userService.auth(userData);
-            UI.toggleAuthIcon(true);
-            UI.hide(auth);
-            UI.notify("Compte", "Connexion réussi !")
+            UI.switchToLoggedIcon();
+            UI.hide(authContainer);
+            UI.notify("Compte", "Connexion réussi !");
         } catch (error) {
             console.error(error);
-            errorI.textContent =
+            errorTextAuth.textContent =
                 ERROR_MESSAGES[error.code] ??
                 ERROR_MESSAGES["DEFAULT"]
 
-            UI.show(errorI);
+            UI.show(errorTextAuth);
         }
     }
 }

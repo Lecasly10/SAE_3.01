@@ -7,8 +7,22 @@ export function initMapEvent(services) {
     const mapService = services.mapService
     const navigation = services.navigationService
 
-    const { autoSearchButton, searchBox, listButton,
-        crossIcon, closeButton, goCenterButton } = UI.el
+    const {
+        centerButton,
+        closestParkingButton,
+        stopButton,
+    } = UI.el.bottomBar;
+
+    const {
+        loader,
+        searchBox,
+        parkingListButton,
+    } = UI.el.topBar;
+
+    const {
+        resultContainer,
+        closeResultButton,
+    } = UI.el.resultsPopup
 
     let tId = null;
     mapService.map.addListener('dragstart', () => {
@@ -24,7 +38,7 @@ export function initMapEvent(services) {
         }
     });
 
-    goCenterButton.addEventListener("click", async () => {
+    centerButton.addEventListener("click", async () => {
         if (Utils.isCoordObjectEqual(mapService.userMarker.position, mapService.defaultPosition)) {
             try {
                 UI.notify("MAP", "Localisation...", false, 10);
@@ -40,7 +54,7 @@ export function initMapEvent(services) {
     });
 
     //Rechercher le parking le plus proche
-    autoSearchButton.addEventListener("click", (e) => {
+    closestParkingButton.addEventListener("click", (e) => {
         handleClosestButton(e);
     });
 
@@ -52,13 +66,13 @@ export function initMapEvent(services) {
     });
 
     //Lister les parkings
-    listButton.addEventListener("click", async (e) => {
+    parkingListButton.addEventListener("click", async (e) => {
         handleParkingListButton(e);
     });
 
     //Annuler ou stop
-    if (crossIcon) {
-        crossIcon.addEventListener("click", (e) => {
+    if (stopButton) {
+        stopButton.addEventListener("click", (e) => {
             handleCrossButton(e);
         });
     }
@@ -76,7 +90,7 @@ export function initMapEvent(services) {
     // Parking le plus proche
     async function handleClosestButton(event) {
         event.preventDefault();
-        UI.toggleLoader(true);
+        UI.show(loader);
         UI.toggleNavigationUI("CHARGEMENT...");
 
         try {
@@ -86,14 +100,14 @@ export function initMapEvent(services) {
             UI.setupUI();
             handleError(error, "Navigation");
         } finally {
-            UI.toggleLoader(false);
+            UI.hide(loader);
         }
     }
 
     // Cliquer sur un parking dans la liste
     async function handleParkingClick(event, link) {
         event.preventDefault();
-        UI.toggleLoader(true);
+        UI.show(loader);
         UI.toggleNavigationUI("CHARGEMENT...");
 
         try {
@@ -111,7 +125,7 @@ export function initMapEvent(services) {
         } catch (error) {
             handleError(error, "Navigation")
         } finally {
-            UI.toggleLoader(false);
+            UI.hide(loader);
         }
     }
 
@@ -121,10 +135,10 @@ export function initMapEvent(services) {
         const query = UI.getSearchQuery().trim();
 
         if (!query) {
-            UI.toggleResultContainer(false);
+            UI.hide(resultContainer);
             return;
         }
-        UI.toggleLoader(true);
+        UI.show(loader);
         try {
             const result = await services.apiService.phpFetch("parking/search", { search: query });
             UI.setResultTitle("Résultats");
@@ -132,14 +146,14 @@ export function initMapEvent(services) {
         } catch (error) {
             handleError(error, "Parkings")
         } finally {
-            UI.toggleLoader(false);
+            UI.hide(loader);
         }
     }
 
     // Liste de tous les parkings
     async function handleParkingListButton(event) {
         event.preventDefault();
-        UI.toggleLoader(true);
+        UI.show(loader);
         UI.emptySearchBox();
 
         try {
@@ -149,7 +163,7 @@ export function initMapEvent(services) {
         } catch (error) {
             handleError(error, "Parkings")
         } finally {
-            UI.toggleLoader(false)
+            UI.hide(loader);
         }
 
     }
@@ -157,8 +171,8 @@ export function initMapEvent(services) {
     // Détails d’un parking
     async function handleParkingInfoClick(event, button) {
         event.preventDefault();
-        UI.toggleResultContainer(false);
-        UI.toggleLoader(true);
+        UI.hide(resultContainer);
+        UI.show(loader);
 
         try {
             UI.emptyResultBox();
@@ -173,7 +187,7 @@ export function initMapEvent(services) {
         } catch (error) {
             handleError(error, "Informations")
         } finally {
-            UI.toggleLoader(false);
+            UI.hide(loader);
         }
     }
 
@@ -245,7 +259,7 @@ export function initMapEvent(services) {
         [infoBase, placesInfo, tarifInfo, info].forEach((div) =>
             UI.appendResultBox(div)
         );
-        UI.toggleResultContainer(true);
+        UI.show(resultContainer);
     }
 
     // Gestion de la liste de parkings
@@ -299,14 +313,14 @@ export function initMapEvent(services) {
             });
         }
 
-        UI.toggleResultContainer(true);
+        UI.show(resultContainer);
     }
 
 
     // Fermer les resultbox
     function handleCloseButton(event) {
         event.preventDefault();
-        UI.toggleResultContainer(false);
+        UI.hide(resultContainer);
         navigation.stopNavigation();
     }
 

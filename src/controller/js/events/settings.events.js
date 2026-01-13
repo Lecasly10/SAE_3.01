@@ -1,41 +1,43 @@
 import { UI } from "../ui/UI.js";
 import { Utils } from "../utils.js";
 import { handleError } from "../errors/globalErrorHandling.js";
+import { ERROR_MESSAGES } from "../errors/errors.js";
 
 export function initSettingsEvent(services) {
     const user = services.user;
     const userService = services.userService;
     const vehiculeService = services.vehiculeService;
-    const { submitSett, settingsButton, closeSettingButton } = UI.el;
+    const { submitSettingsButton, closeSettingsButton,
+        settingsContainer, settingsNameInput, settingsSurnameInput,
+        settingsTelInput, settingsMailInput,
+        maxDistanceInput, maxHourlyBudgetInput,
+        pmrParkCheck, coveredParkCheck, freeParkingCheck,
+        settingsVehiculesList, errorTextSettings
+    } = UI.el.settingsPopup;
 
-    submitSett.addEventListener("click", async (e) => {
+    submitSettingsButton.addEventListener("click", async (e) => {
         handleUpdate(e)
     })
 
-    settingsButton.addEventListener("click", (e) => {
+    UI.el.bottomBar.settingsButton.addEventListener("click", (e) => {
         handleSettingButton(e);
     });
 
-    closeSettingButton.addEventListener("click", (e) => {
-        UI.hide(UI.el.settings);
+    closeSettingsButton.addEventListener("click", (e) => {
+        UI.hide(settingsContainer);
     });
 
     function handleSettingButton(event) {
         event.preventDefault();
         if (user.isLogged) {
             handleSettings();
-            UI.show(UI.el.settings);
+            UI.show(settingsContainer);
         } else {
-            UI.toggleAuth(true);
+            UI.show(UI.el.authPopup.authContainer);
         }
     }
 
     async function handleSettings() {
-        const {
-            nameParam, mailParam, telParam,
-            surnameParam, maxDistParam, maxHBudgetParam,
-            pmrParam, coverParam, freeParam, carParam } = UI.el;
-
         let userData;
         let vehData;
 
@@ -43,7 +45,7 @@ export function initSettingsEvent(services) {
             userData = await userService.load();
         } catch (error) {
             handleError(error, "Paramètres");
-            UI.hide(UI.el.settings);
+            UI.hide(settingsContainer);
             return;
         }
 
@@ -54,9 +56,9 @@ export function initSettingsEvent(services) {
             if (vehData.data?.length > 0) {
                 vehData.data.forEach(veh => {
                     if (vehiculeService.selectedVehicule && vehiculeService.selectedVehicule.vehId == veh.id)
-                        carParam.add(new Option(`${veh.plate}`, veh.id, true, true))
+                        settingsVehiculesList.add(new Option(`${veh.plate}`, veh.id, true, true))
                     else
-                        carParam.add(new Option(`${veh.plate}`, veh.id))
+                        settingsVehiculesList.add(new Option(`${veh.plate}`, veh.id))
                 });
             }
         } catch (error) {
@@ -67,80 +69,79 @@ export function initSettingsEvent(services) {
             }
         }
 
-        nameParam.value = userData.data.name;
-        surnameParam.value = userData.data.surname;
-        mailParam.value = user.mail;
-        telParam.value = userData.data.tel;
-        pmrParam.checked = userData.data.pmr == true;
-        coverParam.checked = userData.data.covered == true;
-        freeParam.checked = userData.data.free == true;
-        maxDistParam.value = userData.data.maxDistance;
-        maxHBudgetParam.value = userData.data.maxHourly;
+        settingsNameInput.value = userData.data.name;
+        settingsSurnameInput.value = userData.data.surname;
+        settingsMailInput.value = user.mail;
+        settingsTelInput.value = userData.data.tel;
+        pmrParkCheck.checked = userData.data.pmr == true;
+        coveredParkCheck.checked = userData.data.covered == true;
+        freeParkingCheck.checked = userData.data.free == true;
+        maxDistanceInput.value = userData.data.maxDistance;
+        maxHourlyBudgetInput.value = userData.data.maxHourly;
 
     }
 
     async function handleUpdate(e) {
         e.preventDefault()
         const { isEmpty, isValidPhone, isValidString, isValidNumber } = Utils
-        const {
-            nameParam, telParam,
-            surnameParam, maxDistParam, maxHBudgetParam,
-            pmrParam, coverParam, freeParam, errorS, carParam } = UI.el;
-
         let errors = [];
 
-        errorS.textContent = "";
-        UI.hide(errorS);
+        errorTextSettings.textContent = "";
+        UI.hide(errorTextSettings);
 
-        if (isEmpty(nameParam.value))
+        if (isEmpty(settingsNameInput.value))
             errors.push("Le prénom est obligatoire.");
-        else if (!isValidString(nameParam.value))
-            errors.push("Prénom invalide !")
-        if (isEmpty(surnameParam.value))
+        else if (!isValidString(settingsNameInput.value))
+            errors.push("Prénom invalide !");
+        if (isEmpty(settingsSurnameInput.value))
             errors.push("Le nom est obligatoire.");
-        else if (!isValidString(surnameParam.value))
-            errors.push("nom invalide !")
-        if (isEmpty(telParam.value))
+        else if (!isValidString(settingsSurnameInput.value))
+            errors.push("nom invalide !");
+        if (isEmpty(settingsTelInput.value))
             errors.push("Le téléphone est obligatoire.");
-        else if (!isValidPhone(telParam.value))
+        else if (!isValidPhone(settingsTelInput.value))
             errors.push("Le téléphone doit contenir uniquement des chiffres (8 à 15).");
-        if (isEmpty(maxDistParam.value))
-            errors.push("La distance maximal est obligatoire")
-        else if (!isValidNumber(maxDistParam.value))
-            errors.push("La distance maximal doit etre un nombre positif")
-        if (isEmpty(maxHBudgetParam.value))
-            errors.push("Le budget maximal par heure est obligatoire")
-        else if (!isValidNumber(maxHBudgetParam.value))
-            errors.push("Le budget maximal par heure doit etre un nombre positif")
+        if (isEmpty(maxDistanceInput.value))
+            errors.push("La distance maximal est obligatoire");
+        else if (!isValidNumber(maxDistanceInput.value))
+            errors.push("La distance maximal doit etre un nombre positif");
+        if (isEmpty(maxHourlyBudgetInput.value))
+            errors.push("Le budget maximal par heure est obligatoire");
+        else if (!isValidNumber(maxHourlyBudgetInput.value))
+            errors.push("Le budget maximal par heure doit etre un nombre positif");
 
 
         if (errors.length > 0) {
-            errorS.textContent = errors.join("\n");
-            UI.show(errorS);
+            errorTextSettings.textContent = errors.join("\n");
+            UI.show(errorTextSettings);
             return;
         }
 
         const formData = {
             id: user.userId,
-            name: nameParam.value,
-            surname: surnameParam.value,
-            tel: telParam.value,
-            free: freeParam.checked,
-            pmr: pmrParam.checked,
-            covered: coverParam.checked,
-            maxHourly: maxHBudgetParam.value ? maxHBudgetParam.value : 0,
-            maxDist: maxDistParam.value ? maxDistParam.value : 0,
+            name: settingsNameInput.value,
+            surname: settingsSurnameInput.value,
+            tel: settingsTelInput.value,
+            free: freeParkingCheck.checked,
+            pmr: pmrParkCheck.checked,
+            covered: coveredParkCheck.checked,
+            maxHourly: maxHourlyBudgetInput.value ? maxHourlyBudgetInput.value : 0,
+            maxDist: maxDistanceInput.value ? maxDistanceInput.value : 0,
         };
 
         try {
             await userService.update(formData);
             UI.notify("Compte", "Paramètres mise à jour avec succès");
-            UI.hide(UI.el.settings);
+            UI.hide(settingsContainer);
 
-            vehiculeService.addToStorage({ vehId: carParam.value })
-
+            vehiculeService.addToStorage({ vehId: settingsVehiculesList.value })
         } catch (error) {
-            handleError(e, "Paramètres");
+            console.error(error);
+            errorTextSettings.textContent =
+                ERROR_MESSAGES[error.code] ??
+                ERROR_MESSAGES["DEFAULT"]
+
+            UI.show(errorTextSettings);
         }
 
     }
