@@ -63,7 +63,7 @@ cordova build android
 - Le fichier ce trouve ici :
 
 ```
-monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ## Structure
