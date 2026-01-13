@@ -296,155 +296,180 @@ monApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 ### Tests Paramètres utilisateur
 
 - Chargement paramètres
-  > Données : formulaire complet
+
   > Résultat attendu :
   >
   > - Infos utilisateur remplies
   > - Véhicules listés
   > - Véhicule sélectionné restauré depuis storage
 
-T10 – Modification valide
-Résultat attendu :
-Données mises à jour en BDD
+- Modification valide
 
-Notification succès
+  > Données : formulaire complet
+  > Résultat attendu :
+  >
+  > - Données mises à jour en BDD
+  > - Notification succès
+  > - Storage véhicule mis à jour
 
-Storage véhicule mis à jour
+- Modification invalide
+  > Données : invalide
+  > Résultat attendu :
+  >
+  > - Message erreur
+  > - Aucun changement d'état param utilisateur
 
-T11 – Modification invalide
-Champ
-Erreur
-Téléphone invalide
-Message erreur
-Distance non numérique
-Message erreur
+### Tests Véhicules
 
-4️⃣ Tests Véhicules
-T12 – Liste des véhicules
-Résultat attendu :
-Liste remplie depuis API
+- Liste des véhicules
 
-Boutons edit/supprimer désactivés si aucun véhicule
+  > Résultat attendu :
+  >
+  > - Liste remplie depuis BDD
+  > - Boutons edit/supprimer désactivés si aucun véhicule sélectionner
 
-T13 – Création véhicule
-Résultat attendu :
-Véhicule ajouté
+- Création invalide
 
-Liste rafraîchie
+  > Données : invalide
+  > Résultat attendu :
+  >
+  > - Message erreur
+  > - Aucun changement d'état
 
-Notification succès
+- Création véhicule
 
-T14 – Modification véhicule
-Résultat attendu :
-Données mises à jour
+  > Données : formulaire complet
+  > Résultat attendu :
+  >
+  > - Véhicule ajouté
+  > - Liste rafraîchie
+  > - Notification succès
 
-Message “mis à jour avec succès”
+- Modification véhicule
 
-T15 – Suppression véhicule sélectionné
-Résultat attendu :
-Véhicule supprimé
+  > Données : formulaire complet
+  > Résultat attendu :
+  >
+  > - Données mises à jour
+  > - Message de succès
 
-Storage vidé si sélectionné
+- Modification invalide
 
-Liste mise à jour
+  > Données : invalide
+  > Résultat attendu :
+  >
+  > - Message erreur
+  > - Aucun changement d'état
 
-5️⃣ Tests Carte & Géolocalisation
-T16 – Géolocalisation acceptée
-Résultat attendu :
-Marker utilisateur affiché
+- Suppression véhicule sélectionné
+  > Donnée : véhicule sélectionné
+  > Résultat attendu :
+  >
+  > - Véhicule supprimé
+  > - Storage vidé si sélectionné
+  > - Liste mise à jour
+
+### Tests Carte & Géolocalisation
+
+- Géolocalisation acceptée
+  Résultat attendu :
+  Marker utilisateur affiché
 
 Carte centrée
 
-T17 – Géolocalisation refusée
-Résultat attendu :
-Position par défaut utilisée
+- Géolocalisation refusée
+  Résultat attendu :
+  Position par défaut utilisée
 
 Notification erreur GEOLOC
 
 App fonctionnelle
 
-T18 – Bouton recentrage
-Résultat attendu :
-Carte centrée sur l’utilisateur
+- Bouton recentrage
+  Résultat attendu :
+  Carte centrée sur l’utilisateur
 
 Notification adaptée
 
-T19 – Mode nuit
-Conditions :
-Heure ≥ 20h ou < 6h
-Résultat attendu :
+- Mode nuit
+  Conditions :
+  Heure ≥ 20h ou < 6h
+  Résultat attendu :
 
 MapId sombre appliqué
 
-6️⃣ Tests Parkings & Navigation
-T20 – Recherche parking
-Données : texte valide
-Résultat attendu :
-Liste affichée
+### Tests Parkings & Navigation
+
+- Recherche parking
+  Données : texte valide
+  Résultat attendu :
+  Liste affichée
 
 Aucun crash si résultat vide
 
-T21 – Liste complète
-Résultat attendu :
-Tous les parkings affichés
+- Liste complète
+  Résultat attendu :
+  Tous les parkings affichés
 
 Boutons info & navigation actifs
 
-T22 – Détails parking
-Résultat attendu :
-Infos complètes affichées
+- Détails parking
+  Résultat attendu :
+  Infos complètes affichées
 
 Tarifs conditionnels (gratuit / payant)
 
-T23 – Navigation vers parking
-Résultat attendu :
-Preview affichée
+- Navigation vers parking
+  Résultat attendu :
+  Preview affichée
 
 Itinéraire tracé
 
 Camera orientée
 
-T24 – Annulation navigation
-Résultat attendu :
-Route supprimée
+- Annulation navigation
+  Résultat attendu :
+  Route supprimée
 
 UI réinitialisée
 
 Storage destination supprimé
 
-T25 – Redirection automatique
-Condition : parking plein
-Résultat attendu :
-Recherche parking proche
+- Redirection automatique
+  Condition : parking plein
+  Résultat attendu :
+  Recherche parking proche
 
 Notification redirection
 
 Nouvelle navigation lancée
 
-7️⃣ Tests Storage & persistance
-T26 – Reload page en navigation
-Résultat attendu :
-Destination restaurée
+### Tests Storage & persistance
+
+- Reload page en navigation
+  Résultat attendu :
+  Destination restaurée
 
 Notification “trajet retrouvé”
 
 Preview affichée
 
-T27 – Storage corrompu
-Résultat attendu :
-Erreur gérée
+- Storage corrompu
+  Résultat attendu :
+  Erreur gérée
 
 App continue à fonctionner
 
-8️⃣ Tests erreurs globales
-T28 – API indisponible
-Résultat attendu :
-Notification générique
+### Tests erreurs globales
+
+- API indisponible
+  Résultat attendu :
+  Notification générique
 
 Aucun crash
 
-T29 – Données invalides (lat/lng)
-Résultat attendu :
-AppError levée
+- Données invalides (lat/lng)
+  Résultat attendu :
+  AppError levée
 
 Message utilisateur
