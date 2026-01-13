@@ -85,7 +85,7 @@ const vehiculeEditPopup = {
     vehiculeHeightInput: get("vHeightParam"),
     vehiculeTypeInput: get("vTypeParam"),
     vehiculeMotorInput: get("vMotorParam"),
-    closeVehiculeEditButton: get("closeVoitEdit"),
+    closeVehiculeEditButton: get("closeVoitEditButton"),
     submitVehiculeButton: get("submitEditCar"),
 }
 
