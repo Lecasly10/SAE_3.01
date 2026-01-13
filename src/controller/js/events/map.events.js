@@ -218,8 +218,10 @@ export function initMapEvent(services) {
             ],
             [
                 ["PMR", parking.pmr],
-                ["Moto", parking.moto],
+                ["Moto électrique", parking.e2w],
                 ["Voiture électrique", parking.eCar],
+                ["Moto", parking.moto],
+                ["Places Familles", parking.carpool],
             ],
         ];
 
