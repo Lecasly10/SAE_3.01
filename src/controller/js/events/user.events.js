@@ -22,7 +22,7 @@ export function initUserEvent(services) {
 
     const {
         logoutButton,
-        settingContainer
+        settingsContainer
     } = UI.el.settingsPopup
 
     document.querySelectorAll(".submitInfo").forEach(el => {
@@ -36,7 +36,7 @@ export function initUserEvent(services) {
     logoutButton.addEventListener("click", async (e) => {
         try {
             await userService.logout();
-            UI.hide(settingContainer);
+            UI.hide(settingsContainer);
             UI.switchToLoginIcon();
             UI.notify("Compte", "Déconnexion réussi !")
         } catch (error) {
