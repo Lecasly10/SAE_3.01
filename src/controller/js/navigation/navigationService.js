@@ -32,7 +32,7 @@ export class NavigationService {
       { lat: destination.lat, lng: destination.lng }, this.apiService)
     return {
       ...destination,
-      distance: Math.round((dist * 1000)),
+      distance: Math.round((dist / 1000)),
     };
   }
 
