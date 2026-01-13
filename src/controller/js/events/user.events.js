@@ -37,7 +37,7 @@ export function initUserEvent(services) {
         try {
             await userService.logout();
             UI.hide(settingContainer);
-            UI.toggleAuthIcon(false);
+            UI.switchToLoginIcon();
             UI.notify("Compte", "Déconnexion réussi !")
         } catch (error) {
             handleError(e, "Compte");
@@ -49,7 +49,7 @@ export function initUserEvent(services) {
     })
 
     closeAuthButton.addEventListener("click", (e) => {
-        UI.hide(UI.el.auth);
+        UI.hide(authContainer);
     })
 
     if (signInLink) {
