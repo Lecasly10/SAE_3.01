@@ -1,4 +1,4 @@
-import { AppError, ApiError, AuthError } from "../errors/errors";
+import { AppError, ApiError, AuthError } from "../errors/errors.js";
 
 export class ApiService {
     constructor() {

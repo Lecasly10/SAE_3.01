@@ -1,4 +1,4 @@
-import { AppError } from "../errors/errors";
+import { AppError } from "../errors/errors.js";
 
 export class StorageService {
     static remove(key) {
