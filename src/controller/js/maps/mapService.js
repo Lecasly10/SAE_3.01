@@ -37,15 +37,8 @@ export class MapService {
           const marker = this.addMarker(pos, `${park.nom}`, Utils.parkIcon);
 
           this.mapMarkers.set(park.id, marker);
-
           marker.addListener("click", () => {
-            this.markerWindow.close();
-            this.buildParkWindow(park);
-            this.markerWindow.open({
-              anchor: marker,
-              map,
-              shouldFocus: false,
-            });
+            this.openWindow();
           })
         }
       });
@@ -54,7 +47,18 @@ export class MapService {
     }
   }
 
+  openWindow() {
+    this.markerWindow?.close();
+    this.buildParkWindow(park);
+    this.markerWindow?.open({
+      anchor: marker,
+      map,
+      shouldFocus: false,
+    });
+  }
+
   hideAllParkMark() {
+    this.markerWindow?.close();
     this.mapMarkers.forEach((mark, id) => {
       UI.hide(mark);
     })

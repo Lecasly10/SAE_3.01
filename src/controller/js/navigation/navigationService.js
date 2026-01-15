@@ -43,6 +43,8 @@ export class NavigationService {
     await this.buildRoute();
     this.startParkingMonitor();
     this.saveDestination();
+
+    this.mapService.hideAllParkMark();
   }
 
   startPreview() {
