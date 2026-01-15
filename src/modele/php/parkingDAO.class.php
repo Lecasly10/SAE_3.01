@@ -122,6 +122,10 @@ class ParkingDAO
         $results = $this->bd->execSQL($sql . $where, $params);
         $parkings = $this->loadQuery($results);
 
+        if (!$parkings) {
+            return [];
+        }
+
         $maxDistanceKm = $options['maxDistanceKm'] ?? null;
 
         if ($maxDistanceKm) {
@@ -133,8 +137,7 @@ class ParkingDAO
             });
         }
 
-        $parkings = array_filter($parkings, function ($p) use ($options, $parkingTarifDAO, $parkingCapDAO) {
-            global $data;
+        $parkings = array_filter($parkings, function ($p) use ($options, $parkingTarifDAO, $parkingCapDAO, $data) {
             $tarif = $parkingTarifDAO->getById($p->getId());
             $cap = $parkingCapDAO->getById($p->getId());
 
