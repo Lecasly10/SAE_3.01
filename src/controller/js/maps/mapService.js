@@ -193,22 +193,16 @@ export class MapService {
 
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
-    place.textContent = `Structure : ${park.places}`;
+    place.textContent = `Places totales : ${park.places}`;
     divContent.appendChild(addr);
     divContent.appendChild(type);
     divContent.appendChild(place);
 
-    type.addEventListener("click", () => {
-      this.hideAllParkMark();
-    })
-
-    const opt = {
-      headerContent: h,
-      content: divContent,
-    }
-
     if (!this.markerWindow)
-      this.markerWindow = new InfoWindow(opt)
+      this.markerWindow = new InfoWindow({
+        headerContent: h,
+        content: divContent,
+      })
     else {
       this.markerWindow.setContent(divContent);
       this.markerWindow.setHeaderContent(h);
