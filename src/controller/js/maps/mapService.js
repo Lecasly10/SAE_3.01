@@ -27,16 +27,16 @@ export class MapService {
     let parks;
     try {
       parks = await this.getAllPark();
+
+      parks.data.forEach(park => {
+        if (park) {
+          const pos = { lat: park.lat, lng: park.lng }
+          this.addMarker(pos, `${park.nom}`, Utils.parkIcon);
+        }
+      });
     } catch (error) {
       handleError(error, "Parking Marker")
     }
-
-    parks.forEach(park => {
-      if (park?.data) {
-        const pos = { lat: park.data.lat, lng: park.data.lng }
-        this.addMarker(pos, `${park.data.nom}`, Utils.parkIcon);
-      }
-    });
   }
 
   async init() {
