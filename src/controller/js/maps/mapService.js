@@ -196,19 +196,16 @@ export class MapService {
     divbutton.style.justifyContent = "center";
     const button = document.createElement('button');
     button.style.color = "black";
-    button.className = "item parking parking-route";
+    button.className = "parking-route submit";
     button.dataset.lat = park.lat;
     button.dataset.lng = park.lng;
     button.dataset.name = park.nom;
     button.dataset.id = park.id;
-    button.style.textAlign = "center";
-    button.textContent = "Y aller";
+    button.textContent = "Itinéraire";
 
     const ibutton = document.createElement('button');
-    ibutton.style.color = "black";
-    ibutton.className = "item parking-info";
+    ibutton.className = "parking-info submit";
     ibutton.dataset.id = park.id;
-    ibutton.style.textAlign = "center";
     ibutton.textContent = "Plus d'info";
 
     divbutton.appendChild(button);
