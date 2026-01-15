@@ -134,6 +134,7 @@ class ParkingDAO
         }
 
         $parkings = array_filter($parkings, function ($p) use ($options, $parkingTarifDAO, $parkingCapDAO) {
+            global $data;
             $tarif = $parkingTarifDAO->getById($p->getId());
             $cap = $parkingCapDAO->getById($p->getId());
 
