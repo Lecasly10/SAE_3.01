@@ -123,11 +123,9 @@ export function initMapEvent(services) {
                 renderParkingList(result.data);
             }, "Parkings");
         } catch (err) {
-            if (err?.code === "NOT_FOUND") {
-                UI.emptyResultBox();
-                UI.setResultTitle("Aucun résultat");
-                UI.setResultMessage(":(");
-            }
+            UI.emptyResultBox();
+            UI.setResultTitle("Aucun résultat");
+            UI.setResultMessage(":(");
         }
 
     });
