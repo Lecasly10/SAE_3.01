@@ -38,7 +38,7 @@ export class MapService {
 
           this.mapMarkers.set(park.id, marker);
           marker.addListener("click", () => {
-            this.openWindow();
+            this.openParkWindow(park);
           })
         }
       });
@@ -47,7 +47,7 @@ export class MapService {
     }
   }
 
-  openWindow() {
+  openParkWindow(park) {
     this.markerWindow?.close();
     this.buildParkWindow(park);
     this.markerWindow?.open({
