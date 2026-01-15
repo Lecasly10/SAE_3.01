@@ -107,6 +107,8 @@ class ParkingDAO
         $parkingTarifDAO = new ParkingTarifDAO();
         $parkingCapDAO = new ParkingCapacityDAO();
 
+        $data = getApiData();
+
         $params = [];
         $where = ' WHERE 1=1';
 
@@ -134,6 +136,18 @@ class ParkingDAO
         $parkings = array_filter($parkings, function ($p) use ($options, $parkingTarifDAO, $parkingCapDAO) {
             $tarif = $parkingTarifDAO->getById($p->getId());
             $cap = $parkingCapDAO->getById($p->getId());
+
+            $pLat = $p->getLat();
+            $pLng = $p->getLong();
+            $pLibre = 0;
+            $city = detectCity($pLat, $pLng);
+            try {
+                if (isset($city)) {
+                    $pLibre = placeLibre($data[$city], $city, $pLat, $pLng);
+                }
+            } catch (Exception $e) {
+                $pLibre = null;
+            }
 
             if (!empty($options['preferFree']) && !$tarif->getFree())
                 return false;
