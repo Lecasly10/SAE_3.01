@@ -154,16 +154,18 @@ export class MapService {
       throw new AppError("La carte n'est pas initialisée !");
     }
 
-    const h = document.createElement("h1");
+    const h = document.createElement("h3");
     h.textContent = park.nom;
     h.style.color = "black";
     h.style.textAlign = "center";
     const divContent = document.createElement("div");
 
-    const p = document.createElement("p")
-    p.textContent = park.address;
-
-    divContent.appendChild(p);
+    const addr = document.createElement("p")
+    const type = document.createElement("p")
+    addr.textContent = park.address;
+    type.textContent = park.structure;
+    divContent.appendChild(addr);
+    divContent.appendChild(type);
     divContent.style.color = "black";
 
     const window = new InfoWindow({
