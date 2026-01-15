@@ -179,11 +179,28 @@ export class MapService {
       throw new AppError("La carte n'est pas initialisée !");
     }
 
-    const h = document.createElement("h3");
-    h.textContent = park.nom;
-    h.style.color = "black";
-    h.style.fontWeight = "bolder";
-    h.style.margin = "0";
+    const { divContent, title } = this.buildWindowContent(park);
+
+    if (!this.markerWindow)
+      this.markerWindow = new InfoWindow({
+        headerContent: title,
+        content: divContent,
+      })
+    else {
+      this.markerWindow.setContent(divContent);
+      this.markerWindow.setHeaderContent(title);
+    }
+
+    if (!this.markerWindow)
+      throw new AppError("Erreur dans la création de la fenêtre de ce parking");
+  }
+
+  buildWindowContent(park) {
+    const title = document.createElement("h3");
+    title.textContent = park.nom;
+    title.style.color = "black";
+    title.style.fontWeight = "bolder";
+    title.style.margin = "0";
     const divContent = document.createElement("div");
     divContent.style.color = "black";
 
@@ -219,18 +236,7 @@ export class MapService {
     divContent.appendChild(place);
     divContent.appendChild(divbutton);
 
-    if (!this.markerWindow)
-      this.markerWindow = new InfoWindow({
-        headerContent: h,
-        content: divContent,
-      })
-    else {
-      this.markerWindow.setContent(divContent);
-      this.markerWindow.setHeaderContent(h);
-    }
-
-    if (!this.markerWindow)
-      throw new AppError("Erreur dans la création de la fenêtre de ce parking");
+    return { divContent, title };
   }
 
 }
