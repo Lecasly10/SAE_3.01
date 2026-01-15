@@ -190,10 +190,22 @@ export class MapService {
     const addr = document.createElement("div");
     const type = document.createElement("div");
     const place = document.createElement("div");
+    const divbutton = document.createElement("div");
+    const button = document.createElement('a');
+
+    button.className = "item parking parking-route";
+    button.dataset.lat = park.lat;
+    button.dataset.lng = park.lng;
+    button.dataset.name = park.nom;
+    button.dataset.id = park.id;
+    button.style.textAlign = "center";
+
+    divbutton.appendChild(button);
 
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
     place.textContent = `Places totales : ${park.places}`;
+
     divContent.appendChild(addr);
     divContent.appendChild(type);
     divContent.appendChild(place);
