@@ -15,6 +15,7 @@ export class MapService {
     this.userMarker = null;
     this.nightMode = false;
     this.mapMonitor = null;
+    this.mapMarkers = new Map();
   }
 
   async getAllPark() {
@@ -31,7 +32,13 @@ export class MapService {
       parks.data.forEach(park => {
         if (park) {
           const pos = { lat: park.lat, lng: park.lng }
-          this.addMarker(pos, `${park.nom}`, Utils.parkIcon);
+          const marker = this.addMarker(pos, `${park.nom}`, Utils.parkIcon);
+
+          this.mapMarkers.set(park.id, marker);
+
+          marker.addListener("click", () => {
+            this.buildParkWindow(pos, park);
+          })
         }
       });
     } catch (error) {
@@ -134,6 +141,31 @@ export class MapService {
     });
 
     return marker;
+  }
+
+  buildParkWindow(pos, park) {
+    const { InfoWindow } = this.apiService.googleLibs;
+
+    if (!this.map) {
+      throw new AppError("La carte n'est pas initialisée !");
+    }
+
+    const h = document.createElement("h1");
+    h.textContent = park.nom;
+
+    const divContent = document.createElement("div");
+
+    const p = document.createElement("p")
+    p.textContent = parking.address;
+
+    const window = new InfoWindow({
+      map: this.map,
+      position: pos,
+      headerContent: h,
+      content: divContent,
+    })
+
+    return window
   }
 
 }
