@@ -133,7 +133,7 @@ export function initMapEvent(services) {
     });
 
 
-    resultContainer.addEventListener("click", (event) => {
+    document.addEventListener("click", (event) => {
         const infoBtn = event.target.closest(".parking-info");
         const routeBtn = event.target.closest(".parking-route");
 
