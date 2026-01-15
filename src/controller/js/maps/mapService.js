@@ -1,6 +1,7 @@
 import { AppError } from "../errors/errors.js";
 import { darkId, lightId } from "./styles.js";
 import { Utils } from "../utils.js";
+import { handleError } from "../errors/globalErrorHandling.js";
 
 export class MapService {
   constructor(api) {
@@ -14,6 +15,28 @@ export class MapService {
     this.userMarker = null;
     this.nightMode = false;
     this.mapMonitor = null;
+  }
+
+  async getAllPark() {
+    const parks = await this.apiService.phpFetch("parking/loadAll", {})
+
+    return parks
+  }
+
+  async placeMarkOnMap() {
+    let parks;
+    try {
+      parks = await this.getAllPark();
+    } catch (error) {
+      handleError(error, "Parking Marker")
+    }
+
+    parks.forEach(park => {
+      if (park?.data) {
+        const pos = { lat: park.data.lat, lng: park.data.lng }
+        this.addMarker(pos, `${park.data.nom}`, Utils.parkIcon);
+      }
+    });
   }
 
   async init() {
@@ -32,6 +55,7 @@ export class MapService {
     if (!this.map) throw new AppError("La création de la map à échoué !")
     this.setNightMode();
     this.startMapMonitor();
+    await this.placeMarkOnMap();
   }
 
   setNightMode() {

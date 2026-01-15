@@ -2,6 +2,7 @@
 export class Utils {
     static distIcon = "https://cdn-icons-png.flaticon.com/512/4668/4668400.png" //Icon destination
     static carIcon = "https://cdn-icons-png.flaticon.com/512/5193/5193688.png"  //Icon de la voiture
+    static parkIcon = "https://cdn-icons-png.flaticon.com/512/1180/1180048.png" // Icon parking
 
     static isEmpty = (value) => !value || value.trim() === "";
 
