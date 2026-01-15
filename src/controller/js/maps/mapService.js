@@ -191,6 +191,7 @@ export class MapService {
     const type = document.createElement("div");
     const place = document.createElement("div");
     const divbutton = document.createElement("div");
+    divbutton.style.margin = "5px"
     divbutton.style.display = "flex";
     divbutton.style.justifyContent = "center";
     const button = document.createElement('button');
