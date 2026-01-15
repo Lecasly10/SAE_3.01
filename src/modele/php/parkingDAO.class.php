@@ -153,6 +153,10 @@ class ParkingDAO
                 $pLibre = null;
             }
 
+            if($pLibre < 1) {
+                return false;
+            }
+
             if (!empty($options['preferFree']) && !$tarif->getFree())
                 return false;
 
