@@ -199,9 +199,9 @@ export class MapService {
     button.dataset.name = park.nom;
     button.dataset.id = park.id;
     button.style.textAlign = "center";
+    button.textContent = "Y aller";
 
     divbutton.appendChild(button);
-
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
     place.textContent = `Places totales : ${park.places}`;
@@ -209,6 +209,7 @@ export class MapService {
     divContent.appendChild(addr);
     divContent.appendChild(type);
     divContent.appendChild(place);
+    divContent.appendChild(divbutton);
 
     if (!this.markerWindow)
       this.markerWindow = new InfoWindow({
