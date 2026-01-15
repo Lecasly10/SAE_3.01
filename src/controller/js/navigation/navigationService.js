@@ -93,6 +93,8 @@ export class NavigationService {
     this.stopFollowRoute();
     this.removeRoute();
     this.destination = null;
+
+    this.mapService.showAllParkMark();
   }
 
   async closestParking() {
