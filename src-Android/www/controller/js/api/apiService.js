@@ -7,14 +7,14 @@ export class ApiService {
     }
 
     async loadGoogleLibs() {
-        const { Map } = await google.maps.importLibrary("maps");
+        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
         await google.maps.importLibrary("geometry");
         const { spherical } = await google.maps.importLibrary("geometry");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const { ColorScheme } = await google.maps.importLibrary("core");
         const { Route } = await google.maps.importLibrary("routes");
 
-        this.googleLibs = { Map, AdvancedMarkerElement, ColorScheme, Route, spherical };
+        this.googleLibs = { Map, InfoWindow, AdvancedMarkerElement, ColorScheme, Route, spherical };
 
         if (!Object.entries(this.googleLibs).length) throw new ApiError("Le chargement des librairies google map à échoué");
     }
