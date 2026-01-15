@@ -10,13 +10,14 @@ export class MapService {
     this.map = null;
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 18;
+    this.defaultTilt = 0;
     this.navigationZoom = 20;
     this.navigationTilt = 60;
-    this.defaultTilt = 0;
     this.userMarker = null;
     this.nightMode = false;
     this.mapMonitor = null;
     this.mapMarkers = new Map();
+    this.markerWindow = null;
   }
 
   async getAllPark() {
@@ -38,7 +39,9 @@ export class MapService {
           this.mapMarkers.set(park.id, marker);
 
           marker.addListener("click", () => {
-            this.buildParkWindow(park).open({
+            this.markerWindow.close();
+            this.buildParkWindow(park);
+            this.markerWindow.open({
               anchor: marker,
               map,
               shouldFocus: false,
@@ -168,11 +171,11 @@ export class MapService {
       throw new AppError("La carte n'est pas initialisée !");
     }
 
-    const h = document.createElement("p");
+    const h = document.createElement("h3");
     h.textContent = park.nom;
     h.style.color = "black";
     h.style.fontWeight = "bolder";
-    h.style.textAlign = "center";
+    h.style.margin = "0";
     const divContent = document.createElement("div");
 
     const addr = document.createElement("div")
@@ -187,12 +190,17 @@ export class MapService {
       this.hideAllParkMark();
     })
 
-    const window = new InfoWindow({
+    const opt = {
       headerContent: h,
       content: divContent,
-    })
+    }
 
-    return window
+    if (!this.markerWindow)
+      this.markerWindow = new InfoWindow(opt)
+    else {
+      this.markerWindow.setContent(divContent);
+      this.markerWindow.setHeaderContent(h);
+    }
   }
 
 }
