@@ -201,6 +201,8 @@ cordova build android
   - Voir les parkings sur la carte
   - Consulter un parking
   - Sauvegarde et récup. du trajet
+  - Gestion utilisateurs
+  - Gestion des véhicules
 
 - Quand je clique sur un parking, je vois :
 
