@@ -194,6 +194,7 @@ export class MapService {
     divbutton.style.margin = "5px"
     divbutton.style.display = "flex";
     divbutton.style.justifyContent = "space-between";
+    divbutton.style.gap = "5px";
     const button = document.createElement('button');
     button.className = "parking-route submit";
     button.dataset.lat = park.lat;
