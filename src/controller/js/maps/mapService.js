@@ -193,9 +193,8 @@ export class MapService {
     const divbutton = document.createElement("div");
     divbutton.style.margin = "5px"
     divbutton.style.display = "flex";
-    divbutton.style.justifyContent = "center";
+    divbutton.style.justifyContent = "space-between";
     const button = document.createElement('button');
-    button.style.color = "black";
     button.className = "parking-route submit";
     button.dataset.lat = park.lat;
     button.dataset.lng = park.lng;
