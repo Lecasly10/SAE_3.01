@@ -191,11 +191,10 @@ export class MapService {
     const type = document.createElement("div");
     const place = document.createElement("div");
     const divbutton = document.createElement("div");
-    divbutton.style.color = "black";
     divbutton.style.display = "flex";
     divbutton.style.justifyContent = "center";
     const button = document.createElement('button');
-
+    button.style.color = "black";
     button.className = "item parking parking-route";
     button.dataset.lat = park.lat;
     button.dataset.lng = park.lng;
@@ -204,7 +203,15 @@ export class MapService {
     button.style.textAlign = "center";
     button.textContent = "Y aller";
 
+    const ibutton = document.createElement('button');
+    ibutton.style.color = "black";
+    ibutton.className = "item parking-info";
+    ibutton.dataset.id = park.id;
+    ibutton.style.textAlign = "center";
+    ibutton.textContent = "Plus d'info";
+
     divbutton.appendChild(button);
+    divbutton.appendChild(ibutton);
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
     place.textContent = `Places totales : ${park.places}`;
