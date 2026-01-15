@@ -34,7 +34,7 @@ export class MapService {
       parks.data.forEach(park => {
         if (park) {
           const pos = { lat: park.lat, lng: park.lng }
-          const marker = this.addMarker(pos, `${park.nom}`, Utils.parkIcon);
+          const marker = this.addMarker(pos, `${park.nom}`, Utils.parkIcon, 0);
 
           this.mapMarkers.set(park.id, marker);
           marker.addListener("click", () => {
@@ -146,7 +146,7 @@ export class MapService {
       this.userMarker.position = pos;
   }
 
-  addMarker(pos, message, iconURL) {
+  addMarker(pos, message, iconURL, zIndex = null) {
     const { AdvancedMarkerElement } = this.apiService.googleLibs;
 
     if (!this.map) {
@@ -158,11 +158,16 @@ export class MapService {
     icon.style.width = "60px";
     icon.style.height = "60px";
 
+    let zOpt = !zIndex ? {} : {
+      zIndex: zIndex
+    }
+
     const marker = new AdvancedMarkerElement({
       map: this.map,
       position: pos,
       title: message,
       content: icon,
+      ...zOpt,
     });
 
     return marker;
