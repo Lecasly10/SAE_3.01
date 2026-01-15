@@ -147,7 +147,7 @@ export class MapService {
     return marker;
   }
 
-  buildParkWindow(pos, park) {
+  buildParkWindow(park) {
     const { InfoWindow } = this.apiService.googleLibs;
 
     if (!this.map) {
