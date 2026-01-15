@@ -15,10 +15,20 @@ Notre rapport :  [Cliquez ici](https://docs.google.com/document/d/1J6fdDPijHZQg0
 
 ## INFORMATION
 
-- HTML / JS / CSS => FrontEnd
+### Technologies
+- HTML / JS / CSS => FrontEnd :
+   - Fiable, moderne et facile à mettre sur mobile en place sans récoder l'app 
 - PHP => BackEnd
+   - Fiable, Stable, perforomance garantie
 - Cordova => Version Android
+  - Facile d'utilisation, maintenue activement 
+- mySql => BDD
+  - Optimisé, stable et performant 
+### Outils
 - PHPmyAdmin => Notre BDD
+  - Simple d'utilisation
+- Discord, trello, git => Collaboration
+- Neovim et Vscodium => IDE
 
 ## INSTALLATION
 
