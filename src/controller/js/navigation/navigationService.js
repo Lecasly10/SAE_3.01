@@ -171,7 +171,7 @@ export class NavigationService {
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
       const dist = GeolocationService.distance(mapService.userMarker.position, coord, this.apiService);
-
+      console.log(dist);
       if ((dist / 1000) < DESTINATION_RADIUS_KM) {
         await this.stopNavigation();
         return;
