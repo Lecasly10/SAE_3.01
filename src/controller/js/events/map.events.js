@@ -33,7 +33,6 @@ export function initMapEvent(services) {
             UI.show(loader);
             await fn();
         } catch (err) {
-            if (err?.code === "NOT_FOUND") throw new AppError(err.message, err.code);
             UI.setupUI();
             handleError(err, errorLabel);
         } finally {
@@ -116,19 +115,21 @@ export function initMapEvent(services) {
         const query = UI.getSearchQuery().trim();
         if (!query) return UI.hide(resultContainer);
 
-        try {
-            withLoader(async () => {
+        withLoader(async () => {
+            try {
                 const result = await apiService.phpFetch("parking/search", { search: query });
                 UI.setResultTitle("Résultats");
                 renderParkingList(result.data);
-            }, "Parkings");
-        } catch (err) {
-            console.log(err?.code);
-            UI.emptyResultBox();
-            UI.setResultTitle("Aucun résultat");
-            UI.setResultMessage(":(");
-        }
-
+            } catch (err) {
+                if (err?.code === "NOT_FOUND") {
+                    UI.show(resultContainer);
+                    UI.emptyResultBox();
+                    UI.setResultTitle("Aucun résultat");
+                    UI.setResultMessage(":(");
+                } else
+                    throw err;
+            }
+        }, "Parkings");
     });
 
 
