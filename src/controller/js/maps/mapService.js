@@ -2,6 +2,7 @@ import { AppError } from "../errors/errors.js";
 import { darkId, lightId } from "./styles.js";
 import { Utils } from "../utils.js";
 import { handleError } from "../errors/globalErrorHandling.js";
+import { UI } from "../ui/UI.js";
 
 export class MapService {
   constructor(api) {
@@ -49,6 +50,19 @@ export class MapService {
       handleError(error, "Parking Marker")
     }
   }
+
+  hideAllParkMark() {
+    this.mapMarkers.forEach((mark, id) => {
+      UI.hide(mark);
+    })
+  }
+
+  showAllParkMark() {
+    this.mapMarkers.forEach((mark, id) => {
+      UI.show(mark);
+    })
+  }
+
 
   async init() {
     const { Map } = this.apiService.googleLibs;
@@ -161,13 +175,17 @@ export class MapService {
     h.style.textAlign = "center";
     const divContent = document.createElement("div");
 
-    const addr = document.createElement("span")
-    const type = document.createElement("span")
+    const addr = document.createElement("div")
+    const type = document.createElement("div")
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
     divContent.appendChild(addr);
     divContent.appendChild(type);
     divContent.style.color = "black";
+
+    type.addEventListener("click", () => {
+      this.hideAllParkMark();
+    })
 
     const window = new InfoWindow({
       headerContent: h,
