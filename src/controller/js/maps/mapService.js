@@ -37,7 +37,11 @@ export class MapService {
           this.mapMarkers.set(park.id, marker);
 
           marker.addListener("click", () => {
-            this.buildParkWindow(pos, park);
+            this.buildParkWindow(park).open({
+              anchor: marker,
+              map,
+              shouldFocus: false,
+            });
           })
         }
       });
@@ -156,11 +160,9 @@ export class MapService {
     const divContent = document.createElement("div");
 
     const p = document.createElement("p")
-    p.textContent = parking.address;
+    p.textContent = park.address;
 
     const window = new InfoWindow({
-      map: this.map,
-      position: pos,
       headerContent: h,
       content: divContent,
     })
