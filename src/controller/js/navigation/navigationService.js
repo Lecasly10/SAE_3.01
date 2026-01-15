@@ -173,8 +173,7 @@ export class NavigationService {
       const dist = GeolocationService.distance(mapService.userMarker.position, coord, this.apiService) / 1000;
       console.log(dist);
       if (dist < DESTINATION_RADIUS_KM) {
-        console.log("test stopping");
-        await this.stopNavigation();
+        await this.destinationArrived();
         return;
       }
 
@@ -185,6 +184,12 @@ export class NavigationService {
         this.startRedirection();
 
     }, 30000);
+  }
+
+  async destinationArrived() {
+    await this.stopNavigation();
+    UI.setupUI();
+    UI.notify("Navigation", "Vous êtes arrivés !")
   }
 
   async startRedirection() {
