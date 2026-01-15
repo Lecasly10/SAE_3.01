@@ -33,6 +33,7 @@ export function initMapEvent(services) {
             UI.show(loader);
             await fn();
         } catch (err) {
+            console.log(err?.code);
             if (err?.code === "NOT_FOUND") throw err;
             UI.setupUI();
             handleError(err, errorLabel);
