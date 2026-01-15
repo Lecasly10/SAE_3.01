@@ -22,7 +22,6 @@ export class MapService {
 
   async getAllPark() {
     const parks = await this.apiService.phpFetch("parking/loadAll", {})
-
     return parks
   }
 
@@ -186,14 +185,18 @@ export class MapService {
     h.style.fontWeight = "bolder";
     h.style.margin = "0";
     const divContent = document.createElement("div");
+    divContent.style.color = "black";
 
-    const addr = document.createElement("div")
-    const type = document.createElement("div")
+    const addr = document.createElement("div");
+    const type = document.createElement("div");
+    const place = document.createElement("div");
+
     addr.textContent = `Adresse : ${park.address}`;
     type.textContent = `Structure : ${park.structure}`;
+    place.textContent = `Structure : ${park.places}`;
     divContent.appendChild(addr);
     divContent.appendChild(type);
-    divContent.style.color = "black";
+    divContent.appendChild(place);
 
     type.addEventListener("click", () => {
       this.hideAllParkMark();
@@ -210,6 +213,9 @@ export class MapService {
       this.markerWindow.setContent(divContent);
       this.markerWindow.setHeaderContent(h);
     }
+
+    if (!this.markerWindow)
+      throw new AppError("Erreur dans la création de la fenêtre de ce parking");
   }
 
 }
