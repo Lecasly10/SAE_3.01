@@ -54,7 +54,7 @@ class ParkingDAO
 
     function getAllData(): array
     {
-        return $this->createTab($this->bd->execSQL($this->select), true);
+        return $this->createTab($this->bd->execSQL($this->fullSelect), true);
     }
 
     function getAllDataById(string $id): ?array
