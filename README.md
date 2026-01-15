@@ -25,7 +25,7 @@ Notre rapport :  [Cliquez ici](https://docs.google.com/document/d/1J6fdDPijHZQg0
 - mySql => BDD
   - Optimisé, stable et performant 
 ### Outils
-- PHPmyAdmin => Notre BDD
+- PHPmyAdmin => Gestion BDD
   - Simple d'utilisation
 - Discord, trello, git => Collaboration
 - Neovim et Vscodium => IDE
