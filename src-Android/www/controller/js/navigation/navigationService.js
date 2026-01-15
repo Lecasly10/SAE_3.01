@@ -29,10 +29,10 @@ export class NavigationService {
 
   calDistForDest(destination) {
     let dist = GeolocationService.distance(this.mapService.userMarker.position,
-      { lat: destination.lat, lng: destination.lng }, this.apiService)
+      { lat: destination.lat, lng: destination.lng }, this.apiService) / 1000
     return {
       ...destination,
-      distance: Math.round((dist / 1000)),
+      distance: Math.round(dist * 10) / 10,
     };
   }
 
@@ -43,6 +43,8 @@ export class NavigationService {
     await this.buildRoute();
     this.startParkingMonitor();
     this.saveDestination();
+
+    this.mapService.hideAllParkMark();
   }
 
   startPreview() {
@@ -91,6 +93,8 @@ export class NavigationService {
     this.stopFollowRoute();
     this.removeRoute();
     this.destination = null;
+
+    this.mapService.showAllParkMark();
   }
 
   async closestParking() {
@@ -170,10 +174,10 @@ export class NavigationService {
       const mapService = this.mapService;
 
       const coord = { lat: this.destination.lat, lng: this.destination.lng };
-      const dist = GeolocationService.distance(mapService.userMarker.position, coord, this.apiService);
-
-      if ((dist / 1000) < DESTINATION_RADIUS_KM) {
-        await this.stopNavigation();
+      const dist = GeolocationService.distance(mapService.userMarker.position, coord, this.apiService) / 1000;
+      console.log(dist);
+      if (dist < DESTINATION_RADIUS_KM) {
+        await this.destinationArrived();
         return;
       }
 
@@ -184,6 +188,12 @@ export class NavigationService {
         this.startRedirection();
 
     }, 30000);
+  }
+
+  async destinationArrived() {
+    await this.stopNavigation();
+    UI.setupUI();
+    UI.notify("Navigation", "Vous êtes arrivés !")
   }
 
   async startRedirection() {

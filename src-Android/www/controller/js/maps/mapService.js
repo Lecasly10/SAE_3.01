@@ -1,6 +1,8 @@
 import { AppError } from "../errors/errors.js";
 import { darkId, lightId } from "./styles.js";
 import { Utils } from "../utils.js";
+import { handleError } from "../errors/globalErrorHandling.js";
+import { UI } from "../ui/UI.js";
 
 export class MapService {
   constructor(api) {
@@ -8,13 +10,65 @@ export class MapService {
     this.map = null;
     this.defaultPosition = { lat: 49.1193, lng: 6.1757 };
     this.defaultZoom = 18;
+    this.defaultTilt = 0;
     this.navigationZoom = 20;
     this.navigationTilt = 60;
-    this.defaultTilt = 0;
     this.userMarker = null;
     this.nightMode = false;
     this.mapMonitor = null;
+    this.mapMarkers = new Map();
+    this.markerWindow = null;
   }
+
+  async getAllPark() {
+    const parks = await this.apiService.phpFetch("parking/loadAll", {})
+    return parks
+  }
+
+  async placeMarkOnMap() {
+    let parks;
+    try {
+      parks = await this.getAllPark();
+
+      parks.data.forEach(park => {
+        if (park) {
+          const pos = { lat: park.lat, lng: park.lng }
+          const marker = this.addMarker(pos, `${park.nom}`, Utils.parkIcon, 0);
+
+          this.mapMarkers.set(park.id, marker);
+          marker.addListener("click", () => {
+            this.openParkWindow(park, marker);
+          })
+        }
+      });
+    } catch (error) {
+      handleError(error, "Parking Marker")
+    }
+  }
+
+  openParkWindow(park, marker) {
+    this.markerWindow?.close();
+    this.buildParkWindow(park);
+    this.markerWindow?.open({
+      anchor: marker,
+      map: this.map,
+      shouldFocus: false,
+    });
+  }
+
+  hideAllParkMark() {
+    this.markerWindow?.close();
+    this.mapMarkers.forEach((mark, id) => {
+      UI.hide(mark);
+    })
+  }
+
+  showAllParkMark() {
+    this.mapMarkers.forEach((mark, id) => {
+      UI.show(mark);
+    })
+  }
+
 
   async init() {
     const { Map } = this.apiService.googleLibs;
@@ -32,6 +86,7 @@ export class MapService {
     if (!this.map) throw new AppError("La création de la map à échoué !")
     this.setNightMode();
     this.startMapMonitor();
+    await this.placeMarkOnMap();
   }
 
   setNightMode() {
@@ -90,7 +145,7 @@ export class MapService {
       this.userMarker.position = pos;
   }
 
-  addMarker(pos, message, iconURL) {
+  addMarker(pos, message, iconURL, zIndex = null) {
     const { AdvancedMarkerElement } = this.apiService.googleLibs;
 
     if (!this.map) {
@@ -102,14 +157,86 @@ export class MapService {
     icon.style.width = "60px";
     icon.style.height = "60px";
 
+    let zOpt = !zIndex ? {} : {
+      zIndex: zIndex
+    }
+
     const marker = new AdvancedMarkerElement({
       map: this.map,
       position: pos,
       title: message,
       content: icon,
+      ...zOpt,
     });
 
     return marker;
+  }
+
+  buildParkWindow(park) {
+    const { InfoWindow } = this.apiService.googleLibs;
+
+    if (!this.map) {
+      throw new AppError("La carte n'est pas initialisée !");
+    }
+
+    const { divContent, title } = this.buildWindowContent(park);
+
+    if (!this.markerWindow)
+      this.markerWindow = new InfoWindow({
+        headerContent: title,
+        content: divContent,
+      })
+    else {
+      this.markerWindow.setContent(divContent);
+      this.markerWindow.setHeaderContent(title);
+    }
+
+    if (!this.markerWindow)
+      throw new AppError("Erreur dans la création de la fenêtre de ce parking");
+  }
+
+  buildWindowContent(park) {
+    const title = document.createElement("h3");
+    title.textContent = park.nom;
+    title.style.color = "black";
+    title.style.fontWeight = "bolder";
+    title.style.margin = "0";
+    const divContent = document.createElement("div");
+    divContent.style.color = "black";
+
+    const addr = document.createElement("div");
+    const type = document.createElement("div");
+    const place = document.createElement("div");
+    const divbutton = document.createElement("div");
+    divbutton.style.margin = "5px"
+    divbutton.style.display = "flex";
+    divbutton.style.justifyContent = "space-between";
+    divbutton.style.gap = "5px";
+    const button = document.createElement('button');
+    button.className = "parking-route submit";
+    button.dataset.lat = park.lat;
+    button.dataset.lng = park.lng;
+    button.dataset.name = park.nom;
+    button.dataset.id = park.id;
+    button.textContent = "Itinéraire";
+
+    const ibutton = document.createElement('button');
+    ibutton.className = "parking-info submit";
+    ibutton.dataset.id = park.id;
+    ibutton.textContent = "Plus d'info";
+
+    divbutton.appendChild(button);
+    divbutton.appendChild(ibutton);
+    addr.textContent = `Adresse : ${park.address}`;
+    type.textContent = `Structure : ${park.structure}`;
+    place.textContent = `Places totales : ${park.places}`;
+
+    divContent.appendChild(addr);
+    divContent.appendChild(type);
+    divContent.appendChild(place);
+    divContent.appendChild(divbutton);
+
+    return { divContent, title };
   }
 
 }
