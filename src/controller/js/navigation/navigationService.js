@@ -29,10 +29,10 @@ export class NavigationService {
 
   calDistForDest(destination) {
     let dist = GeolocationService.distance(this.mapService.userMarker.position,
-      { lat: destination.lat, lng: destination.lng }, this.apiService)
+      { lat: destination.lat, lng: destination.lng }, this.apiService) / 1000
     return {
       ...destination,
-      distance: Math.round((dist / 1000)),
+      distance: Math.round(dist * 10) / 10,
     };
   }
 
