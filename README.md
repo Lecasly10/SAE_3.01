@@ -17,7 +17,7 @@ Notre rapport :  [Cliquez ici](https://docs.google.com/document/d/1J6fdDPijHZQg0
 
 ### Technologies
 - HTML / JS / CSS => FrontEnd :
-   - Fiable, moderne et facile à mettre sur mobile en place sans récoder l'app 
+   - Fiable, moderne et facile à mettre en place sur mobile sans récoder l'app 
 - PHP => BackEnd
    - Fiable, Stable, perforomance garantie
 - Cordova => Version Android
