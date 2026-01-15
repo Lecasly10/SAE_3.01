@@ -155,7 +155,7 @@ export class MapService {
     }
 
     const window = new InfoWindow({
-      headerContent: `<h3>${park.nom}</h3>`,
+      // headerContent: `<h3>${park.nom}</h3>`,
       content: `<p>${park.address}</p>`,
     })
 
