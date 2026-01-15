@@ -154,17 +154,9 @@ export class MapService {
       throw new AppError("La carte n'est pas initialisée !");
     }
 
-    const h = document.createElement("h1");
-    h.textContent = park.nom;
-
-    const divContent = document.createElement("div");
-
-    const p = document.createElement("p")
-    p.textContent = park.address;
-
     const window = new InfoWindow({
-      headerContent: h,
-      content: divContent,
+      headerContent: `<h3>${park.nom}</h3>`,
+      content: `<p>${park.address}</p>`,
     })
 
     return window
